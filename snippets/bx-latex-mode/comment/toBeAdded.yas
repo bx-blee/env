@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Comment toBeAddedText
+# key: comment/toBeAddedText
+# group: Comment
+# --
+\begin{comment}
+******  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || *Incomplete Text*  ::  [[elisp:(org-cycle)][| ]]
+$0
+\end{comment}

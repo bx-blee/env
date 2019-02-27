@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: MenuBar Leaf Panel
+# key: begin/bleePanelLeaf
+# group: begin.panelMenuBar
+# type: command
+# --
+(progn
+  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/leafPanels/leafBegin.org")
+  (org-dblock-update-buffer-bx)
+  (blee:ppmm:org-mode-content-list)  
+  )

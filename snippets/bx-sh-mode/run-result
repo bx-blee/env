@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: IIM run-result dblock
+# key: iim/run-result
+# group: iim
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+####+BEGIN: bx:dblock:global:run-result :command "iimName.sh  -i iif"
+
+####+END:

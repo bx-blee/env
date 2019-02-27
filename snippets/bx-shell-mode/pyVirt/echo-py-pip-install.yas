@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: echo  py2 pip install no-cache upgrade
+# key: pyVirt/echo  py2 pip install no-cache upgrade
+# group: pyVirt
+# type: snippet
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+echo pip --no-cache-dir install --upgrade namespace.module$0
