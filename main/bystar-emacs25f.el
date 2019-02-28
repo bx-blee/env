@@ -21,19 +21,19 @@
 ;;{{{ Bystar Initializations:
 
 ;;; -----------------------------------------------------------------
-;;; prepend user's ~/lisp to load path, if exists
+;;; prepend user's /bisos/git/auth/bxRepos/blee/env/main to load path, if exists
 ;;; -----------------------------------------------------------------
-(if (file-directory-p (expand-file-name "~/lisp"))
-    (setq load-path (cons (expand-file-name "~/lisp")
+(if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main"))
+    (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main")
 		      load-path)))
 
-(if (file-directory-p (expand-file-name "~/lisp/widget"))
-    (setq load-path (cons (expand-file-name "~/lisp/widget")
+(if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib/widget"))
+    (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib/widget")
 		      load-path)))
 
 
-(if (file-directory-p (expand-file-name "~/lisp/emacsPlus/22Plus"))
-    (setq load-path (cons (expand-file-name "~/lisp/emacsPlus/22Plus")
+(if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib"))
+    (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib")
 		      load-path)))
 
 (if (file-directory-p (expand-file-name "~/BUE/elisp"))
@@ -92,8 +92,6 @@
 
 
 ;;; General Horizontal Facilities
-
-(require 'bystar-folding)
 
 ;;; -----------------------------------------------------------------
 ;;; Shell stuff
@@ -319,7 +317,7 @@
 ;;;
 (require 'browse-url)
 
-;; ~/lisp/browse-url-extra.el
+;; /bisos/git/auth/bxRepos/blee/env/main/browse-url-extra.el
 ;;(load "browse-url-extra.el")
 
 ;;(setq browse-url-browser-function 'browse-url-mozilla)
@@ -348,7 +346,7 @@
 ;;; markdown-mode
 ;;; -----------------------------------------------------------------
 ;;;(require 'blee-markdown)
-(load-file "~/lisp/blee-markdown.el")
+(load-file "/bisos/git/auth/bxRepos/blee/env/main/blee-markdown.el")
 
 ;;; -----------------------------------------------------------------
 ;;; Templates and Substitution
@@ -375,8 +373,8 @@
 (funcall  '(lambda () "
 **     *Google Maps*
 "
-;; (if (file-directory-p (expand-file-name "~/lisp/google-maps.el-master"))
-;;     (setq load-path (cons (expand-file-name "~/lisp/google-maps.el-master")
+;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master"))
+;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master")
 ;; 		      load-path)))
 
 	     (require 'google-maps)
@@ -417,7 +415,8 @@
 
 
 ;;; Linux Utilities
-(eoe-require 'apt-utils)
+;;;(eoe-require 'apt-utils)
+;;;(require 'apt-utils)
 
 
 ;;}}}
@@ -452,13 +451,13 @@
 ; ;;; -----------------------------------------------------------------
 ; ;;; Org-Mode and Remember
 ; ;;; -----------------------------------------------------------------
-;; ~/lisp/orgModeInit.el
+;; /bisos/git/auth/bxRepos/blee/env/main/orgModeInit.el
 
-(load-file "~/lisp/orgModeInit.el")
+(load-file "/bisos/git/auth/bxRepos/blee/env/main/orgModeInit.el")
 (require 'bx-org-exports)
 
 ;;; Work Logs For Projects
-(eoe-require 'worklog)
+;;;(eoe-require 'worklog)
 
 ;;; TODO-MODE
 (autoload 'todo-mode "todo-mode"
@@ -495,7 +494,7 @@
 ;;; Abbrev and Tempo
 
 ;;; TEMP DISABLED
-(require 'bystar-tempo)
+;;;(require 'bystar-tempo)
 
 
 ;;; -----------------------------------------------------------------
@@ -533,7 +532,7 @@
 
 
 ;;; -----------------------------------------------------------------
-;;; Global Key Bindings are maintained centrally in ~/lisp/blee-kbd-global.el
+;;; Global Key Bindings are maintained centrally in /bisos/git/auth/bxRepos/blee/env/main/blee-kbd-global.el
 ;;; -----------------------------------------------------------------
 
 (require 'eoeKbdMenuSupport)
@@ -615,7 +614,7 @@
 (setq-default lpr-command "mpage")
 
 
-;; ~/lisp/murl-base.el ~/lisp/murl-craigslist.el ~/lisp/murl-slink.el ~/lisp/murl-bbdb.el
+;; /bisos/git/auth/bxRepos/blee/env/main/murl-base.el /bisos/git/auth/bxRepos/blee/env/main/murl-craigslist.el /bisos/git/auth/bxRepos/blee/env/main/murl-slink.el /bisos/git/auth/bxRepos/blee/env/main/murl-bbdb.el
 
 (load "murl-base.el")
 (load "murl-bbdb.el")            ;;; Captures mailto: into bbdb
@@ -657,20 +656,20 @@
 (bystar:printing:all-defaults-set)
 
 
-(funcall  '(lambda () "
-**  [[elisp:(org-cycle)][| ]]  Specific-Minor-Mode   ::      *Screencast Mode* [[elisp:(org-cycle)][| ]]
-	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
-"
-	     (load-file "~/lisp/screencast-mode-master/screencast-mode.el")
-	     (load-file "~/lisp/screencast-mode-master/screencast-record.el")	     
-	     ))
+;; (funcall  '(lambda () "
+;; **  [[elisp:(org-cycle)][| ]]  Specific-Minor-Mode   ::      *Screencast Mode* [[elisp:(org-cycle)][| ]]
+;; 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
+;; "
+;; 	     (load-file "/bisos/git/auth/bxRepos/blee/env/main/screencast-mode-master/screencast-mode.el")
+;; 	     (load-file "/bisos/git/auth/bxRepos/blee/env/main/screencast-mode-master/screencast-record.el")	     
+;; 	     ))
 
 
 (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *festival -- TTS -- Say* [[elisp:(org-cycle)][| ]]
 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
 "
-	     (load-file "~/lisp/festival.el")
+	     (load-file "/bisos/git/auth/bxRepos/blee/env/main/festival.el")
 	     ))
 
 (funcall  '(lambda () "
@@ -704,7 +703,7 @@
 (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Temporary             ::      *old2new* [[elisp:(org-cycle)][| ]]
 "
-	     (load-file "~/lisp/old2new/elispBleePanelUpdate.el")
+	     (load-file "/bisos/git/auth/bxRepos/blee/env/lib/old2new/elispBleePanelUpdate.el")
 	     ))
 
 
@@ -722,9 +721,9 @@ string-arg
 (require 'tramp)
 (setq tramp-default-method "scp")
 
-(load-file "~/lisp/Incoming/top-mode.el")
+(load-file "/bisos/git/auth/bxRepos/blee/env/lib/Incoming/top-mode.el")
 
-(load-file "~/lisp/choose-comletion.el")
+(load-file "/bisos/git/auth/bxRepos/blee/env/main/choose-comletion.el")
 
 (cd "~")
 

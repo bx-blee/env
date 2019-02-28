@@ -86,10 +86,10 @@
   (easy-menu-add-item nil '("Blee") 'bidi-menu "Blee Help")
 )
 
-(when (not (string-equal opRunDistFamily "MAEMO"))
-  (bystar:tempo-global:menu)
-  (easy-menu-add-item nil '("Blee") 'bystar:tempo:menu "Blee Help")
-  )
+;; (when (not (string-equal opRunDistFamily "MAEMO"))
+;;   (bystar:tempo-global:menu)
+;;   (easy-menu-add-item nil '("Blee") 'bystar:tempo:menu "Blee Help")
+;;   )
 
   ;;; bx-atpoint-menu.el
   (require 'bx-atpoint-menu)

@@ -1,4 +1,3 @@
-
 ;;; ensure that the functions we want to invoke with the function keys are
 ;;; defined
 
@@ -172,8 +171,8 @@
   ;;(define-key global-map [(control pause)] 'emms-show)
   ;;(define-key global-map [(shift control pause)] 'emms-score-toggle)
   ;; insert  -- msf-abbrev
-  (require 'bystar-tempo-menu)
-  (bystar:tempo-global:keybd)
+  ;; (require 'bystar-tempo-menu)
+  ;; (bystar:tempo-global:keybd)
   ;; (define-key global-map [(insert)] 'msf-abbrev-abbrev-complete)
   ;; (define-key global-map [(shift insert)] 'msf-abbrev-abbrev-choose)
   ;; (define-key global-map [(control insert)] 'expand-abbrev)

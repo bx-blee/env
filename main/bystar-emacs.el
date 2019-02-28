@@ -310,7 +310,7 @@ This must be non-emacs version specific code.")
 (defconst eoe-background-mode 'dark "EOE uses dark background.")
 
 ;; ./lisp/eoeDressUps2.el 
-;;;(load "~/lisp/eoeDressUps2.el") ;; OBSOLETED MB 1/2011
+;;;(load "/bisos/git/auth/bxRepos/blee/env/main/eoeDressUps2.el") ;; OBSOLETED MB 1/2011
 
 ;;; -----------------------------------------------------------------
 ;;; Now site-specific initialization (load packages, autoloads, ...)
@@ -319,7 +319,7 @@ This must be non-emacs version specific code.")
 (defvar *eoe-site-init-file* (format "%s/.emacs%s" *eoe-sys-dir* *eoe-emacs-type*)
   "Site init file to load (if present).")
 
-(defvar *eoe-user-init-file* (format "~/lisp/bystar-emacs%s.el" *eoe-emacs-type*)
+(defvar *eoe-user-init-file* (format "/bisos/git/auth/bxRepos/blee/env/main/bystar-emacs%s.el" *eoe-emacs-type*)
   "User's init file to load (if present).")
 
 (cond ((file-exists-p *eoe-user-init-file*)
@@ -329,7 +329,7 @@ This must be non-emacs version specific code.")
 
 ;; ./lisp/notYetExtras.el 
 
-(load "~/lisp/notYetExtras.el")
+(load "/bisos/git/auth/bxRepos/blee/env/main/notYetExtras.el")
 
 ;; Options Menu Settings
 ;; =====================
