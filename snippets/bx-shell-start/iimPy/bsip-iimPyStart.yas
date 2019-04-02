@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: BSIP bxtStartIimPy.sh
-# key: bxtStart/iimPy/bsip-iimBashStart
-# group: bxtStart.iimPy
+# key: iimPy/bsip-iimBashStart
+# group: iimPy
 # type: command
 # --
 (progn

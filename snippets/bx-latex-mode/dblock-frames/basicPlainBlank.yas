@@ -3,7 +3,7 @@
 # key: frame/basic/plain/blank
 # group: DB-Frames
 # --
-$0%%%#+BEGIN: bx:dblock:lcnt:frame-basic-plain-begin :mode "auto" :title "${1:Title}" :subtitle "${2:SubTitle}" :label "${3:Label}" :transition "${4:default}"
+$0%%%#+BEGIN: bx:dblock:lcnt:frame-basic-plain-begin :mode "auto" :title "${1:Title}" :subtitle "${2:SubTitle}" :label "${3:auto}" :transition "${4:default}"
 %%%#+END:
 
   \pnote{

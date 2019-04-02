@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: lsBxtStart
-# key: bxtStart/bxt/lsBxtStart
-# group: bxtStart.bxt
+# key: bxt/lsBxtStart
+# group: bxt
 # type: command
 # --
 (progn

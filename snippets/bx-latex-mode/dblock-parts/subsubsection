@@ -3,5 +3,5 @@
 # key: dblock/section
 # group: Parts dblock
 # --
-$0%%%#+BEGIN: bx:dblock:lcnt:latex-subsubsection :disabledP "false" :seg-title "${1:SubSubSectionTitle}"
+$0%%%#+BEGIN: bx:dblock:lcnt:latex-subsubsection :mode "" :seg-title "${1:SubSubSectionTitle}" :label ""
 %%%#+END:

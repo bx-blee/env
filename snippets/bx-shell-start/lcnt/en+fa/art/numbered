@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: baseFullStart en+fa art
-# key: bxtStart/lcnt/en+fa/art/numbered
-# group: bxtStart.lcnt.en+fa.art
+# key: lcnt/en+fa/art/numbered
+# group: lcnt.en+fa.art
 # type: command
 # --
 (progn

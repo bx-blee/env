@@ -105,7 +105,7 @@
     (setq outlineStars (outlineLevelStars bx:outLevel))
     (setq fileAsString (get-string-from-file (format "%s" bx:file)))
     (when (equal "default" bx:surround)
-      (insert (format "%s /->/ %s(\n" outlineStars orgFileLink))
+      (insert (format "%s /->/ (%s\n" outlineStars orgFileLink))
       )
     (insert fileAsString)
     ;;; This does not work right -- hence above (insert-file (format "%s" bx:file))

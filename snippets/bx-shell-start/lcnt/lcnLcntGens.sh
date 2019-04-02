@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: lcnLcntGens.sh
-# key: bxtStart/lcnt/lcnLcntGens.sh
-# group: bxtStart.lcnt
+# key: lcnt/lcnLcntGens.sh
+# group: lcnt
 # type: command
 # --
 (progn

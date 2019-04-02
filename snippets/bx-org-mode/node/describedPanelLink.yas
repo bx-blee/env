@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Described Panel Link
+# key: node/describedPanelLink
+# group: node
+# type: snippet
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+*  *@Panel Key WordsIDEs, Programing@*        ::   [[elisp:(blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/softwareDev")][@Panel Name@]]   =Extra Info=

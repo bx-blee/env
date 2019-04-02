@@ -586,8 +586,8 @@
 	(insert "
 \\begin{latexonly}
 \\def\\RcsEmptyValue{$\\rm \\langle Unknown \\rangle$}
-\\RCSdef $Revision: 1.32 $
-\\RCSdef $Date: 2018-12-14 23:29:08 $
+\\RCSdef $Revision: 1.36 $
+\\RCSdef $Date: 2019-03-28 05:00:14 $
 \\RCSdef $Source: /cvsd/rep1/profile/intra/employee/lisp/dblock/dblock-lcnt-latex.el,v $
 \\RCSdef $Name:  $
 \\RCSdef $Author: lsipusr $
@@ -1205,7 +1205,8 @@ Subject:   & This Matter\\\\
     
     (if (equal bx:form "none")
 	(progn
-	  (insert "% dblock copyright notice says none")
+	  (org-latex-section-insert-dblock-name "Copyright Settings -- None")
+	  (insert "\n% dblock copyright notice says none")
 	  )
       (progn 
     
@@ -1258,7 +1259,7 @@ and this permission notice are preserved on all copies.
 
     (when (or (equal bx:class "pres+art")
 	      (equal bx:class "pres"))
-      (insert "% dblock copyright notice just says verbatim copying permitted\n"))
+      (insert "\n% dblock copyright notice just says verbatim copying permitted\n"))
 
 ))
     
@@ -1280,6 +1281,7 @@ and this permission notice are preserved on all copies.
 "
   (let (
 	(in:lcntNu (or (plist-get params :lcnt-nu) ""))
+	(in:cite (or (plist-get params :cite) ""))
 	(lcntBase)
 	)
     (set 'lcntBase
@@ -1325,13 +1327,17 @@ and this permission notice are preserved on all copies.
 
       (insert (format "
   \\href{%s}{%s}
-  --- \\cite{%s}\\\\
-\\end{quote}
 "
 		      lcnt-url lcnt-url
-		      in:lcntNu
 		      ))
 
+      (when (not (string-equal (format "%s" in:cite) "disabled"))
+	(insert (format "  --- \\cite{%s}\\\\"
+			in:lcntNu
+			))
+	)
+
+      (insert "\\end{quote}")
       
       )))
 
@@ -1477,7 +1483,7 @@ and this permission notice are preserved on all copies.
 ")
 
    (insert (format "{\\large {\\bf %s}\\\\
-  Email: \\href{%s/contact}{%s/contact}\\\\
+  Email: \\href{%s}{%s}\\\\
 }" lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
 
    (insert "\\end{center}
@@ -1513,7 +1519,7 @@ and this permission notice are preserved on all copies.
 ")
 
    (insert (format "{\\large {\\bf %s}\\\\
-  تماس: \\lr{\\href{%s/contact}{%s/contact}}\\\\
+  تماس: \\lr{\\href{%s}{%s}}\\\\
 }" lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
 
    (insert "\\end{center}
@@ -1548,7 +1554,7 @@ and this permission notice are preserved on all copies.
       (insert (format "
 \\author[%s] 
 {%s\\\\
-Email: \\href{%s/contact}{%s/contact}\\\\
+Email: \\href{%s}{%s}\\\\
 }
 " lcnt-authorName1 lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
 
@@ -1632,7 +1638,7 @@ Email: \\href{%s/contact}{%s/contact}\\\\
 ")
 
    (insert (format "{\\large {\\bf %s}\\\\
-  Email: \\href{%s/contact}{%s/contact}\\\\
+  Email: \\href{%s}{%s}\\\\
 }" lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
 
    (insert "\\end{center}")
@@ -1911,7 +1917,7 @@ otherwise labelInfo is inserted as label"
     (when (string-equal labelInfo "auto")
       (setq labelInfo (str:spacesElim segTitle)))
 
-    (when (not (string-equal labelInfo "UnSpecified"))
+    (when (not (or (string-equal labelInfo "UnSpecified") (string-equal labelInfo "")))
       (insert
        (format "
 \\label{%s}"
@@ -1986,6 +1992,7 @@ otherwise labelInfo is inserted as label"
 (defun org-dblock-write:bx:dblock:lcnt:latex-part (params)
   (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
 	(bx:seg-title (or (plist-get params :seg-title) "missing"))
+	(labelInfo (or (plist-get params :label) "UnSpecified"))	
 	(bx:toc (or (plist-get params :toc) ""))	
 	)
     (message (format "disabledP = %s" bx:disabledP))
@@ -2007,6 +2014,17 @@ otherwise labelInfo is inserted as label"
 			  bx:seg-title
 			  bx:seg-title
 			  ))
+
+	  (when (string-equal labelInfo "auto")
+	    (setq labelInfo (str:spacesElim bx:seg-title)))
+
+	  (when (not (string-equal labelInfo "UnSpecified"))
+	    (insert
+	     (format "
+\\label{%s}"
+		     (concat "part:" labelInfo)
+		     )))
+
 
 	  (when (not (equal bx:toc ""))
 	    (insert (format "

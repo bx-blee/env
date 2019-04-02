@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: bueMailStatic.sh
-# key: bxtStart/mailings/Menu
-# group: bxtStart.mailings
+# key: mailings/Menu
+# group: mailings
 # type: command
 # --
 (progn
