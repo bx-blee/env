@@ -40,7 +40,8 @@
   (let ((full-dir-name))
 
     ;;; BxDE Scope
-    (setq full-dir-name (expand-file-name "~/lisp/snippets"))
+    ;;(setq full-dir-name (expand-file-name "~/lisp/snippets"))
+    (setq full-dir-name (expand-file-name "/bisos/blee/env/snippets"))
     (when (file-directory-p full-dir-name)
       (add-to-list 'yas-snippet-dirs full-dir-name)
       )

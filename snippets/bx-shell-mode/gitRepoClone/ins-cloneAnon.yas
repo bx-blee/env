@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Insert gitClone ssh
 # key: bxBash/gitRepo/clone/ssh
-# group: gitRepo
+# group: gitRepoClone
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

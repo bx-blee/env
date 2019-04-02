@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: run repo config list
 # key: bxShell/gitRepo/configList
-# group: gitRepo
+# group: gitRepoSetup
 # type: command
 # --
 (progn
