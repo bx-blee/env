@@ -8,6 +8,9 @@
 
 (add-hook 'message-send-hook 'bxms-mailing-log-hook)
 
+;;(autoload 'time-stamp "time-stamp" t)
+(load "time-stamp")
+
 (defun bxms-mailing-log-hook ()
   ""
    (let* (
