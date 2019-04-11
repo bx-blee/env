@@ -1191,6 +1191,8 @@ Subject:   & This Matter\\\\
 	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
 	)
 
+    (insert "%%%% Args:  :form \"none|std\" :years \"\" :copyright-holders \"\"\n")    
+
     (if (equal bx:years "")
 	(progn
 	  (setq bx:years "2018")
@@ -1388,7 +1390,8 @@ and this permission notice are preserved on all copies.
 (defun org-dblock-write:bx:dblock:lcnt:latex:title-page (params)
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
-	(coverPage (or (plist-get params :coverPage) "UnSpecified"))	
+	(coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(bx:form (or (plist-get params :form) ""))		
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
 	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
 	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
@@ -1406,6 +1409,7 @@ and this permission notice are preserved on all copies.
 	)
     (bx:lcnt:info:base-read)
     ;;;(insert "%{{{ DBLOCK-front-begin\n")
+    (insert "%%%% Args:  :form \"priv|std\" :coverPage \"blank|std\"\n")
 
     (org-latex-section-insert-dblock-name "title-page")
 
@@ -1457,26 +1461,32 @@ and this permission notice are preserved on all copies.
 ")
       
 
-      (when (or (equal bx:langs "en")
-		(equal bx:langs "en+fa"))
-    (insert "\\begin{center}\n")
-    (insert "{\\large Document \\#")
-    (insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
-    (insert (format "Version %s\\\\\n"  lcnt-version))
-    (insert (format "%s}\n" lcnt-date))
-    (insert "\\end{center}")
+     (when (or (equal bx:langs "en")
+	       (equal bx:langs "en+fa"))
+       (insert "\\begin{center}\n")
+       (insert "{\\large Document \\#")
+       (insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
+       (insert (format "Version %s\\\\\n"  lcnt-version))
+       (insert (format "%s}\n" lcnt-date))
+       (insert "\\end{center}")
 
-   (insert "
-\\vspace{0.05in}
+       (insert "
+\\vspace{0.05in}")
+
+       (when (not (equal bx:form "priv"))
+	 (insert "
 
 \\begin{center}
 {\\large This Document is Available on-line at:\\\\
 ")
 
-   (insert (format "\\href{%s}{%s}}\n" lcnt-url lcnt-url))
+	 (insert (format "\\href{%s}{%s}}\n" lcnt-url lcnt-url))
 
-   (insert "\\end{center}
+	 (insert "\\end{center}
+")
+	 )
 
+       (insert "
 \\vspace{0.3in}
 
 \\begin{center}
