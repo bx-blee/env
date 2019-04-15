@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Blee Node Panel
 # key: begin/bleePanelNode
-# group: begin
+# group: begin.blee
 # type: command
 # --
 (progn

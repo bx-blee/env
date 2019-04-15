@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Blee Instructions Panel
 # key: begin/bleePanelInstructions
-# group: begin
+# group: begin.blee
 # type: command
 # --
 (progn
