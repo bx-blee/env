@@ -722,8 +722,15 @@
 **  [[elisp:(org-cycle)][| ]]  Specific-Minor-Mode   ::      *Screencast Mode* [[elisp:(org-cycle)][| ]]
 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
 "
-	     ;;(load-file "~/lisp/screencast-mode-master/screencast-mode.el")
-	     ;;(load-file "~/lisp/screencast-mode-master/screencast-record.el")	     
+	     (blee:load-path:add  
+	      (concat (file-name-as-directory
+		       (concat  (file-name-as-directory (blee:env:aPkgs:base-obtain))
+				"common")
+		       )
+		      "screencast-mode-master")
+	      )
+	     (autoload 'screencast "screencast")
+	     (autoload 'screencast-record "screencast-record")
 	     ))
 
 
@@ -765,10 +772,14 @@
 (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Temporary             ::      *old2new* [[elisp:(org-cycle)][| ]]
 "
-	     ;;(load-file "~/lisp/old2new/elispBleePanelUpdate.el")
+	     (load-file
+	      (concat (file-name-as-directory
+		       (concat  (file-name-as-directory (blee:env:lib:base-obtain))
+				"old2new")
+		       )
+		      "elispBleePanelUpdate.el")
+	      )
 	     ))
-
-
 
 ;;; 
 ;;; To Be Sorted Later
@@ -783,9 +794,16 @@ string-arg
 (require 'tramp)
 (setq tramp-default-method "scp")
 
-;;(load-file "~/lisp/Incoming/top-mode.el")
+(load-file
+ (concat (file-name-as-directory
+	  (concat  (file-name-as-directory (blee:env:lib:base-obtain))
+		   "Incoming")
+	  )
+	 "top-mode.el")
+ )
 
 ;;(load-file "~/lisp/choose-comletion.el")
+(load "choose-comletion")
 
 (cd "~")
 
