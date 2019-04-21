@@ -1,3 +1,7 @@
+;;; -*- Mode: Emacs-Lisp; -*-
+;; (setq debug-on-error t)
+
+
 (require 'remember)
 
 (require 'org)
@@ -158,3 +162,11 @@
 
 (global-set-key "\C-cr" 'org-remember)
 (global-set-key [(f12)] 'org-remember)
+
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "orgModeInit"
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
+")
+
+(provide 'orgModeInit)
+;;;#+END:

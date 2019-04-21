@@ -4,15 +4,22 @@
 (message "ByStar BBDB LOADING ...")
 
 
-(require 'bystar-bbdb-lib)
+(when (eq *eoe-emacs-type* '24f)
+  (require 'bystar-bbdb-lib)
 
-(setq bbdb-file "~/.bbdbV6")
-(load "bbdb-append-fix")
+  (setq bbdb-file "~/.bbdbV6")
+  (load "bbdb-append-fix")
 
-(if (file-directory-p (expand-file-name "~/lisp/bbdb-ext-20130513.1152"))
-    (setq load-path (cons (expand-file-name "~/lisp/bbdb-ext-20130513.1152")
-		      load-path)))
+  (blee:load-path:add  
+   (concat (file-name-as-directory
+	    (concat  (file-name-as-directory (blee:env:aPkgs:base-obtain))
+		     (symbol-name *eoe-emacs-type*))
+	    )
+	   "bbdb-ext-20130513.1152")
+   )  
+  
+  (require 'bbdb-ext)
+  ;;(add-hook 'bbdb-mode-hook 'bbdb-ext-hook)
+  (bbdb-ext-hook)
+  )
 
-(require 'bbdb-ext)
-;;(add-hook 'bbdb-mode-hook 'bbdb-ext-hook)
-(bbdb-ext-hook)

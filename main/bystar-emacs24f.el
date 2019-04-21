@@ -518,7 +518,8 @@
 ; ;;; -----------------------------------------------------------------
 ;; ~/lisp/orgModeInit.el
 
-(load-file "~/lisp/orgModeInit.el")
+;;;(load-file "orgModeInit")
+(require 'orgModeInit)
 (require 'bx-org-exports)
 
 ;;; Work Logs For Projects
@@ -558,8 +559,8 @@
 
 ;;; Abbrev and Tempo
 
-;;; TEMP DISABLED
-(require 'bystar-tempo)
+;;; TEMPO DISABLED
+;;(require 'bystar-tempo)
 
 
 ;;; -----------------------------------------------------------------
@@ -721,8 +722,8 @@
 **  [[elisp:(org-cycle)][| ]]  Specific-Minor-Mode   ::      *Screencast Mode* [[elisp:(org-cycle)][| ]]
 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
 "
-	     (load-file "~/lisp/screencast-mode-master/screencast-mode.el")
-	     (load-file "~/lisp/screencast-mode-master/screencast-record.el")	     
+	     ;;(load-file "~/lisp/screencast-mode-master/screencast-mode.el")
+	     ;;(load-file "~/lisp/screencast-mode-master/screencast-record.el")	     
 	     ))
 
 
@@ -730,7 +731,7 @@
 **  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *festival -- TTS -- Say* [[elisp:(org-cycle)][| ]]
 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
 "
-	     (load-file "~/lisp/festival.el")
+	     (load "festival")
 	     ))
 
 (funcall  '(lambda () "
@@ -764,7 +765,7 @@
 (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Temporary             ::      *old2new* [[elisp:(org-cycle)][| ]]
 "
-	     (load-file "~/lisp/old2new/elispBleePanelUpdate.el")
+	     ;;(load-file "~/lisp/old2new/elispBleePanelUpdate.el")
 	     ))
 
 
@@ -782,9 +783,9 @@ string-arg
 (require 'tramp)
 (setq tramp-default-method "scp")
 
-(load-file "~/lisp/Incoming/top-mode.el")
+;;(load-file "~/lisp/Incoming/top-mode.el")
 
-(load-file "~/lisp/choose-comletion.el")
+;;(load-file "~/lisp/choose-comletion.el")
 
 (cd "~")
 
