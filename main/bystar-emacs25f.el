@@ -8,7 +8,7 @@
 ")
 
 (funcall  (lambda () "
-*     *blee-emacs24*
+*     *blee-emacs25*
 ** TODO Global Activities tracker
 "
 	     (setq debug-on-error t)
@@ -18,7 +18,6 @@
 
 (setq bidi-display-reordering t)
 
-load-file-name
 
 (defun blee:env:base-obtain-based-on-here ()
   "Eg /bisos/blee/env/"
