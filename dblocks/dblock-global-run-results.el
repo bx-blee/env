@@ -27,3 +27,10 @@
     ))
 
 
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-global-run-results"
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
+")
+
+(provide 'dblock-global-run-results)
+;;;#+END:

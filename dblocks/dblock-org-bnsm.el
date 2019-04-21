@@ -227,3 +227,10 @@
   )
 
 
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-org-bnsm"
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
+")
+
+(provide 'dblock-org-bnsm)
+;;;#+END:

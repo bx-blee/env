@@ -70,3 +70,11 @@
     (insert "\"\n")
     (insert "# }}} DBLOCK-leavesList")
     ))
+
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-ploneProc-bash"
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
+")
+
+(provide 'dblock-ploneProc-bash)
+;;;#+END:

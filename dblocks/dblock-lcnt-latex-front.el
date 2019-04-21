@@ -1008,3 +1008,11 @@ Subject:   & This Matter\\\\
 
     ;;;(insert "%}}} DBLOCK-main-end")
     ))
+
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-latex-front"
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
+")
+
+(provide 'dblock-lcnt-latex-front)
+;;;#+END:

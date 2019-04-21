@@ -21,16 +21,26 @@
   (let ((my-buffer (get-buffer-create "*scratch*")))
     (with-current-buffer my-buffer
       ;; this is what you customize
-      (insert-file (expand-file-name "~/lisp/splashScreen/ByStarUserEnv.org")))
-      (org-mode)
+      ;;(insert-file (expand-file-name "~/lisp/splashScreen/ByStarUserEnv.org")))
+      (load-file (expand-file-name
+		    (concat
+		     (file-name-as-directory (blee:env:splashScreen:base-obtain))
+		     "ByStarUserEnv.el")))
+      (insert-welcome-buffer (blee:env:images:base-obtain))
+      )
+    (org-mode)
     (switch-to-buffer my-buffer)))
 
-(defun bystar-welcome-buffer ()
+(defun bystar-welcome-buffer-okay2Del ()
   "do fancy things"
   (let ((my-buffer (get-buffer-create "bystar-welcome-buffer")))
     (with-current-buffer my-buffer
       ;; this is what you customize
-      (insert-file (expand-file-name "~/lisp/splashScreen/ByStarUserEnv.org"))
+      ;; (insert-file (expand-file-name "~/lisp/splashScreen/ByStarUserEnv.org"))
+      (insert-file (expand-file-name
+		    (concat
+		     (file-name-as-directory (blee:env:splashScreen:base-obtain))
+		     "ByStarUserEnv.org")))
       (org-mode)
       )
     (switch-to-buffer my-buffer)))

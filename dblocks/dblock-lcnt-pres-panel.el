@@ -198,12 +198,12 @@
         ))
          ))
 
-;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-latex-panel"
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-pres-panel"
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  Provide       :: Provide [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
 ")
 
-(provide 'dblock-lcnt-latex-panel)
+(provide 'dblock-lcnt-pres-panel)
 ;;;#+END:
 
 

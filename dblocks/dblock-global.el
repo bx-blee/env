@@ -726,3 +726,10 @@
     (kill-buffer tmp-buffer)
     ))
 
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-global"
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
+")
+
+(provide 'dblock-global)
+;;;#+END:

@@ -3,7 +3,9 @@
 
 (message "BLEE GLOBAL FACILITIES")
 
-(load-file "~/lisp/push-pop-major-modes.el")
+;;;(load-file "~/lisp/push-pop-major-modes.el")
+;;; (load-file "push-pop-major-modes.el")
+(require 'push-pop-major-modes)
 
 ;; (blee:global:all-defaults-set)
 (defun blee:global:all-defaults-set ()

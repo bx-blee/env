@@ -18,32 +18,137 @@
 
 (setq bidi-display-reordering t)
 
-;;{{{ Bystar Initializations:
+load-file-name
 
-;;; -----------------------------------------------------------------
-;;; prepend user's /bisos/git/auth/bxRepos/blee/env/main to load path, if exists
-;;; -----------------------------------------------------------------
-(if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main"))
-    (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main")
-		      load-path)))
+(defun blee:env:base-obtain-based-on-here ()
+  "Eg /bisos/blee/env/"
+  (file-name-directory
+   (directory-file-name
+    (file-name-directory
+     (if buffer-file-name
+	 buffer-file-name
+       load-file-name)
+     )))
+  )
 
-(if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib/widget"))
-    (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib/widget")
-		      load-path)))
+;;(defvar blee:env:base (blee:env:base-obtain-based-on-here) "Basedir of Blee")
+(setq blee:env:base (blee:env:base-obtain-based-on-here))
+
+;; (blee:env:base-obtain)
+(defun blee:env:base-obtain ()
+  "Eg /bisos/blee/env/"
+  blee:env:base
+  )
+
+(defun blee:env:main:base-obtain ()
+  "Eg /bisos/blee/env/main/"
+    ;; (file-name-directory      buffer-file-name)
+  (file-name-as-directory
+   (concat (file-name-as-directory (blee:env:base-obtain)) "main"))
+  )
+
+(defun blee:env:lib:base-obtain ()
+  "Eg /bisos/blee/env/lib/"
+  (file-name-as-directory
+   (concat (file-name-as-directory (blee:env:base-obtain)) "lib"))
+  )
+
+(defun blee:env:info:base-obtain ()
+  "Eg /bisos/blee/env/info/"
+  (file-name-as-directory
+   (concat (file-name-as-directory (blee:env:base-obtain)) "info"))
+  )
+
+(defun blee:env:dblocks:base-obtain ()
+  "Eg /bisos/blee/env/dblocks/"
+  (concat (file-name-as-directory (blee:env:base-obtain)) "dblocks")
+  )
+
+(defun blee:env:widgets:base-obtain ()
+  "Eg /bisos/blee/env/widgets/"
+  (concat (file-name-as-directory (blee:env:base-obtain)) "widgets")
+  )
 
 
-(if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib"))
-    (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib")
-		      load-path)))
+(defun blee:env:splashScreen:base-obtain ()
+  "Eg /bisos/blee/env/splashScreen/"
+  (concat (file-name-as-directory (blee:env:base-obtain)) "splashScreen")
+  )
 
-(if (file-directory-p (expand-file-name "~/BUE/elisp"))
-    (setq load-path (cons (expand-file-name "~/BUE/elisp")
-		      load-path)))			  
+(defun blee:env:snippets:base-obtain ()
+  "Eg /bisos/blee/env/snippets/"
+  (concat (file-name-as-directory (blee:env:base-obtain)) "snippets")
+  )
 
-(setq load-path (cons (expand-file-name "/opt/public/neweoe/lisp/public/bbdb-filters-0.51")
-		      load-path))
+(defun blee:env:panels:base-obtain ()
+  "Eg /bisos/blee/env/panels/"
+  (concat (file-name-as-directory (blee:env:base-obtain)) "panels")
+  )
 
-;;(setq load-path (cons "." load-path))
+(defun blee:env:images:base-obtain ()
+  "Eg /bisos/blee/env/images/"
+  (concat (file-name-as-directory (blee:env:base-obtain)) "images")
+  )
+
+(defun blee:env:aPkgs:base-obtain ()
+  "Eg /bisos/blee/env/aPkgs/"
+  (concat (file-name-as-directory (blee:env:base-obtain)) "aPkgs")
+  )
+
+
+(defun blee:load-path:add (@dirPath)
+  "@dirPath is added to load-path after verification."
+  (let (
+	($dirPath (expand-file-name @dirPath))
+	)
+    (if (file-directory-p $dirPath)
+	(add-to-list 'load-path $dirPath)
+      )))
+
+
+(funcall  (lambda () "
+*     load-path setup
+**    +env/main +env/lib +env/dblocks
+"
+	    (blee:load-path:add (blee:env:main:base-obtain))
+	    (blee:load-path:add (blee:env:lib:base-obtain))
+	    (blee:load-path:add (blee:env:dblocks:base-obtain))
+	    (blee:load-path:add (blee:env:widgets:base-obtain))	    
+	    (blee:load-path:add "~/BUE/elisp")
+	    (blee:load-path:add "/opt/public/neweoe/lisp/public/bbdb-filters-0.51")	    
+	    ))
+
+
+
+;; ;;{{{ Bystar Initializations:
+
+;; ;;; -----------------------------------------------------------------
+;; ;;; prepend user's /bisos/git/auth/bxRepos/blee/env/main to load path, if exists
+;; ;;; -----------------------------------------------------------------
+;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main"))
+;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main")
+;; 		      load-path)))
+
+;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib/widget"))
+;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib/widget")
+;; 			  load-path)))
+
+;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/dblocks"))
+;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/dblocks")
+;; 		      load-path)))
+
+;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib"))
+;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/lib")
+;; 		      load-path)))
+
+;; (if (file-directory-p (expand-file-name "~/BUE/elisp"))
+;;     (setq load-path (cons (expand-file-name "~/BUE/elisp")
+;; 		      load-path)))			  
+
+;; (setq load-path (cons (expand-file-name "/opt/public/neweoe/lisp/public/bbdb-filters-0.51")
+;; 		      load-path))
+
+;; ;;(setq load-path (cons "." load-path))
 
 ;;; -----------------------------------------------------------------
 ;;; Environement setup

@@ -822,12 +822,12 @@ dblock expansion of bx:lcnt:body:video-presArt :videoBaseFile ./video/master-%s.
 	  )
   )
 
-;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-latex"
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-latex-pres"
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  Provide       :: Provide [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
 ")
 
-(provide 'dblock-lcnt-latex)
+(provide 'dblock-lcnt-latex-pres)
 ;;;#+END:
 
 

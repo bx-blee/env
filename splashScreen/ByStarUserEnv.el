@@ -1,11 +1,17 @@
+;;; -*- Mode: Emacs-Lisp; -*-
+;; (setq debug-on-error t)
+
+(defun insert-welcome-buffer (@imagesBaseDir)
+  "Inserts the file"
+  (insert
+   (format "\
 *  Controls:   [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][ S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
 * 
-                 
-*         [[~/lisp/images/copyleft.png]]                                          [[~/lisp/images/libreservice.jpg]]          [[~/lisp/images/bystarInside.jpg]]   
+*         [[%s/copyleft.png]]                                          [[%s/libreservice.jpg]]          [[%s/bystarInside.jpg]]   
 *      [[http://www.freeprotocols.org][Libre-Halaal]] | [[http://www.freeprotocols.org][Rejection Of]] | [[http://www.freeprotocols.org][Definition Of]] |  [[http://www.freeprotocols.org][Definition Of]] | [[http://www.freeprotocols.org][The L-H (ByStar)]]
 *  [[elisp:(org-cycle)][+-]]  [[http://www.freeprotocols.org][(L-H) Label]]  | [[http://www.freeprotocols.org][IPR Regime]]   | [[http://www.freeprotocols.org][L-H Software]]  |  [[http://www.freeprotocols.org][L-H Services]]  | [[http://www.freeprotocols.org][By* Digital Ecosystem]]   [[elisp:(org-cycle)][+-]]
-**   [[~/lisp/images/GreenCopyleft-120px.png]] 
-**   [[~/lisp/images/Anti-copyright-220px.png]]
+**   [[%s/GreenCopyleft-120px.png]] 
+**   [[%s/Anti-copyright-220px.png]]
 * 
 *           Welcome to [[elisp:(bx:bnsm:top:panel-blee)][Blee]] :: *The [[http://www.by-star.net][ByStar]] [[http://www.libreservices.org][Libre-Halaal]] [[http://www.gnu.org/software/emacs][Emacs]] Environment (Blee)*
 * 
@@ -47,7 +53,7 @@
 ** Main Paper
 ** Publications List
 * 
-*  [[elisp:(org-cycle)][+-]]   [[http://www.byname.net][->]]  [[~/lisp/images/signup.jpg]]  *[[http://www.byname.net][Joining ByStar]] And Living In Blee*   [[~/lisp/images/signup.jpg]]   [[http://www.byname.net][->]]  [[elisp:(org-cycle)][+-]] 
+*  [[elisp:(org-cycle)][+-]]   [[http://www.byname.net][->]]  [[%s/signup.jpg]]  *[[http://www.byname.net][Joining ByStar]] And Living In Blee*   [[%s/signup.jpg]]   [[http://www.byname.net][->]]  [[elisp:(org-cycle)][+-]] 
 ** [[Obtain your ByName Account]]        Join ByStar: Obtain your Autonomous Service
 **                                that protects your Autonomy and Privacy
 ** [[Blee Control Panel]]               Top Level Menu of Blee Features
@@ -67,14 +73,14 @@
 *  [[elisp:(org-cycle)][+-]]  Internationalized and Multi-Lingualized ::   [[Globish]], [[Persian/Farsi فارسی]], [[Arabic عربی]], etc 
 * 
 *  [[elisp:(org-cycle)][+-]]  Brought to you by: [[Neda Communications, Inc]] -- [[Free Protocols Foundation]]  [[debian.org]] [[gnu.org]]
-**   [[elisp:(org-cycle)][+-]]  [[http://www.freeprotocols.org][->]]            [[~/lisp/images/fpfByStarElipseTop-50.png]]         [[elisp:(org-cycle)][+-]]
+**   [[elisp:(org-cycle)][+-]]  [[http://www.freeprotocols.org][->]]            [[%s/fpfByStarElipseTop-50.png]]         [[elisp:(org-cycle)][+-]]
 **  [[elisp:(org-cycle)][| ]]   The Libre-Halaal Foundation (http://www.freeprotocols.org) Is
     And internatioanl organization dedicated to
-**  [[elisp:(org-cycle)][|  ]]                [[~/lisp/images/fpfByStarElipseBottom-50.png]]       [[elisp:(org-cycle)][| ]]  
+**  [[elisp:(org-cycle)][|  ]]                [[%s/fpfByStarElipseBottom-50.png]]       [[elisp:(org-cycle)][| ]]  
 
 * 
 *            /Provided And Supported By:/
-*   [[elisp:(org-cycle)][+-]]  [[http://www.freeprotocols.org][->]]            [[~/lisp/images/neda.jpg]]        [[elisp:(org-cycle)][+-]]
+*   [[elisp:(org-cycle)][+-]]  [[http://www.freeprotocols.org][->]]            [[%s/neda.jpg]]        [[elisp:(org-cycle)][+-]]
 
 *  [[elisp:(org-cycle)][+-]] Manifest:
 This File: /opt/public/osmt/bin/ByStarUserEnv.org
@@ -87,3 +93,19 @@ Blee is Halaal Software intended to remain perpetually Halaal.
 #+STARTUP: overview
 #+STARTUP: lognotestate
 #+STARTUP: inlineimages
+"
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   @imagesBaseDir
+	   )
+   ))
+
+;;; (insert-welcome-buffer "/bisos/blee/env/images/")
+

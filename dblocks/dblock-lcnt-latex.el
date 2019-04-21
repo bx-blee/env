@@ -1334,7 +1334,8 @@ and this permission notice are preserved on all copies.
 		      ))
 
       (when (not (string-equal (format "%s" in:cite) "disabled"))
-	(insert (format "  --- \\cite{%s}\\\\"
+	(insert (format "  --- \\cite{%s}\\\\
+"
 			in:lcntNu
 			))
 	)
@@ -2000,10 +2001,12 @@ otherwise labelInfo is inserted as label"
 ;;;
 
 (defun org-dblock-write:bx:dblock:lcnt:latex-part (params)
+  "With :toc NU, partNu is set and a toc is generated. With :part NU only partNu is set" 
   (let ((bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
 	(bx:seg-title (or (plist-get params :seg-title) "missing"))
 	(labelInfo (or (plist-get params :label) "UnSpecified"))	
-	(bx:toc (or (plist-get params :toc) ""))	
+	(bx:toc (or (plist-get params :toc) ""))
+	(bx:part (or (plist-get params :part) ""))		
 	)
     (message (format "disabledP = %s" bx:disabledP))
     (if (not
@@ -2012,6 +2015,14 @@ otherwise labelInfo is inserted as label"
 	(progn
 	  ;;; Processing Body
 	  (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
+	  
+	  (insert "%%%% Args:  :toc \"NU\" :part \"NU\" :label \"auto|spec\"\n")
+
+	  (when (string-equal bx:part "")
+	    (setq bx:part bx:toc)
+	    )
+	     
+	     
 	  (insert (format "\
 \\begin{comment}
 *      ================
@@ -2020,7 +2031,7 @@ otherwise labelInfo is inserted as label"
 
 \\newpage
 \\part{%s}"
-			  bx:toc
+			  bx:part
 			  bx:seg-title
 			  bx:seg-title
 			  ))

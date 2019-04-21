@@ -104,6 +104,7 @@ If Other than org-mode, push, switch-to-org
   (call-interactively (pop (car blee:ppmm:mode-stack)))
   )
 
-(provide 'blee-ppmm)
+;;(provide 'blee-ppmm)
+(provide 'push-pop-major-modes)
 
 

@@ -78,3 +78,10 @@ _CommentEnd_
     ))
 
 
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-bash"
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
+")
+
+(provide 'dblock-lcnt-bash)
+;;;#+END:
