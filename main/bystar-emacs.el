@@ -106,13 +106,44 @@
 ;;; directories are defined as well-known, global variables to allow
 ;;; for avoiding use of hardcoded paths in eoe files.
 
+
+
+(defun blee:env:base-obtain-based-on-here ()
+  "Eg /bisos/blee/env/"
+  (file-name-directory
+   (directory-file-name
+    (file-name-directory
+     (if buffer-file-name
+	 buffer-file-name
+       load-file-name)
+     )))
+  )
+
+;;(defvar blee:env:base (blee:env:base-obtain-based-on-here) "Basedir of Blee")
+(setq blee:env:base (blee:env:base-obtain-based-on-here))
+
+;; (blee:env:base-obtain)
+(defun blee:env:base-obtain ()
+  "Eg /bisos/blee/env/"
+  blee:env:base
+  )
+
+
+(defun blee:env:eoe:base-obtain ()
+  "Eg /bisos/blee/env/eoe/"
+    ;; (file-name-directory      buffer-file-name)
+  (file-name-as-directory
+   (concat (file-name-as-directory (blee:env:base-obtain)) "eoe"))
+  )
+
+
 ;;
 ;; EOE base directory
 ;;
 (defvar *eoe-root-dir* (cond ((eq system-type 'cygwin32)	; <== EOE CUSTOMIZATION MAYBE NEEDED ***
 			      "u:/opt/public/neweoe")
 			     (t
-			      "/opt/public/neweoe"))
+			      (directory-file-name (blee:env:eoe:base-obtain))))
   "This is the base EOE directory.")
 
 ;;

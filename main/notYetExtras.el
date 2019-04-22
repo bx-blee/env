@@ -27,7 +27,8 @@
 	       (expand-file-name "/usr/share/info"))))
 
 ;;; NOTYET Added for emacs25f in 10/2016
-(load-file "/opt/public/neweoe/lisp/sys/dressups.el")
+(load-file (concat (file-name-as-directory (blee:env:eoe:base-obtain)) "lisp/sys/dressups.el"))
+;;;(load-file "/opt/public/neweoe/lisp/sys/dressups.el")
 
 ;; set the font for all faces currently defined see doc for variable
 ;; `eoe-font' and `eoe-font-candidates' for more info.
@@ -42,9 +43,10 @@
   "To Be Abosrbed Elsewhere Later"
   (interactive)
 
-(if (not (= emacs-major-version 25))
-    (load-file "/opt/public/neweoe/lisp/esfiles/bbdb-filters-site.el")
-  )
+;; (if (not (= emacs-major-version 25))
+;;     ;;;(load-file "/opt/public/neweoe/lisp/esfiles/bbdb-filters-site.el")
+;;     (load-file (concat (file-name-as-directory (blee:env:eoe:base-obtain)) "lisp/esfiles/bbdb-filters-site.el"))
+;;   )
 
 (eoe-maybe-load-file "/usr/devenv/bbdbNames/MailingsGened/msend-contents-load.el")
 

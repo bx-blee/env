@@ -114,7 +114,7 @@
 	    (blee:load-path:add (blee:env:dblocks:base-obtain))
 	    (blee:load-path:add (blee:env:widgets:base-obtain))	    
 	    (blee:load-path:add "~/BUE/elisp")
-	    (blee:load-path:add "/opt/public/neweoe/lisp/public/bbdb-filters-0.51")	    
+	    (blee:load-path:add (concat (file-name-as-directory (blee:env:eoe:base-obtain)) "lisp/public/bbdb-filters-0.51"))  ;; Nedded for msend-lib.el  
 	    ))
 
 
