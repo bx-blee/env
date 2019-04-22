@@ -121,6 +121,19 @@
     nil))
 
 
+;;; 
+(defun blee:dblock:find-function ()
+  "Looks at point"
+  (interactive)
+  (let (
+	($dblkRelFuncName (thing-at-point 'filename))
+	)
+    (find-function (intern (concat "org-dblock-write:" $dblkRelFuncName)))
+    ;; (message (concat "org-dblock-write:" $dblkRelFuncName))
+    ;; (message $dblkRelFuncName)
+    )
+  )
+    
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:dblock:mode:disabledIndicate) [[elisp:(org-cycle)][| ]]
 ")

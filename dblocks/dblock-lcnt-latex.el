@@ -2006,7 +2006,8 @@ otherwise labelInfo is inserted as label"
 	(bx:seg-title (or (plist-get params :seg-title) "missing"))
 	(labelInfo (or (plist-get params :label) "UnSpecified"))	
 	(bx:toc (or (plist-get params :toc) ""))
-	(bx:part (or (plist-get params :part) ""))		
+	(bx:part (or (plist-get params :part) ""))
+	($partDesc)
 	)
     (message (format "disabledP = %s" bx:disabledP))
     (if (not
@@ -2046,6 +2047,10 @@ otherwise labelInfo is inserted as label"
 		     (concat "part:" labelInfo)
 		     )))
 
+	  (if (or (equal bx:toc "0") (equal bx:toc 0))
+	      (setq $partDesc "This Part")
+	    (setq $partDesc (format "Part %s" bx:toc))
+	    )
 
 	  (when (not (equal bx:toc ""))
 	    (insert (format "
@@ -2053,13 +2058,13 @@ otherwise labelInfo is inserted as label"
 \\begin{latexonly}
 \\begin{presentationMode}
 \\begin{frame}[fragile,plain,label=Part%s]
-\\frametitle{Outline of Part %s -- %s}
+\\frametitle{Outline of %s -- %s}
 \\tableofcontents[sectionstyle=show,subsectionstyle=show]
 \\end{frame}
 \\end{presentationMode}
 \\end{latexonly}"
 			    bx:toc
-			    bx:toc
+			    $partDesc
 			    bx:seg-title
 			    ))
 	    )

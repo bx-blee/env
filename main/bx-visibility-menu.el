@@ -102,8 +102,9 @@
   (define-key global-map [(f7) (l)] nil)
   (define-key global-map [(f7) (l) (l)] 'find-function)
   (define-key global-map [(f7) (l) (f)] 'find-function)
-  (define-key global-map [(f7) (l) (v)] 'describe-variable)
-  (define-key global-map [(f7) (l) (d)] 'describe-function)    
+  (define-key global-map [(f7) (l) (d)] 'blee:dblock:find-function)
+  (define-key global-map [(f7) (l) (V)] 'describe-variable)
+  (define-key global-map [(f7) (l) (F)] 'describe-function)    
 
 
   ;;; END WINDOW JUMPERS
