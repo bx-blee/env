@@ -817,6 +817,8 @@
 \\usepackage{hyperref}
 \\usepackage{url}
 
+\\usepackage{multicol}
+
 \\usepackage{fontspec}")
 
 	;;;
@@ -853,13 +855,40 @@
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings params) [[elisp:(org-cycle)][| ]]
 ")
 
+;; (blee:dblock:params:desc 'latex-mode "Some String")
+(defun blee:dblock:params:desc (@mode @descStr)
+  "Inserts $commentStr+@docstr at point -- @mode is used for comment delim"
+  (when (equal @mode 'latex-mode)
+    (insert (format "%%%%%% Args: %s\n" @descStr))
+    ))
+  
 (defun org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings (params)
   (let ((bx:class (or (plist-get params :class) ""))
-	(bx:langs (or (plist-get params :langs) "")))
+	(bx:langs (or (plist-get params :langs) ""))
+	($pageNu (or (plist-get params :pageNu) nil))
+	;;; Below was copy-pasted -- some are likely unused.
+	(coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(bx:form (or (plist-get params :form) ""))		
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-date (get 'bx:lcnt:info:base 'date))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-version (get 'bx:lcnt:info:base 'version))
+	(lcnt-url (get 'bx:lcnt:info:base 'url))
+	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))	
+	(bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
     (bx:lcnt:info:base-read)
+
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageNu nil")
     
     (org-latex-section-insert-dblock-name "common-packages-style-settings")
-
 
     (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || art+pres OR art OR memo [[elisp:(org-cycle)][| ]]
@@ -950,7 +979,61 @@
   \\setbeamercovered{transparent}
   % or whatever (possibly just delete it)
 }
+")
 
+	(insert (format "
+\\title[%s]
+{%s}\n" lcnt-shortTitle lcnt-mainTitle))
+
+      (if (not (string-equal lcnt-subTitle ""))
+	  (insert (format "
+\\subtitle[%s]
+{%s}\n" lcnt-subTitle lcnt-subTitle)))
+
+      ;;;(if (not (string-equal lcnt-subSubTitle ""))
+	;;;  (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+
+      (insert (format "
+\\author[%s] 
+{%s\\\\
+Email: \\href{%s}{%s}\\\\
+}
+" lcnt-authorName1 lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+      (insert (format "
+\\institute[%s-%s] 
+{\\href{%s}{%s}}
+"   lcnt-type lcnt-lcntNu lcnt-url lcnt-url))
+
+      (insert (format "
+\\date[%s]
+{%s}
+" lcnt-date lcnt-date))
+;;;{%s\\\\Varbatim Copying Permitted}      
+
+      (insert (format "
+\\subject{%s}
+" lcnt-shortTitle))
+
+      (when $pageNu
+	(insert "
+\\defbeamertemplate*{footline}{shadow theme}
+{%
+  \\leavevmode%
+  \\hbox{\\begin{beamercolorbox}[wd=.5\\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+    \\usebeamerfont{author in head/foot}\\insertframenumber\\,/\\,\\inserttotalframenumber\\hfill\\insertshortauthor
+  \\end{beamercolorbox}%
+  \\begin{beamercolorbox}[wd=.5\\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \\usebeamerfont{title in head/foot}\\insertshorttitle%
+  \\end{beamercolorbox}}%
+  \\vskip0pt%
+}
+")
+	)
+
+	
+      (insert "
+	
 % ===== STYLE PARAMETERS =====
 
 \\definecolor{darkred}{rgb}{0.5,0,0}
@@ -1548,41 +1631,43 @@ and this permission notice are preserved on all copies.
       (insert "
 
 \\mode<all>  % Important -- Must Be Here\n")
+
       (insert (format "
 \\begin{latexonly}
+"))
 
-\\title[%s]
-{%s}\n" lcnt-mainTitle lcnt-mainTitle))
+;; \\title[%s]
+;; {%s}\n" lcnt-shortTitle lcnt-mainTitle))
 
-      (if (not (string-equal lcnt-subTitle ""))
-	  (insert (format "
-\\subtitle[%s]
-{%s}\n" lcnt-subTitle lcnt-subTitle)))
+;;       (if (not (string-equal lcnt-subTitle ""))
+;; 	  (insert (format "
+;; \\subtitle[%s]
+;; {%s}\n" lcnt-subTitle lcnt-subTitle)))
 
-      ;;;(if (not (string-equal lcnt-subSubTitle ""))
-	;;;  (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+;;       ;;;(if (not (string-equal lcnt-subSubTitle ""))
+;; 	;;;  (insert (format "%s\\\\\n" lcnt-subSubTitle)))
 
-      (insert (format "
-\\author[%s] 
-{%s\\\\
-Email: \\href{%s}{%s}\\\\
-}
-" lcnt-authorName1 lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+;;       (insert (format "
+;; \\author[%s] 
+;; {%s\\\\
+;; Email: \\href{%s}{%s}\\\\
+;; }
+;; " lcnt-authorName1 lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
 
-      (insert (format "
-\\institute[%s-%s] 
-{\\href{%s}{%s}}
-"   lcnt-type lcnt-lcntNu lcnt-url lcnt-url))
+;;       (insert (format "
+;; \\institute[%s-%s] 
+;; {\\href{%s}{%s}}
+;; "   lcnt-type lcnt-lcntNu lcnt-url lcnt-url))
 
-      (insert (format "
-\\date[%s]
-{%s}
-" lcnt-date lcnt-date))
-;;;{%s\\\\Varbatim Copying Permitted}      
+;;       (insert (format "
+;; \\date[%s]
+;; {%s}
+;; " lcnt-date lcnt-date))
+;; ;;;{%s\\\\Varbatim Copying Permitted}      
 
-      (insert (format "
-\\subject{%s}
-" lcnt-shortTitle))
+;;       (insert (format "
+;; \\subject{%s}
+;; " lcnt-shortTitle))
 
       (when (string-equal coverPage "blank")
 	(insert "
@@ -2006,7 +2091,9 @@ otherwise labelInfo is inserted as label"
 	(bx:seg-title (or (plist-get params :seg-title) "missing"))
 	(labelInfo (or (plist-get params :label) "UnSpecified"))	
 	(bx:toc (or (plist-get params :toc) ""))
+	($@tocDepth (or (plist-get params :tocDepth) 3))	
 	(bx:part (or (plist-get params :part) ""))
+	($partpage (or (plist-get params :partpage) nil))	
 	($partDesc)
 	)
     (message (format "disabledP = %s" bx:disabledP))
@@ -2016,8 +2103,11 @@ otherwise labelInfo is inserted as label"
 	(progn
 	  ;;; Processing Body
 	  (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
-	  
-	  (insert "%%%% Args:  :toc \"NU\" :part \"NU\" :label \"auto|spec\"\n")
+
+	  (blee:dblock:params:desc
+	   'latex-mode
+	   ":toc \"NU\" :tocDepth 3 :part \"NU\" :label \"auto|spec\" :partpage t"
+	   )
 
 	  (when (string-equal bx:part "")
 	    (setq bx:part bx:toc)
@@ -2051,7 +2141,20 @@ otherwise labelInfo is inserted as label"
 	      (setq $partDesc "This Part")
 	    (setq $partDesc (format "Part %s" bx:toc))
 	    )
+	  
+	  (when $partpage
+	    (insert "
 
+\\begin{latexonly}
+\\begin{presentationMode}
+\\begin{frame}
+\\partpage
+\\end{frame}
+\\end{presentationMode}
+\\end{latexonly}"
+		    )
+	    )
+	  
 	  (when (not (equal bx:toc ""))
 	    (insert (format "
 
@@ -2059,20 +2162,37 @@ otherwise labelInfo is inserted as label"
 \\begin{presentationMode}
 \\begin{frame}[fragile,plain,label=Part%s]
 \\frametitle{Outline of %s -- %s}
-\\tableofcontents[sectionstyle=show,subsectionstyle=show]
-\\end{frame}
-\\end{presentationMode}
-\\end{latexonly}"
+"
 			    bx:toc
 			    $partDesc
 			    bx:seg-title
 			    ))
-	    )
-	  )
+	    
+	    (when (equal $@tocDepth 3)
+	      (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=show]
+")
+	      )
+	    (when (equal $@tocDepth 2)
+	      (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=show,subsubsectionstyle=hide]
+")
+	      )
+	    (when (equal $@tocDepth 1)
+	      (insert "\
+\\tableofcontents[sectionstyle=show,subsectionstyle=hide,subsubsectionstyle=hide]
+")
+	      )
 
-      
+	      (insert "\
+\\end{frame}
+\\end{presentationMode}
+\\end{latexonly}"
+		      )
+	      )
+	  
       (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
-      )))
+      ))))
 
 
 (lambda () "
@@ -2124,13 +2244,7 @@ otherwise labelInfo is inserted as label"
 	(progn
 	  ;;; Processing Body
 	  (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
-	  (insert (format "\
-\\begin{comment}
-*      ================
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || *Appendix*   %s ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
 
-\\newpage
 \\appendix{%s}
 \\label{%s}"
 			  bx:seg-title

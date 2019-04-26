@@ -98,14 +98,17 @@
   (define-key global-map [(f7) (n)] nil)
   (define-key global-map [(f7) (n) (n)] 'findObjectPlaceHolder) ;;; Emacs 25 xref-find-definitions
 
-    ;;;  Lisp Helpers
+  ;;;  Lisp Helpers
   (define-key global-map [(f7) (l)] nil)
   (define-key global-map [(f7) (l) (l)] 'find-function)
   (define-key global-map [(f7) (l) (f)] 'find-function)
   (define-key global-map [(f7) (l) (d)] 'blee:dblock:find-function)
-  (define-key global-map [(f7) (l) (V)] 'describe-variable)
-  (define-key global-map [(f7) (l) (F)] 'describe-function)    
+  (define-key global-map [(f7) (l) (v)] 'find-variable)
 
+  ;;; Find Information/Description On Stuff
+  (define-key global-map [(f7) (f)] nil)
+  (define-key global-map [(f7) (f) (f)] 'describe-function)
+  (define-key global-map [(f7) (f) (v)] 'describe-variable)
 
   ;;; END WINDOW JUMPERS
 
@@ -128,14 +131,16 @@
   (define-key global-map [(f7) (w) (n)] 'indicate-empty-lines-unset)
 
 
-  ;;;  Folding Mode
-  (define-key global-map [(f7) (f)] nil)
-  (define-key global-map [(f7) (f) (f)] 'folding-mode)
-  (define-key global-map [(f7) (f) (s)] 'folding-show-current-subtree)
-  (define-key global-map [(f7) (f) (h)] 'folding-hide-current-subtree)
-  (define-key global-map [(f7) (f) (o)] 'folding-open-buffer)    ;; (Open) Unfold Entire Buffer
-  (define-key global-map [(f7) (f) (c)] 'folding-whole-buffer)   ;; (Close) ReFold Entire Buffer
+  ;; ;;;  Folding Mode Has Been Obsoleted
+  ;; (define-key global-map [(f7) (f)] nil)
+  ;; (define-key global-map [(f7) (f) (f)] 'folding-mode)
+  ;; (define-key global-map [(f7) (f) (s)] 'folding-show-current-subtree)
+  ;; (define-key global-map [(f7) (f) (h)] 'folding-hide-current-subtree)
+  ;; (define-key global-map [(f7) (f) (o)] 'folding-open-buffer)    ;; (Open) Unfold Entire Buffer
+  ;; (define-key global-map [(f7) (f) (c)] 'folding-whole-buffer)   ;; (Close) ReFold Entire Buffer
 
+
+  
   ;;;  Printing
   (define-key global-map [(f7) (p)] nil)
   ;;; (define-key global-map [(f7) (p) (p)] 'pr-ps-fast-fire)
