@@ -2244,7 +2244,13 @@ otherwise labelInfo is inserted as label"
 	(progn
 	  ;;; Processing Body
 	  (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
+	  (insert (format "\
+\\begin{comment}
+*      ================
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || *Appendix*   %s ::  [[elisp:(org-cycle)][| ]]
+\\end{comment}
 
+\\newpage
 \\appendix{%s}
 \\label{%s}"
 			  bx:seg-title
