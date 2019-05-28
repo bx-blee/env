@@ -330,12 +330,9 @@
     (when (equal $modern "true")
       (setq $modernStr " -- MODERNIZED")
       )
-    (insert (format "\
-\\begin{comment}\n*\
-  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: early-common-packages%s/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}\n"
-		    $modernStr 
-		    ))
+    (org-latex-section-insert-dblock-name
+     (format "early-common-packages%s" $modernStr)
+     )
     
     (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || memo  [[elisp:(org-cycle)][| ]]
@@ -720,12 +717,9 @@
 	(bx:langs (or (plist-get params :langs) "")))
     (bx:lcnt:info:base-read)
     ;;;(insert "%{{{ DBLOCK-header-begin\n")
-    (insert (format "\
-\\begin{comment}
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: optional-packages-and-styles/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}\n"))
+    (org-latex-section-insert-dblock-name "optional-packages-and-styles")
     ))
-
+ 
 (lambda () "
 *  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(delete-other-windows)][(1)]]            *Custom Specialized Packages*
 ")
@@ -739,10 +733,7 @@
 	(bx:langs (or (plist-get params :langs) "")))
     (bx:lcnt:info:base-read)
     ;;;(insert "%{{{ DBLOCK-header-begin\n")
-    (insert (format "\
-\\begin{comment}
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: custom-specialized-packages/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}\n"))
+    (org-latex-section-insert-dblock-name "custom-specialized-packages")
     ))
 
 
@@ -761,10 +752,7 @@
     (bx:lcnt:info:base-read)
     ;;;(insert "%{{{ DBLOCK-header-end\n")
 
-    (insert (format "\
-\\begin{comment}
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: late-common-packages/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}\n"))
+    (org-latex-section-insert-dblock-name "late-common-packages")
 
     (when (equal bx:class "memo")
       (insert "
@@ -865,7 +853,7 @@
 (defun org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings (params)
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
-	($pageNu (or (plist-get params :pageNu) nil))
+	($pageNu (or (plist-get params :pageNu) t))
 	;;; Below was copy-pasted -- some are likely unused.
 	(coverPage (or (plist-get params :coverPage) "UnSpecified"))
 	(bx:form (or (plist-get params :form) ""))		
@@ -1893,7 +1881,7 @@ and this permission notice are preserved on all copies.
 	      (progn
 		(insert (format "\
 \\begin{comment}
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}
 
 \\input{%s}"
@@ -2519,7 +2507,7 @@ otherwise labelInfo is inserted as label"
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-latex-section-insert-dblock-name params) [[elisp:(org-cycle)][| ]]
 ")
 
-(defun org-latex-section-insert-dblock-name (name)
+(defun org-latex-section-insert-dblock-nameObsoleted (name)
   "Given NAME, insert a latex commented section tag.
 Both begin and end should always be terminated wit ha new line.
 Star at the begining of line is avoided not to show up in org-mode view.
@@ -2528,6 +2516,20 @@ Star at the begining of line is avoided not to show up in org-mode view.
    (format "\
 \\begin{comment}\n*\
   [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: %s/  ::  [[elisp:(org-cycle)][| ]]
+\\end{comment}
+"
+	   name
+	   )))
+
+(defun org-latex-section-insert-dblock-name (name)
+  "Given NAME, insert a latex commented section tag.
+Both begin and end should always be terminated wit ha new line.
+Star at the begining of line is avoided not to show up in org-mode view.
+"
+  (insert
+   (format "\
+\\begin{comment}\n*\
+  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /DBLOCK: %s/  ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}
 "
 	   name
