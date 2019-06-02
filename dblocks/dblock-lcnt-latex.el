@@ -1873,7 +1873,8 @@ and this permission notice are preserved on all copies.
     (message (format "disabledP = %s" bx:disabledP))
     (if (not
 	 (or (equal "TRUE" bx:disabledP)
-	     (equal "true" bx:disabledP)))
+	     (equal "true" bx:disabledP)
+	     ))
 	(progn
 	  ;;; Processing Body
 	  (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
@@ -1888,7 +1889,10 @@ and this permission notice are preserved on all copies.
 				bx:input-file
 				bx:input-file
 				bx:input-file
-				)))))
+				)))
+	    (message (format "Missing File: %s" bx:input-file))
+	    )
+	  )
       (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
       )))
 
