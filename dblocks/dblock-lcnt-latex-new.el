@@ -315,6 +315,7 @@
     (when (equal $modern "true")
       (setq $modernStr " -- MODERNIZED")
       )
+    
     (insert (format "\
 \\begin{comment}\n*\
   [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: early-common-packages%s/  ::  [[elisp:(org-cycle)][| ]]

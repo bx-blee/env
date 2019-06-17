@@ -56,6 +56,10 @@
 	)
     (bx:lcnt:info:base-read)
 
+
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art|art+pres|art|memo|book\" :langs \"en+fa|fa+en|en\"")
+    
+
     (when (equal bx:class "memo")
       (when (or (equal bx:langs "en")
 		(equal bx:langs "en+fa"))
@@ -74,12 +78,12 @@
       (when (or (equal bx:langs "en")
 		(equal bx:langs "en+fa"))
 	(insert "\
-\\documentclass{book}
+\\documentclass[twoside]{book}
 \\usepackage{comment}")
 	)
       (when (equal bx:langs "fa+en")
 	(insert "\
-\\documentclass{book}
+\\documentclass[twoside]{book}
 \\usepackage{comment}")
 	)
       )
@@ -134,6 +138,8 @@
 ")
 
 
+
+
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:lcnt:latex:inputed:title params) [[elisp:(org-cycle)][| ]]
   ")
@@ -155,19 +161,23 @@
 	  
 	  ;;; Processing Body
 	  (bx:lcnt:info:base-read)
+	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
+	  
+	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  
 	  (insert (format "\
-*      ================
 *  [[elisp:(beginning-of-buffer)][Top]] ################  [[elisp:(delete-other-windows)][(1)]]   /*%s-%s -- LCNT Panel -- lcntProc.sh, presProc.sh and Mailings*/
 *  [[elisp:(beginning-of-buffer)][Top]] ################  [[elisp:(delete-other-windows)][(1)]]   *%s*
 *  [[elisp:(beginning-of-buffer)][Top]] ################  [[elisp:(delete-other-windows)][(1)]]   %s
 *  [[elisp:(beginning-of-buffer)][Top]] ################  [[elisp:(delete-other-windows)][(1)]]   \
-" 
+"
 			  (get 'bx:lcnt:info:base  'type)
 			  (get 'bx:lcnt:info:base  'lcntNu)
 			  (get 'bx:lcnt:info:base  'shortTitle)
 			  (get 'bx:lcnt:info:base  'url)
 			  ))
+
 	  
 	  (mapcar '(lambda (arg)
 		     (progn
@@ -179,8 +189,11 @@
 	       )
 	  ;;;(insert (format "\n*      ================\n" ))
           (insert (format "\n"))
+
+	  (bx:dblock:org-mode:func-close (compile-time-function-name))
 	  
-	  (bx:dblock:global:moded:insert-end bx:mode)					  
+	  (bx:dblock:global:moded:insert-end bx:mode)
+
 	  )
       (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
       )))
@@ -198,12 +211,23 @@
 	(bx:types (or (plist-get params :types) ""))
 	(docsList)
 	(bufferFileName (file-name-nondirectory buffer-file-name))
+	(bx:mode (or (plist-get params :mode) "auto"))       
 	)
+    (progn
+      (if (string-equal "auto" bx:mode)
+	  (progn
+	    (setq bx:mode major-mode)
+	    )))
+    
     (bx:lcnt:info:base-read)
+
+    (bx:dblock:global:moded:insert-begin bx:mode)
+
+    (bx:dblock:org-mode:func-open (compile-time-function-name))
+    
 
     (insert (format "\
 \\begin{comment}
-*      ================
 *      IIM Parameters    ::  [[elisp:(bx:iimBash:resultsShow:cmndLineElems)][Show Cmnd Line Elems]]\
  || [[elisp:(setq bx:iimBash:iimParamsArgs \"-p extent=build+view\")][-p extent=build+view]]\
  || [[elisp:(setq bx:iimBash:iimParamsArgs \"-p extent=build\")][-p extent=build]]\
@@ -217,11 +241,15 @@
 
 *      Build & Preview   ::  [[elisp:(bx:iimBash:cmndLineExec :wrapper \"\" :name \"lcntProc.sh\" :iif \"buildPdfPreview\" :iifArgs \"%s\")][lcntProc.sh -i buildPdfPreview %s]]\
  || [[elisp:(bx:iimBash:cmndLineExec :wrapper \"\" :name \"lcntProc.sh\" :iif \"buildHtmlPreview\" :iifArgs \"%s\")][lcntProc.sh -i buildHtmlPreview %s]]
-\\end{comment}\
 "
 		    bufferFileName bufferFileName bufferFileName bufferFileName
 		    ))
-         ))
+    
+    (bx:dblock:org-mode:func-close (compile-time-function-name))
+	  
+    (bx:dblock:global:moded:insert-end bx:mode)
+    
+    ))
 
 (lambda () "
 *  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(delete-other-windows)][(1)]]            *Early Common Packages*
@@ -330,6 +358,7 @@
     (when (equal $modern "true")
       (setq $modernStr " -- MODERNIZED")
       )
+    
     (org-latex-section-insert-dblock-name
      (format "early-common-packages%s" $modernStr)
      )
@@ -429,6 +458,8 @@
 \\usepackage{fancyhdr}
 
 \\usepackage{caption}
+
+\\usepackage{bystarsub3section}
 
 \\usepackage{fontspec}
 % \\usepackage{xltxtra}  % OBSOLETED In Ubuntu 16.04 and 18.04
@@ -535,6 +566,8 @@
 
 \\usepackage{caption}
 
+\\usepackage{bystarsub3section}
+
 \\usepackage{fontspec}
 % \\usepackage{xltxtra}  % OBSOLETED In Ubuntu 16.04 and 18.04
 \\usepackage{xunicode}
@@ -546,13 +579,6 @@
 \\usepackage{beamerarticle}
 
 \\usepackage{tikz}
-
-\\newenvironment{bidiSepBeforeHevea}{}{}
-\\usepackage{bidi}
-\\newenvironment{bidiSepAfterHevea}{}{}
-
-\\usepackage{bystarpersian}   % Defines: \\newfontfamily{\\persian}, \\newcommand{\\farsi}, \\newenvironment{faPar},{fa}
-\\usepackage{bystararticle}   % Defines: \\excludecomment{presentationMode} \\newcommand{\\pnote}
 ")
        )
      )
@@ -833,6 +859,36 @@
     ;;;(insert "%}}} DBLOCK-header-end")
     ))
 
+(defun org-dblock-write:bx:lcnt:latex:feature-late-common-packages (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<toggle (or (plist-get @params :toggle) ""))
+	(<curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
+     )
+
+    (when (not (equal <toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "DBLOCK:")
+       :name "late-common-packages"
+       :level 1
+       :comment (format "")
+       ))
+
+    (insert "
+%%% Place Holder For Now\
+"
+	    )
+    
+    ))
+
+
 
 (lambda () "
 *  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(delete-other-windows)][(1)]]            *Common Packages Style Settings*
@@ -843,14 +899,185 @@
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings params) [[elisp:(org-cycle)][| ]]
 ")
 
-;; (blee:dblock:params:desc 'latex-mode "Some String")
-(defun blee:dblock:params:desc (@mode @descStr)
-  "Inserts $commentStr+@docstr at point -- @mode is used for comment delim"
-  (when (equal @mode 'latex-mode)
-    (insert (format "%%%%%% Args: %s\n" @descStr))
-    ))
   
 (defun org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings (params)
+  (let ((bx:class (or (plist-get params :class) ""))
+	(bx:langs (or (plist-get params :langs) ""))
+	($pageNu (or (plist-get params :pageNu) t))
+	(<style (or (plist-get params :style) t))	
+	;;; Below was copy-pasted -- some are likely unused.
+	(coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(bx:form (or (plist-get params :form) ""))		
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-date (get 'bx:lcnt:info:base 'date))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-version (get 'bx:lcnt:info:base 'version))
+	(lcnt-url (get 'bx:lcnt:info:base 'url))
+	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))	
+	(bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+    (bx:lcnt:info:base-read)
+
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageNu nil|t :style \"bystar\"")
+    
+    (org-latex-section-insert-dblock-name "common-packages-style-settings")
+
+    (lambda () "
+**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || art+pres OR art OR memo [[elisp:(org-cycle)][| ]]
+")
+     
+    
+    (when (or 
+	   (equal bx:class "art+pres")
+	   (equal bx:class "art")
+	   (equal bx:class "memo")
+	   )
+      (insert "
+\\usepackage{bystarcolors}
+
+\\parindent 0 true pc
+
+\\addtolength{\\parskip}{5pt}
+")
+      )
+
+
+    (lambda () "
+**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || pres+art OR pres [[elisp:(org-cycle)][| ]]
+")
+    
+
+    (when (or (equal bx:class "pres+art")
+	      (equal bx:class "pres"))
+      (when (or (equal bx:langs "en")
+		(equal bx:langs "en+fa"))
+	(insert "
+\\mode<presentation>
+{
+  \\usetheme{Warsaw}
+
+  \\setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+")
+
+	(insert (format "
+\\title[%s]
+{%s}\n" lcnt-shortTitle lcnt-mainTitle))
+
+      (if (not (string-equal lcnt-subTitle ""))
+	  (insert (format "
+\\subtitle[%s]
+{%s}\n" lcnt-subTitle lcnt-subTitle)))
+
+      ;;;(if (not (string-equal lcnt-subSubTitle ""))
+	;;;  (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+
+      (insert (format "
+\\author[%s] 
+{%s\\\\
+Email: \\href{%s}{%s}\\\\
+}
+" lcnt-authorName1 lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+      (insert (format "
+\\institute[%s-%s] 
+{\\href{%s}{%s}}
+"   lcnt-type lcnt-lcntNu lcnt-url lcnt-url))
+
+      (insert (format "
+\\date[%s]
+{%s}
+" lcnt-date lcnt-date))
+;;;{%s\\\\Varbatim Copying Permitted}      
+
+      (insert (format "
+\\subject{%s}
+" lcnt-shortTitle))
+
+      (when $pageNu
+	(insert "
+\\defbeamertemplate*{footline}{shadow theme}
+{%
+  \\leavevmode%
+  \\hbox{\\begin{beamercolorbox}[wd=.5\\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+    \\usebeamerfont{author in head/foot}\\insertframenumber\\,/\\,\\inserttotalframenumber\\hfill\\insertshortauthor
+  \\end{beamercolorbox}%
+  \\begin{beamercolorbox}[wd=.5\\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \\usebeamerfont{title in head/foot}\\insertshorttitle%
+  \\end{beamercolorbox}}%
+  \\vskip0pt%
+}
+")
+	)
+
+	
+      (insert "
+	
+% ===== STYLE PARAMETERS =====
+
+\\definecolor{darkred}{rgb}{0.5,0,0}
+\\definecolor{darkgreen}{rgb}{0,0.5,0}
+\\definecolor{darkblue}{rgb}{0,0,0.5}
+
+\\hypersetup{
+    colorlinks=true        % false: boxed links; true: colored links
+}
+
+")
+	)
+
+      (when (equal bx:langs "fa+en")
+	(insert "
+\\mode<presentation>
+{
+  \\usetheme{Warsaw}
+}
+
+
+% ===== STYLE PARAMETERS =====
+
+\\definecolor{darkred}{rgb}{0.5,0,0}
+\\definecolor{darkgreen}{rgb}{0,0.5,0}
+\\definecolor{darkblue}{rgb}{0,0,0.5}
+
+\\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1} {key2} {key3}, % list of keywords
+    pdfnewwindow=true,      % links in new window
+    colorlinks=true ,       % false: boxed links; true: colored links
+    linkcolor=darkblue,     % color of internal links
+    citecolor=red,          % color of links to bibliography
+    filecolor=darkgreen,    % color of file links
+    urlcolor=darkred        % color of external links
+}
+
+")
+	)
+      )
+    ;;;(insert "%}}} DBLOCK-style-params")
+    ))
+
+
+
+(defun org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings-OBSOLETED (params)
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
 	($pageNu (or (plist-get params :pageNu) t))
@@ -1219,6 +1446,671 @@ Subject:   & This Matter\\\\
     ))
 
 
+(defun org-dblock-write:bx:dblock:lcnt:latex:geometry (@params)
+  (let (
+	($class (or (plist-get @params :class) ""))
+	($langs (or (plist-get @params :langs) ""))
+	($pageSize (or (plist-get @params :pageSize) ""))	
+	;;;
+	(bx:lcnt:info:base-read)
+	($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	;;;
+	($atLeastOnce nil)
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageSize \"8.5x11|6x9\"")
+    
+    (org-latex-section-insert-dblock-name
+     (format "Geometry === pageSize=%s" $pageSize))
+
+    (insert (format "\n
+\\usepackage{geometry}\n"))
+
+    (when (equal $pageSize "8.5x11")
+      (setq $atLeastOnce t)
+      (insert (format "
+\\geometry{paperwidth=8.5in,paperheight=11in,bindingoffset=0.2in,left=1.0in,right=1.0in,top=1in,bottom=0.75in,footskip=.25in}\
+\n"
+		      ))
+      )
+
+    (when (not $atLeastOnce)
+      (insert (format "\n
+%%% Unknown Geometry %s\n" $pageSize))
+      )
+
+    ))
+
+
+(defun org-dblock-write:bx:dblock:lcnt:latex:title-page-newgeometry (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<pageSize (or (plist-get @params :pageSize) ""))	
+	;;;
+	(bx:lcnt:info:base-read)
+	($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	;;;
+	($atLeastOnce nil)
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageSize \"8.5x11|6x9\"")
+    
+    (org-latex-section-insert-dblock-name
+     (format "Title Page NewGeometry === pageSize=%s" <pageSize)
+     2
+     )
+
+    (when (equal <pageSize "8.5x11")
+      (setq $atLeastOnce t)
+      (insert (format "
+\\newgeometry{paperwidth=8.5in,paperheight=11in,bindingoffset=0in,left=0.5in,right=0.5in,top=1.5in,bottom=0.5in,footskip=0in}
+"
+		      ))
+      )
+
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknown Title New NewGeometry %s\n" <pageSize)
+       )
+
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:restoregeometry (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name "Restore Geometry"
+     :level 2
+     :comment (format "")
+     )
+
+    (insert (format "
+
+\\restoregeometry
+"
+		      ))
+      ))
+
+(defun org-dblock-write:bx:lcnt:latex:title-page-header (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name "Title Page Header"
+     :level 2
+     :comment (format "")
+     )
+
+    (insert "
+
+%%% Choice Of title page logos come here.
+"
+	    )
+      ))
+
+
+(defun org-dblock-write:bx:dblock:lcnt:latex:bx-bidi  (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	;;;
+	(bx:lcnt:info:base-read)
+	($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	;;;
+	($atLeastOnce nil)
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
+    
+    (org-latex-section-insert-dblock-name
+     (format "BX-BIDI ==="))
+
+    (insert "
+\\newenvironment{bidiSepBeforeHevea}{}{}
+\\usepackage{bidi}
+\\newenvironment{bidiSepAfterHevea}{}{}
+
+\\usepackage{bystarpersian}   % Defines: \\newfontfamily{\\persian}, \\newcommand{\\farsi}, \\newenvironment{faPar},{fa}
+\\usepackage{bystararticle}   % Defines: \\excludecomment{presentationMode} \\newcommand{\\pnote}
+"
+	    )
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:begin-document  (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
+    
+    (org-latex-section-insert-dblock-name
+     (format "Pure Begin Document ==="))
+
+    (insert "\n
+\\begin{document}
+"
+	    )
+    ))
+
+
+(defun org-dblock-write:bx:lcnt:latex:appendices-begin  (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<toggle (or (plist-get @params :toggle) ""))	
+	;;;
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" ")
+
+    (when (not (equal <toggle "hide"))
+      (org-latex-section-insert-dblock-name
+       (format "appendices-begin --- toggle=%s" <toggle))
+      )
+    
+    (when (equal <toggle "hide")
+      (setq <toggle "disabled")
+      )
+
+    (when (equal <toggle "enabled")
+      (insert "
+\\begin{appendices}\
+"
+	      ))
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:appendices-end  (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<toggle (or (plist-get @params :toggle) ""))	
+	;;;
+	)
+    
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" ")
+
+    (when (not (equal <toggle "hide"))
+      (org-latex-section-insert-dblock-name
+       (format "appendices-end --- toggle=%s" <toggle))
+      )
+    
+    (when (equal <toggle "hide")
+      (setq <toggle "disabled")
+      )
+
+    (when (equal <toggle "enabled")
+      (insert "
+\\end{appendices}\
+"
+	      ))
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:print-bibliography  (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	(@bibProvider (or (plist-get @params :bibProvier) "biblatex"))
+	(@style (or (plist-get @params :style) "plain"))		
+	(@bibSrcPaths (or (plist-get
+			   @params
+			   :bibSrcPaths)
+			  "/lcnt/BIB/plpcUrl,/lcnt/BIB/rfcs,/lcnt/BIB/bxsup"
+			  ))
+	
+	;;;
+	($atLeastOnceWhen nil)
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\"  :bibProvider \"biblatex|bibtex\" :style \"plain\""
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "DBLOCK:")
+       :name (format
+	      "print-bibliography --- toggle=%s bibProvider=%s"
+	      @toggle
+	      @bibProvider
+	      )
+       :level 1
+       :comment (format "")
+       )
+      )
+    
+    (when (equal @toggle "hide")
+      (setq @toggle "disabled")
+      )
+
+    (when (equal @toggle "enabled")
+      (when (equal @bibProvider "biblatex")
+	(setq $atLeastOnceWhen t)
+	(insert "
+%%% NOTYET
+"
+		)
+	)
+
+      (when (equal @bibProvider "bibtex")
+	(setq $atLeastOnceWhen t)
+        ;;; % NOTYET \bibliographystyle{amsalpha} should come here.
+	(insert
+	 (format "
+\\phantomsection 
+\\addcontentsline{toc}{chapter}{Bibliography} 
+
+\\bibliographystyle{%s}
+
+\\bibliography{%s}
+"
+		 @style
+		 @bibSrcPaths
+		 ))
+	)
+
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknon bibProvider %s" @bibProvider)
+       )
+      )
+    ))
+      
+
+(defun org-dblock-write:bx:lcnt:latex:features-appendix-index-glossary (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" "
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "DBLOCK:")
+       :name (format "Features: Appendix, Index, Glossaries --- toggle=%s" @toggle)
+       :level 2
+       :comment (format "")
+       )
+      )
+    
+    (when (equal @toggle "hide")
+      (setq @toggle "disabled")
+      )
+
+    (when (equal @toggle "enabled")
+      (insert "
+
+\\usepackage[toc,page]{appendix}
+
+\\usepackage{imakeidx}
+\\makeindex
+
+\\usepackage[toc]{glossaries}    % Should come after hyperref
+\\makeglossaries
+"
+	      )
+      )
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:features-bibliography (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	(@bibProvider (or (plist-get @params :bibProvier) "biblatex"))	
+	;;;
+	($atLeastOnceWhen nil)
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :bibProvider \"biblatex|bibtex\""
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "DBLOCK:")
+       :name (format
+	      "Features: Bibliography --- toggle=%s bibProvider=%s"
+	      @toggle
+	      @bibProvider
+	      )
+       :level 2
+       :comment (format "")
+       )
+      )
+    
+    (when (equal @toggle "hide")
+      (setq @toggle "disabled")
+      )
+
+    (when (equal @toggle "enabled")
+      (when (equal @bibProvider "biblatex")
+	(setq $atLeastOnceWhen t)
+	(insert "
+
+\\usepackage{biblatex}
+
+\\addbibresource{/lcnt/outputs/all/plpcUrl.bib}
+"
+		)
+	)
+      
+      (when (equal @bibProvider "bibtex")
+	(setq $atLeastOnceWhen t)
+	(insert "
+%%% NOTYET bibtex usepackage etc
+"
+		)
+	)
+
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknon bibProvider %s" @bibProvider)
+       )
+      )
+    ))
+
+;;;
+;;; (bx:eh:assert:atLeastOnceWhen t :context "latex" :info "I")
+;;; (bx:eh:assert:atLeastOnceWhen nil :context "latex" :info "I")
+;;;
+(defun bx:eh:assert:atLeastOnceWhen (@atLeastOnceWhen &rest @args)
+  "General purpose missing when catcher -- NOTYET, move it to the right place"
+  (when (not @atLeastOnceWhen)
+    (let (
+	  (@context (or (plist-get @args :context) ""))
+	  (@info (or (plist-get @args :info) ""))
+	  ;;;
+	  ($atLeastOnceWhen nil)
+	  )
+      (when (equal @context "latex")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "\n
+%%%%%%  %s\n"
+		 @info))
+	)
+      
+      (when (equal @context "any")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "\n
+atLeastOnceWhen=ANY  %s\n"
+		 @info))
+	)
+      
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "any"
+       :info (format "Unknon context %s" @context)
+       )
+      )))
+
+
+(defun org-dblock-write:bx:lcnt:latex:print-glossaries  (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<toggle (or (plist-get @params :toggle) ""))
+	(<curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" "
+     )
+
+    (when (not (equal <toggle "hide"))
+      (org-latex-section-insert-dblock-name
+       (format "print-glossaries --- toggle=%s" <toggle))
+      )
+    
+    (when (equal <toggle "hide")
+      (setq <toggle "disabled")
+      )
+
+    (when (equal <toggle "enabled")
+      (when (equal <class "book")
+	(insert "
+\\cleardoublepage\	
+"
+		)
+	)
+      (insert "
+\\glossarystyle{listgroup}
+\\printglossaries\
+"
+	      )
+      )
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:print-index (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<toggle (or (plist-get @params :toggle) ""))
+	(<curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" "
+     )
+
+    (when (not (equal <toggle "hide"))
+      (org-latex-section-insert-dblock-name
+       (format "print-index --- toggle=%s" <toggle))
+      )
+    
+    (when (equal <toggle "hide")
+      (setq <toggle "disabled")
+      )
+
+    (when (equal <toggle "enabled")
+      (when (equal <class "book")
+	(insert "
+\\cleardoublepage\	
+"
+		)
+	)
+      (insert "
+\\addcontentsline{toc}{chapter}{Index}
+\\printindex
+"
+	      )
+      )
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:orgParentNode:title-page (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<toggle (or (plist-get @params :toggle) ""))
+	(<curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
+     )
+
+    (when (not (equal <toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "OrgParentNode:")
+       :level 1
+       :comment (format "Title Page")
+       ))
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:note:features-front-matter (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) ""))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "OrgParentNode:")
+       :name ""
+       :level 1
+       :comment (format "Features Front-Matter")
+       ))
+    ))
+
+(defun org-dblock-write:bx:lcnt:latex:note:features-body-matter (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) ""))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "OrgParentNode:")
+       :name ""
+       :level 1
+       :comment (format "Features Body-Matter")
+       ))
+    ))
+
+
+(defun org-dblock-write:bx:lcnt:latex:note:features-back-matter (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) ""))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "OrgParentNode:")
+       :name ""
+       :level 1
+       :comment (format "Features Back-Matter")
+       ))
+    ))
+
+
+(defun org-dblock-write:bx:lcnt:latex:note:feature-late-uncommon-packages (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) ""))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "Note:")
+       :name ""
+       :level 1
+       :comment (format "Your Late Un-Common Packages")
+       ))
+    ))
+
+
+(defun org-dblock-write:bx:lcnt:latex:feature-back-matter (@params)
+  (let (
+	(<class (or (plist-get @params :class) ""))
+	(<langs (or (plist-get @params :langs) ""))
+	(<toggle (or (plist-get @params :toggle) ""))
+	(<curBuild (or (plist-get @params :curBuild) ""))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
+     )
+
+    (when (not (equal <toggle "hide"))
+      (org-latex-section-insert-note-name
+       (format "print-index --- toggle=%s" <toggle))
+      )
+    
+    (when (equal <toggle "hide")
+      (setq <toggle "disabled")
+      )
+
+    (when (equal <toggle "enabled")
+      ;;; %\usepackage[backend=biber,style=alphabetic,sorting=ynt]{biblatex}
+      
+      (insert "
+\\usepackage[toc,page]{appendix}
+
+\\usepackage{imakeidx}
+\\makeindex
+
+\\usepackage[toc]{glossaries}    % Should come after hyperref
+\\makeglossaries
+
+"
+	      )
+      )
+    ))
+
+
+
 (defun org-dblock-write:bx:dblock:lcnt:latex:title-insert (@params)
   (let (
 	(bx:class (or (plist-get @params :class) ""))
@@ -1262,7 +2154,10 @@ Subject:   & This Matter\\\\
 	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
 	)
 
-    (insert "%%%% Args:  :form \"none|std\" :years \"\" :copyright-holders \"\"\n")    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :form \"none|std\" :years \"\" :copyright-holders nil|\"Name\""
+     )
 
     (if (equal bx:years "")
 	(progn
@@ -1278,7 +2173,14 @@ Subject:   & This Matter\\\\
     
     (if (equal bx:form "none")
 	(progn
-	  (org-latex-section-insert-dblock-name "Copyright Settings -- None")
+	  (org-latex-node-insert-note
+	   :label (format "DBLOCK:")
+	   :name (format
+		  "Copyright Settings --- bx-years=None"
+		  )
+	   :level 2
+	   :comment (format "")
+	   )
 	  (insert "\n% dblock copyright notice says none")
 	  )
       (progn 
@@ -1286,7 +2188,15 @@ Subject:   & This Matter\\\\
     (bx:lcnt:info:base-read)
     ;;;(insert "%{{{ DBLOCK-copyright\n")
 
-    (org-latex-section-insert-dblock-name "Copyright Settings")
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name (format
+	    "Copyright Settings --- bx-years=%s"
+	    @bx-years)
+     :level 2
+     :comment (format "")
+     )
+    
 
     (when (or (equal bx:class "art+pres")
 	      (equal bx:class "art"))
@@ -1337,6 +2247,54 @@ and this permission notice are preserved on all copies.
 ))
     
     ;;;(insert "%}}} DBLOCK-copyright")
+    ))
+
+
+(defun org-dblock-write:bx:lcnt:latex:copyright (@params)
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))
+	(@curBuild (or (plist-get @params :curBuild) ""))
+	(@form (or (plist-get params :form) ""))    ;; none, std, or std-en-fa NOTYET
+	(@years (or (plist-get params :years) ""))    ;; example: "2014-2018"
+	(@copyright-holders (or (plist-get params :copyright-holders) nil))    ;; example: "Neda Communications, Inc."
+	;;;
+	(<lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	;;;
+	)
+    
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :form \"none|std\" :years \"\" :copyright-holders nil|\"Name\""
+     )
+
+    (when (not (equal @toggle "hide"))
+      (org-latex-node-insert-note
+       :label (format "DBLOCK:")
+       :name (format
+	      "Copyright Settings --- toggle=%s"
+	      @toggle)
+       :level 2
+       :comment (format "")
+       )
+      )
+    
+    (when (equal @toggle "hide")
+      (setq @toggle "disabled")
+      )
+
+    (when (equal @toggle "enabled")
+      (when (not @copyright-holders)
+	(setq @copyright-holders <lcnt-authorName1)
+	)
+      
+      (insert "
+%%% NOTYET
+
+"
+	      )
+      )
     ))
 
 
@@ -1740,11 +2698,364 @@ and this permission notice are preserved on all copies.
   )
 
 
+
+(defun org-dblock-write:bx:lcnt:latex:title-page-body (params)
+  " Starting Point Replacement for bx:dblock:lcnt:latex:title-page
+"
+  (let ((bx:class (or (plist-get params :class) ""))
+	(bx:langs (or (plist-get params :langs) ""))
+	(coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(bx:form (or (plist-get params :form) ""))		
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-date (get 'bx:lcnt:info:base 'date))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-version (get 'bx:lcnt:info:base 'version))
+	(lcnt-url (get 'bx:lcnt:info:base 'url))
+	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))	
+	(bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+    (bx:lcnt:info:base-read)
+    ;;;(insert "%{{{ DBLOCK-front-begin\n")
+    (insert "%%%% Args:  :form \"priv|std\" :coverPage \"blank|std\"\n")
+
+    (org-latex-section-insert-dblock-name "title-page")
+
+    (when (or (equal bx:class "art+pres")
+	      (equal bx:class "art"))
+      (insert (format "
+\\thispagestyle{empty}
+
+\\vfill
+
+\\title{%s}\n" lcnt-shortTitle))
+
+      (insert (format "
+\\begin{center}
+  {\\huge {\\bf %s\\\\
+"  lcnt-mainTitle))
+
+      (if (not (string-equal lcnt-subTitle ""))
+	  (insert (format "\
+\\vspace{0.3in}
+%s\\\\\n" lcnt-subTitle)))
+
+      (if (not (string-equal lcnt-subSubTitle ""))
+	  (progn
+	    (insert "\\vspace{0.2in}\n")	    
+	    (insert (format "%s\\\\\n" lcnt-subSubTitle))))
+
+      (insert "\
+}}
+\\end{center}
+
+\\vspace{0.2in}
+")
+
+      (if (string-equal
+	   bufferFileName
+	   lcnt-presArtSrcFile)
+    
+	  (insert "
+\\begin{center}
+  {\\Large {\\bf Article Format Of Presentation\\\\
+\\vspace{0.2in}
+}}
+\\end{center}
+"))
+
+     (insert "
+\\vspace{0.7in}
+")
+      
+
+     (when (or (equal bx:langs "en")
+	       (equal bx:langs "en+fa"))
+       (insert "\\begin{center}\n")
+       (insert "{\\large Document \\#")
+       (insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
+       (insert (format "Version %s\\\\\n"  lcnt-version))
+       (insert (format "%s}\n" lcnt-date))
+       (insert "\\end{center}")
+
+       (insert "
+\\vspace{0.05in}")
+
+       (when (not (equal bx:form "priv"))
+	 (insert "
+
+\\begin{center}
+{\\large This Document is Available on-line at:\\\\
+")
+
+	 (insert (format "\\href{%s}{%s}}\n" lcnt-url lcnt-url))
+
+	 (insert "\\end{center}
+")
+	 )
+
+       (insert "
+\\vspace{0.3in}
+
+\\begin{center}
+")
+
+   (insert (format "{\\large {\\bf %s}\\\\
+  Email: \\href{%s}{%s}\\\\
+}" lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+   (insert "
+\\end{center}
+
+\\vspace{0.1in}
+
+")
+   )
+      (when (equal bx:langs "fa+en")
+	(insert "\\begin{center}\n")
+	(insert "{\\large مقاله شماره: ")
+	(insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
+	(insert (format "تاريخ: %s}\n" lcnt-date))
+	(insert "\\end{center}")
+
+	(insert "
+\\vspace{0.05in}
+
+\\begin{center}
+{\\large مقاله و اسلايد روى وب در :}
+")
+
+	(insert "\\begin{latin}\n")
+	(insert (format "\\href{%s}{%s}\n" lcnt-url lcnt-url))
+	(insert "\\end{latin}\n")
+
+	(insert "\\end{center}
+
+\\vspace{0.3in}
+
+\\begin{center}
+")
+
+   (insert (format "{\\large {\\bf %s}\\\\
+  تماس: \\lr{\\href{%s}{%s}}\\\\
+}" lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+   (insert "\\end{center}
+
+\\vspace{0.1in}
+
+\\bibliographystyle{plain}
+")
+
+	)
+      )  
+
+    (when (or (equal bx:class "pres+art")
+	      (equal bx:class "pres"))
+      (insert "
+
+\\mode<all>  % Important -- Must Be Here\n")
+
+      (insert (format "
+\\begin{latexonly}
+"))
+
+;; \\title[%s]
+;; {%s}\n" lcnt-shortTitle lcnt-mainTitle))
+
+;;       (if (not (string-equal lcnt-subTitle ""))
+;; 	  (insert (format "
+;; \\subtitle[%s]
+;; {%s}\n" lcnt-subTitle lcnt-subTitle)))
+
+;;       ;;;(if (not (string-equal lcnt-subSubTitle ""))
+;; 	;;;  (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+
+;;       (insert (format "
+;; \\author[%s] 
+;; {%s\\\\
+;; Email: \\href{%s}{%s}\\\\
+;; }
+;; " lcnt-authorName1 lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+;;       (insert (format "
+;; \\institute[%s-%s] 
+;; {\\href{%s}{%s}}
+;; "   lcnt-type lcnt-lcntNu lcnt-url lcnt-url))
+
+;;       (insert (format "
+;; \\date[%s]
+;; {%s}
+;; " lcnt-date lcnt-date))
+;; ;;;{%s\\\\Varbatim Copying Permitted}      
+
+;;       (insert (format "
+;; \\subject{%s}
+;; " lcnt-shortTitle))
+
+      (when (string-equal coverPage "blank")
+	(insert "
+% Blank Cover Page
+\\bgroup
+\\setbeamercolor{background canvas}{bg=black}
+\\begin{frame}[plain]{}
+\\end{frame}
+\\egroup
+"))
+
+      (when (not (string-equal coverPage "blank"))
+	(insert "
+% No Blank Cover Page -- Select dblock :coverPage blank if desired
+"))
+      
+      (insert "
+
+  \\begin{frame}[label=titlePage]
+    \\titlepage
+    \\frameaudio{\"audio/titlePage.mp3\"}
+%BxPy: impressiveFrameParSet('titlePage', 'always', 'True')
+%BxPy: impressiveFrameParSet('titlePage', 'transition', 'UnSpecified')
+%BxPy: impressiveFrameParSet('titlePage', 'onLeave', 'UnSpecified')
+  \\end{frame}
+\\end{latexonly}
+
+\\begin{htmlonly}
+  \\begin{frame}[label=titlePage]
+  \\frameaudio{\"audio/titlePage.mp3\"}
+")
+      (insert (format "
+  \\frametitle{%s}
+"  lcnt-mainTitle))
+
+      (if (not (string-equal lcnt-subTitle ""))
+	  (insert (format "%s\\\\\n" lcnt-subTitle)))
+
+      (if (not (string-equal lcnt-subSubTitle ""))
+	  (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+
+
+      (when (or (equal bx:langs "en")
+		(equal bx:langs "en+fa"))
+    (insert "\\begin{center}\n")
+    (insert "{\\large Document \\#")
+    (insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
+    (insert (format "Version %s\\\\\n"  lcnt-version))
+    (insert (format "%s}\n" lcnt-date))
+    (insert "\\end{center}")
+
+   (insert "
+\\vspace{0.05in}
+
+\\begin{center}
+{\\large This Document is Available on-line at:\\\\
+")
+
+   (insert (format "\\href{%s}{%s}}\n" lcnt-url lcnt-url))
+
+   (insert "\\end{center}
+
+\\begin{center}
+")
+
+   (insert (format "{\\large {\\bf %s}\\\\
+  Email: \\href{%s}{%s}\\\\
+}" lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+   (insert "\\end{center}")
+
+   (insert "
+  \\end{frame}
+\\end{htmlonly}
+
+")
+      )
+
+    ;;;(insert "%}}} DBLOCK-front-begin")
+      )
+    )
+  )
+
+
+
 (lambda () "
 *  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(delete-other-windows)][(1)]]            *Table Of Contents*
 ")
 
+
+(defun org-dblock-write:bx:lcnt:latex:toc-insert (@params)
+  "Newer Version -- Obsoletes org-dblock-write:bx:dblock:lcnt:latex:toc-insert
+"
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@pageBreak (or (plist-get @params :pageBreak) nil))	
+	(@toc (or (plist-get @params :toc) nil))
+	(@tables (or (plist-get @params :tables) nil))	
+	(@figures (or (plist-get @params :figures) nil))		
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :pageBreak nil|t :toc nil|t :tables nil|t :figures nil|t"
+     )
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name (format
+	    "Table Of Contents --- pageBreak=%s toc=%s tables=%s figures=%s"
+	    @pageBreak
+	    @toc
+	    @tables
+	    @figures
+	    )
+     :level 1
+     :comment (format "")
+     )
+    
+    (when @pageBreak
+      (insert "
+
+\\clearpage
+"
+	      )
+      )
+
+      (insert "
+\\pagenumbering{roman}
+\\setcounter{page}{2}
+
+\\bigskip
+"
+	      )
+    
+
+    
+    (when @toc
+      (insert "
+\\tableofcontents"))
+   
+    (when @tables
+      (insert "
+\\listoftables"))
+
+    (when @figures
+      (insert "
+\\listoffigures"))
+
+    (insert "\n\n\\pagenumbering{arabic}\n")
+      ))
+
+
+
 (defun org-dblock-write:bx:dblock:lcnt:latex:toc-insert (@params)
+  "Being Obsoleted by the modern type
+"
   (let (
 	($class (or (plist-get @params :class) ""))
 	($langs (or (plist-get @params :langs) ""))
@@ -1882,10 +3193,11 @@ and this permission notice are preserved on all copies.
 	      (progn
 		(insert (format "\
 \\begin{comment}
-*  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
+%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /Input/  [[elisp:(blee:file-goto-contents \"%s\")][Goto %s]] ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}
 
 \\input{%s}"
+				"*"
 				bx:input-file
 				bx:input-file
 				bx:input-file
@@ -2108,12 +3420,14 @@ otherwise labelInfo is inserted as label"
 	     
 	  (insert (format "\
 \\begin{comment}
-*      ================
-*  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  *Part %s*   /%s/ ::  [[elisp:(org-cycle)][| ]]
+%s      ================
+%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  *Part %s*   /%s/ ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}
 
 \\newpage
 \\part{%s}"
+			  "*"
+			  "*"
 			  bx:part
 			  bx:seg-title
 			  bx:seg-title
@@ -2525,19 +3839,102 @@ Star at the begining of line is avoided not to show up in org-mode view.
 	   name
 	   )))
 
-(defun org-latex-section-insert-dblock-name (name)
+(defun org-latex-section-insert-dblock-name (@name &optional @level @comment)
   "Given NAME, insert a latex commented section tag.
-Both begin and end should always be terminated wit ha new line.
+Both begin and end should always be terminated with a new line.
 Star at the begining of line is avoided not to show up in org-mode view.
 "
-  (insert
-   (format "\
-\\begin{comment}\n*\
-  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /DBLOCK: %s/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}
+  (let (
+	($orgLevelStr)
+	($commentStart "=")
+	($commentEnd "=")	
+	)
+    (if (not @level)
+	(setq @level 1)
+      )
+    (setq $orgLevelStr (make-string @level ?*))
+
+    (if (not @comment)
+	(progn 
+	  (setq @comment "")
+	  (setq $commentStart "")
+	  (setq $commentEnd "")
+	  )
+      )
+
+    (insert
+     (format "\
+\\begin{comment}\n%s\
+  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  /DBLOCK: %s/ %s%s%s ::  [[elisp:(org-cycle)][| ]]
+\\end{comment}\
 "
-	   name
-	   )))
+	     $orgLevelStr
+	     @name	     
+	     $commentStart
+	     @comment
+	     $commentEnd
+	     ))
+    ))
+
+(defun org-latex-node-insert-note (&rest @args)
+  "Insert a latex commented org-node.
+"
+  (let (
+	(@label (or (plist-get @args :label) "Note:"))
+	(@name (or (plist-get @args :name) ""))
+	(@level (or (plist-get @args :level) 1))
+	(@comment (or (plist-get @args :comment) nil))	
+	;;;
+	($orgLevelStr)
+	($commentStart "=")
+	($commentEnd "=")
+	($labelNameSeparator " ")
+	)
+
+    (setq $orgLevelStr (make-string @level ?*))
+
+    (when (not @comment)
+      (setq @comment "")
+      (setq $commentStart "")
+      (setq $commentEnd "")
+      )
+
+    (when (equal @name "")
+      (setq $labelNameSeparator "")
+      )
+
+    (insert
+     (format "\
+\\begin{comment}\n\
+%s\
+  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]] \
+ /%s%s%s/  %s%s%s\
+ ::  [[elisp:(org-cycle)][| ]]
+\\end{comment}\
+"
+	     $orgLevelStr
+	     @label
+	     $labelNameSeparator
+	     @name	     
+	     $commentStart
+	     @comment
+	     $commentEnd
+	     ))
+    ))
+
+;; (blee:dblock:params:desc 'latex-mode "Some String")
+
+
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:dblock:params:desc @mode @descStr) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:dblock:params:desc (@mode @descStr)
+  "Inserts $commentStr+@docstr at point -- @mode is used for comment delim"
+  (when (equal @mode 'latex-mode)
+    (insert (format "%%%%%% Args: %s\n" @descStr))
+    ))
+
 
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-latex"

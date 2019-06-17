@@ -162,6 +162,30 @@
 
 
 
+
+(defun call-stack ()
+  "Return the current call stack frames."
+  (let ((frames)
+        (frame)
+        (index 5))
+    (while (setq frame (backtrace-frame index))
+      (push frame frames)
+      (incf index))
+    (remove-if-not 'car frames)))
+
+(defmacro compile-time-function-name ()
+  "Get the name of calling function at expansion time."
+  (symbol-name
+   (cadadr
+    (third
+     (find-if (lambda (frame) (ignore-errors (equal (car (third frame)) 'defalias)))
+              (reverse (call-stack)))))))
+
+;; (my-test-function)
+;;(defun my-test-function ()  (message "This function is named '%s'" (compile-time-function-name)))
+
+
+
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "blee-lib-general"
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]

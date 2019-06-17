@@ -131,6 +131,7 @@
   "Convert All sections to their dblocks" 
   (interactive)
   (if (save-excursion (re-search-forward "^(defun " nil t))
+      (move-beginning-of-line 1)
       (when (re-search-forward "^(defun " nil t)
 	(let* (
 	       (defunName (thing-at-point 'symbol))

@@ -272,20 +272,6 @@ _CommentEnd_
 *  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(delete-other-windows)][(1)]]            *Support Functions*
 ")
 
-(lambda () "
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-latex-section-insert-dblock-name params) [[elisp:(org-cycle)][| ]]
-")
-
-(defun org-latex-section-insert-dblock-name (name)
-  "Given NAME, insert a latex commented section tag."
-  (insert
-   (format "\
-\\begin{comment}\n*\
-  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || /DBLOCK: %s/  ::  [[elisp:(org-cycle)][| ]]
-\\end{comment}"
-	   name
-	   )))
-
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-iim-bash"
 (lambda () "

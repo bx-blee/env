@@ -121,6 +121,24 @@
     nil))
 
 
+(defun bx:dblock:org-mode:func-open (@funcName)
+  (insert (format "\
+%s /->/ [[elisp:(describe-function '%s)][(dblock-func]]
+"
+		  "*"
+		  @funcName
+		  )))
+
+(defun bx:dblock:org-mode:func-close (@funcName)
+  (insert (format "\
+%s /<-/ [[elisp:(describe-function '%s)][dblock-func)]]  E|
+"
+		  "*"
+		  @funcName
+		  )))
+
+
+
 ;;; 
 (defun blee:dblock:find-function ()
   "Looks at point"

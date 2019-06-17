@@ -211,7 +211,8 @@
 ; ;; CVS
 ; ;;
 ; (eoe-require 'pcl-cvs)
-(setq vc-follow-symlinks t)
+(setq vc-follow-symlinks nil)   ;;; Following symlinks messes up /lcnt assumptions for example
+
 
 
 

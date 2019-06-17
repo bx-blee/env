@@ -727,10 +727,10 @@ from %s.%s import %s"
 ")
 
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-latex-section-insert-dblock-name params) [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-latex-section-insert-dblock-name-MISTAKE-WhyIsThisHere params) [[elisp:(org-cycle)][| ]]
 ")
 
-(defun org-latex-section-insert-dblock-name (name)
+(defun org-latex-section-insert-dblock-name-MISTAKE-WhyIsThisHere (name)
   "Given NAME, insert a latex commented section tag."
   (insert
    (format "\
