@@ -1491,18 +1491,18 @@ Subject:   & This Matter\\\\
 	(bx:lcnt:info:base-read)
 	($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
 	;;;
-	($atLeastOnce nil)
+	($atLeastOnceWhen nil)
 	)
     
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageSize \"8.5x11|6x9\"")
     
     (org-latex-section-insert-dblock-name
-     (format "Title Page NewGeometry === pageSize=%s" <pageSize)
+     (format "Title Page NewGeometry --- pageSize=%s" <pageSize)
      2
      )
 
     (when (equal <pageSize "8.5x11")
-      (setq $atLeastOnce t)
+      (setq $atLeastOnceWhen t)
       (insert (format "
 \\newgeometry{paperwidth=8.5in,paperheight=11in,bindingoffset=0in,left=0.5in,right=0.5in,top=1.5in,bottom=0.5in,footskip=0in}
 "
@@ -1544,24 +1544,57 @@ Subject:   & This Matter\\\\
   (let (
 	(@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
+	(@titleHeaderType (or (plist-get @params :titleHeaderType) ""))	
 	;;;
+	($atLeastOnceWhen nil)	
 	)
     
-    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :titleHeaderType \"none|bystar|custom\"")
 
     (org-latex-node-insert-note
-     :label (format "DBLOCK:")
-     :name "Title Page Header"
+     :label "DBLOCK:"
+     :name (format
+	    "Title Page Header --- titleHeaderType=%s"
+	    @titleHeaderType
+	    )
      :level 2
      :comment (format "")
      )
 
-    (insert "
+    (when (equal @titleHeaderType "custom")
+      (setq $atLeastOnceWhen t)
+      (insert "
 
-%%% Choice Of title page logos come here.
+%%% Custom Title Page Header Follows -- Separately
 "
-	    )
-      ))
+	      )
+      )
+
+    (when (equal @titleHeaderType "none")
+      (setq $atLeastOnceWhen t)
+      (insert "
+
+%%% No Title Page Header Desired
+"
+	      )
+      )
+
+    (when (equal @titleHeaderType "bystar")
+      (setq $atLeastOnceWhen t)
+      (insert "
+
+%%% NOTYET -- Bystar Title Header Page Comes Here
+"
+	      )
+      )
+    
+    (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknown titleHeader %s\n" @titleHeaderType)
+       )
+
+    ))
 
 
 (defun org-dblock-write:bx:dblock:lcnt:latex:bx-bidi  (@params)
@@ -2448,7 +2481,7 @@ and this permission notice are preserved on all copies.
       (insert (format "
 \\thispagestyle{empty}
 
-\\vfill
+%%%%\\vfill
 
 \\title{%s}\n" lcnt-shortTitle))
 
@@ -2699,8 +2732,337 @@ and this permission notice are preserved on all copies.
 
 
 
+(defun org-dblock-write:bx:lcnt:latex:title-page-titles (params)
+  "Inserts Titles part of the title page.
+"
+  (let ((@class (or (plist-get params :class) ""))
+	(@langs (or (plist-get params :langs) ""))
+	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(@form (or (plist-get params :form) ""))
+	;;;
+	(bx:lcnt:info:base-read)
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-date (get 'bx:lcnt:info:base 'date))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-version (get 'bx:lcnt:info:base 'version))
+	(lcnt-url (get 'bx:lcnt:info:base 'url))
+	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+	;;;
+	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     )
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name (format
+	    "Title Page Titles --- form=%s"
+	    @form
+	    )
+     :level 2
+     :comment (format "")
+     )
+
+    (when (or (equal @class "art+pres")
+	      (equal @class "art"))
+
+      (insert (format "
+
+\\thispagestyle{empty}
+
+\\title{%s}\n" lcnt-shortTitle))
+
+      (insert (format "
+\\begin{center}
+  {\\huge {\\bf %s\\\\
+"  lcnt-mainTitle))
+
+      (when (not (string-equal lcnt-subTitle ""))
+	  (insert (format "\
+\\vspace{0.3in}
+%s\\\\\n" lcnt-subTitle)))
+
+      (when (not (string-equal lcnt-subSubTitle ""))
+	    (insert "\\vspace{0.2in}\n")	    
+	    (insert (format "%s\\\\\n" lcnt-subSubTitle)))
+
+      (insert "\
+}}
+\\end{center}
+
+\\vspace{0.2in}
+")
+
+      (when (string-equal $bufferFileName lcnt-presArtSrcFile)
+	(insert "
+\\begin{center}
+  {\\Large {\\bf Article Format Of Presentation\\\\
+\\vspace{0.2in}
+}}
+\\end{center}
+"
+		)
+	)
+
+     (insert "
+\\vspace{0.7in}
+"
+	     )
+     )
+    ))
+     
+
+(defun org-dblock-write:bx:lcnt:latex:title-page-authors (params)
+  "Inserts Titles part of the title page.
+"
+  (let ((@class (or (plist-get params :class) ""))
+	(@langs (or (plist-get params :langs) ""))
+	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(@form (or (plist-get params :form) ""))
+	;;;
+	(bx:lcnt:info:base-read)
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-date (get 'bx:lcnt:info:base 'date))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-version (get 'bx:lcnt:info:base 'version))
+	(lcnt-url (get 'bx:lcnt:info:base 'url))
+	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+	;;;
+	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     )
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name (format
+	    "Title Page Authors --- form=%s"
+	    @form
+	    )
+     :level 2
+     :comment (format "")
+     )
+
+    (when (or (equal @class "art+pres")
+	      (equal @class "art"))
+
+       (insert "
+\\vspace{0.3in}
+
+\\begin{center}
+"
+	       )
+
+       (insert
+	(format "{\\large {\\bf %s}\\\\
+  Email: \\href{%s}{%s}\\\\
+}"
+		lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
+
+       (insert "
+\\end{center}
+
+\\vspace{0.1in}
+
+"
+	       )
+      )
+    ))
+     
+
+(defun org-dblock-write:bx:lcnt:latex:title-page-lcnt-nu (params)
+  "Inserts Titles part of the title page.
+"
+  (let ((@class (or (plist-get params :class) ""))
+	(@langs (or (plist-get params :langs) ""))
+	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(@form (or (plist-get params :form) ""))
+	;;;
+	(bx:lcnt:info:base-read)
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-date (get 'bx:lcnt:info:base 'date))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-version (get 'bx:lcnt:info:base 'version))
+	(lcnt-url (get 'bx:lcnt:info:base 'url))
+	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+	;;;
+	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     )
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name (format
+	    "Title Page LCNT-Nu --- form=%s"
+	    @form
+	    )
+     :level 2
+     :comment (format "")
+     )
+
+    (when (or (equal @class "art+pres")
+	      (equal @class "art"))
+
+      (when (or (equal @langs "en")
+		(equal @langs "en+fa"))
+	
+	(insert
+	 (format "
+
+\\begin{center}
+	
+{\\LARGE %s-%s}
+
+{\\large %s}
+
+{\\large Version %s}
+
+\\end{center}
+"
+		 lcnt-type lcnt-lcntNu
+		 lcnt-date
+		 lcnt-version
+		 ))
+	(insert "
+\\vspace{0.05in}
+"
+		)
+	)
+
+      (when (equal @langs "fa+en")
+	
+	(insert "\\begin{center}\n")
+	(insert "{\\large مقاله شماره: ")
+	(insert (format "%s-%s\\\\\n" lcnt-type lcnt-lcntNu))
+	(insert (format "تاريخ: %s}\n" lcnt-date))
+	(insert "\\end{center}")
+	)
+      )
+    )
+  )
+     
+(defun org-dblock-write:bx:lcnt:latex:title-page-online-at (params)
+  "Inserts Titles part of the title page.
+"
+  (let ((@class (or (plist-get params :class) ""))
+	(@langs (or (plist-get params :langs) ""))
+	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
+	(@form (or (plist-get params :form) ""))
+	;;;
+	(bx:lcnt:info:base-read)
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-date (get 'bx:lcnt:info:base 'date))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-version (get 'bx:lcnt:info:base 'version))
+	(lcnt-url (get 'bx:lcnt:info:base 'url))
+	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+	;;;
+	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     )
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name (format
+	    "Title Page On-Line At --- form=%s"
+	    @form
+	    )
+     :level 2
+     :comment (format "")
+     )
+
+    (when (not (equal @form "priv"))
+
+      (when (or (equal @class "art+pres")
+		(equal @class "art"))
+
+	(when (or (equal @langs "en")
+		  (equal @langs "en+fa"))
+	  (insert
+	   (format "
+
+\\begin{center}
+{\\large Available on-line at:\\\\
+\\href{%s}{%s}}
+\\end{center}
+"
+		   lcnt-url
+		   lcnt-url))
+	  )
+	
+	(when (equal bx:langs "fa+en")
+	  (insert "\\begin{center}\n")
+
+	  (insert "
+\\vspace{0.05in}
+
+\\begin{center}
+{\\large مقاله و اسلايد روى وب در :}
+"
+		  )
+
+	  (insert "\\begin{latin}\n")
+	  (insert (format "\\href{%s}{%s}\n" lcnt-url lcnt-url))
+	  (insert "\\end{latin}\n")
+
+	  (insert "\\end{center}
+
+\\vspace{0.3in}
+"
+		  )
+	  )
+	)
+      )
+    )
+  )
+
+
+
+
 (defun org-dblock-write:bx:lcnt:latex:title-page-body (params)
-  " Starting Point Replacement for bx:dblock:lcnt:latex:title-page
+  "Starting Point Replacement for bx:dblock:lcnt:latex:title-page
 "
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
@@ -2722,17 +3084,29 @@ and this permission notice are preserved on all copies.
 	(bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
     (bx:lcnt:info:base-read)
-    ;;;(insert "%{{{ DBLOCK-front-begin\n")
-    (insert "%%%% Args:  :form \"priv|std\" :coverPage \"blank|std\"\n")
 
-    (org-latex-section-insert-dblock-name "title-page")
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     )
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK:")
+     :name (format
+	    "Title Page Body --- form=%s"
+	    bx:form
+	    )
+     :level 2
+     :comment (format "")
+     )
 
     (when (or (equal bx:class "art+pres")
 	      (equal bx:class "art"))
       (insert (format "
 \\thispagestyle{empty}
 
-\\vfill
+%%%%\\vfill
 
 \\title{%s}\n" lcnt-shortTitle))
 
