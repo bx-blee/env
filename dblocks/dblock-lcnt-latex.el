@@ -1738,7 +1738,10 @@ Subject:   & This Matter\\\\
       (when (equal @bibProvider "biblatex")
 	(setq $atLeastOnceWhen t)
 	(insert "
-%%% NOTYET
+\\phantomsection 
+\\addcontentsline{toc}{chapter}{Bibliography} 
+
+\\printbibliography
 "
 		)
 	)
