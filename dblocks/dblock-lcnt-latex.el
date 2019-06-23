@@ -1700,8 +1700,7 @@ Subject:   & This Matter\\\\
 	(@langs (or (plist-get @params :langs) ""))
 	(@toggle (or (plist-get @params :toggle) "enabled"))
 	(@curBuild (or (plist-get @params :curBuild) ""))
-	(@bibProvider (or (plist-get @params :bibProvier) "biblatex"))
-	(@style (or (plist-get @params :style) "plain"))		
+	(@bibProvider (or (plist-get @params :bibProvider) "biblatex"))
 	(@bibSrcPaths (or (plist-get
 			   @params
 			   :bibSrcPaths)
@@ -1756,11 +1755,8 @@ Subject:   & This Matter\\\\
 \\phantomsection 
 \\addcontentsline{toc}{chapter}{Bibliography} 
 
-\\bibliographystyle{%s}
-
 \\bibliography{%s}
 "
-		 @style
 		 @bibSrcPaths
 		 ))
 	)
@@ -1771,7 +1767,8 @@ Subject:   & This Matter\\\\
        :info (format "Unknon bibProvider %s" @bibProvider)
        )
       )
-    ))
+    )
+  )
       
 
 (defun org-dblock-write:bx:lcnt:latex:features-appendix-index-glossary (@params)
@@ -1822,7 +1819,8 @@ Subject:   & This Matter\\\\
 	(@langs (or (plist-get @params :langs) ""))
 	(@toggle (or (plist-get @params :toggle) "enabled"))
 	(@curBuild (or (plist-get @params :curBuild) ""))
-	(@bibProvider (or (plist-get @params :bibProvider) "biblatex"))	
+	(@bibProvider (or (plist-get @params :bibProvider) "biblatex"))
+	(@style (or (plist-get @params :style) "plain"))		
 	;;;
 	($atLeastOnceWhen nil)
 	)
@@ -1852,30 +1850,37 @@ Subject:   & This Matter\\\\
     (when (equal @toggle "enabled")
       (when (equal @bibProvider "biblatex")
 	(setq $atLeastOnceWhen t)
-	(insert "
+	(when (equal @style "plain")
+	  (setq @style "numeric")
+	  )
+	(insert
+	 (format "
 
-\\usepackage{biblatex}
+\\usepackage[style=%s]{biblatex}
 
 \\addbibresource{/lcnt/outputs/all/plpcUrl.bib}
 "
-		)
+		@style
+		))
 	)
-      
       (when (equal @bibProvider "bibtex")
 	(setq $atLeastOnceWhen t)
-	(insert "
-%%% NOTYET bibtex usepackage etc
-"
-		)
-	)
+	(insert
+	 (format "
 
+\\bibliographystyle{%s}
+"
+		@style
+		))
+	)
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhen
        :context "latex"
        :info (format "Unknon bibProvider %s" @bibProvider)
        )
       )
-    ))
+    )
+  )
 
 ;;;
 ;;; (bx:eh:assert:atLeastOnceWhen t :context "latex" :info "I")
