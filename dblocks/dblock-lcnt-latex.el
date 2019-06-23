@@ -1738,6 +1738,7 @@ Subject:   & This Matter\\\\
       (when (equal @bibProvider "biblatex")
 	(setq $atLeastOnceWhen t)
 	(insert "
+
 \\phantomsection 
 \\addcontentsline{toc}{chapter}{Bibliography} 
 
@@ -1751,6 +1752,7 @@ Subject:   & This Matter\\\\
         ;;; % NOTYET \bibliographystyle{amsalpha} should come here.
 	(insert
 	 (format "
+
 \\phantomsection 
 \\addcontentsline{toc}{chapter}{Bibliography} 
 
@@ -1820,7 +1822,7 @@ Subject:   & This Matter\\\\
 	(@langs (or (plist-get @params :langs) ""))
 	(@toggle (or (plist-get @params :toggle) "enabled"))
 	(@curBuild (or (plist-get @params :curBuild) ""))
-	(@bibProvider (or (plist-get @params :bibProvier) "biblatex"))	
+	(@bibProvider (or (plist-get @params :bibProvider) "biblatex"))	
 	;;;
 	($atLeastOnceWhen nil)
 	)
@@ -2974,14 +2976,17 @@ and this permission notice are preserved on all copies.
       )
     )
   )
-     
-(defun org-dblock-write:bx:lcnt:latex:title-page-online-at (params)
+
+
+
+(defun org-dblock-write:bx:lcnt:latex:title-page-online-at (@params)
   "Inserts Titles part of the title page.
 "
-  (let ((@class (or (plist-get params :class) ""))
-	(@langs (or (plist-get params :langs) ""))
-	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
-	(@form (or (plist-get params :form) ""))
+  (let ((@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@coverPage (or (plist-get @params :coverPage) "UnSpecified"))
+	(@form (or (plist-get @params :form) ""))
+	(@toggle (or (plist-get @params :toggle) ""))		
 	;;;
 	(bx:lcnt:info:base-read)
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
@@ -3003,19 +3008,29 @@ and this permission notice are preserved on all copies.
 
     (blee:dblock:params:desc
      'latex-mode
-     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\" :toggle \"enabled|disabled|hide\""
      )
 
-    (org-latex-node-insert-note
-     :label (format "DBLOCK:")
-     :name (format
-	    "Title Page On-Line At --- form=%s"
-	    @form
-	    )
-     :level 2
-     :comment (format "")
-     )
-
+    (when (not (equal @toggle "hide"))    
+      (org-latex-node-insert-note
+       :label (format "DBLOCK:")
+       :name (format
+	      "Title Page On-Line At --- toggle=%s form=%s"
+	      @toggle
+	      @form
+	      )
+       :level 2
+       :comment (format "")
+       )
+      )
+    
+    (when (equal @toggle "hide")  ;;; else
+      (setq @toggle "disabled")
+      )
+    
+   
+    (when (equal @toggle "enabled")
+      
     (when (not (equal @form "priv"))
 
       (when (or (equal @class "art+pres")
@@ -3057,7 +3072,7 @@ and this permission notice are preserved on all copies.
 		  )
 	  )
 	)
-      )
+      ))
     )
   )
 
