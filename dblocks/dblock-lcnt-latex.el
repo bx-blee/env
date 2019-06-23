@@ -1738,6 +1738,7 @@ Subject:   & This Matter\\\\
       (when (equal @bibProvider "biblatex")
 	(setq $atLeastOnceWhen t)
 	(insert "
+
 \\phantomsection 
 \\addcontentsline{toc}{chapter}{Bibliography} 
 
@@ -1751,6 +1752,7 @@ Subject:   & This Matter\\\\
         ;;; % NOTYET \bibliographystyle{amsalpha} should come here.
 	(insert
 	 (format "
+
 \\phantomsection 
 \\addcontentsline{toc}{chapter}{Bibliography} 
 
