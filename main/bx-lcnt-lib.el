@@ -183,4 +183,80 @@ bx:lcnt:info:base-show
   
 
 
+;;;   (bx:lcnt:curBuild:base-read)
+(defun bx:lcnt:curBuild:base-read ()
+  ""
+  (interactive)
+  (bx:lcnt:curBuild:base-read-dir default-directory)
+)
+
+;;;   (bx:lcnt:curBuild:base-read-dir "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
+(defun bx:lcnt:curBuild:base-read-dir (@dir)
+  ""
+  (interactive "DEnter Directory:")
+
+  (let (
+	($curBuildBaseDir (concat @dir "/curBuild"))
+	)
+
+    (when (not (file-directory-p $curBuildBaseDir))
+      (message (format "Missing: %s" $curBuildBaseDir))
+      nil
+      )
+    
+    (when (file-directory-p $curBuildBaseDir)
+      (setq bx:lcnt:curBuild:base $curBuildBaseDir)      
+    
+      ;;(get 'bx:lcnt:curBuild:base 'paperSize)
+      (put 'bx:lcnt:curBuild:base 
+	   'paperSize
+	   (shell-command-to-string 
+	    (format "echo -n $( head -1 %s/paperSize )" $curBuildBaseDir))
+	   )
+      t
+      )
+    )
+  )
+
+  
+;;;   (bx:lcnt:curBuild:base-show)
+(defun bx:lcnt:curBuild:base-show ()
+  ""
+  (interactive)
+
+  ;;;(bx:lcnt:curBuild:base-read)
+
+  (with-output-to-temp-buffer (help-buffer)
+    (switch-to-buffer (help-buffer))
+    (goto-char (point-max))
+    (insert "
+bx:lcnt:curBuild:base-show
+
+(symbol-plist 'bx:lcnt:curBuild:base) VALUES ARE:
+\n")
+    
+      (goto-char (point-max))
+      (pp-eval-expression '(symbol-plist 'bx:lcnt:curBuild:base))
+   
+      (insert-buffer "*Pp Eval Output*")
+
+      (goto-char (point-max))
+      (insert "\n")
+
+      (kill-buffer "*Pp Eval Output*")
+      (goto-char (point-min))
+))
+
+;;;   (bx:lcnt:curBuild:base-read-show "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
+(defun bx:lcnt:curBuild:base-read-show (@dir)
+  ""
+  (interactive "DEnter Directory:")
+
+  (when (bx:lcnt:curBuild:base-read-dir @dir)
+    (bx:lcnt:curBuild:base-show)
+    )
+  )
+ 
+
+
 (provide 'bx-lcnt-lib)

@@ -1447,75 +1447,216 @@ Subject:   & This Matter\\\\
 
 
 (defun org-dblock-write:bx:dblock:lcnt:latex:geometry (@params)
+  "Specifying paperSize overwrites curBuild values"
   (let (
-	($class (or (plist-get @params :class) ""))
-	($langs (or (plist-get @params :langs) ""))
-	($pageSize (or (plist-get @params :pageSize) ""))	
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
 	;;;
-	(bx:lcnt:info:base-read)
-	($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
-	;;;
-	($atLeastOnce nil)
-	)
-    
-    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageSize \"8.5x11|6x9\"")
-    
-    (org-latex-section-insert-dblock-name
-     (format "Geometry === pageSize=%s" $pageSize))
-
-    (insert (format "\n
-\\usepackage{geometry}\n"))
-
-    (when (equal $pageSize "8.5x11")
-      (setq $atLeastOnce t)
-      (insert (format "
-\\geometry{paperwidth=8.5in,paperheight=11in,bindingoffset=0.2in,left=1.0in,right=1.0in,top=1in,bottom=0.75in,footskip=.25in}\
-\n"
-		      ))
-      )
-
-    (when (not $atLeastOnce)
-      (insert (format "\n
-%%% Unknown Geometry %s\n" $pageSize))
-      )
-
-    ))
-
-
-(defun org-dblock-write:bx:dblock:lcnt:latex:title-page-newgeometry (@params)
-  (let (
-	(<class (or (plist-get @params :class) ""))
-	(<langs (or (plist-get @params :langs) ""))
-	(<pageSize (or (plist-get @params :pageSize) ""))	
-	;;;
-	(bx:lcnt:info:base-read)
-	($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	($curBuild:paperSize nil)
 	;;;
 	($atLeastOnceWhen nil)
 	)
-    
-    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageSize \"8.5x11|6x9\"")
-    
-    (org-latex-section-insert-dblock-name
-     (format "Title Page NewGeometry --- pageSize=%s" <pageSize)
-     2
+
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\"")
+
+    (org-latex-node-insert-note
+     :label "DBLOCK:"
+    :name (format
+	   "Geometry --- curBuild=%s paperSize=%s"
+	   @curBuild
+	   @paperSize
+	   )
+     :level 1
+     :comment (format "")
      )
 
-    (when (equal <pageSize "8.5x11")
-      (setq $atLeastOnceWhen t)
-      (insert (format "
-\\newgeometry{paperwidth=8.5in,paperheight=11in,bindingoffset=0in,left=0.5in,right=0.5in,top=1.5in,bottom=0.5in,footskip=0in}
-"
-		      ))
+    (when (not @paperSize)
+      (when (not @curBuild)
+	(insert
+	 "\n%%% Either paperSize or curBuild should be specified."
+	 )
+	)
+      (when @curBuild
+	(when (bx:lcnt:curBuild:base-read)
+	  (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	  (setq @paperSize $curBuild:paperSize)
+	  )
+     
+	(when (not @paperSize)
+	  (insert
+	   "\n%%% curBuild paperSize not is not valid."
+	   )
+	  )
+	)
       )
 
+    ;;;
+    ;;; $paperSize is assumed to be available now.
+    ;;;
+
+    (when @paperSize
+      
+      (insert (format "\n
+\\usepackage{geometry}\n"))
+
+      (when (equal @paperSize "8.5x11")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\geometry{paperwidth=8.5in,paperheight=11in,bindingoffset=0.2in,left=1.0in,right=1.0in,top=1in,bottom=0.75in,footskip=.25in}
+"
+		 )
+	 )
+	)
+      (when (equal @paperSize "a4")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\geometry{a4paper,bindingoffset=0.2in,left=1.0in,right=1.0in,top=1in,bottom=0.75in,footskip=.25in}
+"
+		 )
+	 )
+	)
+      (when (equal @paperSize "6x9")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\geometry{paperwidth=6in,paperheight=9in,bindingoffset=0.2in,left=0.75in,right=0.75in,top=1in,bottom=0.75in,footskip=.25in}
+"
+		 )
+	 )
+	)
+      (when (equal @paperSize "17.5x23.5")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\geometry{paperwidth=17.5cm,paperheight=23.5cm,bindingoffset=0.2in,left=0.75in,right=0.75in,top=1in,bottom=0.75in,footskip=.25in}
+"
+		 )
+	 )
+	)
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhen
        :context "latex"
-       :info (format "Unknown Title New NewGeometry %s\n" <pageSize)
+       :info (format "Unknown Geometry %s\n"
+		     @paperSize)
+       )
+      )
+    )
+  )
+
+
+
+(defun org-dblock-write:bx:dblock:lcnt:latex:title-page-newgeometry (@params)
+  "Specifying paperSize overwrites curBuild values"
+  (let (
+	(@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	;;;
+	($curBuild:paperSize nil)
+	;;;
+	($atLeastOnceWhen nil)
+	)
+
+    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\"")
+
+    (org-latex-node-insert-note
+     :label "DBLOCK:"
+    :name (format
+	   "Geometry --- curBuild=%s paperSize=%s"
+	   @curBuild
+	   @paperSize
+	   )
+     :level 2
+     :comment (format "")
+     )
+
+    (when (not @paperSize)
+      (when (not @curBuild)
+	(insert
+	 "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	 )
+	)
+      (when @curBuild
+	(when (bx:lcnt:curBuild:base-read)
+	  (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	  (setq @paperSize $curBuild:paperSize)
+	  )
+     
+	(when (not @paperSize)
+	  (insert
+	   "\n%%% ERROR:: curBuild paperSize not is not valid."
+	   )
+	  )
+	)
+      )
+
+    ;;;
+    ;;; $paperSize is assumed to be available now.
+    ;;;
+
+    (when @paperSize
+      
+      (insert 
+       (format "\n
+%s newgeometry paperSize=%s\n"
+	       "%%%"
+	       @paperSize
+	       )
        )
 
-    ))
+      (when (equal @paperSize "8.5x11")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\newgeometry{bindingoffset=0in,left=0.5in,right=0.5in,top=0.7in,bottom=0.35in,footskip=0in}
+"
+		 )
+	 )
+	)
+      (when (equal @paperSize "a4")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\newgeometry{bindingoffset=0in,left=0.5in,right=0.5in,top=0.7in,bottom=0.35in,footskip=0in}
+"
+		 )
+	 )
+	)
+      (when (equal @paperSize "6x9")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\newgeometry{bindingoffset=0in,left=0.25in,right=0.25in,top=1.0in,bottom=0.25in,footskip=0in}
+"
+		 )
+	 )
+	)
+      (when (equal @paperSize "17.5x23.5")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+\\newgeometry{bindingoffset=0in,left=0.25in,right=0.25in,top=1.0in,bottom=0.25in,footskip=0in}
+"
+		 )
+	 )
+	)
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknown Title New NewGeometry %s\n"
+		     @paperSize)
+       )
+      )
+    )
+  )
+
 
 (defun org-dblock-write:bx:lcnt:latex:restoregeometry (@params)
   (let (
@@ -1527,7 +1668,7 @@ Subject:   & This Matter\\\\
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
 
     (org-latex-node-insert-note
-     :label (format "DBLOCK:")
+     :label "DBLOCK:"
      :name "Restore Geometry"
      :level 2
      :comment (format "")
@@ -1720,9 +1861,10 @@ Subject:   & This Matter\\\\
       (org-latex-node-insert-note
        :label (format "DBLOCK:")
        :name (format
-	      "print-bibliography --- toggle=%s bibProvider=%s"
+	      "print-bibliography --- toggle=%s bibProvider=%s bibSrcPaths=%s"
 	      @toggle
 	      @bibProvider
+	      @bibSrcPaths	      
 	      )
        :level 1
        :comment (format "")
@@ -1749,18 +1891,22 @@ Subject:   & This Matter\\\\
       (when (equal @bibProvider "bibtex")
 	(setq $atLeastOnceWhen t)
         ;;; % NOTYET \bibliographystyle{amsalpha} should come here.
-	(insert
-	 (format "
+	(insert "
 
 \\phantomsection 
 \\addcontentsline{toc}{chapter}{Bibliography} 
+"
+		)
 
+	(when (not (equal @bibSrcPaths ""))
+	  (insert
+	   (format "
 \\bibliography{%s}
 "
 		 @bibSrcPaths
 		 ))
+	  )
 	)
-
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhen
        :context "latex"
@@ -3055,7 +3201,7 @@ and this permission notice are preserved on all copies.
 		   lcnt-url))
 	  )
 	
-	(when (equal bx:langs "fa+en")
+	(when (equal @langs "fa+en")
 	  (insert "\\begin{center}\n")
 
 	  (insert "
