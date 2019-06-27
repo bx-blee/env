@@ -1459,7 +1459,10 @@ Subject:   & This Matter\\\\
 	($atLeastOnceWhen nil)
 	)
 
-    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\"")
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
+     )
 
     (org-latex-node-insert-note
      :label "DBLOCK:"
@@ -1475,7 +1478,7 @@ Subject:   & This Matter\\\\
     (when (not @paperSize)
       (when (not @curBuild)
 	(insert
-	 "\n%%% Either paperSize or curBuild should be specified."
+	 "\n%%% ERROR:: Either paperSize or curBuild should be specified."
 	 )
 	)
       (when @curBuild
@@ -1487,14 +1490,14 @@ Subject:   & This Matter\\\\
      
 	(when (not @paperSize)
 	  (insert
-	   "\n%%% curBuild paperSize not is not valid."
+	   "\n%%% ERROR:: curBuild paperSize not is not valid."
 	   )
 	  )
 	)
       )
 
     ;;;
-    ;;; $paperSize is assumed to be available now.
+    ;;; $paperSize is available now.
     ;;;
 
     (when @paperSize
@@ -1563,15 +1566,18 @@ Subject:   & This Matter\\\\
 	($atLeastOnceWhen nil)
 	)
 
-    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\"")
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
+     )
 
     (org-latex-node-insert-note
      :label "DBLOCK:"
-    :name (format
-	   "Geometry --- curBuild=%s paperSize=%s"
-	   @curBuild
-	   @paperSize
-	   )
+     :name (format
+	    "Title Page New Geometry --- curBuild=%s paperSize=%s"
+	    @curBuild
+	    @paperSize
+	    )
      :level 2
      :comment (format "")
      )
@@ -1598,7 +1604,7 @@ Subject:   & This Matter\\\\
       )
 
     ;;;
-    ;;; $paperSize is assumed to be available now.
+    ;;; $paperSize is available now.
     ;;;
 
     (when @paperSize
@@ -2888,13 +2894,19 @@ and this permission notice are preserved on all copies.
 
 
 
-(defun org-dblock-write:bx:lcnt:latex:title-page-titles (params)
-  "Inserts Titles part of the title page.
+(defun org-dblock-write:bx:lcnt:latex:title-page-titles (@params)
+  "Inserts Titles (mainTitle, subTitle, subSubStitle) part of the title page.
+Font size and spacing can be based on paper size.
 "
-  (let ((@class (or (plist-get params :class) ""))
-	(@langs (or (plist-get params :langs) ""))
-	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
-	(@form (or (plist-get params :form) ""))
+  (let ((@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	(@spacing (or (plist-get @params :spacing) nil))	
+	;;;
+	($curBuild:paperSize nil)
+	;;;
+	($atLeastOnceWhen nil)
 	;;;
 	(bx:lcnt:info:base-read)
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
@@ -2916,49 +2928,152 @@ and this permission notice are preserved on all copies.
 
     (blee:dblock:params:desc
      'latex-mode
-     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     ":class \"book|pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
      )
 
     (org-latex-node-insert-note
-     :label (format "DBLOCK:")
+     :label "DBLOCK:"
      :name (format
-	    "Title Page Titles --- form=%s"
-	    @form
+	    "Title Page Titles --- curBuild=%s paperSize=%s spacing=%s"
+	    @curBuild
+	    @paperSize
+	    @spacing
 	    )
      :level 2
      :comment (format "")
      )
 
-    (when (or (equal @class "art+pres")
-	      (equal @class "art"))
+    (when (not @paperSize)
+      (when (not @curBuild)
+	(insert
+	 "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	 )
+	)
+      (when @curBuild
+	(when (bx:lcnt:curBuild:base-read)
+	  (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	  (setq @paperSize $curBuild:paperSize)
+	  )
+     
+	(when (not @paperSize)
+	  (insert
+	   "\n%%% ERROR:: curBuild paperSize not is not valid."
+	   )
+	  )
+	)
+      )
 
-      (insert (format "
+    ;;;
+    ;;; $paperSize is available now.
+    ;;;
+
+    (when @paperSize
+      (insert 
+       (format "\n
+%s Titles paperSize=%s\n"
+	       "%%%"
+	       @paperSize
+	       )
+       )
+      (insert
+       (format "
 
 \\thispagestyle{empty}
 
-\\title{%s}\n" lcnt-shortTitle))
+\\title{%s}\n"
+	       lcnt-shortTitle)
+       )
 
-      (insert (format "
+      (when (or (equal @paperSize "8.5x11")
+		(equal @paperSize "a4")
+		)
+	(setq $atLeastOnceWhen t)
+	(when (or (equal @class "art+pres")
+		  (equal @class "art")
+		  )
+	  (insert
+	   (format "
 \\begin{center}
-  {\\huge {\\bf %s\\\\
-"  lcnt-mainTitle))
-
-      (when (not (string-equal lcnt-subTitle ""))
-	  (insert (format "\
-\\vspace{0.3in}
-%s\\\\\n" lcnt-subTitle)))
-
-      (when (not (string-equal lcnt-subSubTitle ""))
-	    (insert "\\vspace{0.2in}\n")	    
-	    (insert (format "%s\\\\\n" lcnt-subSubTitle)))
-
-      (insert "\
-}}
-\\end{center}
-
+{\\HUGE {\\bf %s}}\\\\
+"
+		   lcnt-mainTitle
+		   )
+	   )
+	  
+	  (when (not (string-equal lcnt-subTitle ""))
+	    (insert
+	     (format "\
 \\vspace{0.2in}
-")
+{\\huge {\\bf %s}}\\\\\n"
+		     lcnt-subTitle
+		     )
+	     )
+	    )
 
+	  (when (not (string-equal lcnt-subSubTitle ""))
+	    (insert
+	     (format "
+\\vspace{0.2in}
+{\\huge {\\bf %s}}\\\\\n"
+		     lcnt-subSubTitle
+		     )
+	     )
+	    )
+	  (insert "\
+
+\\end{center}\n"
+		  )
+	  )
+	)
+      
+      (when (or (equal @paperSize "6x9")
+		(equal @paperSize "17.5x23.5")
+		)
+	(setq $atLeastOnceWhen t)
+	(when (or (equal @class "art+pres")
+		  (equal @class "art")
+		  )
+	  (insert
+	   (format "
+\\begin{center}
+{\\huge {\\bf %s}}\\\\
+"
+		   lcnt-mainTitle
+		   )
+	   )
+	  
+	  (when (not (string-equal lcnt-subTitle ""))
+	    (insert
+	     (format "\
+\\vspace{0.3in}
+{\\huge {\\bf %s}}\\\\\n"
+		     lcnt-subTitle
+		     )
+	     )
+	    )
+
+	  (when (not (string-equal lcnt-subSubTitle ""))
+	    (insert
+	     (format "
+\\vspace{0.2in}
+{\\huge {\\bf %s}}\\\\\n"
+		     lcnt-subSubTitle
+		     )
+	     )
+	    )
+	  (insert "\
+
+\\end{center}\n"
+		  )
+	  )
+	)
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknown Title  %s\n"
+		     @paperSize)
+       )
       (when (string-equal $bufferFileName lcnt-presArtSrcFile)
 	(insert "
 \\begin{center}
@@ -2969,22 +3084,29 @@ and this permission notice are preserved on all copies.
 "
 		)
 	)
-
-     (insert "
-\\vspace{0.7in}
-"
-	     )
-     )
-    ))
+      (when @spacing
+	(insert "\n
+\\vspace{0.35in}\n"
+		)
+	)
+      )
+    )
+  )
+    
      
 
-(defun org-dblock-write:bx:lcnt:latex:title-page-authors (params)
+(defun org-dblock-write:bx:lcnt:latex:title-page-authors (@params)
   "Inserts Titles part of the title page.
 "
-  (let ((@class (or (plist-get params :class) ""))
-	(@langs (or (plist-get params :langs) ""))
-	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
-	(@form (or (plist-get params :form) ""))
+  (let ((@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	(@spacing (or (plist-get @params :spacing) nil))	
+	;;;
+	($curBuild:paperSize nil)
+	;;;
+	($atLeastOnceWhen nil)
 	;;;
 	(bx:lcnt:info:base-read)
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
@@ -3012,47 +3134,122 @@ and this permission notice are preserved on all copies.
     (org-latex-node-insert-note
      :label (format "DBLOCK:")
      :name (format
-	    "Title Page Authors --- form=%s"
-	    @form
+	    "Title Page Authors --- curBuild=%s paperSize=%s spacing=%s"
+	    @curBuild
+	    @paperSize
+	    @spacing
 	    )
      :level 2
      :comment (format "")
      )
 
-    (when (or (equal @class "art+pres")
-	      (equal @class "art"))
 
-       (insert "
-\\vspace{0.3in}
-
-\\begin{center}
-"
-	       )
-
-       (insert
-	(format "{\\large {\\bf %s}\\\\
-  Email: \\href{%s}{%s}\\\\
-}"
-		lcnt-authorName1 lcnt-authorUrl1 lcnt-authorUrl1))
-
-       (insert "
-\\end{center}
-
-\\vspace{0.1in}
-
-"
-	       )
-      )
-    ))
+    (when (not @paperSize)
+      (when (not @curBuild)
+	(insert
+	 "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	 )
+	)
+      (when @curBuild
+	(when (bx:lcnt:curBuild:base-read)
+	  (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	  (setq @paperSize $curBuild:paperSize)
+	  )
      
+	(when (not @paperSize)
+	  (insert
+	   "\n%%% ERROR:: curBuild paperSize not is not valid."
+	   )
+	  )
+	)
+      )
 
-(defun org-dblock-write:bx:lcnt:latex:title-page-lcnt-nu (params)
+    ;;;
+    ;;; $paperSize is available now.
+    ;;;
+
+    (when @paperSize
+      (insert 
+       (format "\n
+%s Authors paperSize=%s\n"
+	       "%%%"
+	       @paperSize
+	       )
+       )
+
+      (when (or (equal @paperSize "8.5x11")
+		(equal @paperSize "a4")
+		)
+	(setq $atLeastOnceWhen t)
+	(when (or (equal @class "art+pres")
+		  (equal @class "art")
+		  )
+	  (insert
+	   (format "
+\\begin{center}
+{\\LARGE {\\bf %s}}\\\\
+\\vspace{0.15in}
+{\\Large  Email: \\href{%s}{%s}}\\\\
+\\end{center}
+"
+		     lcnt-authorName1
+		     lcnt-authorUrl1
+		     lcnt-authorUrl1
+		     )
+	    )
+	  )
+	)
+      
+      (when (or (equal @paperSize "6x9")
+		(equal @paperSize "17.5x23.5")
+		)
+	(setq $atLeastOnceWhen t)
+	(when (or (equal @class "art+pres")
+		  (equal @class "art")
+		  )
+	  (insert
+	   (format "
+\\begin{center}
+{\\large {\\bf %s}}\\\\
+\\vspace{0.1in}
+{\\bf  Email: \\href{%s}{%s}}\\\\
+\\end{center}
+"
+		     lcnt-authorName1
+		     lcnt-authorUrl1
+		     lcnt-authorUrl1
+		     )
+	    )
+	  )
+	)
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknown Title  %s\n"
+		     @paperSize)
+       )
+      (when @spacing
+	(insert "\n
+\\vspace{0.35in}\n"
+		)
+	)
+      )
+    )
+  )
+
+(defun org-dblock-write:bx:lcnt:latex:title-page-lcnt-nu (@params)
   "Inserts Titles part of the title page.
 "
-  (let ((@class (or (plist-get params :class) ""))
-	(@langs (or (plist-get params :langs) ""))
-	(@coverPage (or (plist-get params :coverPage) "UnSpecified"))
-	(@form (or (plist-get params :form) ""))
+  (let ((@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	(@spacing (or (plist-get @params :spacing) nil))	
+	;;;
+	($curBuild:paperSize nil)
+	;;;
+	($atLeastOnceWhen nil)
 	;;;
 	(bx:lcnt:info:base-read)
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
@@ -3078,10 +3275,12 @@ and this permission notice are preserved on all copies.
      )
 
     (org-latex-node-insert-note
-     :label (format "DBLOCK:")
+     :label "DBLOCK:"
      :name (format
-	    "Title Page LCNT-Nu --- form=%s"
-	    @form
+	    "Title Page Authors --- curBuild=%s paperSize=%s spacing=%s"
+	    @curBuild
+	    @paperSize
+	    @spacing
 	    )
      :level 2
      :comment (format "")
