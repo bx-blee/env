@@ -134,21 +134,21 @@
 	     (shell-command-to-string 
 	      (format "echo -n $( cat %s/bystarUid )" lcnt-info-base-dir))
 	     )
-	(put 'bx:lcnt:info:base 
-	     'articleFileName
-	     (shell-command-to-string 
-	      (format "echo -n $( %s/lcntProc.sh  -i getArticleSrcFile %s )" dir dir))
-	     )
-	(put 'bx:lcnt:info:base 
-	     'presentationFileName
-	     (shell-command-to-string 
-	      (format "echo -n $( %s/lcntProc.sh  -i getPresentationSrcFile %s )" dir dir))
-	     )
-	(put 'bx:lcnt:info:base 
-	     'presArtSrcFile
-	     (shell-command-to-string 
-	      (format "echo -n $( cat %s/presArtSrcFile )" lcnt-info-base-dir))
-	     )
+	;; (put 'bx:lcnt:info:base 
+	;;      'articleFileName
+	;;      (shell-command-to-string 
+	;;       (format "echo -n $( %s/lcntProc.sh  -i getArticleSrcFile %s )" dir dir))
+	;;      )
+	;; (put 'bx:lcnt:info:base 
+	;;      'presentationFileName
+	;;      (shell-command-to-string 
+	;;       (format "echo -n $( %s/lcntProc.sh  -i getPresentationSrcFile %s )" dir dir))
+	;;      )
+	;; (put 'bx:lcnt:info:base 
+	;;      'presArtSrcFile
+	;;      (shell-command-to-string 
+	;;       (format "echo -n $( cat %s/presArtSrcFile )" lcnt-info-base-dir))
+	;;      )
 	)
       )))
 

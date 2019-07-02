@@ -901,6 +901,7 @@
 
   
 (defun org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings (params)
+  (bx:lcnt:info:base-read)  
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
 	($pageNu (or (plist-get params :pageNu) t))
@@ -923,7 +924,6 @@
 	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))	
 	(bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
-    (bx:lcnt:info:base-read)
 
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageNu nil|t :style \"bystar\"")
     
@@ -1313,6 +1313,7 @@ Email: \\href{%s}{%s}\\\\
   ")
 
 (defun org-dblock-write:bx:dblock:lcnt:latex:begin-document (params)
+  (bx:lcnt:info:base-read)  
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
@@ -1329,7 +1330,7 @@ Email: \\href{%s}{%s}\\\\
 	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
 	)
     
-    (bx:lcnt:info:base-read)
+
     ;;;(insert "%{{{ DBLOCK-main-begin\n")
 
     (org-latex-section-insert-dblock-name "begin-document")
@@ -1749,11 +1750,14 @@ Subject:   & This Matter\\\\
 	(<class (or (plist-get @params :class) ""))
 	(<langs (or (plist-get @params :langs) ""))
 	;;;
-	(bx:lcnt:info:base-read)
-	($lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	($lcnt-shortTitle nil)
 	;;;
 	($atLeastOnce nil)
 	)
+
+    (bx:lcnt:info:base-read)
+    (setq $lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	
     
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
     
@@ -2307,6 +2311,7 @@ atLeastOnceWhen=ANY  %s\n"
 
 
 (defun org-dblock-write:bx:dblock:lcnt:latex:title-insert (@params)
+  (bx:lcnt:info:base-read)
   (let (
 	(bx:class (or (plist-get @params :class) ""))
 	(bx:langs (or (plist-get @params :langs) ""))
@@ -2316,8 +2321,6 @@ atLeastOnceWhen=ANY  %s\n"
 	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
 	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
 	)
-    
-    (bx:lcnt:info:base-read)
 
     (when (equal $title "lcnt")
       (setq $title lcnt-shortTitle)
@@ -2500,7 +2503,7 @@ and this permission notice are preserved on all copies.
 
 
 (defun org-dblock-write:bx:dblock:lcnt:latex:mention-lcnt (params)
-  " Typical usage:
+  " Produces a full description citation if lcnt-nu. Typical usage:
 %%%#+BEGIN: bx:dblock:lcnt:latex:mention-lcnt :class \"art\" :lcnt-nu \"plpc-120038\"
 
 %%%#+END:
@@ -2583,9 +2586,11 @@ and this permission notice are preserved on all copies.
 	(bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
 	($processors (or (plist-get params :processors) ""))	
-	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-shortTitle nil)
 	)
     (bx:lcnt:info:base-read)
+
+    (setq lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))    
 
     (org-latex-section-insert-dblock-name "LaTeX titleSet")
 
@@ -2633,6 +2638,7 @@ and this permission notice are preserved on all copies.
 	(bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
     (bx:lcnt:info:base-read)
+
     ;;;(insert "%{{{ DBLOCK-front-begin\n")
     (insert "%%%% Args:  :form \"priv|std\" :coverPage \"blank|std\"\n")
 
@@ -2898,6 +2904,8 @@ and this permission notice are preserved on all copies.
   "Inserts Titles (mainTitle, subTitle, subSubStitle) part of the title page.
 Font size and spacing can be based on paper size.
 "
+  (bx:lcnt:info:base-read)
+  
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
 	(@curBuild (or (plist-get @params :curBuild) nil))
@@ -2909,7 +2917,6 @@ Font size and spacing can be based on paper size.
 	;;;
 	($atLeastOnceWhen nil)
 	;;;
-	(bx:lcnt:info:base-read)
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
 	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
 	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
@@ -3116,24 +3123,19 @@ Font size and spacing can be based on paper size.
 	;;;
 	($atLeastOnceWhen nil)
 	;;;
-	(bx:lcnt:info:base-read)
-	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
-	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
-	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
-	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
-	(lcnt-date (get 'bx:lcnt:info:base 'date))
-	(lcnt-type (get 'bx:lcnt:info:base 'type))
-	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
-	(lcnt-version (get 'bx:lcnt:info:base 'version))
-	(lcnt-url (get 'bx:lcnt:info:base 'url))
-	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
-	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
-	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
-	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+	(lcnt-authorName1)
+	(lcnt-authorUrl1)
+	(lcnt-presArtSrcFile)
 	;;;
 	($bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
 
+    (bx:lcnt:info:base-read)
+
+    (setq lcnt-author1 (get 'bx:lcnt:info:base 'author1))
+    (setq lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+    (setq lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
+    
     (blee:dblock:params:desc
      'latex-mode
      ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t"     
@@ -3177,6 +3179,8 @@ Font size and spacing can be based on paper size.
     ;;; $paperSize is available now.
     ;;;
 
+
+    
     (when @paperSize
       (insert 
        (format "\n
@@ -3249,6 +3253,7 @@ Font size and spacing can be based on paper size.
 (defun org-dblock-write:bx:lcnt:latex:title-page-lcnt-nu (@params)
   "Inserts Titles part of the title page.
 "
+  (bx:lcnt:info:base-read)
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
 	(@curBuild (or (plist-get @params :curBuild) nil))			
@@ -3259,7 +3264,6 @@ Font size and spacing can be based on paper size.
 	;;;
 	($atLeastOnceWhen nil)
 	;;;
-	(bx:lcnt:info:base-read)
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
 	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
 	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
@@ -3340,13 +3344,14 @@ Font size and spacing can be based on paper size.
 (defun org-dblock-write:bx:lcnt:latex:title-page-online-at (@params)
   "Inserts Titles part of the title page.
 "
+  (bx:lcnt:info:base-read)
+  
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
 	(@coverPage (or (plist-get @params :coverPage) "UnSpecified"))
 	(@form (or (plist-get @params :form) ""))
 	(@toggle (or (plist-get @params :toggle) ""))		
 	;;;
-	(bx:lcnt:info:base-read)
 	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
 	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
 	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
@@ -3440,6 +3445,8 @@ Font size and spacing can be based on paper size.
 (defun org-dblock-write:bx:lcnt:latex:title-page-body (params)
   "Starting Point Replacement for bx:dblock:lcnt:latex:title-page
 "
+  (bx:lcnt:info:base-read)
+  
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
 	(coverPage (or (plist-get params :coverPage) "UnSpecified"))
@@ -3459,7 +3466,6 @@ Font size and spacing can be based on paper size.
 	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))	
 	(bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
-    (bx:lcnt:info:base-read)
 
 
     (blee:dblock:params:desc
