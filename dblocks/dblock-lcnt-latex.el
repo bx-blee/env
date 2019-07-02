@@ -2900,7 +2900,8 @@ Font size and spacing can be based on paper size.
 "
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
-	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@curBuild (or (plist-get @params :curBuild) nil))
+	(@style (or (plist-get @params :style) nil))
 	(@paperSize (or (plist-get @params :paperSize) nil))
 	(@spacing (or (plist-get @params :spacing) nil))	
 	;;;
@@ -2923,20 +2924,22 @@ Font size and spacing can be based on paper size.
 	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
 	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
 	;;;
-	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	($bufferFileName (file-name-nondirectory buffer-file-name))
+	($hugeString "Huge")
 	)
 
     (blee:dblock:params:desc
      'latex-mode
-     ":class \"book|pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
+     ":class \"book|pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :style \"HUGE|Huge|huge\" :spacing nil|t"
      )
 
     (org-latex-node-insert-note
      :label "DBLOCK:"
      :name (format
-	    "Title Page Titles --- curBuild=%s paperSize=%s spacing=%s"
+	    "Title Page Titles --- curBuild=%s paperSize=%s style=%s spacing=%s"
 	    @curBuild
 	    @paperSize
+	    @style
 	    @spacing
 	    )
      :level 2
@@ -2958,7 +2961,7 @@ Font size and spacing can be based on paper size.
      
 	(when (not @paperSize)
 	  (insert
-	   "\n%%% ERROR:: curBuild paperSize not is not valid."
+	   "\n%%% ERROR:: curBuild:paperSize is not valid -- Likely curBuild is missing."
 	   )
 	  )
 	)
@@ -2968,6 +2971,10 @@ Font size and spacing can be based on paper size.
     ;;; $paperSize is available now.
     ;;;
 
+    (when @style
+      (setq $hugeString @style)
+      )
+    
     (when @paperSize
       (insert 
        (format "\n
@@ -2995,8 +3002,9 @@ Font size and spacing can be based on paper size.
 	  (insert
 	   (format "
 \\begin{center}
-{\\HUGE {\\bf %s}}\\\\
+{\\%s {\\bf %s}}\\\\
 "
+		   $hugeString
 		   lcnt-mainTitle
 		   )
 	   )
@@ -3128,7 +3136,7 @@ Font size and spacing can be based on paper size.
 
     (blee:dblock:params:desc
      'latex-mode
-     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t"     
      )
 
     (org-latex-node-insert-note
@@ -3271,7 +3279,7 @@ Font size and spacing can be based on paper size.
 
     (blee:dblock:params:desc
      'latex-mode
-     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\""
+     ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t"
      )
 
     (org-latex-node-insert-note

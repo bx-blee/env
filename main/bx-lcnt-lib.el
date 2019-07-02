@@ -34,7 +34,7 @@
   (bx:lcnt:info:base-read-dir default-directory)
 )
 
-;;;   (bx:lcnt:info:base-read-dir) "/etc")
+;;;   (bx:lcnt:info:base-read-dir "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
 (defun bx:lcnt:info:base-read-dir (dir)
   ""
   (interactive "DEnter Directory:")
@@ -153,8 +153,8 @@
       )))
 
   
-;;;   (bx:lcnt:info:base-show)
-(defun bx:lcnt:info:base-show () ;;;(folder)
+;;;   (bx:lcnt:info:base-show-after-read-old)
+(defun bx:lcnt:info:base-show-after-read-old () ;;;(folder)
   ""
   (interactive)
 
@@ -181,6 +181,87 @@ bx:lcnt:info:base-show
       (goto-char (point-min))
 ))
   
+  
+;;;   (bx:lcnt:info:base-show)
+(defun bx:lcnt:info:base-show ()
+  ""
+  (interactive)
+
+  ;;;(bx:lcnt:info:base-read)
+
+  (with-output-to-temp-buffer (help-buffer)
+    (switch-to-buffer (help-buffer))
+    (goto-char (point-max))
+    (insert "
+bx:lcnt:info:base-show
+
+(symbol-plist 'bx:lcnt:info:base) VALUES ARE:
+\n")
+    
+      (goto-char (point-max))
+      (pp-eval-expression '(symbol-plist 'bx:lcnt:info:base))
+   
+      (insert-buffer "*Pp Eval Output*")
+
+      (goto-char (point-max))
+      (insert "\n")
+
+      (kill-buffer "*Pp Eval Output*")
+      (goto-char (point-min))
+))
+
+;;;   (bx:lcnt:info:base-read-show "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
+(defun bx:lcnt:info:base-read-show (@dir)
+  ""
+  (interactive "DEnter Directory:")
+
+  (when (bx:lcnt:info:base-read-dir @dir)
+    (bx:lcnt:info:base-show)
+    )
+  )
+ 
+
+  
+;;;   (bx:lcnt:curBuild:base-show)
+(defun bx:lcnt:curBuild:base-show ()
+  ""
+  (interactive)
+
+  ;;;(bx:lcnt:curBuild:base-read)
+
+  (with-output-to-temp-buffer (help-buffer)
+    (switch-to-buffer (help-buffer))
+    (goto-char (point-max))
+    (insert "
+bx:lcnt:curBuild:base-show
+
+(symbol-plist 'bx:lcnt:curBuild:base) VALUES ARE:
+\n")
+    
+      (goto-char (point-max))
+      (pp-eval-expression '(symbol-plist 'bx:lcnt:curBuild:base))
+   
+      (insert-buffer "*Pp Eval Output*")
+
+      (goto-char (point-max))
+      (insert "\n")
+
+      (kill-buffer "*Pp Eval Output*")
+      (goto-char (point-min))
+))
+
+;;;   (bx:lcnt:curBuild:base-read-show "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
+(defun bx:lcnt:curBuild:base-read-show (@dir)
+  ""
+  (interactive "DEnter Directory:")
+
+  (when (bx:lcnt:curBuild:base-read-dir @dir)
+    (bx:lcnt:curBuild:base-show)
+    )
+  )
+ 
+
+
 
 
 ;;;   (bx:lcnt:curBuild:base-read)
