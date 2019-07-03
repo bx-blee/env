@@ -213,6 +213,7 @@
 	  (insert (format "\
 *      ################ CONTENTS-LIST  %s ###############
 *  [[elisp:(org-cycle)][| ]]  *Document Status, TODOs and Notes*          ::  [[elisp:(org-cycle)][| ]]
+*  /OBSOLETED by  org-dblock-write:bx:global:org-contents-list/
 "
 		  (outStrForMode bx:mode)))	  
 	  (bx:dblock:global:moded:insert-end bx:mode)
@@ -221,6 +222,88 @@
       )
     )
   )
+
+
+(defun org-dblock-write:bx:global:org-contents-list (params)
+  (let (
+	(bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
+	(bx:mode (or (plist-get params :mode) "auto"))       
+	(out-string)
+	)
+    (if (not
+	 (or (equal "TRUE" bx:disabledP)
+	     (equal "true" bx:disabledP)))
+	(progn
+	  (if (string-equal "auto" bx:mode)
+	      (progn
+		(setq bx:mode major-mode)
+		))
+	  (bx:dblock:global:moded:insert-begin bx:mode)
+	  ;;; This needs to become when major-mode based
+
+	  ;;; (outStrForMode "auto")
+	  (defun outStrForMode (mode)
+	    (if (string-equal "auto" mode)
+		(setq mode major-mode)
+	      )
+
+	    (cond
+	     (
+	      (string-equal "none" mode)
+	      ""
+	      )
+	     (
+	      (string-equal "latex-mode" mode)
+	      "[[elisp:(reftex-toc)][(RefTOC)]]"
+	      )
+	     (t
+	      ""
+	      )
+	     ))
+	  
+	  (insert (format "\
+*      ################ CONTENTS-LIST  %s ###############
+"
+		  (outStrForMode bx:mode)))	  
+	  (bx:dblock:global:moded:insert-end bx:mode)
+	  )
+      (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+      )
+    )
+  )
+
+
+(defun org-dblock-write:bx:global:org-doc-status (params)
+  (let (
+	(bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
+	(bx:mode (or (plist-get params :mode) "auto"))       
+	(out-string)
+	)
+    (if (not
+	 (or (equal "TRUE" bx:disabledP)
+	     (equal "true" bx:disabledP)))
+	(progn
+	  (if (string-equal "auto" bx:mode)
+	      (progn
+		(setq bx:mode major-mode)
+		))
+	  (bx:dblock:global:moded:insert-begin bx:mode)
+	  ;;; This needs to become when major-mode based
+	  
+	  (insert (format "\
+%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] =  *Document Status, TODOs and Notes*          ::  [[elisp:(org-cycle)][| ]]
+"
+			  "*"
+			  )
+		  )
+	  
+	  (bx:dblock:global:moded:insert-end bx:mode)
+	  )
+      (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+      )
+    )
+  )
+
 
 
 (defun org-dblock-write:bx:dblock:global:file-insert-cond (params)
