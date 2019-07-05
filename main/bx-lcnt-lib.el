@@ -273,7 +273,8 @@ bx:lcnt:curBuild:base-show
 
 ;;;   (bx:lcnt:curBuild:base-read-dir "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
 (defun bx:lcnt:curBuild:base-read-dir (@dir)
-  ""
+  " For documentation see: /libre/ByStar/InitialTemplates/activeDocs/blee/lcntPublications/lcntBuilds/fullUsagePanel-en.org
+"
   (interactive "DEnter Directory:")
 
   (let (
@@ -294,6 +295,42 @@ bx:lcnt:curBuild:base-show
 	   (shell-command-to-string 
 	    (format "echo -n $( head -1 %s/paperSize )" $curBuildBaseDir))
 	   )
+      
+      ;;(get 'bx:lcnt:curBuild:base 'buildName)
+      (put 'bx:lcnt:curBuild:base 
+	   'buildName
+	   (shell-command-to-string 
+	    (format "echo -n $( head -1 %s/buildName )" $curBuildBaseDir))
+	   )
+      
+      ;;(get 'bx:lcnt:curBuild:base 'docSrc)
+      (put 'bx:lcnt:curBuild:base 
+	   'docSrc
+	   (shell-command-to-string 
+	    (format "echo -n $( head -1 %s/docSrc )" $curBuildBaseDir))
+	   )
+      
+      ;;(get 'bx:lcnt:curBuild:base 'sides)
+      (put 'bx:lcnt:curBuild:base 
+	   'sides
+	   (shell-command-to-string 
+	    (format "echo -n $( head -1 %s/sides )" $curBuildBaseDir))
+	   )
+       
+      ;;(get 'bx:lcnt:curBuild:base 'results)
+      (put 'bx:lcnt:curBuild:base 
+	   'results
+	   (shell-command-to-string 
+	    (format "echo -n $( head -1 %s/results )" $curBuildBaseDir))
+	   )
+       
+      ;;(get 'bx:lcnt:curBuild:base 'buildDocClass)
+      (put 'bx:lcnt:curBuild:base 
+	   'buildDocClass
+	   (shell-command-to-string 
+	    (format "echo -n $( head -1 %s/buildDocClass )" $curBuildBaseDir))
+	   )
+      
       t
       )
     )
