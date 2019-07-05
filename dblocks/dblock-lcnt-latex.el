@@ -1528,7 +1528,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\geometry{paperwidth=6in,paperheight=9in,bindingoffset=0.2in,left=0.75in,right=0.75in,top=1in,bottom=0.75in,footskip=.25in}
+\\geometry{paperwidth=6in,paperheight=9in,bindingoffset=0.15in,left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,footskip=.25in}
 "
 		 )
 	 )
@@ -1537,7 +1537,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\geometry{paperwidth=17.5cm,paperheight=23.5cm,bindingoffset=0.2in,left=0.75in,right=0.75in,top=1in,bottom=0.75in,footskip=.25in}
+\\geometry{paperwidth=17.5cm,paperheight=23.5cm,bindingoffset=0.15in,left=0.75in,right=0.75in,top=0.75in,bottom=0.75in,footskip=.25in}
 "
 		 )
 	 )
@@ -1640,7 +1640,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\newgeometry{bindingoffset=0in,left=0.25in,right=0.25in,top=1.0in,bottom=0.25in,footskip=0in}
+\\newgeometry{bindingoffset=0in,left=0.25in,right=0.25in,top=0.35in,bottom=0.15in,footskip=0in}
 "
 		 )
 	 )
@@ -1649,7 +1649,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\newgeometry{bindingoffset=0in,left=0.25in,right=0.25in,top=1.0in,bottom=0.25in,footskip=0in}
+\\newgeometry{bindingoffset=0in,left=0.15in,right=0.15in,top=0.25in,bottom=0.25in,footskip=0in}
 "
 		 )
 	 )
@@ -2449,16 +2449,19 @@ and this permission notice are preserved on all copies.
 
 
 (defun org-dblock-write:bx:lcnt:latex:copyright (@params)
+  (bx:lcnt:info:base-read)
   (let (
 	(@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
 	(@toggle (or (plist-get @params :toggle) "enabled"))
-	(@curBuild (or (plist-get @params :curBuild) ""))
-	(@form (or (plist-get params :form) ""))    ;; none, std, or std-en-fa NOTYET
-	(@years (or (plist-get params :years) ""))    ;; example: "2014-2018"
+	(@curBuild (or (plist-get @params :curBuild) nil))
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	(@spacing (or (plist-get @params :spacing) nil))		
+	(@form (or (plist-get params :form) ""))    ;; std, or std+fa NOTYET
+	(@years (or (plist-get params :years) nil))    ;; example: "2014-2018"
 	(@copyright-holders (or (plist-get params :copyright-holders) nil))    ;; example: "Neda Communications, Inc."
 	;;;
-	(<lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
+	($lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
 	;;;
 	)
     
@@ -2467,12 +2470,25 @@ and this permission notice are preserved on all copies.
      ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :form \"none|std\" :years \"\" :copyright-holders nil|\"Name\""
      )
 
+    (when (not @years)
+      (setq @years "2019")
+      )
+
+    (when (not @copyright-holders)
+      (setq @copyright-holders $lcnt-authorName1)
+      )
+    
     (when (not (equal @toggle "hide"))
       (org-latex-node-insert-note
        :label (format "DBLOCK:")
        :name (format
-	      "Copyright Settings --- toggle=%s"
-	      @toggle)
+	      "Title Page Copyright --- toggle=%s form=%s curBuild=%s paperSize=%s spacing=%s"	      
+	      @toggle
+	      @form
+	      @curBuild
+	      @paperSize
+	      @spacing
+	      )
        :level 2
        :comment (format "")
        )
@@ -2483,17 +2499,135 @@ and this permission notice are preserved on all copies.
       )
 
     (when (equal @toggle "enabled")
-      (when (not @copyright-holders)
-	(setq @copyright-holders <lcnt-authorName1)
-	)
-      
-      (insert "
-%%% NOTYET
 
+      (when (not @paperSize)
+	(when (not @curBuild)
+	  (insert
+	   "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	   )
+	  )
+	(when @curBuild
+	  (when (bx:lcnt:curBuild:base-read)
+	    (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	    (setq @paperSize $curBuild:paperSize)
+	    )
+	  
+	  (when (not @paperSize)
+	    (insert
+	     "\n%%% ERROR:: curBuild paperSize not is not valid."
+	     )
+	    )
+	  )
+	)
+
+        ;;;
+        ;;; $paperSize is available now.
+        ;;;
+      
+      (when @paperSize
+	(insert 
+	 (format "\n
+%s Copyright paperSize=%s\n"
+		 "%%%"
+		 @paperSize
+		 )
+	 )
+	
+	(when @spacing
+	  (insert (format "
+\\vspace{0.4in}
 "
+			  )))
+	
+      
+
+	(when (or (equal @class "art+pres")
+		  (equal @class "art"))
+	  (when (or (equal @langs "en")
+		    (equal @langs "en+fa"))
+	    (when (equal @form "std+fa")
+	      (insert
+	       (format "
+
+\\begin{latexonly}
+\\begin{center}
+  \\begin{tabular*}{\\textwidth}{ l p{.7\\textwidth} r }
+      \\includegraphics[width=0.1\\textwidth]{figures/Anti-copyright-220px.png}
+    &
+      \\vspace{-0.9in}
+      \\begin{minipage}[t]{.7\\textwidth}
+Within the jurisdiction of legal systems that recognize copyright law:
+      
+{\\bf Copyright} \\copyright \\space  {\\bf  2017-2019 The Libre-Halaal Foundation}
+\\vspace{0.1in}
+
+Permission is granted to make and distribute complete verbatim copies of this document
+provided that the copyright notice and this permission notice are preserved on all copies.
+This is a Libre-Halaal poly-existential.
+
+\\begin{faPar}
+%% چاپ کامل مجدد با ذکر ماخذ مجاز است تا هنگامى  که اين  اعلام اجازه روى همه 
+%% کپيها موجود باشد.
+چاپ کامل مجدد با ذکر ماخذ مجاز است تا هنگامى  که اين  اعلام اجازه محفوظ بماند. 
+\\end{faPar}
+
+     \\end{minipage}
+      
+    &
+      \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}
+  \\end{tabular*}
+\\end{center}
+\\end{latexonly}
+
+\\begin{htmlonly}
+\\begin{center}
+  \\begin{tabular*}{\\textwidth}{ l p{.7\\textwidth} r }
+%%BEGIN IMAGE    
+    \\includegraphics[width=0.1\\textwidth]{figures/Anti-copyright-220px.png}
+%%END IMAGE
+%%HEVEA\\imageflush
+    &
+      \\vspace{-0.7in}
+      \\begin{minipage}[t]{.7\\textwidth}
+Within the jurisdiction of legal systems that recognize copyright law:
+      
+{\\bf Copyright} \\copyright \\space  {\\bf  2017-2019 The Libre-Halaal Foundation}
+\\vspace{0.1in}
+
+Permission is granted to make and distribute complete verbatim copies of this document
+provided that the copyright notice and this permission notice are preserved on all copies.
+This is a Libre-Halaal poly-existential.
+
+\\begin{faPar}
+چاپ کامل مجدد با ذکر ماخذ مجاز است تا هنگامى  که اين  اعلام اجازه محفوظ بماند. 
+\\end{faPar}
+
+     \\end{minipage}
+      
+    &
+%%BEGIN IMAGE      
+      \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}
+%%END IMAGE
+%%HEVEA\\imageflush
+  \\end{tabular*}
+\\end{center}
+\\end{htmlonly}
+"
+		       )
+	       )
 	      )
+	    ;;; Form std comes here
+	    )
+	  )
+	(when (or (equal @class "pres+art")
+		  (equal @class "pres"))
+	  (insert "\n% dblock copyright notice just says verbatim copying permitted\n"))
+        )
       )
-    ))
+    )
+  )
+
 
 
 
@@ -2900,7 +3034,7 @@ and this permission notice are preserved on all copies.
 
 
 
-(defun org-dblock-write:bx:lcnt:latex:title-page-titles (@params)
+(defun org-dblock-write:bx:lcnt:latex:title-page-titles-OBSOLETED (@params)
   "Inserts Titles (mainTitle, subTitle, subSubStitle) part of the title page.
 Font size and spacing can be based on paper size.
 "
@@ -2933,6 +3067,9 @@ Font size and spacing can be based on paper size.
 	;;;
 	($bufferFileName (file-name-nondirectory buffer-file-name))
 	($hugeString "Huge")
+	($mainTitleSize nil)
+	($subTitleSize nil)
+	($subSubTitleSize nil)	
 	)
 
     (blee:dblock:params:desc
@@ -3049,11 +3186,17 @@ Font size and spacing can be based on paper size.
 	(when (or (equal @class "art+pres")
 		  (equal @class "art")
 		  )
+
+	  (when (equal $hugeString "HUGE")
+	    (setq $hugeString "Huge")
+	    )
+	  
 	  (insert
 	   (format "
 \\begin{center}
-{\\huge {\\bf %s}}\\\\
+{\\%s {\\bf %s}}\\\\
 "
+		   $hugeString
 		   lcnt-mainTitle
 		   )
 	   )
@@ -3089,6 +3232,7 @@ Font size and spacing can be based on paper size.
        :info (format "Unknown Title  %s\n"
 		     @paperSize)
        )
+      
       (when (string-equal $bufferFileName lcnt-presArtSrcFile)
 	(insert "
 \\begin{center}
@@ -3108,7 +3252,230 @@ Font size and spacing can be based on paper size.
     )
   )
     
+
+
+(defun org-dblock-write:bx:lcnt:latex:title-page-titles (@params)
+  "Inserts Titles (mainTitle, subTitle, subSubStitle) part of the title page.
+Font size and spacing can be based on paper size.
+"
+  (bx:lcnt:info:base-read)
+  
+  (let ((@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))
+	(@style (or (plist-get @params :style) nil))
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	(@spacing (or (plist-get @params :spacing) nil))	
+	;;;
+	($curBuild:paperSize nil)
+	;;;
+	($atLeastOnceWhenPaperSize nil)
+	($atLeastOnceWhenStyle nil)	
+	;;;
+	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+	;;;
+	($bufferFileName (file-name-nondirectory buffer-file-name))
+	($hugeString "Huge")
+	($mainTitleSize nil)
+	($subTitleSize nil)
+	($subSubTitleSize nil)	
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :style \"HUGE|Huge|huge\" :spacing nil|t"
+     )
+
+    (org-latex-node-insert-note
+     :label "DBLOCK:"
+     :name (format
+	    "Title Page Titles --- curBuild=%s paperSize=%s style=%s spacing=%s"
+	    @curBuild
+	    @paperSize
+	    @style
+	    @spacing
+	    )
+     :level 2
+     :comment (format "")
+     )
+
+    (when (not @paperSize)
+      (when (not @curBuild)
+	(insert
+	 "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	 )
+	)
+      (when @curBuild
+	(when (bx:lcnt:curBuild:base-read)
+	  (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	  (setq @paperSize $curBuild:paperSize)
+	  )
      
+	(when (not @paperSize)
+	  (insert
+	   "\n%%% ERROR:: curBuild:paperSize is not valid -- Likely curBuild is missing."
+	   )
+	  )
+	)
+      )
+
+    ;;;
+    ;;; $paperSize is available now.
+    ;;;
+
+    
+    (when @paperSize
+      (insert 
+       (format "\n
+%s Titles paperSize=%s\n"
+	       "%%%"
+	       @paperSize
+	       )
+       )
+      (insert
+       (format "
+
+\\thispagestyle{empty}
+
+\\title{%s}\n"
+	       lcnt-shortTitle)
+       )
+
+    (when @style
+      (setq $hugeString @style)
+      )
+
+      
+      (when (or (equal @paperSize "8.5x11")
+		(equal @paperSize "a4")
+		)
+	(setq $atLeastOnceWhenPaperSize t)
+	
+	(when (equal @style "HUGE")
+	  (setq $atLeastOnceWhenStyle t)
+
+	  (setq $mainTitleSize "HUGE")
+	  (setq $subTitleSize "huge")
+	  (setq $subSubTitleSize "huge")
+	  )
+
+	(when (equal @style "Huge")
+	  (setq $atLeastOnceWhenStyle t)
+
+	  (setq $mainTitleSize "Huge")
+	  (setq $subTitleSize "Large")
+	  (setq $subSubTitleSize "Large")
+	  )
+	(bx:eh:assert:atLeastOnceWhen
+	 $atLeastOnceWhenStyle
+	 :context "latex"
+	 :info (format "Unknown Style  %s\n"
+		       @style)
+	 )
+	)
+      
+      (when (or (equal @paperSize "6x9")
+		(equal @paperSize "17.5x23.5")
+		)
+	(setq $atLeastOnceWhenPaperSize t)
+	
+	(when (equal @style "HUGE")
+	  (setq $atLeastOnceWhenStyle t)
+
+	  (setq $mainTitleSize "Huge")
+	  (setq $subTitleSize "LARGE")
+	  (setq $subSubTitleSize "LARGE")
+	  )
+
+	(when (equal @style "Huge")
+	  (setq $atLeastOnceWhenStyle t)
+
+	  (setq $mainTitleSize "huge")
+	  (setq $subTitleSize "Large")
+	  (setq $subSubTitleSize "Large")
+	  )
+	(bx:eh:assert:atLeastOnceWhen
+	 $atLeastOnceWhenStyle
+	 :context "latex"
+	 :info (format "Unknown Style  %s\n"
+		       @style)
+	 )
+	)
+
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhenPaperSize
+       :context "latex"
+       :info (format "Unknown Title  %s\n"
+		     @paperSize)
+       )
+ 
+
+      (when $mainTitleSize
+	(when (or (equal @class "art+pres")
+		  (equal @class "art")
+		  )
+	  (insert
+	   (format "
+\\begin{center}
+{\\%s {\\bf %s}}\\\\
+"
+		   $mainTitleSize
+		   lcnt-mainTitle
+		   )
+	   )
+	  
+	  (when (not (string-equal lcnt-subTitle ""))
+	    (insert
+	     (format "\
+\\vspace{0.2in}
+{\\%s {\\bf %s}}\\\\\n"
+		     $subTitleSize
+		     lcnt-subTitle
+		     )
+	     )
+	    )
+
+	  (when (not (string-equal lcnt-subSubTitle ""))
+	    (insert
+	     (format "
+\\vspace{0.2in}
+{\\%s {\\bf %s}}\\\\\n"
+		     $subSubTitleSize		     
+		     lcnt-subSubTitle
+		     )
+	     )
+	    )
+	  (insert "\
+
+\\end{center}\n"
+		  )
+	  )
+	)
+
+      (when (string-equal $bufferFileName lcnt-presArtSrcFile)
+	(insert "
+\\begin{center}
+  {\\Large {\\bf Article Format Of Presentation\\\\
+\\vspace{0.2in}
+}}
+\\end{center}
+"
+		)
+	)
+      (when @spacing
+	(insert "\n
+\\vspace{0.35in}\n"
+		)
+	)
+      )
+    )
+  )
+    
 
 (defun org-dblock-write:bx:lcnt:latex:title-page-authors (@params)
   "Inserts Titles part of the title page.
@@ -3152,7 +3519,6 @@ Font size and spacing can be based on paper size.
      :level 2
      :comment (format "")
      )
-
 
     (when (not @paperSize)
       (when (not @curBuild)
@@ -3223,7 +3589,7 @@ Font size and spacing can be based on paper size.
 	  (insert
 	   (format "
 \\begin{center}
-{\\large {\\bf %s}}\\\\
+{\\Large {\\bf %s}}\\\\
 \\vspace{0.1in}
 {\\bf  Email: \\href{%s}{%s}}\\\\
 \\end{center}
@@ -3264,18 +3630,10 @@ Font size and spacing can be based on paper size.
 	;;;
 	($atLeastOnceWhen nil)
 	;;;
-	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
-	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
-	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
-	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
 	(lcnt-date (get 'bx:lcnt:info:base 'date))
 	(lcnt-type (get 'bx:lcnt:info:base 'type))
 	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
 	(lcnt-version (get 'bx:lcnt:info:base 'version))
-	(lcnt-url (get 'bx:lcnt:info:base 'url))
-	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
-	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
-	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
 	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
 	;;;
 	($bufferFileName (file-name-nondirectory buffer-file-name))	
@@ -3309,23 +3667,29 @@ Font size and spacing can be based on paper size.
 
 \\begin{center}
 	
-{\\LARGE %s-%s}
-
-{\\large %s}
-
-{\\large Version %s}
+{\\LARGE {\\bf %s-%s}}\\\\
+\\vspace{0.20in}
+{\\Large %s}\\\\
+\\vspace{0.05in}
+{\\Large Version %s}\\\\
 
 \\end{center}
 "
-		 lcnt-type lcnt-lcntNu
+		 lcnt-type
+		 lcnt-lcntNu
 		 lcnt-date
 		 lcnt-version
-		 ))
+		 )
+	 )
+	)
+
+      (when @spacing
 	(insert "
 \\vspace{0.05in}
 "
 		)
 	)
+	
 
       (when (equal @langs "fa+en")
 	
@@ -3348,22 +3712,16 @@ Font size and spacing can be based on paper size.
   
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
-	(@coverPage (or (plist-get @params :coverPage) "UnSpecified"))
-	(@form (or (plist-get @params :form) ""))
-	(@toggle (or (plist-get @params :toggle) ""))		
+	(@toggle (or (plist-get @params :toggle) ""))
+	(@form (or (plist-get @params :form) "std"))	
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	(@spacing (or (plist-get @params :spacing) nil))
+	(@qrcode (or (plist-get @params :qrcode) nil))		
 	;;;
-	(lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
-	(lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
-	(lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
-	(lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
-	(lcnt-date (get 'bx:lcnt:info:base 'date))
-	(lcnt-type (get 'bx:lcnt:info:base 'type))
 	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
 	(lcnt-version (get 'bx:lcnt:info:base 'version))
 	(lcnt-url (get 'bx:lcnt:info:base 'url))
-	(lcnt-author1 (get 'bx:lcnt:info:base 'author1))
-	(lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
-	(lcnt-authorUrl1 (get 'bx:lcnt:info:base 'authorUrl1))
 	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
 	;;;
 	($bufferFileName (file-name-nondirectory buffer-file-name))	
@@ -3371,16 +3729,19 @@ Font size and spacing can be based on paper size.
 
     (blee:dblock:params:desc
      'latex-mode
-     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\" :coverPage \"blank|std\" :toggle \"enabled|disabled|hide\""
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\"  :toggle \"enabled|disabled|hide\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t"
      )
 
     (when (not (equal @toggle "hide"))    
       (org-latex-node-insert-note
        :label (format "DBLOCK:")
        :name (format
-	      "Title Page On-Line At --- toggle=%s form=%s"
+	      "Title Page On-Line At --- toggle=%s form=%s curBuild=%s paperSize=%s spacing=%s"
 	      @toggle
 	      @form
+	      @curBuild
+	      @paperSize
+	      @spacing
 	      )
        :level 2
        :comment (format "")
@@ -3390,55 +3751,104 @@ Font size and spacing can be based on paper size.
     (when (equal @toggle "hide")  ;;; else
       (setq @toggle "disabled")
       )
-    
    
     (when (equal @toggle "enabled")
-      
-    (when (not (equal @form "priv"))
 
-      (when (or (equal @class "art+pres")
-		(equal @class "art"))
-
-	(when (or (equal @langs "en")
-		  (equal @langs "en+fa"))
+      (when (not @paperSize)
+	(when (not @curBuild)
 	  (insert
-	   (format "
+	   "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	   )
+	  )
+	(when @curBuild
+	  (when (bx:lcnt:curBuild:base-read)
+	    (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	    (setq @paperSize $curBuild:paperSize)
+	    )
+	  
+	  (when (not @paperSize)
+	    (insert
+	     "\n%%% ERROR:: curBuild paperSize not is not valid."
+	     )
+	    )
+	  )
+	)
 
+        ;;;
+        ;;; $paperSize is available now.
+        ;;;
+      
+      (when @paperSize
+	(insert 
+	 (format "\n
+%s On-line At paperSize=%s\n"
+		 "%%%"
+		 @paperSize
+		 )
+	 )
+      
+	(when (not (equal @form "priv"))
+
+	  (when (or (equal @class "art+pres")
+		    (equal @class "art"))
+
+	    (when (or (equal @langs "en")
+		      (equal @langs "en+fa"))
+	      (insert
+	       (format "
 \\begin{center}
+\\rule{0.7\\textwidth}{.02in}\\\\
+\\rule{0.7\\textwidth}{.01in}\\\\
+\\vspace{0.15in}
 {\\large Available on-line at:\\\\
 \\href{%s}{%s}}
 \\end{center}
 "
-		   lcnt-url
-		   lcnt-url))
-	  )
-	
-	(when (equal @langs "fa+en")
-	  (insert "\\begin{center}\n")
+		       lcnt-url
+		       lcnt-url)
+	       )
+	      )
 
-	  (insert "
+	    (when @qrcode
+	      (insert
+	       (format "
+\\begin{center}
+\\vspace{0.2in}
+\\qrcode[height=1in]{%s}
+\\end{center}
+"
+		       lcnt-url)
+	       )
+	      )
+	
+	    (when (equal @langs "fa+en")
+	      (insert "\\begin{center}\n")
+
+	      (insert "
 \\vspace{0.05in}
 
 \\begin{center}
 {\\large مقاله و اسلايد روى وب در :}
 "
-		  )
+		    )
 
-	  (insert "\\begin{latin}\n")
-	  (insert (format "\\href{%s}{%s}\n" lcnt-url lcnt-url))
-	  (insert "\\end{latin}\n")
+	      (insert "\\begin{latin}\n")
+	      (insert (format "\\href{%s}{%s}\n" lcnt-url lcnt-url))
+	      (insert "\\end{latin}\n")
 
-	  (insert "\\end{center}
+	      (insert "\\end{center}
 
 \\vspace{0.3in}
 "
-		  )
+		      )
+	      )
+	    )
 	  )
 	)
-      ))
+      )
     )
   )
-
 
 
 
