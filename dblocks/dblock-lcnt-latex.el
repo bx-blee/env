@@ -4416,7 +4416,7 @@ Font size and spacing can be based on paper size.
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (lcnt:latex:insertSegment orgDepth segType segTitle labelInfo) [[elisp:(org-cycle)][| ]]
   ")
 
-(defun lcnt:latex:insertSegment (orgDepth segType segTitle labelInfo)
+(defun lcnt:latex:insertSegment (orgDepth segType segTitle @shortTitle labelInfo)
   "segType is one of chapter, section, subsection, etc.
 When labelInfo is UnSpecified, no label is inserted.
 When labelInfo is 'auto', the label is derived from segTitle --
@@ -4444,13 +4444,21 @@ otherwise labelInfo is inserted as label"
   (let (
 	(delimiterLinePerhaps "")
 	(newPagePerhaps "")
+	($shortTitleStr "")
+	($labelTitleStr "")
 	)
 
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :disabledP \"false\" :seg-title \"str\" :short-title \"str\" :label \"auto\""
+     )
+    
     (when (member segType (list "part" "chapter"))
       (setq delimiterLinePerhaps "\n*      ================"))
 
     (when (string-equal segType "part")
       (setq newPagePerhaps "\n\\newpage")
+
       (insert
        (format "\
 \\begin{comment}%s
@@ -4471,17 +4479,27 @@ otherwise labelInfo is inserted as label"
 	       (make-string orgDepth ?*)
 	       (str:capitalize-first-char segType) segTitle
 	       )))
+
+    (when @shortTitle
+      (setq $shortTitleStr
+	    (format "[%s]\n" @shortTitle)))
     
     (insert
      (format "
 %s
-\\%s{%s}"
+\\%s%s{%s}"
 	     newPagePerhaps
-	     segType segTitle
+	     segType
+	     $shortTitleStr
+	     segTitle
 	     ))
+
+    (setq $labelTitleStr segTitle)
+    (when @shortTitle
+      (setq $labelTitleStr shortTitle))
     
     (when (string-equal labelInfo "auto")
-      (setq labelInfo (str:spacesElim segTitle)))
+      (setq labelInfo (str:spacesElim $labelTitleStr)))
 
     (when (not (or (string-equal labelInfo "UnSpecified") (string-equal labelInfo "")))
       (insert
@@ -4532,13 +4550,14 @@ otherwise labelInfo is inserted as label"
 		   (dblockMode (or (plist-get params :disabledP) "UnSpecified"))
 		   (dblockMode (or (plist-get params :mode) "UnSpecified"))	
 		   (segTitle (or (plist-get params :seg-title) "UnSpecified"))
+		   (shortTitle (or (plist-get params :short-title) nil))		   
 		   (labelInfo (or (plist-get params :label) "UnSpecified"))
 		   )
 	       (when (blee:dblock:mode:disabledP dblockMode)
 		 (blee:dblock:mode:disabledIndicate))
 		 
 	       (when (not (blee:dblock:mode:disabledP dblockMode))
-		 (lcnt:latex:insertSegment ,orgDepth ,segType segTitle labelInfo)
+		 (lcnt:latex:insertSegment ,orgDepth ,segType segTitle shortTitle labelInfo)
 		 )
 	       ))
 	   )
