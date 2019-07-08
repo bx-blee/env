@@ -461,9 +461,14 @@
 
 \\usepackage{bystarsub3section}
 
+
 \\usepackage{fontspec}
 % \\usepackage{xltxtra}  % OBSOLETED In Ubuntu 16.04 and 18.04
 \\usepackage{xunicode}
+
+\\usepackage{paracol}
+
+\\usepackage{qrcode}
 ")
 
        (if (not (equal bx:class "art+pres"))
@@ -576,7 +581,13 @@
 	   (insert "\\usepackage{bidi}\n"))
 
        (insert "
+
+
 \\usepackage{beamerarticle}
+
+\\usepackage{paracol}
+
+\\usepackage{qrcode}  %%% Must come after beamerarticle
 
 \\usepackage{tikz}
 ")
@@ -1622,7 +1633,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\newgeometry{bindingoffset=0in,left=0.5in,right=0.5in,top=0.7in,bottom=0.35in,footskip=0in}
+\\newgeometry{bindingoffset=0in,left=0.5in,right=0.5in,top=1.2in,bottom=0.4in,footskip=0in}
 "
 		 )
 	 )
@@ -1631,7 +1642,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\newgeometry{bindingoffset=0in,left=0.5in,right=0.5in,top=0.7in,bottom=0.35in,footskip=0in}
+\\newgeometry{bindingoffset=0in,left=0.5in,right=0.5in,top=1.2in,bottom=0.4in,footskip=0in}
 "
 		 )
 	 )
@@ -1640,7 +1651,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\newgeometry{bindingoffset=0in,left=0.25in,right=0.25in,top=0.35in,bottom=0.15in,footskip=0in}
+\\newgeometry{bindingoffset=0in,left=0.25in,right=0.25in,top=0.5in,bottom=0.2in,footskip=0in}
 "
 		 )
 	 )
@@ -1649,7 +1660,7 @@ Subject:   & This Matter\\\\
 	(setq $atLeastOnceWhen t)
 	(insert
 	 (format "
-\\newgeometry{bindingoffset=0in,left=0.15in,right=0.15in,top=0.25in,bottom=0.25in,footskip=0in}
+\\newgeometry{bindingoffset=0in,left=0.15in,right=0.15in,top=0.7in,bottom=0.30in,footskip=0in}
 "
 		 )
 	 )
@@ -2460,6 +2471,8 @@ and this permission notice are preserved on all copies.
 	(@form (or (plist-get params :form) ""))    ;; std, or std+fa NOTYET
 	(@years (or (plist-get params :years) nil))    ;; example: "2014-2018"
 	(@copyright-holders (or (plist-get params :copyright-holders) nil))    ;; example: "Neda Communications, Inc."
+	(@copyright-holders-url (or (plist-get params :copyright-holders-url) nil))
+	(@farsi (or (plist-get params :farsi) nil))
 	;;;
 	($lcnt-authorName1 (get 'bx:lcnt:info:base 'authorName1))
 	;;;
@@ -2476,6 +2489,15 @@ and this permission notice are preserved on all copies.
 
     (when (not @copyright-holders)
       (setq @copyright-holders $lcnt-authorName1)
+      )
+
+    (when @copyright-holders-url
+      (setq @copyright-holders
+	    (format "\\href{%s}{%s}"
+		    @copyright-holders-url
+		    @copyright-holders
+		    )
+	    )
       )
     
     (when (not (equal @toggle "hide"))
@@ -2553,29 +2575,41 @@ and this permission notice are preserved on all copies.
 \\begin{latexonly}
 \\begin{center}
   \\begin{tabular*}{\\textwidth}{ l p{.7\\textwidth} r }
-      \\includegraphics[width=0.1\\textwidth]{figures/Anti-copyright-220px.png}
+      \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}
     &
       \\vspace{-0.9in}
       \\begin{minipage}[t]{.7\\textwidth}
 Within the jurisdiction of legal systems that recognize copyright law:
       
-{\\bf Copyright} \\copyright \\space  {\\bf  2017-2019 The Libre-Halaal Foundation}
+{\\bf Copyright} \\copyright \\space  {\\bf  %s %s}
 \\vspace{0.1in}
+"
+		       @years
+		       @copyright-holders
+		       )
+	       )
 
+	      (insert
+	       (format "
 Permission is granted to make and distribute complete verbatim copies of this document
 provided that the copyright notice and this permission notice are preserved on all copies.
 This is a Libre-Halaal poly-existential.
-
+"
+		       ))
+	      (when @farsi
+		(insert
+		 (format "
 \\begin{faPar}
-%% چاپ کامل مجدد با ذکر ماخذ مجاز است تا هنگامى  که اين  اعلام اجازه روى همه 
-%% کپيها موجود باشد.
 چاپ کامل مجدد با ذکر ماخذ مجاز است تا هنگامى  که اين  اعلام اجازه محفوظ بماند. 
 \\end{faPar}
-
+"
+			 ))
+		)
+	      (insert
+	       (format "
      \\end{minipage}
-      
     &
-      \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}
+      \\includegraphics[width=0.1\\textwidth]{figures/Anti-copyright-220px.png}
   \\end{tabular*}
 \\end{center}
 \\end{latexonly}
@@ -2583,8 +2617,8 @@ This is a Libre-Halaal poly-existential.
 \\begin{htmlonly}
 \\begin{center}
   \\begin{tabular*}{\\textwidth}{ l p{.7\\textwidth} r }
-%%BEGIN IMAGE    
-    \\includegraphics[width=0.1\\textwidth]{figures/Anti-copyright-220px.png}
+%%BEGIN IMAGE  
+    \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}  
 %%END IMAGE
 %%HEVEA\\imageflush
     &
@@ -2598,16 +2632,24 @@ Within the jurisdiction of legal systems that recognize copyright law:
 Permission is granted to make and distribute complete verbatim copies of this document
 provided that the copyright notice and this permission notice are preserved on all copies.
 This is a Libre-Halaal poly-existential.
-
+"
+		       ))
+	      (when @farsi
+		(insert
+		 (format "
 \\begin{faPar}
 چاپ کامل مجدد با ذکر ماخذ مجاز است تا هنگامى  که اين  اعلام اجازه محفوظ بماند. 
 \\end{faPar}
-
+"
+			 ))
+		)
+	      (insert
+	       (format "
      \\end{minipage}
       
     &
 %%BEGIN IMAGE      
-      \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}
+    \\includegraphics[width=0.1\\textwidth]{figures/Anti-copyright-220px.png}
 %%END IMAGE
 %%HEVEA\\imageflush
   \\end{tabular*}
@@ -2627,7 +2669,6 @@ This is a Libre-Halaal poly-existential.
       )
     )
   )
-
 
 
 
@@ -3281,6 +3322,7 @@ Font size and spacing can be based on paper size.
 	($bufferFileName (file-name-nondirectory buffer-file-name))
 	($hugeString "Huge")
 	($mainTitleSize nil)
+	($belowMainTitleSpace nil)	
 	($subTitleSize nil)
 	($subSubTitleSize nil)	
 	)
@@ -3355,6 +3397,8 @@ Font size and spacing can be based on paper size.
 		(equal @paperSize "a4")
 		)
 	(setq $atLeastOnceWhenPaperSize t)
+
+	(setq $belowMainTitleSpace "0.5in")
 	
 	(when (equal @style "HUGE")
 	  (setq $atLeastOnceWhenStyle t)
@@ -3383,6 +3427,8 @@ Font size and spacing can be based on paper size.
 		(equal @paperSize "17.5x23.5")
 		)
 	(setq $atLeastOnceWhenPaperSize t)
+
+	(setq $belowMainTitleSpace "0.2in")	
 	
 	(when (equal @style "HUGE")
 	  (setq $atLeastOnceWhenStyle t)
@@ -3432,8 +3478,9 @@ Font size and spacing can be based on paper size.
 	  (when (not (string-equal lcnt-subTitle ""))
 	    (insert
 	     (format "\
-\\vspace{0.2in}
+\\vspace{%s}
 {\\%s {\\bf %s}}\\\\\n"
+		     $belowMainTitleSpace		     
 		     $subTitleSize
 		     lcnt-subTitle
 		     )
@@ -3799,6 +3846,7 @@ Font size and spacing can be based on paper size.
 	       (format "
 \\begin{center}
 \\rule{0.7\\textwidth}{.02in}\\\\
+\\vspace{-0.10in}
 \\rule{0.7\\textwidth}{.01in}\\\\
 \\vspace{0.15in}
 {\\large Available on-line at:\\\\
@@ -4452,6 +4500,10 @@ otherwise labelInfo is inserted as label"
      'latex-mode
      ":class \"book|pres+art\" :langs \"en+fa\" :disabledP \"false\" :seg-title \"str\" :short-title \"str\" :label \"auto\""
      )
+
+    (setq $labelTitleStr segTitle)
+    (when @shortTitle
+      (setq $labelTitleStr shortTitle))
     
     (when (member segType (list "part" "chapter"))
       (setq delimiterLinePerhaps "\n*      ================"))
@@ -4466,7 +4518,8 @@ otherwise labelInfo is inserted as label"
 \\end{comment}"
 	       delimiterLinePerhaps
 	       (make-string orgDepth ?*)
-	       (str:capitalize-first-char segType) segTitle
+	       (str:capitalize-first-char segType)
+	       $labelTitleStr
 	       )))
     
     (when (not (string-equal segType "part"))
@@ -4477,7 +4530,8 @@ otherwise labelInfo is inserted as label"
 \\end{comment}"
 	       delimiterLinePerhaps
 	       (make-string orgDepth ?*)
-	       (str:capitalize-first-char segType) segTitle
+	       (str:capitalize-first-char segType)
+	       $labelTitleStr
 	       )))
 
     (when @shortTitle
@@ -4494,9 +4548,6 @@ otherwise labelInfo is inserted as label"
 	     segTitle
 	     ))
 
-    (setq $labelTitleStr segTitle)
-    (when @shortTitle
-      (setq $labelTitleStr shortTitle))
     
     (when (string-equal labelInfo "auto")
       (setq labelInfo (str:spacesElim $labelTitleStr)))
