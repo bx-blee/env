@@ -3386,16 +3386,13 @@ Font size and spacing can be based on paper size.
       (insert 
        (format "\n
 %s Titles paperSize=%s
-
-\\begin{latexonly}"	       
+"	       
 	       "%%%"
 	       @paperSize
 	       )
        )
       (insert
        (format "
-
-\\thispagestyle{empty}
 
 \\title{%s}\n"
 	       lcnt-shortTitle)
@@ -3466,82 +3463,109 @@ Font size and spacing can be based on paper size.
 	 )
 	)
 
+      (when (equal @paperSize "html")
+	(setq $atLeastOnceWhenPaperSize t)
+
+	(setq $belowMainTitleSpace "0.2in")	
+	
+	(when (equal @style "HUGE")
+	  (setq $atLeastOnceWhenStyle t)
+
+	  (setq $mainTitleSize "Huge")
+	  (setq $subTitleSize "LARGE")
+	  (setq $subSubTitleSize "LARGE")
+	  )
+
+	(when (equal @style "Huge")
+	  (setq $atLeastOnceWhenStyle t)
+
+	  (setq $mainTitleSize "huge")
+	  (setq $subTitleSize "Large")
+	  (setq $subSubTitleSize "Large")
+	  )
+	
+	(bx:eh:assert:atLeastOnceWhen
+	 $atLeastOnceWhenStyle
+	 :context "latex"
+	 :info (format "Unknown Style  %s\n"
+		       @style)
+	 )
+	)
+
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhenPaperSize
        :context "latex"
-       :info (format "Unknown Title  %s\n"
+       :info (format "Unknown PaperSize  %s\n"
 		     @paperSize)
        )
- 
 
-      (when $mainTitleSize
-	(when (or (equal @class "art+pres")
-		  (equal @class "art")
-		  )
-	  (insert
-	   (format "
+      (when (not (equal @paperSize "html"))
+	(when $mainTitleSize
+	  (when (or (equal @class "art+pres")
+		    (equal @class "art")
+		    )
+	    (insert
+	     (format "
+\\thispagestyle{empty}
+
 \\begin{center}
 {\\%s {\\bf %s}}\\\\
 "
-		   $mainTitleSize
-		   lcnt-mainTitle
-		   )
-	   )
+		     $mainTitleSize
+		     lcnt-mainTitle
+		     )
+	     )
 	  
-	  (when (not (string-equal lcnt-subTitle ""))
-	    (insert
-	     (format "\
+	    (when (not (string-equal lcnt-subTitle ""))
+	      (insert
+	       (format "\
 \\vspace{%s}
 {\\%s {\\bf %s}}\\\\\n"
-		     $belowMainTitleSpace		     
-		     $subTitleSize
-		     lcnt-subTitle
-		     )
-	     )
-	    )
+		       $belowMainTitleSpace		     
+		       $subTitleSize
+		       lcnt-subTitle
+		       )
+	       )
+	      )
 
-	  (when (not (string-equal lcnt-subSubTitle ""))
-	    (insert
-	     (format "
+	    (when (not (string-equal lcnt-subSubTitle ""))
+	      (insert
+	       (format "
 \\vspace{0.2in}
 {\\%s {\\bf %s}}\\\\\n"
-		     $subSubTitleSize		     
-		     lcnt-subSubTitle
-		     )
-	     )
-	    )
-	  (insert "\
+		       $subSubTitleSize		     
+		       lcnt-subSubTitle
+		       )
+	       )
+	      )
+	    (insert "\
 
 \\end{center}\n"
-		  )
+		    )
+	    )
 	  )
-	)
-
-      (when (string-equal $bufferFileName lcnt-presArtSrcFile)
-	(insert "
+	
+	(when (string-equal $bufferFileName lcnt-presArtSrcFile)
+	  (insert "
 \\begin{center}
   {\\Large {\\bf Article Format Of Presentation\\\\
 \\vspace{0.2in}
 }}
 \\end{center}
 "
-		)
-	)
-      (when @spacing
-	(insert "\n
+		  )
+	  )
+	(when @spacing
+	  (insert "\n
 \\vspace{0.35in}\n"
-		)
+		  )
+	  )
 	)
 
-      (insert "\
-\\end{latexonly}
-"
-	      )
-
-
-	  (insert
+      (when (equal @paperSize "html")      
+	(insert
 	   (format "
-\\begin{htmlonly}
+
 \\begin{center}
 {\\%s {\\bf %s}}\\\\
 \\bigskip
@@ -3551,34 +3575,34 @@ Font size and spacing can be based on paper size.
 		   )
 	   )
 	  
-	  (when (not (string-equal lcnt-subTitle ""))
-	    (insert
-	     (format "\
+	(when (not (string-equal lcnt-subTitle ""))
+	  (insert
+	   (format "\
 \\vspace{%s}
 {\\%s {\\bf %s}}\\\\\n"
-		     $belowMainTitleSpace		     
-		     "Large"
-		     lcnt-subTitle
-		     )
-	     )
-	    )
+		   $belowMainTitleSpace		     
+		   "Large"
+		   lcnt-subTitle
+		   )
+	   )
+	  )
 
-	  (when (not (string-equal lcnt-subSubTitle ""))
-	    (insert
-	     (format "
+	(when (not (string-equal lcnt-subSubTitle ""))
+	  (insert
+	   (format "
 \\vspace{0.2in}
 {\\%s {\\bf %s}}\\\\\n"
-		     "Large"
-		     lcnt-subSubTitle
-		     )
-	     )
-	    )
-	  (insert "\
+		   "Large"
+		   lcnt-subSubTitle
+		   )
+	   )
+	  )
+	(insert "\
 
 \\end{center}
-\\end{htmlonly}\n"		  
-		  )
-      
+"
+		)
+	)
       )
     )
   )
@@ -3658,8 +3682,7 @@ Font size and spacing can be based on paper size.
       (insert 
        (format "\n
 %s Authors paperSize=%s
-
-\\begin{latexonly}"	       
+"	       
 	       "%%%"
 	       @paperSize
 	       )
@@ -3710,24 +3733,11 @@ Font size and spacing can be based on paper size.
 	    )
 	  )
 	)
-      (bx:eh:assert:atLeastOnceWhen
-       $atLeastOnceWhen
-       :context "latex"
-       :info (format "Unknown Title  %s\n"
-		     @paperSize)
-       )
-      (when @spacing
-	(insert "\n
-\\vspace{0.35in}\n"
-		)
-	)
-      (insert "\
-\\end{latexonly}
-"
-	      )
+      (when (equal @paperSize "html")
+	(setq $atLeastOnceWhen t)
 
-      (insert
-       (format "
+	(insert
+	 (format "
 \\begin{htmlonly}
 \\begin{center}
 {\\Large {\\bf %s}}\\\\
@@ -3736,11 +3746,24 @@ Font size and spacing can be based on paper size.
 \\bigskip
 \\end{htmlonly}
 "
-		     lcnt-authorName1
-		     lcnt-authorUrl1
-		     lcnt-authorUrl1
-		     )
+		 lcnt-authorName1
+		 lcnt-authorUrl1
+		 lcnt-authorUrl1
+		 )
+	 )
+	)
+	
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhen
+       :context "latex"
+       :info (format "Unknown PaperSize %s\n"
+		     @paperSize)
        )
+      (when @spacing
+	(insert "\n
+\\vspace{0.35in}\n"
+		)
+	)
       )
     )
   )
@@ -3776,7 +3799,7 @@ Font size and spacing can be based on paper size.
     (org-latex-node-insert-note
      :label "DBLOCK:"
      :name (format
-	    "Title Page Authors --- curBuild=%s paperSize=%s spacing=%s"
+	    "Title Page LCNT-NU --- curBuild=%s paperSize=%s spacing=%s"
 	    @curBuild
 	    @paperSize
 	    @spacing
@@ -3853,7 +3876,8 @@ Font size and spacing can be based on paper size.
 	(lcnt-url (get 'bx:lcnt:info:base 'url))
 	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
 	;;;
-	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	($bufferFileName (file-name-nondirectory buffer-file-name))
+	($atLeastOnceWhenPaperSize nil)
 	)
 
     (blee:dblock:params:desc
@@ -3919,13 +3943,22 @@ Font size and spacing can be based on paper size.
       
 	(when (not (equal @form "priv"))
 
-	  (when (or (equal @class "art+pres")
-		    (equal @class "art"))
+	  (when (or
+		 (equal @paperSize "8.5x11")
+		 (equal @paperSize "a4")
+		 (equal @paperSize "6x9")
+		 (equal @paperSize "17.5x23.5")
+		 )
+	    (setq $atLeastOnceWhenPaperSize t)
 
-	    (when (or (equal @langs "en")
-		      (equal @langs "en+fa"))
-	      (insert
-	       (format "
+	  
+	    (when (or (equal @class "art+pres")
+		      (equal @class "art"))
+
+	      (when (or (equal @langs "en")
+			(equal @langs "en+fa"))
+		(insert
+		 (format "
 \\begin{center}
 \\rule{0.7\\textwidth}{.02in}\\\\
 \\vspace{-0.10in}
@@ -3935,35 +3968,27 @@ Font size and spacing can be based on paper size.
 \\href{%s}{%s}}
 \\end{center}
 "
-		       lcnt-url
-		       lcnt-url)
-	       )
-	      )
+			 lcnt-url
+			 lcnt-url)
+		 )
+		)
 
-	    (when @qrcode
-	      (insert
-	       (format "
-\\begin{latexonly}
+	      (when @qrcode
+		(insert
+		 (format "
 \\begin{center}
 \\vspace{0.2in}
 \\qrcode[height=1in]{%s}
 \\end{center}
-\\end{latexonly}
-
-\\begin{htmlonly}
-\\bigskip
-
-\\bigskip
-\\end{htmlonly}
 "
-		       lcnt-url)
-	       )
-	      )
+			 lcnt-url)
+		 )
+		)
 	
-	    (when (equal @langs "fa+en")
-	      (insert "\\begin{center}\n")
+	      (when (equal @langs "fa+en")
+		(insert "\\begin{center}\n")
 
-	      (insert "
+		(insert "
 \\vspace{0.05in}
 
 \\begin{center}
@@ -3971,17 +3996,42 @@ Font size and spacing can be based on paper size.
 "
 		    )
 
-	      (insert "\\begin{latin}\n")
-	      (insert (format "\\href{%s}{%s}\n" lcnt-url lcnt-url))
-	      (insert "\\end{latin}\n")
+		(insert "\\begin{latin}\n")
+		(insert (format "\\href{%s}{%s}\n" lcnt-url lcnt-url))
+		(insert "\\end{latin}\n")
 
-	      (insert "\\end{center}
+		(insert "\\end{center}
 
 \\vspace{0.3in}
 "
-		      )
+			)
+		)
 	      )
 	    )
+
+	  (when (equal @paperSize "html")
+	    (setq $atLeastOnceWhenPaperSize t)
+	    
+	    (insert
+	     (format "
+\\begin{center}
+\\vspace{0.15in}
+{\\large Available on-line at:\\\\
+\\href{%s}{%s}}
+\\end{center}
+
+\\bigskip
+"
+			 lcnt-url
+			 lcnt-url)
+		 )
+	    )
+	  (bx:eh:assert:atLeastOnceWhen
+	   $atLeastOnceWhenPaperSize
+	   :context "latex"
+	   :info (format "Unknown PaperSize  %s\n"
+			 @paperSize)
+	   )
 	  )
 	)
       )
