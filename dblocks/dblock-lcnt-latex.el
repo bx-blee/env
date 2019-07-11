@@ -1623,7 +1623,8 @@ Subject:   & This Matter\\\\
       
       (insert 
        (format "\n
-%s newgeometry paperSize=%s\n"
+%s newgeometry paperSize=%s
+"
 	       "%%%"
 	       @paperSize
 	       )
@@ -1664,6 +1665,13 @@ Subject:   & This Matter\\\\
 "
 		 )
 	 )
+	)
+      (when (equal @paperSize "html")
+	(setq $atLeastOnceWhen t)
+	(insert "
+%%% newgeometry does not apply to html
+"
+		)
 	)
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhen
@@ -2616,24 +2624,27 @@ This is a Libre-Halaal poly-existential.
 
 \\begin{htmlonly}
 \\begin{center}
-  \\begin{tabular*}{\\textwidth}{ l p{.7\\textwidth} r }
+  \\begin{tabular*}{.7\\textwidth}{ l p{.5\\textwidth} r }
 %%BEGIN IMAGE  
     \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}  
 %%END IMAGE
 %%HEVEA\\imageflush
     &
       \\vspace{-0.7in}
-      \\begin{minipage}[t]{.7\\textwidth}
+      \\begin{minipage}[t]{.5\\textwidth}
 Within the jurisdiction of legal systems that recognize copyright law:
       
-{\\bf Copyright} \\copyright \\space  {\\bf  2017-2019 The Libre-Halaal Foundation}
+{\\bf Copyright} \\copyright \\space  {\\bf  %s %s}
 \\vspace{0.1in}
 
 Permission is granted to make and distribute complete verbatim copies of this document
 provided that the copyright notice and this permission notice are preserved on all copies.
 This is a Libre-Halaal poly-existential.
 "
-		       ))
+		       @years
+		       @copyright-holders
+		       )
+	       )
 	      (when @farsi
 		(insert
 		 (format "
@@ -3374,7 +3385,9 @@ Font size and spacing can be based on paper size.
     (when @paperSize
       (insert 
        (format "\n
-%s Titles paperSize=%s\n"
+%s Titles paperSize=%s
+
+\\begin{latexonly}"	       
 	       "%%%"
 	       @paperSize
 	       )
@@ -3519,6 +3532,53 @@ Font size and spacing can be based on paper size.
 \\vspace{0.35in}\n"
 		)
 	)
+
+      (insert "\
+\\end{latexonly}
+"
+	      )
+
+
+	  (insert
+	   (format "
+\\begin{htmlonly}
+\\begin{center}
+{\\%s {\\bf %s}}\\\\
+\\bigskip
+"
+		   "huge"
+		   lcnt-mainTitle
+		   )
+	   )
+	  
+	  (when (not (string-equal lcnt-subTitle ""))
+	    (insert
+	     (format "\
+\\vspace{%s}
+{\\%s {\\bf %s}}\\\\\n"
+		     $belowMainTitleSpace		     
+		     "Large"
+		     lcnt-subTitle
+		     )
+	     )
+	    )
+
+	  (when (not (string-equal lcnt-subSubTitle ""))
+	    (insert
+	     (format "
+\\vspace{0.2in}
+{\\%s {\\bf %s}}\\\\\n"
+		     "Large"
+		     lcnt-subSubTitle
+		     )
+	     )
+	    )
+	  (insert "\
+
+\\end{center}
+\\end{htmlonly}\n"		  
+		  )
+      
       )
     )
   )
@@ -3597,7 +3657,9 @@ Font size and spacing can be based on paper size.
     (when @paperSize
       (insert 
        (format "\n
-%s Authors paperSize=%s\n"
+%s Authors paperSize=%s
+
+\\begin{latexonly}"	       
 	       "%%%"
 	       @paperSize
 	       )
@@ -3659,6 +3721,26 @@ Font size and spacing can be based on paper size.
 \\vspace{0.35in}\n"
 		)
 	)
+      (insert "\
+\\end{latexonly}
+"
+	      )
+
+      (insert
+       (format "
+\\begin{htmlonly}
+\\begin{center}
+{\\Large {\\bf %s}}\\\\
+{\\bf  Email: \\href{%s}{%s}}\\\\
+\\end{center}
+\\bigskip
+\\end{htmlonly}
+"
+		     lcnt-authorName1
+		     lcnt-authorUrl1
+		     lcnt-authorUrl1
+		     )
+       )
       )
     )
   )
@@ -3861,10 +3943,18 @@ Font size and spacing can be based on paper size.
 	    (when @qrcode
 	      (insert
 	       (format "
+\\begin{latexonly}
 \\begin{center}
 \\vspace{0.2in}
 \\qrcode[height=1in]{%s}
 \\end{center}
+\\end{latexonly}
+
+\\begin{htmlonly}
+\\bigskip
+
+\\bigskip
+\\end{htmlonly}
 "
 		       lcnt-url)
 	       )
