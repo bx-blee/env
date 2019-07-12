@@ -1688,24 +1688,98 @@ Subject:   & This Matter\\\\
   (let (
 	(@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
 	;;;
+	($curBuild:paperSize nil)
+	;;;
+	($atLeastOnceWhen nil)
 	)
-    
-    (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
+     )
 
     (org-latex-node-insert-note
      :label "DBLOCK:"
-     :name "Restore Geometry"
+     :name (format
+	    "Restore Geometry --- curBuild=%s paperSize=%s"
+	    @curBuild
+	    @paperSize
+	    )
      :level 2
      :comment (format "")
      )
 
-    (insert (format "
 
+    (when (not @paperSize)
+      (when (not @curBuild)
+	(insert
+	 "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	 )
+	)
+      (when @curBuild
+	(when (bx:lcnt:curBuild:base-read)
+	  (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	  (setq @paperSize $curBuild:paperSize)
+	  )
+     
+	(when (not @paperSize)
+	  (insert
+	   "\n%%% ERROR:: curBuild paperSize not is not valid."
+	   )
+	  )
+	)
+      )
+
+    ;;;
+    ;;; $paperSize is available now.
+    ;;;
+
+    (when @paperSize
+      (insert 
+       (format "\n
+%s Titles paperSize=%s
+"	       
+	       "%%%"
+	       @paperSize
+	       )
+       )
+      (when (or
+	     (equal @paperSize "8.5x11")
+	     (equal @paperSize "a4")
+	     (equal @paperSize "6x9")
+	     (equal @paperSize "17.5x23.5")
+	     )
+	(setq $atLeastOnceWhenPaperSize t)
+	(insert (format "
 \\restoregeometry
+
+\\thispagestyle{empty}
 "
-		      ))
-      ))
+			)
+		)
+	)
+      (when (equal @paperSize "html")
+	(setq $atLeastOnceWhenPaperSize t)
+	(insert "
+%%% restoregeometry does not apply to html/hevea
+"
+		)
+	)
+      
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhenPaperSize
+       :context "latex"
+       :info (format "Unknown PaperSize  %s\n"
+		     @paperSize)
+       )
+      )
+    )
+  )
+
 
 (defun org-dblock-write:bx:lcnt:latex:title-page-header (@params)
   (let (
