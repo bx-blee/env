@@ -2651,10 +2651,18 @@ and this permission notice are preserved on all copies.
 	  (when (or (equal @langs "en")
 		    (equal @langs "en+fa"))
 	    (when (equal @form "std+fa")
+	      (when (or
+		     (equal @paperSize "8.5x11")
+		     (equal @paperSize "a4")
+		     (equal @paperSize "6x9")
+		     (equal @paperSize "17.5x23.5")
+		     )
+		(setq $atLeastOnceWhenPaperSize t)
+
+		
 	      (insert
 	       (format "
 
-\\begin{latexonly}
 \\begin{center}
   \\begin{tabular*}{\\textwidth}{ l p{.7\\textwidth} r }
       \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}
@@ -2694,18 +2702,24 @@ This is a Libre-Halaal poly-existential.
       \\includegraphics[width=0.1\\textwidth]{figures/Anti-copyright-220px.png}
   \\end{tabular*}
 \\end{center}
-\\end{latexonly}
+"
+		       )
+	       )
+	      )
+	      (when (equal @paperSize "html")
+		(setq $atLeastOnceWhenPaperSize t)
 
-\\begin{htmlonly}
+		(insert
+		 (format "
 \\begin{center}
-  \\begin{tabular*}{.7\\textwidth}{ l p{.5\\textwidth} r }
+  \\begin{tabular*}{\\textwidth}{ l p{.7\\textwidth} r }
 %%BEGIN IMAGE  
     \\includegraphics[width=0.1\\textwidth]{figures/GreenCopyleft-120px.png}  
 %%END IMAGE
 %%HEVEA\\imageflush
     &
       \\vspace{-0.7in}
-      \\begin{minipage}[t]{.5\\textwidth}
+      \\begin{minipage}[t]{.7\\textwidth}
 Within the jurisdiction of legal systems that recognize copyright law:
       
 {\\bf Copyright} \\copyright \\space  {\\bf  %s %s}
@@ -2718,18 +2732,18 @@ This is a Libre-Halaal poly-existential.
 		       @years
 		       @copyright-holders
 		       )
-	       )
-	      (when @farsi
-		(insert
-		 (format "
+		 )
+		(when @farsi
+		  (insert
+		   (format "
 \\begin{faPar}
 چاپ کامل مجدد با ذکر ماخذ مجاز است تا هنگامى  که اين  اعلام اجازه محفوظ بماند. 
 \\end{faPar}
 "
-			 ))
-		)
-	      (insert
-	       (format "
+			   ))
+		  )
+		(insert
+		 (format "
      \\end{minipage}
       
     &
@@ -2739,10 +2753,11 @@ This is a Libre-Halaal poly-existential.
 %%HEVEA\\imageflush
   \\end{tabular*}
 \\end{center}
-\\end{htmlonly}
 "
-		       )
-	       )
+			 )
+	       
+		 )
+		)
 	      )
 	    ;;; Form std comes here
 	    )
