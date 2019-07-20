@@ -20,8 +20,8 @@ Hello World
 Hello World
 ;;;#+END:
 
-;;;;+BEGIN: bx:dblock:global:run-result-stdout :command "echo XXkkpgp4422p%m/%d/%Y"
+;;;+BEGIN: bx:dblock:global:run-result-stdout :command "echo XXkkpgp4422p%m/%d/%Y"
 \date{XXkkpgp4422p01/28/2011}
 Hello World
-;;;;+END:
+;;;+END:
 

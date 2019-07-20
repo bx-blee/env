@@ -26,26 +26,30 @@ mysql:x:118:126:MySQL Server,,,:/var/lib/mysql:/bin/false
 ####+END:
 
 ####+BEGIN: bx:dblock:global:run-result-stdout :command "ls -ldt *"
--rw-r--r-- 1 lsipusr employee   983 Jan 23 11:54 sample-dblock-usage-bash.sh
--rw-rw-r-- 1 lsipusr employee 53072 Jan 23 11:00 dblock-lcnt-latex.el
-drwxr-xr-x 2 lsipusr employee  4096 Jan 22 23:50 CVS
--rw-rw-r-- 1 lsipusr employee 52854 Jan 22 23:46 dblock-lcnt-latex.el.~1.7.~
--rw-rw-r-- 1 lsipusr employee  7018 Jan 22 21:30 dblock-emacs-lisp.el
--rw-r--r-- 1 lsipusr employee 14965 Jan 22 20:52 dblock-lcnt-latex-body.el
--rw-rw-r-- 1 lsipusr employee  8799 Jan 22 15:11 dblock-lcnt-latex-panel.el
--rw-rw-r-- 1 lsipusr employee 10234 Jan 22 12:23 dblock-lcnt-latex-panel.el~
--rw-r--r-- 1 lsipusr employee 20470 Jan 21 17:16 dblock-global.el
--rw-rw-r-- 1 lsipusr employee 23777 Jan 21 15:55 dblock-lcnt-latex-front.el
--rw-r--r-- 1 lsipusr employee  2555 Jan 20 17:57 dblock-lcnt-bash.el
--rw-r--r-- 1 lsipusr employee  8185 Dec  6 17:35 dblock-org-bnsm.el
--rw-r--r-- 1 lsipusr employee  2410 Feb 28  2016 dblock-bash.el
--rw-r--r-- 1 lsipusr employee  1912 Feb 27  2016 dblock-lsip-bash.el
--rw-r--r-- 1 lsipusr employee 20658 Feb 26  2014 dblock-lcnt-latex-front-1210.el
--rw-r--r-- 1 lsipusr employee   332 Sep 14  2013 dblock-global-run-results.el
--rw-r--r-- 1 lsipusr employee   613 Sep 14  2013 sample-dblock-usage-bash.sh.~1.1.~
--rw-r--r-- 1 lsipusr employee   745 Sep 14  2013 sample-dblock-usage.el
--rw-r--r-- 1 lsipusr employee   526 Mar  8  2013 dblock-org-general.el
--rw-r--r-- 1 lsipusr employee  2623 Jun 19  2012 dblock-ploneProc-bash.el
+-rw-rw-r-- 1 lsipusr employee    743 Jul 12 11:49 sample-dblock-emacs-lisp.el
+-rw-rw-r-- 1 lsipusr employee 137818 Jul 11 14:06 dblock-lcnt-latex.el
+-rw-rw-r-- 1 lsipusr employee  25408 Jul  2 14:28 dblock-global.el
+-rw-rw-r-- 1 lsipusr employee  11127 Jun 12 11:19 dblock-iim-bash.el
+-rw-rw-r-- 1 lsipusr employee  20334 Jun 12 11:08 dblock-iim-python.el
+-rw-rw-r-- 1 lsipusr employee  68029 Jun 12 10:58 dblock-lcnt-latex-new.el
+-rw-rw-r-- 1 lsipusr employee  10563 Jun 12 10:37 dblock-emacs-lisp.el
+-rw-rw-r-- 1 lsipusr employee  24066 Jun 12 09:30 dblock-lcnt-latex-front.el
+-rw-rw-r-- 1 lsipusr employee  10217 Apr 20 13:29 dblock-org-bnsm.el
+-rw-rw-r-- 1 lsipusr employee    764 Apr 20 13:29 dblock-org-general.el
+-rw-rw-r-- 1 lsipusr employee  20242 Apr 20 13:29 dblock-org-iims.el
+-rw-rw-r-- 1 lsipusr employee   2867 Apr 20 13:29 dblock-ploneProc-bash.el
+-rw-rw-r-- 1 lsipusr employee   3156 Apr 20 13:29 dblock-widget-example.el
+-rw-rw-r-- 1 lsipusr employee      0 Apr 20 13:29 sample-dblock-latex-mode.tex
+-rw-rw-r-- 1 lsipusr employee      0 Apr 20 13:29 sample-dblock-org-mode.org
+-rw-rw-r-- 1 lsipusr employee   2587 Apr 20 13:29 sample-dblock-sh-mode.sh
+-rw-rw-r-- 1 lsipusr employee  19333 Apr 20 13:29 dblock-iims-panel.el
+-rw-rw-r-- 1 lsipusr employee   3100 Apr 20 13:29 dblock-lcnt-bash.el
+-rw-rw-r-- 1 lsipusr employee  26120 Apr 20 13:29 dblock-lcnt-latex-body.el
+-rw-rw-r-- 1 lsipusr employee  20658 Apr 20 13:29 dblock-lcnt-latex-front-1210.el
+-rw-rw-r-- 1 lsipusr employee  12062 Apr 20 13:29 dblock-lcnt-latex-panel.el
+-rw-rw-r-- 1 lsipusr employee  26787 Apr 20 13:29 dblock-lcnt-latex-pres.el
+-rw-rw-r-- 1 lsipusr employee   9702 Apr 20 13:29 dblock-lcnt-pres-panel.el
+-rw-rw-r-- 1 lsipusr employee    798 Apr 20 13:29 dblock-global-run-results.el
 
 ####+END:
 
