@@ -519,6 +519,24 @@
     )
   )
 
+(defun bx:org:agenda:these-files-otherWin ()
+  (interactive)
+  (let (
+	($theseFiles "./bx-org-agenda-files-list.el")
+	)
+    (setq org-agenda-files (list))
+    (when (file-exists-p $theseFiles)
+      (load-file  $theseFiles)
+      )
+    (setq org-agenda-files 
+	  (append
+	   org-agenda-files
+	   (list (buffer-file-name)
+		 )))
+    (org-agenda-list)    
+    )
+  )
+
 
 (defun bx:org:todo:this-file-1 ()
   (interactive)
