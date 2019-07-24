@@ -501,6 +501,25 @@
   (org-todo-list nil)
   )
 
+(defun bx:org:todo:these-files-otherWin ()
+  (interactive)
+  (let (
+	($theseFiles "./bx-org-agenda-files-list.el")
+	)
+    (setq org-agenda-files (list))
+    (when (file-exists-p $theseFiles)
+      (load-file  $theseFiles)
+      )
+    (setq org-agenda-files 
+	  (append
+	   org-agenda-files
+	   (list (buffer-file-name)
+		 )))
+    (org-todo-list nil)
+    )
+  )
+
+
 (defun bx:org:todo:this-file-1 ()
   (interactive)
   (bx:org:todo:this-file-otherWin)
