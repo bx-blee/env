@@ -3946,6 +3946,112 @@ Font size and spacing can be based on paper size.
 
 
 
+(defun org-dblock-write:bx:lcnt:latex:when-conditionals (@params)
+  "Deterinable common when include and excludes.
+"
+  (bx:lcnt:info:base-read)
+  (let ((@class (or (plist-get @params :class) ""))
+	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) ""))
+	(@curBuild (or (plist-get @params :curBuild) nil))			
+	(@paperSize (or (plist-get @params :paperSize) nil))
+	(@when (or (plist-get @params :when) nil))	
+	;;;
+	($curBuild:paperSize nil)
+	;;;
+	($atLeastOnceWhenConditionals nil)
+	;;;
+	(lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	(lcnt-type (get 'bx:lcnt:info:base 'type))
+	(lcnt-presArtSrcFile (get 'bx:lcnt:info:base 'presArtSrcFile))
+	;;;
+	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t :curBuild nil|t :paperSize \"8.5x11|6x9\" :when \"main|mailing\""
+     )
+
+    (org-latex-node-insert-note
+     :label "DBLOCK:"
+     :name (format
+	    "When Conditionals (Includes and Excludes) --- when=%s curBuild=%s paperSize=%s"
+	    @when
+	    @curBuild
+	    @paperSize
+	    )
+     :level 1
+     :comment (format "")
+     )
+
+    
+    (when (equal @toggle "hide")  ;;; else
+      (setq @toggle "disabled")
+      )
+   
+    (when (equal @toggle "enabled")
+
+      (when (not @paperSize)
+	(when (not @curBuild)
+	  (insert
+	   "\n%%% ERROR:: Either paperSize or curBuild should be specified."
+	   )
+	  )
+	(when @curBuild
+	  (when (bx:lcnt:curBuild:base-read)
+	    (setq $curBuild:paperSize  (get 'bx:lcnt:curBuild:base 'paperSize))
+	  ;;; NOTYET, verify that $curBuild:paperSize is valid
+	    (setq @paperSize $curBuild:paperSize)
+	    )
+	  
+	  (when (not @paperSize)
+	    (insert
+	     "\n%%% ERROR:: curBuild paperSize not is not valid."
+	     )
+	    )
+	  )
+	)
+      
+      ;;
+      ;; @paperSize is available now.
+      ;;
+
+      ;; But, @paperSize is not being used.
+      
+      (when (equal @when "main")
+	(setq $atLeastOnceWhenConditionals t)
+
+	(insert
+	 (format "
+
+\\includecomment{%s-%s}
+
+\\includecomment{whenDocIsComplete}
+\\excludecomment{whenMailing}
+\\excludecomment{whenDocIsPartial}
+
+\\excludecomment{ignore}
+"
+		 lcnt-type
+		 lcnt-lcntNu
+		 )
+	 )
+	)
+	
+      (bx:eh:assert:atLeastOnceWhen
+       $atLeastOnceWhenConditionals
+       :context "latex"
+       :info (format "Unknown when  %s\n"
+		     @when)
+       
+       )
+      )
+    )
+  )
+
+
+
 (defun org-dblock-write:bx:lcnt:latex:title-page-online-at (@params)
   "Inserts Titles part of the title page.
 "
