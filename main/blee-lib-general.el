@@ -156,12 +156,21 @@
 
 ;;;
 
-(defun blee:eval-string (string)
+(defun blee:eval-string  (string)
   "Given STRING, eval it."
   (eval (car (read-from-string (format "(progn %s)" string)))))
 
 
-
+;;; (bx:find-files-in-mode (list "./bodyArticleEnFa.tex") "(org-mode)")
+(defun bx:find-files-in-mode (@filesList @modeAsString)
+  "Open each @filesList in @modeAsString"
+  (mapcar '(lambda (@eachFile)
+	     (find-file @eachFile)
+	     (blee:eval-string @modeAsString)
+	     )
+	     @filesList
+	     )
+  )
 
 (defun call-stack ()
   "Return the current call stack frames."

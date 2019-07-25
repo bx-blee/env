@@ -811,6 +811,58 @@
     (kill-buffer tmp-buffer)
     ))
 
+
+(defun org-dblock-write:bx:lisp:org-agenda-files (params)
+  "Writes a function which returns a list of all related files that may include agenda entries."
+  (let (
+	(@pkgType (or (plist-get params :pkgType) nil))
+	;;
+	($outFiles)
+	)
+    
+    (when @pkgType
+      (when (string-equal "lcnt" @pkgType)
+	(insert
+	 (format "\n(defun bx:lisp:lcnt:org-files-list ()\n\
+  \"Machine/Dblock GeneratedL Returns a list of deduced files\"
+  "
+		 )
+	 )
+	(setq $outFiles
+	      (shell-command-to-string
+	       (format
+		"/bisos/venv/dev-py2-bisos-3/bin/beamerExternalExtensions.py -i latexInputFilesList articleEnFa.ttytex | xargs -n 1 | grep '.tex$'"
+		)))
+	(insert
+	 (format "
+(setq org-agenda-files (append org-agenda-files
+"
+		 )
+	 )
+
+	(mapcar '(lambda (arg)
+		   (progn
+		     (insert
+		      (format "\
+(list \"%s\")
+"		  
+			  arg ))))
+	       (split-string  $outFiles)
+	       )
+
+	(insert
+	 (format "
+)))
+"
+		 )
+	 )
+	)
+      )
+    )
+  )
+
+
+
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-global"
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]

@@ -504,17 +504,17 @@
 (defun bx:org:todo:these-files-otherWin ()
   (interactive)
   (let (
-	($theseFiles "./bx-org-agenda-files-list.el")
+	($theseFiles "./bx-org-agenda-files.el")
 	)
     (setq org-agenda-files (list))
     (when (file-exists-p $theseFiles)
       (load-file  $theseFiles)
       )
-    (setq org-agenda-files 
-	  (append
-	   org-agenda-files
-	   (list (buffer-file-name)
-		 )))
+    ;; (setq org-agenda-files 
+    ;; 	  (append
+    ;; 	   org-agenda-files
+    ;; 	   (list (buffer-file-name)
+    ;; 		 )))
     (org-todo-list nil)
     )
   )
@@ -522,17 +522,17 @@
 (defun bx:org:agenda:these-files-otherWin ()
   (interactive)
   (let (
-	($theseFiles "./bx-org-agenda-files-list.el")
+	($theseFiles "./bx-org-agenda-files.el")
 	)
     (setq org-agenda-files (list))
     (when (file-exists-p $theseFiles)
       (load-file  $theseFiles)
       )
-    (setq org-agenda-files 
-	  (append
-	   org-agenda-files
-	   (list (buffer-file-name)
-		 )))
+    ;; (setq org-agenda-files 
+    ;; 	  (append
+    ;; 	   org-agenda-files
+    ;; 	   (list (buffer-file-name)
+    ;; 		 )))
     (org-agenda-list)    
     )
   )

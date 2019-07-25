@@ -20,6 +20,8 @@
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
+;;;(setq org-agenda-file-regexp "\\`[^.].*\\.org\\'|\\`[^.].*\\.tex\\'||\\`[^.].*\\.ttytex\\'")
+
 (setq org-agenda-diary-file "/acct/employee/lsipusr/org/events/main.org")
 
 (define-key mode-specific-map [?a] 'org-agenda)
