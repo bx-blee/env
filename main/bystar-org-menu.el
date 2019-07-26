@@ -501,6 +501,16 @@
   (org-todo-list nil)
   )
 
+(defun bx:org:find-agenda-files-in-orgMode ()
+  ;;
+  ;; org-agenda-files now may include .org files as well as .tex or .py or .bash or .etc
+  ;; org-todo function expects these files to be open in org-mode.
+  ;; So, we put them all in org-mode.
+  ;;
+  (bx:find-files-in-mode org-agenda-files "(org-mode)")
+  )
+
+
 (defun bx:org:todo:these-files-otherWin ()
   (interactive)
   (let (
@@ -509,6 +519,7 @@
     (setq org-agenda-files (list))
     (when (file-exists-p $theseFiles)
       (load-file  $theseFiles)
+      (bx:org:find-agenda-files-in-orgMode)
       )
     ;; (setq org-agenda-files 
     ;; 	  (append
@@ -527,6 +538,7 @@
     (setq org-agenda-files (list))
     (when (file-exists-p $theseFiles)
       (load-file  $theseFiles)
+      (bx:org:find-agenda-files-in-orgMode)
       )
     ;; (setq org-agenda-files 
     ;; 	  (append

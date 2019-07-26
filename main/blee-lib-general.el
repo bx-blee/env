@@ -162,14 +162,17 @@
 
 
 ;;; (bx:find-files-in-mode (list "./bodyArticleEnFa.tex") "(org-mode)")
+;;;
 (defun bx:find-files-in-mode (@filesList @modeAsString)
   "Open each @filesList in @modeAsString"
-  (mapcar '(lambda (@eachFile)
-	     (find-file @eachFile)
-	     (blee:eval-string @modeAsString)
-	     )
-	     @filesList
-	     )
+  (save-excursion  
+    (mapcar '(lambda (@eachFile)
+	       (find-file @eachFile)
+	       (blee:eval-string @modeAsString)
+	       )
+	    @filesList
+	    )
+    )
   )
 
 (defun call-stack ()

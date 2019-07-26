@@ -853,6 +853,12 @@
 	(insert
 	 (format "
 )))
+
+(setq org-agenda-files 
+      (append
+       (bx:lisp:lcnt:org-files-list)
+       )
+      )
 "
 		 )
 	 )

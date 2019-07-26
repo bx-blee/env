@@ -257,7 +257,7 @@ fi")
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (elisp-defun-orgSec-insert defunName defunArgs) [[elisp:(org-cycle)][| ]]
   ")
 
-(defun iim-bash-func-orgSec-insert (funcName)
+(defun iim-bash-func-orgSec-insert-Obsoleted (funcName)
   ""
   (insert
    (format "\
@@ -266,6 +266,18 @@ _CommentBegin_\n*\
 _CommentEnd_
 "
 	   funcName)))
+
+(defun iim-bash-func-orgSec-insert (funcName)
+  ""
+  (insert
+   (format "\
+_CommentBegin_\n*\
+  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]\
+ || IIC       ::  %s    [[elisp:(org-cycle)][| ]]
+_CommentEnd_
+"
+	   funcName)))
+
 
 
 (lambda () "
