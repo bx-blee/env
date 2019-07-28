@@ -157,15 +157,22 @@
 	      (progn
 		(setq bx:mode major-mode)
 		))
+	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
+
+	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  
 	  ;;; This needs to become when major-mode based
 	  
 	  (insert (format "\
-*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
-*  /Maintain/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]] [[elisp:(vc-update)][vc-update]]\
+*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][|O]]  [[elisp:(progn (org-shifttab) (org-content))][|C]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][|N]] | [[elisp:(delete-other-windows)][|1]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+*  /Maintain/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]\
  | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-This]] [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-This]]\
  | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
-*      ================\n"))
+"))
+
+	  (bx:dblock:org-mode:func-close (compile-time-function-name))
+
 	  
 	  (bx:dblock:global:moded:insert-end bx:mode)
 	  )
