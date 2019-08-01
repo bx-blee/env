@@ -99,9 +99,22 @@ If Other than org-mode, push, switch-to-org
 
 ;;; (blee:ppmm:mode-pop)
 (defun blee:ppmm:mode-pop ()
-  "pop path on stack, visit menu-file"
+  "pop path on stack, visit menu-file
+If the file is opened not in its natural major mode, but org-mode instead,
+the pop will fail, in which case we'll do normal-mode to recover.
+"
   (interactive)
-  (call-interactively (pop (car blee:ppmm:mode-stack)))
+  (let (
+	($poped (pop (car blee:ppmm:mode-stack)))
+	)
+    (when $poped
+	(call-interactively $poped)
+	)
+    (when (not $poped)
+      (message "Alert:: No mode to pop")
+      (normal-mode)
+      )
+    )
   )
 
 ;;(provide 'blee-ppmm)
