@@ -39,38 +39,124 @@
 
 
 (require 'bx-lcnt-lib)
+(require 'dblock-controller)
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:bash:top-of-file params) [[elisp:(org-cycle)][| ]]
   ")
 
-(defun org-dblock-write:bx:dblock:bash:top-of-file (params)
-  (let ((bx:vc (or (plist-get params :vc) ""))
-	(bx:partof (or (plist-get params :partof) ""))
-	(bx:copyleft (or (plist-get params :copyleft) ""))
+(defun org-dblock-write:bx:bash:top-of-file (@params)
+  (let (
+	(@control (or (plist-get @params :control) "enabled"))
+	(@vc (or (plist-get @params :vc) "git"))
+	(@partof (or (plist-get @params :partof) "bystar"))
+	(@copyleft (or (plist-get @params :copyleft) "halaal+brief"))
+	;;
+	($control nil)
 	)
-  (insert "\
+
+    (defun paramsDescInsert ()
+      (blee:dblock:params:desc
+       'shell-script-mode
+       (format "%s  :vc \"cvs|git|nil\" :partof \"bystar|nil\" :copyleft \"halaal+minimal|halaal+brief|nil\""
+	       (bx:dblock:controller:options)
+	       )
+       )
+      )
+
+    (setq $control
+	  (bx:dblock:controller:enforce @control :paramsDescFunc 'paramsDescInsert))
+    
+    (when (equal $control "enabled")
+      (when (equal @vc "cvs")    
+	(insert "\
 typeset RcsId=\"$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $\"
 # *CopyLeft*
 ")
+	)
 
-  (when (equal bx:partof "bystar")
-    (insert "#  This is part of ByStar Libre Services. http://www.by-star.net
+      (when (equal @partof "bystar")
+	(insert (format "\
+__copying__=\"
+%s Libre-Halaal Software\"
+" "*"))
+	(insert "#  This is part of ByStar Libre Services. http://www.by-star.net
 ")
-    )
+	)
 
-  (when (equal bx:copyleft "halaal+minimal")
-    (insert "#  This is a Halaal Poly-Existential. See http://www.freeprotocols.org\n")
-    )
-  (when (equal bx:copyleft "halaal+brief")
-    (insert "# Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
+      (when (equal @copyleft "halaal+minimal")
+	(insert "#  This is a Halaal Poly-Existential. See http://www.freeprotocols.org\n")
+	)
+      (when (equal @copyleft "halaal+brief")
+	(insert "# Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
 # This is a Halaal Poly-Existential intended to remain perpetually Halaal.\
 ")
-    )
-
-  ;;(insert "# }}} DBLOCK-top-of-file")
+	)
+      )
     ))
+
+
+(defun org-dblock-write:bx:bash:origin-statement (@params)
+  (let (
+	(@control (or (plist-get @params :control) "enabled"))
+	(@origin (or (plist-get @params :origin) "bystar"))
+	;;
+	($control nil)
+	)
+
+    (defun paramsDescInsert ()
+      (blee:dblock:params:desc
+       'shell-script-mode
+       (format "%s  :origin \"bystar|nil\""
+	       (bx:dblock:controller:options)
+	       )
+       )
+      )
+
+    (setq $control
+	  (bx:dblock:controller:enforce @control :paramsDescFunc 'paramsDescInsert)
+	  )    
+    (when (equal $control "enabled")
+      (when (equal @origin "bystar")    
+	(insert (format "\
+ORIGIN=\"
+%s Part Of ByStar -- Best Used With Emacs, Blee and COMEEGA.\"\
+" "*"))
+	)
+      )
+    ))
+
+
+
+(defun org-dblock-write:bx:bash:author (@params)
+  (let (
+	(@control (or (plist-get @params :control) "enabled"))
+	(@author (or (plist-get @params :author) "mohsenBanan"))
+	;;
+	($control nil)
+	)
+    
+    (defun paramsDescInsert ()
+      (blee:dblock:params:desc
+       'shell-script-mode
+       (format
+	"%s  :author \"mohsenBanan|nil\""
+	(bx:dblock:controller:options)
+	)))
+
+    (setq $control
+	  (bx:dblock:controller:enforce @control :paramsDescFunc 'paramsDescInsert)
+	  )
+    
+    (when (equal $control "enabled")
+      (when (equal @author "mohsenBanan")    
+	(insert
+	 (format "\
+__author__=\"
+%s Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact\""
+		 "*"
+		 ))))))
 
 
 (lambda () "
@@ -88,53 +174,6 @@ _CommentEnd_
 #major-mode: sh-mode
 #fill-column: 90
 # end:")
-    ))
-
-
-(lambda () "
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:bash:end-of-fileObsoleted params) [[elisp:(org-cycle)][| ]]
-  ")
-
-(defun org-dblock-write:bx:dblock:bash:end-of-fileObsoleted (params)
-  (let ((bx:types (or (plist-get params :types) ""))
-	)
-  (insert "# {{{ DBLOCK-end-of-file
-#local variables:
-#major-mode: sh-mode
-#fill-column: 90
-# end:
-# }}} DBLOCK-end-of-file")
-    ))
-
-(lambda () "
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:bash:top-of-fileObsoleted params) [[elisp:(org-cycle)][| ]]
-  ")
-
-(defun org-dblock-write:bx:dblock:bash:top-of-fileObsoleted (params)
-  (let ((bx:vc (or (plist-get params :vc) ""))
-	(bx:partof (or (plist-get params :partof) ""))
-	(bx:copyleft (or (plist-get params :copyleft) ""))
-	)
-  (insert "# {{{ DBLOCK-top-of-file
-typeset RcsId=\"$Id: dblock-iim-bash.el,v 1.4 2017-02-08 06:42:32 lsipusr Exp $\"
-")
-
-  (when (equal bx:partof "bystar")
-    (insert "#  This is part of ByStar Libre Services. http://www.by-star.net
-")
-    )
-
-  (when (equal bx:copyleft "halaal+minimal")
-    (insert "#  This is a Halaal Poly-Existential. See http://www.freeprotocols.org\n")
-    )
-  (when (equal bx:copyleft "halaal+brief")
-    (insert "# Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
-# See PLPC-120001 for restrictions.
-# This is a Halaal Poly-Existential intended to remain perpetually Halaal. 
-")
-    )
-
-  (insert "# }}} DBLOCK-top-of-file")
     ))
 
 
@@ -256,16 +295,6 @@ fi")
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (elisp-defun-orgSec-insert defunName defunArgs) [[elisp:(org-cycle)][| ]]
   ")
-
-(defun iim-bash-func-orgSec-insert-Obsoleted (funcName)
-  ""
-  (insert
-   (format "\
-_CommentBegin_\n*\
-  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || IIF       ::  %s    [[elisp:(org-cycle)][| ]]
-_CommentEnd_
-"
-	   funcName)))
 
 (defun iim-bash-func-orgSec-insert (funcName)
   ""

@@ -5506,7 +5506,12 @@ Star at the begining of line is avoided not to show up in org-mode view.
   "Inserts $commentStr+@docstr at point -- @mode is used for comment delim"
   (when (equal @mode 'latex-mode)
     (insert (format "%%%%%% Args: %s\n" @descStr))
-    ))
+    )
+  (when (equal @mode 'shell-script-mode)
+    (insert (format "### Args: %s\n" @descStr))
+    )
+  )
+
 
 
 

@@ -94,24 +94,39 @@
   )
 
 (defun org-dblock-write:bx:dblock:global:file-insert (params)
-  (let ((bx:file (or (plist-get params :file) ""))
+  (let (
+	(bx:file (or (plist-get params :file) ""))
+	(bx:mode (or (plist-get params :mode) "auto"))	
 	(bx:outLevel (or (plist-get params :outLevel) 1))
 	(bx:surround (or (plist-get params :surround) ""))	
        	(fileAsString)
 	(outlineStars)
 	(orgFileLink)
 	)
+
+    (if (string-equal "auto" bx:mode)
+	(progn
+	  (setq bx:mode major-mode)
+	  ))
+    
     (setq orgFileLink (bx:orgFileLink bx:file "dblock-inFile"))
     (setq outlineStars (outlineLevelStars bx:outLevel))
     (setq fileAsString (get-string-from-file (format "%s" bx:file)))
+
+    (bx:dblock:global:moded:insert-begin bx:mode)
+
+    
     (when (equal "default" bx:surround)
       (insert (format "%s /->/ (%s\n" outlineStars orgFileLink))
       )
     (insert fileAsString)
     ;;; This does not work right -- hence above (insert-file (format "%s" bx:file))
     (when (equal "default" bx:surround)
-      (insert (format "%s /<-/ %s)" outlineStars orgFileLink))      
+      (insert (format "%s /<-/ %s)\n" outlineStars orgFileLink))      
       )
+
+    (bx:dblock:global:moded:insert-end bx:mode)
+    
     ;;; An extra line end up there -- Not Solved Yet
     ;;(beginning-of-line)
     ;;(kill-line)
@@ -494,10 +509,11 @@
 	   )
 	  ((string-equal "latex-mode" mode)
 	   (bx:latex:insert-begin-comment)	     
-	   (message "NON-AUTO Set to latex-mode")
+	   (message "Begin-Comment Set to latex-mode")
 	   )
-	  ((string-equal "shell-script-mode" mode)
-	   (message (format "Set to: %s -  ####+BEGIN..." mode))
+	  ((string-equal "sh-mode" mode)
+	   (bx:sh-mode:insert-begin-comment)
+	   (message (format "Begin-Comment Set to: %s" mode))
 	   )
 	  ((string-equal "html-mode" major-mode)
 	   (message (format "Set to: %s -  ####+BEGIN..." mode))
@@ -534,8 +550,9 @@
 	   (bx:latex:insert-end-comment)	     
 	   (message "NON-AUTO Set to latex-mode")
 	   )
-	  ((string-equal "shell-script-mode" mode)
-	   (message (format "Set to: %s -  ####+END..." mode))
+	  ((string-equal "sh-mode" mode)
+	   (bx:sh-mode:insert-end-comment)
+	   (message (format "End-Comment Set to: %s" mode))
 	   )
 	  ((string-equal "html-mode" major-mode)
 	   (message (format "Set to: %s -  ####+END..." mode))
@@ -559,6 +576,18 @@
 \\end{comment}"
 	  )
   )
+
+(defun bx:sh-mode:insert-begin-comment ()
+  (insert "_CommentBegin_\n"))
+  
+
+(defun bx:sh-mode:insert-end-comment ()
+  ""
+  (insert "\
+_CommentEnd_"
+	  )
+  )
+
 
 (defun org-dblock-write:bx:dblock:global:file-insert-cond-strict (params)
   "eval :cond file, if nil insert nothing.
