@@ -107,7 +107,7 @@
 (defun org-dblock-write:bx:dblock:python:section (@params)
   ""
   (let (
-	($title (or (plist-get params :title) ""))
+	($title (or (plist-get @params :title) ""))
 	)
     (insert
      (format "\"\"\"\n*\
@@ -119,8 +119,8 @@
 (defun org-dblock-write:bx:icm:python:cmnd:subSection (@params)
   ""
   (let (
-	($title (or (plist-get params :title) ""))
-	($context (or (plist-get params :context) ""))	
+	($title (or (plist-get @params :title) ""))
+	($context (or (plist-get @params :context) ""))	
 	)
     (defun level1()
       (insert
@@ -191,12 +191,12 @@
   "Insert Header
 "
   (let (
-	($funcName (or (plist-get params :funcName) ""))
-	($funcType (or (plist-get params :funcType) ""))
-	($retType (or (plist-get params :retType) ""))	
-	($decorate (or (plist-get params :deco) ""))
-	($comment (or (plist-get params :comment) ""))	
-	($argsListStr (or (plist-get params :argsList) ""))
+	($funcName (or (plist-get @params :funcName) ""))
+	($funcType (or (plist-get @params :funcType) ""))
+	($retType (or (plist-get @params :retType) ""))	
+	($decorate (or (plist-get @params :deco) ""))
+	($comment (or (plist-get @params :comment) ""))	
+	($argsListStr (or (plist-get @params :argsList) ""))
 	($argsList)
 	)
     (setq $argsList (split-string $argsListStr))
@@ -251,9 +251,9 @@
   "Insert Header
 "
   (let (
-	($itemType (or (plist-get params :itemType) ""))
-	($itemTitle (or (plist-get params :itemTitle) ""))
-	($comment (or (plist-get params :comment) ""))	
+	($itemType (or (plist-get @params :itemType) ""))
+	($itemTitle (or (plist-get @params :itemTitle) ""))
+	($comment (or (plist-get @params :comment) ""))	
 	)
     
     (sectionTitleOpenInsert (format
@@ -273,8 +273,8 @@
   "Insert Header
 "
   (let (
-	($enumName (or (plist-get params :enumName) ""))
-	($comment (or (plist-get params :comment) ""))	
+	($enumName (or (plist-get @params :enumName) ""))
+	($comment (or (plist-get @params :comment) ""))	
 	)
     (sectionTitleOpenInsert (format
 			     "Enum"))
@@ -298,10 +298,10 @@
   "Insert Header
 "
   (let (
-	($className (or (plist-get params :className) ""))
-	($superClass (or (plist-get params :superClass) ""))
-	($comment (or (plist-get params :comment) ""))	
-	($classType (or (plist-get params :classType) ""))
+	($className (or (plist-get @params :className) ""))
+	($superClass (or (plist-get @params :superClass) ""))
+	($comment (or (plist-get @params :comment) ""))	
+	($classType (or (plist-get @params :classType) ""))
 	)
     (sectionTitleOpenInsert (format
 			     "Class-%s" $classType))
@@ -327,12 +327,12 @@
   "Insert Header
 "
   (let (
-	($methodName (or (plist-get params :methodName) ""))
-	($methodType (or (plist-get params :methodType) ""))
-	($retType (or (plist-get params :retType) ""))	
-	($decorate (or (plist-get params :deco) ""))
-	($comment (or (plist-get params :comment) ""))	
-	($argsListStr (or (plist-get params :argsList) ""))
+	($methodName (or (plist-get @params :methodName) ""))
+	($methodType (or (plist-get @params :methodType) ""))
+	($retType (or (plist-get @params :retType) ""))	
+	($decorate (or (plist-get @params :deco) ""))
+	($comment (or (plist-get @params :comment) ""))	
+	($argsListStr (or (plist-get @params :argsList) ""))
 	($argsList)
 	)
     (setq $argsList (split-string $argsListStr))

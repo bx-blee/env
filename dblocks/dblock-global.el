@@ -43,14 +43,14 @@
 
 (defun org-dblock-write:bx:global:icm:status-py (@params)
   ""
-  (let (($status (or (plist-get params :status) ""))
+  (let (($status (or (plist-get @params :status) ""))
 	)
     (insert (format "__status__ = \"%s\"" $status))
     ))
 
 (defun org-dblock-write:bx:global:icm:section-py (@params)
   ""
-  (let (($status (or (plist-get params :status) ""))
+  (let (($status (or (plist-get @params :status) ""))
 	)
     (insert (format "__status__ = \"%s\"" $status))
     ))
