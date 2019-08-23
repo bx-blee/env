@@ -407,27 +407,40 @@ version' or one of the Emacs version predicates.")
 			 'fsf)))
 	    ;; Parse the major and minor version numbers out of the built-in
 	    ;; `emacs-version' string.
-	    (if (string-match "\\`\\([0-9]+\\)\\.\\([0-9]+\\)" emacs-version)
-		(setq major-version (string-to-int
-				     (substring emacs-version
-						(match-beginning 1)
-						(match-end 1)))
-		      minor-version (string-to-int
-				     (substring emacs-version
-						(match-beginning 2)
-						(match-end 2)))
-		      ))
+	    (when (equal "26.2" emacs-version)
+	      ;;; 20190814 -- Temporary hack
+	      (setq major-version 26)
+	      (setq minor-version 2)
+	      )
+	    (unless (equal "26.2" emacs-version)
+	      (if (string-match "\\`\\([0-9]+\\)\\.\\([0-9]+\\)" emacs-version)
+		  (setq major-version (string-to-int
+				       (substring emacs-version
+						  (match-beginning 1)
+						  (match-end 1)))
+			minor-version (string-to-int
+				       (substring emacs-version
+						  (match-beginning 2)
+						  (match-end 2)))
+			)
+		)
+	      )
 	    )
 	(store-match-data old-match-data))
     (error nil))
   
   (if (not (and type major-version minor-version))
-      (error "Unable to determine the Emacs type and version information!"))
+      (error
+       (format 
+	"Unable to determine the Emacs type and version information! -- %s %s %s"
+	type major-version minor-version)
+	))
   
   (setq emacs-type type
 	emacs-major-version major-version
 	emacs-minor-version minor-version)
   ) ;; End of `let'.
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -122,7 +122,7 @@
     (insert fileAsString)
     ;;; This does not work right -- hence above (insert-file (format "%s" bx:file))
     (when (equal "default" bx:surround)
-      (insert (format "%s /<-/ %s)\n" outlineStars orgFileLink))      
+      (insert (format "%s /<-/ %s)  E|" outlineStars orgFileLink))      
       )
 
     (bx:dblock:global:moded:insert-end bx:mode)
