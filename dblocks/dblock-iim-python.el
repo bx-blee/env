@@ -116,6 +116,7 @@
              $title
 	     ))))
 
+
 (defun org-dblock-write:bx:icm:python:cmnd:subSection (@params)
   ""
   (let (
@@ -125,16 +126,18 @@
     (defun level1()
       (insert
        (format "    \"\"\"\n**\
-  [[elisp:(beginning-of-buffer)][Top]] ============== [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]          *%s*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]] 
+  %s          *%s*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]] 
 \"\"\""
+	       (comeegaNativeControls)
 	       $title
 	       ))
       )      
     (defun level2()
       (insert
        (format "        \"\"\"\n**\
-  [[elisp:(beginning-of-buffer)][Top]] ============== [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(delete-other-windows)][(1)]]          *%s*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]] 
+  %s          *%s*  [[elisp:(org-cycle)][| ]]  [[elisp:(org-show-subtree)][|=]] 
 \"\"\""
+	       (comeegaNativeControls)
 	       $title
 	       ))
       )      
@@ -150,7 +153,6 @@
       )
     )
   )
-
 
 
 (defalias 'org-dblock-write:bx:icm:python:subSection 'org-dblock-write:bx:dblock:python:subSection)

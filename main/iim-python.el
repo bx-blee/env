@@ -46,6 +46,10 @@
 ")
 
 
+(defun comeegaNativeControls()
+   (format "\
+ [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]"
+	   ))
 
 (defun subSectionTitleOpenInsertMethod(@sectionType)
   (insert
