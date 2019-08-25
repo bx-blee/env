@@ -302,7 +302,7 @@ fi")
    (format "\
 _CommentBegin_\n*\
   [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]\
- || IIC       ::  %s    [[elisp:(org-cycle)][| ]]
+ || Cmnd      ::  %s    [[elisp:(org-cycle)][| ]]
 _CommentEnd_
 "
 	   funcName)))

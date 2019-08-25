@@ -141,6 +141,8 @@
 
 (require 'eoeLsip)
 
+(require 'dired-sort-menu)
+
 (require 'blee-lib-common)
 (require 'blee-lib-general)
 
