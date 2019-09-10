@@ -39,18 +39,22 @@ If Other than org-mode, push, switch-to-org
 If Other than org-mode, push, switch-to-org
 "
   (interactive)
-  (setq bidi-paragraph-direction 'left-to-right)
-  (if (string-equal "org-mode" major-mode)
-      (progn
-	(org-shifttab)
-	(move-beginning-of-line 1)	
+  (let (
+	(major-mode-str (message "%s" major-mode))
 	)
-    (progn
-      (blee:ppmm:mode-push major-mode)
-      (org-mode)
-      (blee:ppmm:org-mode-content-list)
-      (recenter-top-bottom)
-      (move-beginning-of-line 1)	      
+    (setq bidi-paragraph-direction 'left-to-right)
+    (if (string-equal "org-mode" major-mode)
+	(progn
+	  (org-shifttab)
+	  (move-beginning-of-line 1)	
+	  )
+      (progn
+	(blee:ppmm:mode-push major-mode)
+	(org-mode)
+	(blee:ppmm:org-mode-content-list)
+	(recenter-top-bottom)
+	(move-beginning-of-line 1)	      
+	)
       )
     )
   )	  
