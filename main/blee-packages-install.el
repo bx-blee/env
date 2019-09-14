@@ -36,7 +36,9 @@
   (setq package-archives nil)
 
 
-  (package-initialize)
+  ;;(package-initialize)
+  (unless package--initialized (package-initialize t))  
+  
   (add-to-list 'package-archives
   	       '("gnu" . "http://elpa.gnu.org/packages/"))
   

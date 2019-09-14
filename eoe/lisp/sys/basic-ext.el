@@ -54,11 +54,14 @@ FORMAT-ARGS (if any) in the mini-buffer"
   (apply 'message format-string format-args)
   (sit-for for-n-secs))
 
-;;; higer-order function for chop-string
-(defun chop-string-fn (separator-regexp &optional reversed-ok-p)
-  "Return a function to chop a string at SEPARATOR-REGEXP."
-  (` (lambda (string)
-	      (chop-string string (, separator-regexp) (, reversed-ok-p)))))
+
+;;; Spet 9, 2019 -- oldstyle backquote -- With emacs 27
+;;;
+;; ;;; higer-order function for chop-string
+;; (defun chop-string-fn (separator-regexp &optional reversed-ok-p)
+;;   "Return a function to chop a string at SEPARATOR-REGEXP."
+;;   (` (lambda (string)
+;; 	      (chop-string string (, separator-regexp) (, reversed-ok-p)))))
 
 ;;; for cutting up a string into a list of strings based on a regexp separator
 (defun chop-string (string separator-regexp &optional reversed-ok-p)
@@ -618,14 +621,14 @@ e.g.: (eoe-add-hook 'dired-load-hook 'my-dired-hook-function)"
                     (list hook-function-name value)))))
     (set hook-var hook-function-name)))
 
-(defun hook-run-notification (hookname)
-  "Second order function.  Returns a hook function that beeps & prints a message saying HOOKNAME is being run.
-Example: to see when term-setup-hook is run, say:
+;; (defun hook-run-notification (hookname)
+;;   "Second order function.  Returns a hook function that beeps & prints a message saying HOOKNAME is being run.
+;; Example: to see when term-setup-hook is run, say:
 
-   (setq term-setup-hook (cons (hook-run-notification 'term-setup-hook) term-setup-hook))"
+;;    (setq term-setup-hook (cons (hook-run-notification 'term-setup-hook) term-setup-hook))"
 
-  (` (lambda ()
-       (mention t 2  "%s hooks being run." '(, hookname)))))
+;;   (` (lambda ()
+;;        (mention t 2  "%s hooks being run." '(, hookname)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
