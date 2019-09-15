@@ -1,11 +1,20 @@
 ;;; -*- Mode: Emacs-Lisp; -*-
-;;; Rcs: $Id: bystar-emacs25f.el,v 1.5 2018-11-06 22:11:50 lsipusr Exp $
+
 
 (lambda () "
 ####+BEGIN: bx:dblock:bnsm:top-of-menu "basic"
 *  #Controls:   [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
 ####+END:
 ")
+
+
+;;;#+BEGIN: bx:global:org-contents-list :disabledP "false" :mode "auto"
+(lambda () "
+*      ################ CONTENTS-LIST   ###############
+")
+;;;#+END:
+
+
 
 (funcall  (lambda () "
 *     *blee-emacs25*
@@ -17,6 +26,7 @@
 ;;(setq debug-on-error nil)
 
 (setq bidi-display-reordering t)
+
 
 
 (defun blee:env:base-obtain-based-on-here ()
@@ -38,14 +48,6 @@
   "Eg /bisos/blee/env/"
   blee:env:base
   )
-
-(defun blee:env:eoe:base-obtain ()
-  "Eg /bisos/blee/env/eoe/"
-    ;; (file-name-directory      buffer-file-name)
-  (file-name-as-directory
-   (concat (file-name-as-directory (blee:env:base-obtain)) "eoe"))
-  )
-
 
 (defun blee:env:main:base-obtain ()
   "Eg /bisos/blee/env/main/"
@@ -103,158 +105,6 @@
   )
 
 
-(defvar *eoe-root-dir*  (directory-file-name (blee:env:eoe:base-obtain))
-  "This is the base EOE directory.")
-
-(setq *eoe-site-root-dir* "/NOTYET") ;; This is used just in here
-(setq *eoe-site-name* "NOTYET")      ;; This is used somewhere in eoe library
-
-;;
-;; other directories are derived from *eoe-root-dir*
-;;
-(defvar *eoe-sys-dir* (concat *eoe-root-dir* "/lisp/sys")
-  "Place where basic elisp code for EOE services is kept.
-This must be non-emacs version specific code.")
-
-(defvar *eoe-pkgs-dir* (concat *eoe-root-dir* "/lisp/pkgs")
-  "Place where basic elisp code for EOE packages is kept.
-This must be non-emacs version specific code.")
-
-(defvar *eoe-public-dir* (concat *eoe-root-dir* "/lisp/public")
-  "Place where public-domain, externally developed emacs code is kept.
-This must be non-emacs version specific.")
-
-(defvar *eoe-byname-dir* (concat *eoe-root-dir* "/lisp/byname")
-  "Place where elisp code for EOE-BYNAME services is kept.
-This must be non-emacs version specific code.")
-
-(defvar *eoe-esfiles-dir* (concat *eoe-root-dir* "/lisp/esfiles")
-  "Place to keep -site.el files that cannot be in the same directory as
-the main .el file say due to file-permissions restrictions.
-We call these estranged -eoeb.el files.
-This must be non-emacs version specific code.")
-
-;;
-;; Determine Emacs version
-;;
-
-(load-file (concat *eoe-sys-dir* "/eoe.el"))
-(load-file (concat *eoe-sys-dir* "/eoe-emacs-vers.el"))
-
-
-(defvar *eoe-ver-pkgs-dir* (concat *eoe-root-dir*
-				     (format "/lisp/pkgs/%s" *eoe-emacs-type*))
-  "EOE developed emacs code kept here.")
-
-(defvar *eoe-ver-public-dir* (concat *eoe-root-dir*
-				     (format "/lisp/public/%s" *eoe-emacs-type*))
-  "Public-domain, externally developed emacs code kept here.")
-
-(defvar *eoe-ver-byname-dir* (concat *eoe-root-dir*
-				     (format "/lisp/byname/%s" *eoe-emacs-type*))
-  "Public-domain, externally developed emacs code kept here.")
-
-
-(defvar *eoe-ver-esfiles-dir* (concat *eoe-root-dir*
-				      (format "/lisp/esfiles/%s" *eoe-emacs-type*))
-  "*-site.el files that can't be kept with their main .el files are kept here.
-We call these estranged -eoeb.el files.")
-
-
-(defvar *eoe-local-dir* (concat *eoe-site-root-dir* "/local")
-  "Place where locally-developed elisp code for EOE services is kept.
-This must be non-emacs version specific code.")
-
-(defvar *eoe-ver-local-dir* (concat *eoe-site-root-dir*
-				    (format "/local/%s" *eoe-emacs-type*))
-  "Locally-developed, version specific, elisp code kept here.")
-
-
-(defvar *eoe-esfiles-local-dir* (concat *eoe-site-root-dir* "/esfiles")
-  "Place where local estranged files -site.el are kept.")
-
-(defvar *eoe-ver-esfiles-local-dir* (concat *eoe-site-root-dir*
-				    (format "/esfiles/%s" *eoe-emacs-type*))
-  "Place where local estranged version specific files -site.el are kept.")
-
-
-;;
-;; Now setup the load-path
-;;
-(setq load-path (append (list *eoe-sys-dir*) ; eoe base files
-			;;
-			;; local directories
-			;;
-			(append (eoe-get-package-subdirs *eoe-ver-local-dir*) ; version dependant dir(s)
-				(list *eoe-ver-local-dir*))
-			(append (eoe-get-package-subdirs *eoe-local-dir*) ; version independant dir(s)
-				(list *eoe-local-dir*))
-			;;
-			;; local estranged -eoeb.el file directories
-			;;
-			(list *eoe-ver-esfiles-local-dir* *eoe-esfiles-local-dir*)
-
-			;;
-			;; EOE Pkgs directories
-			;;
-			(append (eoe-get-package-subdirs *eoe-ver-pkgs-dir*) ; version dependant dir(s)
-				(list *eoe-ver-pkgs-dir*))
-			(append (eoe-get-package-subdirs *eoe-pkgs-dir*) ; version independant dir(s)
-				(list  *eoe-pkgs-dir*))
-			;;
-			;; public directories
-			;;
-			(append (eoe-get-package-subdirs *eoe-ver-public-dir*) ; version dependant dir(s)
-				(list *eoe-ver-public-dir*))
-			(append (eoe-get-package-subdirs *eoe-public-dir*) ; version independant dir(s)
-				(list  *eoe-public-dir*))
-			;;
-			;; estranged -eoeb.el file directories
-			;;
-			(list *eoe-ver-esfiles-dir* *eoe-esfiles-dir*)
-			;;
-			;; prepend to the existing load-path
-			;;
-			load-path
-			))
-
-;;; -----------------------------------------------------------------
-;;; Now load the basic eoe functionality
-;;; -----------------------------------------------------------------
-(load "eoe")
-
-;;; -----------------------------------------------------------------
-;;; Now load the default-eoe library for site wide EOE run-time
-;;; -----------------------------------------------------------------
-(load "default-eoe")			; this is being obsoleted...
-
-
-;; we don't use admin-administered emacs defaults (but we set this
-;; *before* loading the user's init file so that this decision can be
-;; overridden).
-(setq inhibit-default-init t)
-
-
-
-
-;;; -----------------------------------------------------------------
-;;; XEmacs initial fonts and faces setup
-;;; -----------------------------------------------------------------
-;; eoe uses dark background
-(defconst eoe-background-mode 'dark "EOE uses dark background.")
-
-;; ./lisp/eoeDressUps2.el 
-;;;(load "/bisos/git/auth/bxRepos/blee/env/main/eoeDressUps2.el") ;; OBSOLETED MB 1/2011
-
-;;; -----------------------------------------------------------------
-;;; Now site-specific initialization (load packages, autoloads, ...)
-;;; allow the user to override with his own
-;;; -----------------------------------------------------------------
-;;(defvar *eoe-site-init-file* (format "%s/.emacs%s" *eoe-sys-dir* *eoe-emacs-type*)
-;;  "Site init file to load (if present).")
-
-
-
 (defun blee:load-path:add (@dirPath)
   "@dirPath is added to load-path after verification."
   (let (
@@ -308,33 +158,6 @@ This must be non-emacs version specific code.")
 ;; 		      load-path))
 
 ;; ;;(setq load-path (cons "." load-path))
-
-
-
-;;; -----------------------------------------------------------------
-;;; Setup EOE's info directories
-;;; -----------------------------------------------------------------
-
-(defun blee:info-path ()
-  (cond ((or (eq *eoe-emacs-type* '19x)
-	     (eq *eoe-emacs-type* '19f))
-	 ;; emacs 19 supports a list of info directories
-	 (require 'info)
-	 (setq Info-directory-list
-	       (append Info-directory-list
-		       (list
-			(expand-file-name (format "%s/info" *eoe-root-dir*))
-			(expand-file-name (format "%s/lisp/%s/info" *eoe-root-dir* *eoe-emacs-type*))
-			(expand-file-name (format "%s/lisp/info" *eoe-root-dir*))
-			))))
-	((eq *eoe-emacs-type* '18f)
-	 ;; emacs 18 only has 1 info directory--use eoe's
-	 (setq Info-directory (expand-file-name
-			       (format "%s/info" *eoe-root-dir*))))
-	)
-  )
-
-
 
 ;;; -----------------------------------------------------------------
 ;;; Environement setup
@@ -1041,6 +864,9 @@ string-arg
 
 ;;}}}
 
+;;; local variables:
+;;; no-byte-compile: t
+;;; end:
 
 
 

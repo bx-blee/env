@@ -5,16 +5,19 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-;; (package-initialize)
-(unless package--initialized (package-initialize t))  
+(package-initialize)
+
+;; All subsequent package-initialize invokations should be eliminated or:
+;; (unless package--initialized (package-initialize t))  
 
 ;;;
 ;;; Blee bootstrap Start
 ;;;
 
 (defun blee:bootstrap:file-name-obtain ()
+  "Also add an environment variable -- export blee-bootstrap=fileName"  
     (let (
-	  (blee-3-bootstrap "/bisos/blee/env/main/bystar-emacs.el")
+	  (blee-3-bootstrap "/bisos/blee/env/main/emacs-blee.el")
 	  (blee-2-bootstrap "~/lisp/bystar-emacs.el")
 	  )
       (cond

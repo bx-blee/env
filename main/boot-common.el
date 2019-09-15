@@ -1,5 +1,5 @@
 ;;; -*- Mode: Emacs-Lisp; -*-
-;;; Rcs: $Id: bystar-emacs25f.el,v 1.5 2018-11-06 22:11:50 lsipusr Exp $
+
 
 (lambda () "
 ####+BEGIN: bx:dblock:bnsm:top-of-menu "basic"
@@ -13,6 +13,8 @@
 "
 	     (setq debug-on-error t)
 	     ))
+
+
 
 ;;(setq debug-on-error nil)
 
