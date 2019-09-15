@@ -20,7 +20,6 @@
 
 (setq bidi-display-reordering t)
 
-
 (defun blee:env:base-obtain-based-on-here ()
   "Eg /bisos/blee/env/"
   (file-name-directory
@@ -37,7 +36,7 @@
 
 ;; (blee:env:base-obtain)
 (defun blee:env:base-obtain ()
-  "Eg /bisos/blee/env/"
+  "Eg /bisos/blee/env/ -- blee:env:base and (blee:env:base-obtain) are both available."
   blee:env:base
   )
 
