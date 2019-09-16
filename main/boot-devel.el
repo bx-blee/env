@@ -32,8 +32,8 @@
 
 ;; set the font for all faces currently defined see doc for variable
 ;; `eoe-font' and `eoe-font-candidates' for more info.
-(if (member window-system '(x win32))
-    (eoe-set-font eoe-font))
+;; (if (member window-system '(x win32))
+;;     (eoe-set-font eoe-font))
 
 ;(eoe-set-font "10x20")
 

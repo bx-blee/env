@@ -1028,7 +1028,7 @@ string-arg
 ;;{{{ end of file
 
 ;;; local variables:
-;;; major-mode: lisp-mode
+;;; major-mode: emacs-lisp-mode
 ;;; folded-file: nil
 ;;; byte-compile-dynamic: t
 ;;; end:
