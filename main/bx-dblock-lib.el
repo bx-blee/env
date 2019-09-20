@@ -129,13 +129,28 @@
 		  @funcName
 		  )))
 
-(defun bx:dblock:org-mode:func-close (@funcName)
-  (insert (format "\
+(defun bx:dblock:org-mode:func-close (@funcName &rest @args)
+  (let (
+	(@style (or (plist-get @args :style) nil))
+	  ;;;
+	($atLeastOnceWhen nil)
+	)
+
+    (unless @style
+      (insert (format "\
 %s /<-/ [[elisp:(describe-function '%s)][dblock-func)]]  E|
 "
 		  "*"
 		  @funcName
 		  )))
+    (when @style
+      (insert (format "\
+%s /<-/ ) E|\
+"
+		      "*"
+		      )))
+    ))
+     
 
 
 

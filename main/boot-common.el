@@ -23,20 +23,10 @@
 ;;;#+END:
 
 
-;;;#+BEGIN: bx:dblock:lisp:loading-message :disabledP "false" :message "boot-common -- Sets up Blee Bases And Prepares For boot-ver.el to be loaded"
-(lambda () "
-*  [[elisp:(org-cycle)][| ]]  "Loading..."                :: Loading Announcement Message boot-common -- Sets up Blee Bases And Prepares For boot-ver.el to be loaded [[elisp:(org-cycle)][| ]]
-")
-
-(blee:msg "Loading: boot-common -- Sets up Blee Bases And Prepares For boot-ver.el to be loaded")
-;;;#+END:
-
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Requires                    :: Requires [[elisp:(org-cycle)][| ]]
 ")
-
-
 
 
 
