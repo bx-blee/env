@@ -1,6 +1,11 @@
 ;;; -*- Mode: Emacs-Lisp; -*-
 ;; (setq debug-on-error t)
 
+
+;;;
+;;;  OBSOLETED -- Being Replaced By dblock-governor.el
+;;;
+
 ;;;#+BEGIN: bx:dblock:global:org-controls :disabledP "false" :mode "auto"
 (lambda () "
 *  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]

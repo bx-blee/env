@@ -1,0 +1,9 @@
+####+BEGIN: bx:org-mode:startHere :governor "enabled" 
+### Args: :exampleOfExtraParams "posibleValue"
+* /->/ [[elisp:(describe-function 'org-dblock-write:bx:org-mode:startHere)][(dblock-func]]
+
+contentPlus
+
+ na bodyContent
+* /<-/ ) E|
+####+END:

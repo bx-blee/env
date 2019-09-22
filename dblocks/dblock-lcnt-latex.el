@@ -5504,11 +5504,29 @@ Star at the begining of line is avoided not to show up in org-mode view.
 
 (defun blee:dblock:params:desc (@mode @descStr)
   "Inserts $commentStr+@docstr at point -- @mode is used for comment delim"
-  (when (equal @mode 'latex-mode)
-    (insert (format "%%%%%% Args: %s\n" @descStr))
-    )
-  (when (equal @mode 'shell-script-mode)
-    (insert (format "### Args: %s\n" @descStr))
+  (let (
+	;;;
+	($atLeastOnceWhen nil)
+	)
+  
+    (when (equal @mode 'latex-mode)
+      (insert (format "%%%%%% Args: %s\n" @descStr))
+      (setq $atLeastOnceWhen t)
+      )
+    (when (equal @mode 'shell-script-mode)
+      (insert (format "### Args: %s\n" @descStr))
+      (setq $atLeastOnceWhen t)      
+      )
+    (when (equal @mode 'org-mode)
+      (insert (format "### Args: %s\n" @descStr))
+      (setq $atLeastOnceWhen t)      
+      )
+    (bx:eh:assert:atLeastOnceWhen
+     $atLeastOnceWhen
+     :context "any"
+     :info (format "Unknown mode =%s=\n"
+		   @mode)
+     )
     )
   )
 

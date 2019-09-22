@@ -658,7 +658,7 @@
 
   (progn
     (cond ((string-equal "emacs-lisp-mode" mode)
-	   (insert "\")")	   
+	   (insert "\n\")")	   
 	   )
 	  ((string-equal "latex-mode" mode)
 	   (bx:latex:insert-end-comment)	     
@@ -677,7 +677,6 @@
 	  )
     )
   )
-
 
 
 (defun bx:latex:insert-begin-comment ()
