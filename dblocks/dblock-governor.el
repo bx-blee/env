@@ -45,6 +45,7 @@
 (defun bx:dblock:governor:process (@governor
 				   @ext-gov
 				   @sur-style
+				   @outLevel
 				   @dblockFuncName				   
 				   @helpLine
 				   @bodyContentPlus
@@ -165,19 +166,19 @@
 
 
 (defun bx:dblock:governor:inDblockOpen (@governor
-					@sur-style
+					@style
 					@dblockFuncName
 					)
   "Perhaps compile-time-function-name needs to be added"
   ;;;(insert "Open Place Holder")
   ;;;(bx:dblock:org-mode:func-open (compile-time-function-name))
-  (bx:dblock:org-mode:func-open @dblockFuncName)
+  (bx:dblock:org-mode:func-open @dblockFuncName :style @style)
   
   )
 
   
 (defun bx:dblock:governor:inDblockClose (@governor
-					 @sur-style
+					 @style
 					 @dblockFuncName
 					 )
   "Perhaps compile-time-function-name needs to be added"
@@ -186,41 +187,13 @@
   ;;  (compile-time-function-name)
   ;;  :style "terse"
   ;;  )
-  (bx:dblock:org-mode:func-close @dblockFuncName :style "terse")
+  (bx:dblock:org-mode:func-close @dblockFuncName :style @style)
 
   )
 
 ;;;
 ;;; Obsoleted -- Junk Yard
 ;;;
-
-(defun bx:dblock:governor:closeNOT (@governor
-				 @ext-gov
-				 @sur-style
-				 )
-  "Calls close perhaps"
-
-    (when (string= @governor "hide")
-      (setq @governor "disabled")
-      )
-
-    (when (string= @governor "enabled")
-
-      (bx:dblock:global:moded:insert-begin major-mode)
-
-      (bx:dblock:org-mode:func-open (compile-time-function-name))
-
-      (insert "\nSome Stuff\n")
-
-      (bx:dblock:org-mode:func-close
-       (compile-time-function-name)
-       :style "terse"
-       )
-	  
-      (bx:dblock:global:moded:insert-end major-mode)
-      )
-    )
-
 
 (defun bx:dblock:governor:enforce (@control &rest @args)
   "Based on @control perhpas run @paramsDescFunc, return a variant of @control as $control

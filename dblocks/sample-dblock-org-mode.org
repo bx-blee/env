@@ -1,3 +1,11 @@
+* B| 
+####+BEGIN: blee:bxPanel:title :governor "enabled" :extGov "na" :style "defualt" :outLevel 1 :panelType "bxPanel" :title "Panel Name Comes Here"
+* [[elisp:(show-all)][/->/]] [[elisp:(describe-function 'org-dblock-write:blee:bxPanel:title)][(dblock-func]]
+*   [[elisp:(beginning-of-buffer)][|^]] #################### [[elisp:(delete-other-windows)][|1]]           /* bxPanel: Panel Name Conmes Here */
+* /<-/ ) E|
+####+END:
+
+
 ####+BEGIN: bx:org-mode:startHere :governor "enabled" 
 ### Args: :exampleOfExtraParams "posibleValue"
 * /->/ [[elisp:(describe-function 'org-dblock-write:bx:org-mode:startHere)][(dblock-func]]
@@ -7,3 +15,5 @@ contentPlus
  na bodyContent
 * /<-/ ) E|
 ####+END:
+
+
