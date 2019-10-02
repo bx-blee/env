@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Top Plus Title
+# key: begin/topPlusTitle.org
+# group: topOfPanels
+# type: command
+# --
+(progn
+  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/topOfPanels/topPlusTitle.org")
+  (org-dblock-update-buffer-bx)
+  (blee:ppmm:org-mode-content-list)  
+  )

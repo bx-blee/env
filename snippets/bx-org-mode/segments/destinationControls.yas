@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Destination Controls Dblock
+# key: begin/destinationControls
+# group: segments
+# type: command
+# --
+(progn
+  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/segmentsOfPanels/destinationControls.org")
+  (org-dblock-update-buffer-bx)
+  (blee:ppmm:org-mode-content-list)  
+  )

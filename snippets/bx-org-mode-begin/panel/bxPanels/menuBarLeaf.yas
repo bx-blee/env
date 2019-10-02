@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Blee Leaf Panel
+# name: MenuBar Leaf Panel
 # key: begin/bleePanelLeaf
-# group: begin.blee
+# group: panelMenuBar
 # type: command
 # --
 (progn

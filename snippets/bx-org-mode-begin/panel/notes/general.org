@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Notes General
 # key: begin/generalPanel
-# group: begin.panelNotes
+# group: panelNotes
 # type: command
 # --
 (progn

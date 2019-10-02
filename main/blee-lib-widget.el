@@ -550,6 +550,31 @@
 	)
       )))
 
+(defun blee:org-update-named-dblocks-aboveOld (name-of-dblock)
+  ""
+  (interactive)
+  (save-excursion
+    (move-beginning-of-line 1)    
+    (search-backward name-of-dblock nil t)
+      (save-excursion
+	;;(org-mode)
+	(org-dblock-update)
+	)
+      ))
+
+(defun blee:org-update-named-dblocks-above ()
+  ""
+  (save-excursion
+    (show-all)
+    (org-beginning-of-dblock)
+    (org-dblock-update)
+    ;;(blee:org:overview)
+    ;;(org-cycle)
+    )
+  )
+
+
+
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-box:iif:define "lcaVirshManage.sh") [[elisp:(org-cycle)][| ]]
   ")

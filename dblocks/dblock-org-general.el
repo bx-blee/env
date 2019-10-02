@@ -4,28 +4,185 @@
 (require 'dblock-governor)
 
 
+(defun blee:panel:button:shCommand (@commandStr)
+  "Returns String"
+    (format "[[elisp:(lsip-local-run-command \"%s\")][%s]]"
+	    @commandStr @commandStr))
+
+
+(defun blee:panel:outLevelStr (@outLevel)
+  "Outline level is included."
+  (make-string @outLevel ?*)
+  )
+
+(defun blee:panel:dividerLineFull (@outLevel)
+  "Returns a string as full line divider with outline level string included."  
+  (format
+   "%s  %s "
+   (blee:panel:outLevelStr @outLevel)
+   (make-string 110 ?-)
+   ))
+
+
 (defun blee:panel:divider (@outLevel)
-  "Outline level is included."
+  "Returns a string as front divider with outline level string included."
   (format
-   "%s   [[elisp:(beginning-of-buffer)][|^]] #################### [[elisp:(delete-other-windows)][|1]] "
-   "*"
+   "%s  [[elisp:(beginning-of-buffer)][|^]] #################### [[elisp:(delete-other-windows)][|1]] "
+   (blee:panel:outLevelStr @outLevel)   
    ))
 
-(defun blee:panel:frontControl (@outLevel)
+;;;
+;;; (blee:panel:frontControl 1 :inDblock nil)
+;;;
+(defun blee:panel:frontControl (@outLevel &rest @args)
   "Outline level is included."
-  (format
-   "%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]] "
-   "*"
-   ))
+  (let (
+	(@inDblock (or (plist-get @args :inDblock) nil))
+	  ;;;
+	($result)
+	)
 
-(defun org-dblock-write:blee:bxPanel:title  (@params)
-  "Title of the Panel. 
+    (when (not @inDblock)
+      (setq $result (format "%s \
+[[elisp:(show-all)][|N]] [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:org:overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]] "
+	             (blee:panel:outLevelStr @outLevel)
+	     )))
+    (when @inDblock
+      (setq $result (format "%s \
+[[elisp:(show-all)][->]] [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:org:overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]] "
+                     (blee:panel:outLevelStr @outLevel)
+       )))
+    $result
+   ))
+    
+(defun blee:panel:foldingSection (@outLevel
+				  @title
+				  @anchor
+				  &rest @args				  
+				  )
+  
+  "Returns a string with outline level string included."
+  (let (
+	(@inDblock (or (plist-get @args :inDblock) nil))	
+	($openTitleStr "==")
+	($closeTitleStr "==")
+	)
+    (when (equal @outLevel 1)
+      (setq $openTitleStr "*=")
+      (setq $closeTitleStr "=*")
+      )
+    (when (equal @outLevel 2)
+      (setq $openTitleStr "/=")
+      (setq $closeTitleStr "=/")
+      )
+
+    (defun effectiveAnchor (@anchor)
+      (if @anchor
+	  (format "<<%s>> "@anchor)
+	""
+	))
+    
+    (format "\
+%s \
+   [[elisp:(org-cycle)][| %s %s: %s | ]] %s \
+"
+	    (blee:panel:frontControl @outLevel :inDblock @inDblock)
+	    $openTitleStr
+	    @title
+	    $closeTitleStr
+	    (effectiveAnchor @anchor)
+     )))
+
+(defun org-dblock-write:blee:bxPanel:foldingSection  (@params)
+  "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) "default")) ;; souroundings style
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
+	;;
+	(@title (or (plist-get @params :title) "TBD"))
+	(@anchor (or (plist-get @params :anchor) nil))	
+	;;
+	($fileAsString)
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":taskControls \"default\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      (insert
+       (format
+	"%s" (blee:panel:foldingSection @outLevel
+					@title
+					@anchor
+					:inDblock t
+					)
+	)))
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
+
+(defun org-dblock-write:blee:bxPanel:dividerLineFull  (@params)
+  "Title of the Panel. :style is expected to be closeBlank.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openLine" "closeContinue"))) ;; souroundings style
+	;;(@style (or (plist-get @params :style) "closeContinue")) ;; souroundings style	
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	;;
+	($localVarPlaceHolder)
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      "No specific params"
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      )
+    
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
+
+(defun org-dblock-write:blee:bxPanel:title  (@params)
+  "Title of the Panel. :style is expected to be closeBlank.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openFull" "closeContinue"))) ;; souroundings style
+	;;(@style (or (plist-get @params :style) "closeContinue")) ;; souroundings style	
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@panelType (or (plist-get @params :panelType) "bxPanel"))
@@ -35,7 +192,6 @@
 	($localVarPlaceHolder)
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -48,7 +204,7 @@
     (defun bodyContent ()
       (insert
        (format
-	"%s                /* %s: %s */\n"
+	"%s                /* %s: %s */     "
 	(blee:panel:divider @outLevel)
 	@panelType
 	@title
@@ -69,7 +225,6 @@
   "Lists related panels in two parts. 1) based on :panelsList -- 2) based on :inFile
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
 	(@style (or (plist-get @params :style) "default")) ;; souroundings style
@@ -81,7 +236,6 @@
 	($fileAsString)
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -98,10 +252,12 @@
 	(blee:panel:frontControl @outLevel)
 	@panelsList
 	))
-      (setq $fileAsString (get-string-from-file (format "%s" @inFile)))
-      (insert $fileAsString)
+      (when (ignore-errors (get-string-from-file (format "%s" @inFile)))
+	(setq $fileAsString (ignore-errors (get-string-from-file (format "%s" @inFile))))
+	(insert $fileAsString)
+	)
       )
-
+    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine
@@ -112,11 +268,10 @@
     ))
 
 
-(defun org-dblock-write:blee:bxPanel:maintenance  (@params)
-  "
+(defun org-dblock-write:blee:bxPanel:evolution  (@params)
+  "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
 	(@style (or (plist-get @params :style) "closeContinue")) ;; souroundings style
@@ -127,7 +282,6 @@
 	($fileAsString)
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -148,7 +302,7 @@
       (insert
        (format 	"\
 %s \
-   [[elisp:(org-cycle)][| *= Maintenance: =* | ]]  <<tasks>>  "
+   [[elisp:(org-cycle)][| *= Maintenance: =* | ]]  <<Evolution>>  "
 	(blee:panel:frontControl @outLevel)
 	))
       )
@@ -162,11 +316,67 @@
 
     ))
 
+(defun org-dblock-write:blee:bxPanel:evolutionMaintainers  (@params)
+  "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
+	;;
+	(@taskControls (or (plist-get @params :taskControls) "default"))
+	;;
+	($fileAsString)
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":taskControls \"default\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      (insert
+       (format 	"\
+%s \
+   [[elisp:(org-cycle)][| /= Bug Reports, Development Team: =/ | ]]  <<Maintainers>>  
+"
+	(blee:panel:frontControl @outLevel)
+	))
+      (insert
+       (format 	"\
+%s  Problem Report                       ::   [[elisp:(find-file \"\")][Send debbug Email]]
+"
+	(blee:panel:outLevelStr (+ 1 @outLevel))
+	))
+      (insert
+       (format 	"\
+%s  Maintainers                          ::   [[bbdb:Mohsen.*Banan]]  :: http://mohsen.1.banan.byname.net  E|\
+"
+	(blee:panel:outLevelStr (+ 1 @outLevel))
+	))
+
+      )
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
+
 (defun org-dblock-write:blee:bxPanel:thisFile  (@params)
   "This File. Used to be
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
 	(@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
@@ -177,7 +387,6 @@
 	($out-string)
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -188,7 +397,7 @@
       )
 
     (defun bodyContent ()
-      (setq $out-string (concat "*  This File :: *= " buffer-file-name " =*"))
+      (setq $out-string (concat "*  This File :: *= " buffer-file-name " =* E|"))
       (if (not (string-equal "" @origin))
 	  (setq $out-string (concat $out-string "\n** Origin    :: /libre/ByStar/InitialTemplates/activeDocs/common/activitiesPanels/" $origin))
 	)
@@ -204,19 +413,105 @@
 
     ))
 
-(defun org-dblock-write:blee:bxPanel:topPanelControls  (@params)
-  "Top Controls.
+(defun org-dblock-write:blee:bxPanel:bashControls  (@params)
+  "Bash Controls. :style is expected to be openCloseBlank.
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) "default")) ;; souroundings style
+	(@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      (insert
+       (format 	"%s \
+ [[elisp:(org-cycle)][|#Sh|]] :: (Results: [[elisp:(blee:bnsm:results-here)][Here]] | [[elisp:(blee:bnsm:results-split-below)][Below]] | [[elisp:(blee:bnsm:results-split-right)][Right]] | [[elisp:(blee:bnsm:results-other)][Other]] | [[elisp:(blee:bnsm:results-popup)][Popup]]) (Select:  [[elisp:(lsip-local-run-command \"lpCurrentsAdmin.sh -i currentsGetThenShow\")][Show Currents]]  [[elisp:(lsip-local-run-command \"lpCurrentsAdmin.sh\")][lpCurrentsAdmin.sh]] ) [[elisp:(org-cycle)][| ]]
+"
+	"*"
+	))
+      (insert
+       (format 	"%s \
+ #See:  (Window: [[elisp:(blee:bnsm:results-window-show)][?]] | [[elisp:(blee:bnsm:results-window-set 0)][0]] | [[elisp:(blee:bnsm:results-window-set 1)][1]] | [[elisp:(blee:bnsm:results-window-set 2)][2]] | [[elisp:(blee:bnsm:results-window-set 3)][3]] ) || [[elisp:(lsip-local-run-command-here \"echo pushd dest\")][echo pushd dir]] || [[elisp:(lsip-local-run-command-here \"lsf\")][lsf]] || [[elisp:(lsip-local-run-command-here \"pwd\")][pwd]] |\
+"
+	"**"
+	))
+      )
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+(defun org-dblock-write:blee:bxPanel:destinationControls  (@params)
+  "Destination Controls. :style is expected to be openCloseBlank.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      (insert
+       (format 	"%s \
+ [[elisp:(org-cycle)][|#Destinations|]] :: [[Evolution]] | [[Maintainers]]  [[elisp:(org-cycle)][| ]]
+"
+	(blee:panel:outLevelStr @outLevel)
+	))
+      (insert
+       (format 	"%s \
+ #See:  [[elisp:(bx:bnsm:top:panel-blee)][Blee]] | [[elisp:(bx:bnsm:top:panel-listOfDocs)][All Docs]]  E|\
+"
+	(blee:panel:outLevelStr (+ 1 @outLevel))
+	))
+      )
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+(defun org-dblock-write:blee:bxPanel:topPanelControls  (@params)
+  "Top Controls. :style is expected to be openCloseBlank.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) "openCloseBlank")) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	)
+
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -230,14 +525,14 @@
       (insert
        (format
 	"%s \
-*  [[elisp:(org-cycle)][|#Controls:|]]  [[elisp:(blee:bnsm:menu-back)][Back]] [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]]  [[elisp:(bury-buffer)][Bury]]  [[elisp:(org-cycle)][| ]]
+ [[elisp:(org-cycle)][|#Controls|]] :: [[elisp:(blee:bnsm:menu-back)][Back]] [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]]  [[elisp:(bury-buffer)][Bury]]  [[elisp:(org-cycle)][| ]]
 "
 	"*"
 	))
       (insert
        (format
 	"%s \
- [[elisp:(blee:buf:re-major-mode)][Re-Major-Mode]] ||  [[elisp:(org-dblock-update-buffer-bx)][Update Buf Dblocks]] || [[elisp:(org-dblock-bx-blank-buffer)][Blank Buf Dblocks]] || [[elisp:(bx:panel:variablesShow)][bx:panel:variablesShow]]  E|
+ [[elisp:(blee:buf:re-major-mode)][Re-Major-Mode]] ||  [[elisp:(org-dblock-update-buffer-bx)][Update Buf Dblocks]] || [[elisp:(org-dblock-bx-blank-buffer)][Blank Buf Dblocks]] || [[elisp:(bx:panel:variablesShow)][bx:panel:variablesShow]]  E|\
 "
 	"**"
 	))
@@ -256,13 +551,12 @@
 
 
 (defun org-dblock-write:blee:bxPanel:footerPanelControls  (@params)
-  " Example for pure Blee org-mode dblocks.
+  "Similar to topPanelControls but for bottom. :style is expected to be closeBlank.
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) "default")) ;; souroundings style
+	(@style (or (plist-get @params :style) (list "openLine" "closeContinue"))) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@panelsList (or (plist-get @params :panelType) "bxPanel"))
@@ -271,7 +565,6 @@
 	($fileAsString)
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -284,8 +577,8 @@
     (defun bodyContent ()
       (insert
        (format
-	"%s \
-/Footer Controls/ ::  [[elisp:(blee:bnsm:menu-back)][Back]]  [[elisp:(toggle-read-only)][toggle-read-only]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Cycle Glob Vis]]  [[elisp:(delete-other-windows)][1 Win]]  [[elisp:(save-buffer)][Save]]   [[elisp:(kill-buffer)][Quit]] 
+	"
+%s /Footer Controls/ ::  [[elisp:(blee:bnsm:menu-back)][Back]]  [[elisp:(toggle-read-only)][toggle-read-only]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Cycle Glob Vis]]  [[elisp:(delete-other-windows)][1 Win]]  [[elisp:(save-buffer)][Save]]   [[elisp:(kill-buffer)][Quit]] \
 "
 	"*"
 	))
@@ -305,10 +598,9 @@
   " Example for pure Blee org-mode dblocks.
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) "default")) ;; souroundings style
+	(@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@panelsList (or (plist-get @params :panelType) "bxPanel"))
@@ -317,7 +609,6 @@
 	($fileAsString)
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -358,10 +649,9 @@
   " Example for pure Blee org-mode dblocks.
 "
   (let (
-	(@toggle (or (plist-get @params :toggle) nil))       ;; For backwards compatibility -- replaced by governor
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) "default")) ;; souroundings style
+	(@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@panelsList (or (plist-get @params :panelType) "bxPanel"))
@@ -370,7 +660,6 @@
 	($fileAsString)
 	)
 
-    (when @toggle (setq @governor @toggle))   ;; for backwards compatibility
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -392,6 +681,8 @@
 ;; Local Variables:
 ;; eval: (make-local-variable '~selectedSubject)
 ;; eval: (setq ~selectedSubject \"noSubject\")
+;; eval: (make-local-variable '~primaryMajorMode)
+;; eval: (setq ~primaryMajorMode major-mode)
 ;; eval: (bx:load-file:ifOneExists \"./panelActions.el\")
 ;; End:
 "
@@ -425,7 +716,97 @@
    ;;(insert (format "Unknon param: %s" bx:types))
    )
   )
+
+
+(defun org-dblock-write:blee:bxPanel:runResult (@params)
+  " Example for pure Blee org-mode dblocks.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeFull"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	(@command (or (plist-get @params :command) ""))
+	(@comment (or (plist-get @params :comment) nil))	
+	(@stdErr (and (plist-get @params :stdErr) t))
+	;;
+	($stdErrStr "")
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      (insert
+       (format
+	"%s" (blee:panel:foldingSection @outLevel
+					"Results"
+					nil
+					:inDblock t
+					)))
+      
+      (insert "[[elisp:(blee:org-update-named-dblocks-above)][D-Run]]")
+
+      (when @comment
+	(insert 
+	 (format " /%s/" @comment)))
+ 
+      (insert " || ")      
+
+      (insert (blee:panel:button:shCommand @command))
+      
+      (insert " |\n")
+
+      (unless @stdErr
+	(setq $stdErrStr " 2> /dev/null"))
+
+      (setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
+      (insert (format "Last Executed at: %s  by: %s on: %s\n" (time-stamp-string) (user-login-name) (system-name)))      
+
+      (insert "----------------------------\n")
+
+      (insert
+       (shell-command-to-string 
+	(format "source ~/.bashrc; %s %s" @command $stdErrStr))
+       )
+      )
+       
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
+(defun bx:panel:variablesShow ()
+  "Relevant Buffer Local Variables Are "
+  (interactive)
   
+  (let ((buffer-name (generate-new-buffer-name "bleePanelVars"))
+	(aggregatedStr
+	 (with-output-to-string
+	   (princ "This Panel's Variables\n")
+	   (princ "============================================\n")
+	   (princ (format "~selectedSubject:\t %S\n" ~selectedSubject))
+	   (princ (format "~primaryMajorMode:\t %S\n" ~primaryMajorMode))	   
+	   (princ "============================================\n")
+	   )
+	 ))
+    (switch-to-buffer buffer-name)
+    (insert aggregatedStr)))
+
+
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-org-general"
 (lambda () "

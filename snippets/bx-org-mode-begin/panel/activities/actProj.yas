@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Activities Project
 # key: begin/activitiesPanel
-# group: begin.panelActivities
+# group: panelActivities
 # type: command
 # --
 (progn

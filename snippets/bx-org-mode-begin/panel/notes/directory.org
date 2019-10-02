@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Notes Directory
 # key: begin/directoryPanel
-# group: begin.panelNotes
+# group: panelNotes
 # type: command
 # --
 (progn

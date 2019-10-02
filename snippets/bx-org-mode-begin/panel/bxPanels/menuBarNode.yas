@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Menu Bar Node Panel
 # key: begin/bleePanelNode
-# group: begin.panelMenuBar
+# group: panelMenuBar
 # type: command
 # --
 (progn

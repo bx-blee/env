@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Activities Prospect
 # key: begin/activitiesPanel
-# group: begin.panelActivities
+# group: panelActivities
 # type: command
 # --
 (progn

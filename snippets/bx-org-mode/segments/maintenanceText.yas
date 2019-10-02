@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Segment Maintenance
-# key: segment/maintenance
-# group: segment
+# name: Maintenance Text
+# key: segments/maintenance
+# group: segments
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

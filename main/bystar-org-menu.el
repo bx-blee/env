@@ -1179,5 +1179,11 @@ Added: %U")
   (delete-other-windows)
   )
 
+(defun blee:org:overview ()
+  ""
+  (org-shifttab)
+  )
+
+
 
 (provide 'bystar-org-menu)

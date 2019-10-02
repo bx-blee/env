@@ -1,11 +1,11 @@
 # -*- mode: snippet -*-
-# name: Notes Meeting
+# name: Activities Client
 # key: begin/activitiesPanel
-# group: begin.panelNotes
+# group: panelActivities
 # type: command
 # --
 (progn
-  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/notesPanels/beginActMeeting.org")
+  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/activitiesPanels/beginActClient.org")
   (org-dblock-update-buffer-bx)
   (blee:ppmm:org-mode-content-list)  
   )

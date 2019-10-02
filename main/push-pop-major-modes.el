@@ -121,6 +121,14 @@ the pop will fail, in which case we'll do normal-mode to recover.
     )
   )
 
+(defun blee:ppmm:mode-stack-get ()
+  "pop path on stack, visit menu-file
+If the file is opened not in its natural major mode, but org-mode instead,
+the pop will fail, in which case we'll do normal-mode to recover.
+"
+  blee:ppmm:mode-stack
+  )
+
 ;;(provide 'blee-ppmm)
 (provide 'push-pop-major-modes)
 

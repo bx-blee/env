@@ -40,33 +40,49 @@
 
 (require 'bx-lcnt-lib)
 
+(defun blee:comeega:primaryMajorMode ()
+  "Determine Primary Major Mode.
+
+We will get it from ~primaryMajorMode.
+If that fails, we try blee:ppmm:mode-stack-get
+If that fails, we return major-mode.
+
+** TODO Has not been full implemented and tested.
+"
+  (blee:ppmm:mode-stack-get)
+  )
+  
+
 
 
 (defun bx:dblock:governor:process (@governor
 				   @ext-gov
-				   @sur-style
+				   @style
 				   @outLevel
 				   @dblockFuncName				   
 				   @helpLine
 				   @bodyContentPlus
 				   @bodyContent
 				   )
-  "Calls open+body+close in order"
+  "Calls open+body+close in order.
+
+** TODO instead of major-mode we should be using (blee:comeega:primaryMajorMode)
+"
 
   ;;(setq @governor (bx:dblock:governor:effective @governor @ext-gov))  
 
-  (bx:dblock:governor:helpLine @governor @sur-style
+  (bx:dblock:governor:helpLine @governor @style
 			       @helpLine)
   
   (bx:dblock:global:moded:insert-begin major-mode)
   
-  (bx:dblock:governor:open @governor @sur-style @dblockFuncName)
+  (bx:dblock:governor:open @outLevel @governor @style @dblockFuncName)
 
-  (bx:dblock:governor:bodyContent @governor @sur-style
+  (bx:dblock:governor:bodyContent @governor @style
 				  @bodyContentPlus
 				  @bodyContent)
 
-  (bx:dblock:governor:close @governor @sur-style @dblockFuncName)
+  (bx:dblock:governor:close @outLevel @governor @style @dblockFuncName)
 
   (bx:dblock:global:moded:insert-end major-mode)
   )
@@ -111,8 +127,9 @@
   ":governor \"enabled|disabled|hide|release|fVar\""
   )
 
-(defun bx:dblock:governor:open (@governor
-				@sur-style
+(defun bx:dblock:governor:open (@outLevel
+				@governor
+				@style
 				@dblockFuncName
 				)
   "call open perhaps"
@@ -121,12 +138,12 @@
 	 (string= @governor "enabled")
 	 (string= @governor "disbaled")
 	 )
-    (bx:dblock:governor:inDblockOpen @governor @sur-style @dblockFuncName)
+    (bx:dblock:governor:inDblockOpen @outLevel @governor @style @dblockFuncName)
     )
   )
 
 (defun bx:dblock:governor:bodyContent (@governor
-				       @sur-style
+				       @style
 				       @bodyContentPlus
 				       @bodyContent
 				       )
@@ -150,7 +167,8 @@
 
 
 
-(defun bx:dblock:governor:close (@governor
+(defun bx:dblock:governor:close (@outLevel
+				 @governor
 				 @sur-style
 				 @dblockFuncName
 				 )
@@ -160,24 +178,26 @@
 	 (string= @governor "enabled")
 	 (string= @governor "disbaled")
 	 )
-    (bx:dblock:governor:inDblockClose @governor @sur-style @dblockFuncName)
+    (bx:dblock:governor:inDblockClose @outLevel @governor @sur-style @dblockFuncName)
     )
   )
 
 
-(defun bx:dblock:governor:inDblockOpen (@governor
+(defun bx:dblock:governor:inDblockOpen (@outLevel
+					@governor
 					@style
 					@dblockFuncName
 					)
   "Perhaps compile-time-function-name needs to be added"
   ;;;(insert "Open Place Holder")
   ;;;(bx:dblock:org-mode:func-open (compile-time-function-name))
-  (bx:dblock:org-mode:func-open @dblockFuncName :style @style)
+  (bx:dblock:org-mode:func-open @outLevel @dblockFuncName :style @style)
   
   )
 
   
-(defun bx:dblock:governor:inDblockClose (@governor
+(defun bx:dblock:governor:inDblockClose (@outLevel
+					 @governor
 					 @style
 					 @dblockFuncName
 					 )
@@ -187,7 +207,7 @@
   ;;  (compile-time-function-name)
   ;;  :style "terse"
   ;;  )
-  (bx:dblock:org-mode:func-close @dblockFuncName :style @style)
+  (bx:dblock:org-mode:func-close @outLevel @dblockFuncName :style @style)
 
   )
 
