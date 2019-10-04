@@ -700,7 +700,7 @@
 
 
 (defun org-dblock-write:bx:dblock:org:parameters (params)
-  "Old Style. Kept for backwards comptibilitty"
+  "Old Style. Kept for backwards comptibilitty. Also shown to pean."
   (let ((bx:types (or (plist-get params :types) ""))
 	)
     (when (equal bx:types "agenda")
