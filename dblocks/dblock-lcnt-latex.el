@@ -164,7 +164,7 @@
 	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
 	  
-	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
 	  
 	  (insert (format "\
 *  [[elisp:(beginning-of-buffer)][Top]] ################  [[elisp:(delete-other-windows)][(1)]]   /*%s-%s -- LCNT Panel -- lcntProc.sh, presProc.sh and Mailings*/
@@ -190,7 +190,7 @@
 	  ;;;(insert (format "\n*      ================\n" ))
           (insert (format "\n"))
 
-	  (bx:dblock:org-mode:func-close (compile-time-function-name))
+	  (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
 	  
 	  (bx:dblock:global:moded:insert-end bx:mode)
 
@@ -223,7 +223,7 @@
 
     (bx:dblock:global:moded:insert-begin bx:mode)
 
-    (bx:dblock:org-mode:func-open (compile-time-function-name))
+    (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
     
 
     (insert (format "\
@@ -245,7 +245,7 @@
 		    bufferFileName bufferFileName bufferFileName bufferFileName
 		    ))
     
-    (bx:dblock:org-mode:func-close (compile-time-function-name))
+    (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
 	  
     (bx:dblock:global:moded:insert-end bx:mode)
     

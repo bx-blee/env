@@ -153,11 +153,11 @@ See [[file:/libre/ByStar/InitialTemplates/activeDocs/blee/development/fullUsageP
 
       (bx:dblock:global:moded:insert-begin major-mode)
 
-      (bx:dblock:org-mode:func-open (compile-time-function-name))
+      (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
 
       (insert "\nSome Stuff\n")
 
-      (bx:dblock:org-mode:func-close
+      (bx:dblock:org-mode:func-close 1
        (compile-time-function-name)
        :style "terse"
        )

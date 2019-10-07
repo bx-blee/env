@@ -190,7 +190,6 @@ If that fails, we return major-mode.
 					)
   "Perhaps compile-time-function-name needs to be added"
   ;;;(insert "Open Place Holder")
-  ;;;(bx:dblock:org-mode:func-open (compile-time-function-name))
   (bx:dblock:org-mode:func-open @outLevel @dblockFuncName :style @style)
   
   )
@@ -203,10 +202,6 @@ If that fails, we return major-mode.
 					 )
   "Perhaps compile-time-function-name needs to be added"
   ;;;(insert "Close Place Holder")
-  ;; (bx:dblock:org-mode:func-close
-  ;;  (compile-time-function-name)
-  ;;  :style "terse"
-  ;;  )
   (bx:dblock:org-mode:func-close @outLevel @dblockFuncName :style @style)
 
   )

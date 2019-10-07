@@ -170,6 +170,7 @@
 	(bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
 	(bx:mode (or (plist-get params :mode) "auto"))       
 	(out-string)
+	($outLevel 1)
 	)
     (if (not
 	 (or (equal "TRUE" bx:disabledP)
@@ -182,7 +183,7 @@
 	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
 
-	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  (bx:dblock:org-mode:func-open $outLevel (compile-time-function-name))
 	  
 	  ;;; This needs to become when major-mode based
 	  
@@ -193,7 +194,7 @@
  | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
 "))
 
-	  (bx:dblock:org-mode:func-close (compile-time-function-name))
+	  (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
 
 	  
 	  (bx:dblock:global:moded:insert-end bx:mode)
@@ -221,7 +222,7 @@
 	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
 
-	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
 	  
 	  ;;; This needs to become when major-mode based
 	  
@@ -232,7 +233,7 @@
  | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
 "))
 
-	  (bx:dblock:org-mode:func-close (compile-time-function-name))
+	  (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
 
 	  
 	  (bx:dblock:global:moded:insert-end bx:mode)
@@ -260,7 +261,7 @@
 	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
 
-	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
 	  
 	  ;;; This needs to become when major-mode based
 	  
@@ -268,7 +269,7 @@
 * Related General BxPanels ::  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral/fullUsagePanel-en.org\")][bxCentral]] || [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxDE/main/fullUsagePanel-en.org\")][bxDE]] || Category Panels
 "))
 
-	  (bx:dblock:org-mode:func-close
+	  (bx:dblock:org-mode:func-close 1
 	   (compile-time-function-name)
 	   :style "terse"
 	   )
@@ -289,7 +290,7 @@
 	  
     (bx:dblock:global:moded:insert-begin bx:mode)
 
-    (bx:dblock:org-mode:func-open (compile-time-function-name))
+    (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
 	  
     ;; This needs to become when major-mode based
     
@@ -298,7 +299,7 @@
 * Related General BxPanels ::  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral/fullUsagePanel-en.org\")][bxCentral]] || [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxDE/main/fullUsagePanel-en.org\")][bxDE]] || Category Panels
 "))
 
-    (bx:dblock:org-mode:func-close
+    (bx:dblock:org-mode:func-close 1
      (compile-time-function-name)
      :style "terse"
      )
