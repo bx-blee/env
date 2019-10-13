@@ -27,14 +27,49 @@
 (defun blee:panel:divider (@outLevel)
   "Returns a string as front divider with outline level string included."
   (format
-   "%s  [[elisp:(beginning-of-buffer)][|^]] #################### [[elisp:(delete-other-windows)][|1]] "
+   "%s  [[elisp:(beginning-of-buffer)][|^]] ############ [[elisp:(delete-other-windows)][|1]] "
    (blee:panel:outLevelStr @outLevel)   
    ))
 
 ;;;
 ;;; (blee:panel:frontControl 1 :inDblock nil)
 ;;;
+
 (defun blee:panel:frontControl (@outLevel &rest @args)
+  "Outline level is included.
+|N is not in a dblock
+-> is immediately in a dblock (above line is BEGIN)
+|n is in a dblock but not immediatley (above line is not BEGIN)
+"
+
+  (let (
+	(@inDblock (or (plist-get @args :inDblock) nil))
+	  ;;;
+	($primaryNaturalControl)
+	($result)
+	)
+
+    (defun commonFrontControls ()
+      "Other than the front |N or -> or |n "
+      "[[elisp:(org-cycle)][| ]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+      )
+
+    (when (not @inDblock)
+      (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|N]]"
+					  (blee:panel:outLevelStr @outLevel)
+					  )))
+    (when @inDblock
+      (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][->]]"
+					   (blee:panel:outLevelStr @outLevel)
+					   )))
+    (setq $result (format "%s %s "
+			  $primaryNaturalControl
+			  (commonFrontControls)
+			  ))
+    $result
+   ))
+
+(defun blee:panel:frontControlOld (@outLevel &rest @args)
   "Outline level is included."
   (let (
 	(@inDblock (or (plist-get @args :inDblock) nil))
@@ -54,7 +89,10 @@
        )))
     $result
    ))
-    
+
+
+
+
 (defun blee:panel:foldingSection (@outLevel
 				  @title
 				  @anchor
@@ -181,7 +219,7 @@
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) (list "openFull" "closeContinue"))) ;; souroundings style
+	(@style (or (plist-get @params :style) (list "openContinue" "closeContinue"))) ;; souroundings style
 	;;(@style (or (plist-get @params :style) "closeContinue")) ;; souroundings style	
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
@@ -204,8 +242,7 @@
     (defun bodyContent ()
       (insert
        (format
-	"%s                /* %s: %s */     "
-	(blee:panel:divider @outLevel)
+	"                /* %s: %s */     "
 	@panelType
 	@title
 	))
@@ -227,7 +264,7 @@
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) "default")) ;; souroundings style
+	(@style (or (plist-get @params :style) (list "openFull" "closeContinue"))) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@panelsList (or (plist-get @params :panelsList) "bxPanel"))
@@ -256,6 +293,15 @@
 	(setq $fileAsString (ignore-errors (get-string-from-file (format "%s" @inFile))))
 	(insert $fileAsString)
 	)
+
+      (insert
+       (format
+	"%s%s%s%s"
+        (blee:panel:outLevelStr @outLevel)
+	(make-string 38 ? )
+	(make-string 30 ?-)	
+	(make-string 36 ? )
+	))
       )
     
     (bx:dblock:governor:process @governor @extGov @style @outLevel
@@ -501,6 +547,7 @@
 
     ))
 
+
 (defun org-dblock-write:blee:bxPanel:topPanelControls  (@params)
   "Top Controls. :style is expected to be openCloseBlank.
 "
@@ -532,12 +579,20 @@
       (insert
        (format
 	"%s \
- [[elisp:(blee:buf:re-major-mode)][Re-Major-Mode]] ||  [[elisp:(org-dblock-update-buffer-bx)][Update Buf Dblocks]] || [[elisp:(org-dblock-bx-blank-buffer)][Blank Buf Dblocks]] || [[elisp:(bx:panel:variablesShow)][bx:panel:variablesShow]]  E|\
+ [[elisp:(blee:buf:re-major-mode)][Re-Major-Mode]] ||  [[elisp:(org-dblock-update-buffer-bx)][Update Buf Dblocks]] || [[elisp:(org-dblock-bx-blank-buffer)][Blank Buf Dblocks]] || [[elisp:(bx:panel:variablesShow)][bx:panel:variablesShow]]
+"
+	"**"
+	))
+
+      (insert
+       (format
+	"%s \
+ [[elisp:(blee:menu-sel:comeega:maintenance:popupMenu)][||Maintenance]]   E|\
 "
 	"**"
 	))
       )
-
+    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine
@@ -546,7 +601,6 @@
 				)
 
     ))
-
 
 
 
@@ -644,6 +698,26 @@
     ))
 
 
+;;;
+;;; (give-me-comment-starters-ender-for-a-mode 'emacs-lisp-mode)
+;;; (blee:mode:commentStartGet 'emacs-lisp-mode)
+;;; (blee:mode:commentStartGet 'org-mode)
+;;; (blee:mode:commentStartGet 'latex-mode)
+;;; (blee:mode:commentStartGet 'shell-script-mode)
+;;; (blee:mode:commentEndGet 'shell-script-mode)
+
+(defun blee:mode:commentStartGet (mode)
+  "Returns a  comment-start of arg MODE"
+  (with-temp-buffer
+    (funcall mode)
+    comment-start))
+
+(defun blee:mode:commentEndGet (mode)
+  "Returns comment-end of arg MODE"
+  (with-temp-buffer
+    (funcall mode)
+    comment-end))
+
 
 (defun org-dblock-write:blee:bxPanel:footerEmacsParams (@params)
   " Example for pure Blee org-mode dblocks.
@@ -654,16 +728,18 @@
 	(@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
-	(@panelsList (or (plist-get @params :panelType) "bxPanel"))
-	(@inFile (or (plist-get @params :inFile) "panelSisters.org"))	
+	(@primMode (or (plist-get @params :primMode) major-mode))
 	;;
-	($fileAsString)
+	($commentStartStr)
+	($primModeSymb)
 	)
+
+
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
-      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      ":primMode \"emacs-lisp\"|\"org-Mode\""
       )
 
     (defun bodyContentPlus ()
@@ -675,19 +751,34 @@
 	"%s    [[elisp:(org-cycle)][| *= Emacs Local Params: =* | ]]\n"
 	(blee:panel:frontControl @outLevel)
 	))
-      
-      (insert
-       (format "\
-;; Local Variables:
-;; eval: (make-local-variable '~selectedSubject)
-;; eval: (setq ~selectedSubject \"noSubject\")
-;; eval: (make-local-variable '~primaryMajorMode)
-;; eval: (setq ~primaryMajorMode major-mode)
-;; eval: (bx:load-file:ifOneExists \"./panelActions.el\")
-;; End:
-"
-	))
+
+      (setq $primModeSymb (intern @primMode))
+
+      (setq $commentStartStr (blee:mode:commentStartGet $primModeSymb))
+
+      (mapcar (lambda (x)
+		(insert
+		 (format "%s%s\n"
+			 $commentStartStr
+			 x
+			 )))
+	      
+	      (s-lines
+	       (format "\
+Local Variables:
+eval: (make-local-variable '~selectedSubject)
+eval: (setq ~selectedSubject \"noSubject\")
+eval: (make-local-variable '~primaryMajorMode)
+eval: (setq ~primaryMajorMode '%s)
+eval: (setq-local ~doThisInsteadOfAbove \"NotYet\")
+eval: (bx:load-file:ifOneExists \"./panelActions.el\")
+End:"
+		       @primMode
+		       ))
+	      )
       )
+
+    
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)

@@ -165,6 +165,15 @@
 (global-set-key "\C-cr" 'org-remember)
 (global-set-key [(f12)] 'org-remember)
 
+(bx:package:install-if-needed 'use-package)
+(bx:package:install-if-needed 'org-bullets)
+
+(use-package org-bullets
+   :config
+   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(setq org-hide-emphasis-markers t)
+
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "orgModeInit"
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]

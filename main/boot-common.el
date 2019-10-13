@@ -9,10 +9,10 @@
 
 ;;;#+BEGIN: bx:dblock:global:org-controls :disabledP "false" :mode "auto"
 (lambda () "
-* /->/ [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][(dblock-func]]
+* /->/ [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][(db-func]]
 *  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][|O]]  [[elisp:(progn (org-shifttab) (org-content))][|C]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][|N]] | [[elisp:(delete-other-windows)][|1]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
 *  /Maintain/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-This]] [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-This]] | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
-* /<-/ [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][dblock-func)]]  E|
+* /<-/ [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][db-func)]]  E|
 ")
 ;;;#+END:
 

@@ -571,12 +571,14 @@
 
 (defun bx:orgm:indirectBufOther ()
   "Usually in |>"
+  (interactive)
   (org-tree-to-indirect-buffer)
   )
 
 
 (defun bx:orgm:indirectBufMain ()
   "Usually in |I"
+  (interactive)  
   (let (
 	$baseBuf
 	)

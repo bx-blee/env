@@ -521,6 +521,160 @@
     (blee:org-update-named-dblocks "bx:dblock:global:run-result")
     ))
 
+(lambda () "
+*      Testing/Execution          ::  [[elisp:(blee:menu-sel:outline:popupMenu)][Popup Org Outline Menu]] | 
+Some Comment under current
+** Second Level
+*** Third Level
+")
+
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:outline:define) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:menu-sel:outline:define ()
+  ""
+  (interactive)
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define 
+      blee:menu-sel:outline:menu
+      nil 
+      "Outline Menu"
+      `("Outline Menu"
+	"---"      
+	["Outline -- (_) -- Open Under And N+1" org-cycle t]
+	["Outline -- (=) -- Open N+1" org-show-subtree t]
+	["Outline -- (V) -- Open All" blee:org:showAllChildren t]
+	["Outline -- (O) -- All Overview" org-shifttab t]
+	["Outline -- (C) -- All Content" blee:org:content t]
+	["Outline -- (S) -- All Show" show-all t]
+	"---"
+	["View  -- Usage & Viewing Model" (blee:org:viewModel) t]
+	["Edit  -- Development & Editing Model" (blee:org:editModel) t]
+	"---"
+	["Beauty  -- Hide emphasis-markers" (blee:org:emphasisMarkers:hide) t]
+	["Beauty  -- Show emphasis-markers" (blee:org:emphasisMarkers:show) t]
+	["Beauty  -- Enable Bullets-Mode" (blee:org:bulletsMode:enable) t]
+	["Beauty  -- Disbale Bullets-Mode" (blee:org:bulletsMode:disable) t]				
+      	"---"	
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
+
+(defun blee:org:viewModel ()
+  ""
+  (interactive)  
+  (blee:org:emphasisMarkers:hide)
+  (blee:org:bulletsMode:enable)
+  )
+
+(defun blee:org:editModel ()
+  ""
+  (interactive)  
+  (blee:org:emphasisMarkers:show)
+  (blee:org:bulletsMode:disable)
+  )
+
+
+(defun blee:org:bulletsMode:enable ()
+  ""
+  (interactive)  
+  (org-bullets-mode 1)
+  )
+
+(defun blee:org:bulletsMode:disable ()
+  ""
+  (interactive)  
+  (org-bullets-mode 0)
+  )
+
+
+(defun blee:org:emphasisMarkers:hide ()
+  ""
+  (interactive)  
+  (setq org-hide-emphasis-markers t)
+  (org-mode-restart)
+  )
+
+(defun blee:org:emphasisMarkers:show ()
+  ""
+  (interactive)  
+  (setq org-hide-emphasis-markers nil)
+  (org-mode-restart)
+  )
+
+(defun blee:org:content ()
+  ""
+  (interactive)  
+  (org-shifttab)
+  (org-content)
+  )
+
+(defun blee:org:showAllChildren ()
+  ""
+  (interactive)  
+  (show-children 10)
+  )
+
+  
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:outline:popupMenu) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:menu-sel:outline:popupMenu ()
+  ""
+  (blee:menu-sel:outline:define)
+  (popup-menu blee:menu-sel:outline:menu)
+  )
+
+
+(lambda () "
+*      Testing/Execution          ::  [[elisp:(blee:menu-sel:navigation:popupMenu)][Popup Org Navigation Menu]] | 
+")
+
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:navigation:define) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:menu-sel:navigation:define ()
+  ""
+  (interactive)
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define 
+      blee:menu-sel:navigation:menu
+      nil 
+      "Navigation Menu2"
+      `("Navigation Menu 2"
+	"---"
+	["Navigation -- (^) -- beginning-of-buffer" beginning-of-buffer t]
+	["Navigation -- (1) -- delete-other-windows" delete-other-windows t]
+	["Navigation -- (>) -- Indirect Other" bx:orgm:indirectBufOther t]
+	"---"	
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:navigation:popupMenu) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:menu-sel:navigation:popupMenu ()
+  ""
+  (blee:menu-sel:navigation:define)
+  (popup-menu blee:menu-sel:navigation:menu)
+  )
+
+
+(lambda () "
+*      Support Functions          ::   | 
+")
+
+
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:org-update-named-dblocks name-of-dblock) [[elisp:(org-cycle)][| ]]

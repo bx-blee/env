@@ -156,6 +156,7 @@ default
 
     (when (not (or
 		(string= $styleOpen "openTerse")
+		(string= $styleOpen "openContinue")		
 		(string= $styleOpen "openLine")		
 		(string= $styleOpen "openBlank")
 		(string= $styleOpen "openCloseBlank")		
@@ -165,7 +166,7 @@ default
     
     (unless $styleOpen
       (insert (format "\
-%s [[elisp:(show-all)][->]] [[elisp:(describe-function '%s)][(dblock-func]]
+%s [[elisp:(show-all)][->]] [[elisp:(describe-function '%s)][(db-func]]
 "
 		  (blee:panel:outLevelStr @outLevel)
 		  @funcName
@@ -176,6 +177,14 @@ default
 "
 		      (blee:panel:outLevelStr @outLevel)		      
 		      )))
+    
+    (when (string= $styleOpen "openContinue")
+      (insert (format "\
+%s [[elisp:(show-all)][->]]( \
+"
+		      (blee:panel:outLevelStr @outLevel)		      
+		      )))
+
     
     (when (string= $styleOpen "openLine")
       (insert (format "\
@@ -233,7 +242,7 @@ closeBlank -- Nothing at all
     
     (unless $styleClose
       (insert (format "
-%s [[elisp:(org-shifttab)][<-]] [[elisp:(describe-function '%s)][dblock-func)]]  E|
+%s [[elisp:(org-shifttab)][<-]] [[elisp:(describe-function '%s)][db-func)]]  E|
 "
 		      (blee:panel:outLevelStr @outLevel)		      
 		      @funcName

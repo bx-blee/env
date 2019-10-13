@@ -986,6 +986,8 @@ This must be non-emacs version specific code.")
 "
 	     (require 'blee-lib-widget)
 	     (blee-lib-widget:all-defaults-set)
+
+	     (require 'blee-comeega)
 	     ))
 
 
