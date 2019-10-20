@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Un Fold Describe Command 1
-# key: unfold/describeCmnd1
-# group: unfold
-# type: snippet
-# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
-# --
-*                          &&  $0         :: [[elisp:(lsip-local-run-command "cmnd")][cmnd]] 

@@ -166,21 +166,21 @@ default
     
     (unless $styleOpen
       (insert (format "\
-%s [[elisp:(show-all)][->]] [[elisp:(describe-function '%s)][(db-func]]
+%s [[elisp:(show-all)][(>]] [[elisp:(describe-function '%s)][dbf]]
 "
 		  (blee:panel:outLevelStr @outLevel)
 		  @funcName
 		  )))
     (when (string= $styleOpen "openTerse")
       (insert (format "\
-%s [[elisp:(show-all)][->]](
+%s [[elisp:(show-all)][(>]]
 "
 		      (blee:panel:outLevelStr @outLevel)		      
 		      )))
     
     (when (string= $styleOpen "openContinue")
       (insert (format "\
-%s [[elisp:(show-all)][->]]( \
+%s [[elisp:(show-all)][(>]] \
 "
 		      (blee:panel:outLevelStr @outLevel)		      
 		      )))
@@ -188,7 +188,7 @@ default
     
     (when (string= $styleOpen "openLine")
       (insert (format "\
-%s [[elisp:(show-all)][->]]( %s \
+%s [[elisp:(show-all)][(>]] %s \
 "
 		      (blee:panel:outLevelStr @outLevel)
 		      (make-string 98 ?-)
@@ -242,21 +242,21 @@ closeBlank -- Nothing at all
     
     (unless $styleClose
       (insert (format "
-%s [[elisp:(org-shifttab)][<-]] [[elisp:(describe-function '%s)][db-func)]]  E|
+%s [[elisp:(org-shifttab)][<)]] [[elisp:(describe-function '%s)][dbFunc)]]  E|
 "
 		      (blee:panel:outLevelStr @outLevel)		      
 		      @funcName
 		      )))
     (when (string= $styleClose "closeTerse")
       (insert (format "
-%s [[elisp:(org-shifttab)][<-]]) E|\
+%s [[elisp:(org-shifttab)][<)]] E|\
 "
 		      (blee:panel:outLevelStr @outLevel)
 		      )))
 
     (when (string= $styleClose "closeContinue")
       (insert (format "\
- [[elisp:(org-shifttab)][<-]]) E|\
+ [[elisp:(org-shifttab)][<)]] E|\
 "
 		      )))
 

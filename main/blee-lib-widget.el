@@ -636,6 +636,47 @@ Some Comment under current
 ")
 
 (lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:agenda) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:menu-sel:agenda:define ()
+  ""
+  (interactive)
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define 
+      blee:menu-sel:agenda:menu
+      nil 
+      "Agenda And TODOs Menu"
+      `("Agenda And TODOs Menu"
+	"---"
+	["To Do This" (bx:org:todo:this-file-otherWin) t]
+	["Agenda This" (bx:org:agenda:this-file-otherWin) t]
+	"---"	
+	["To Do These -- NOTYET" beginning-of-buffer t]
+	["Agenda These -- NOTYET" delete-other-windows t]
+	"---"	
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:navigation:popupMenu) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:menu-sel:agenda:popupMenu ()
+  ""
+  (blee:menu-sel:agenda:define)
+  (popup-menu blee:menu-sel:agenda:menu)
+  )
+
+
+(lambda () "
+*      Testing/Execution          ::  [[elisp:(blee:menu-sel:navigation:popupMenu)][Popup Org Navigation Menu]] | 
+")
+
+(lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:navigation:define) [[elisp:(org-cycle)][| ]]
   ")
 
@@ -654,6 +695,7 @@ Some Comment under current
 	["Navigation -- (^) -- beginning-of-buffer" beginning-of-buffer t]
 	["Navigation -- (1) -- delete-other-windows" delete-other-windows t]
 	["Navigation -- (>) -- Indirect Other" bx:orgm:indirectBufOther t]
+	["Navigation -- (I) -- Indirect Here" bx:orgm:indirectBufMain t]	
 	"---"	
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))

@@ -82,10 +82,8 @@
       "Maintenance Menu"
       `("Maintenance Menu"
 	"---"
-	["Replace Front Controls" blee:comeega:panel:modernize t]
-	["Maintenance -- (1) -- delete-other-windows" delete-other-windows t]
-	["Maintenence -- (>) -- Indirect Other" bx:orgm:indirectBufOther t]
-	["New -- (>) -- Indirect Other" bx:orgm:indirectBufOther t]
+	["Replace Button Front Controls" blee:comeega:panel:modernize t]
+	["Replace Menu Front Controls" blee:comeega:panel:menuModernize t]	
 	"---"	
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
@@ -118,20 +116,38 @@
     (goto-char (point-min))
     (replace-string
      " [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]"
-     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-cycle)][| ]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     )
+    (goto-char (point-min))
+    (replace-string
+     " [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(org-tree-to-indirect-buffer)][|>]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(delete-other-windows)][|1]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]]"
+     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
      )
     (goto-char (point-min))
     (replace-string
      " [[elisp:(beginning-of-buffer)][|^]] ==================== [[elisp:(delete-other-windows)][|1]]"
-     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] ===== [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] ======"
      )
     (goto-char (point-min))
     (replace-string
      " [[elisp:(beginning-of-buffer)][|^]] #################### [[elisp:(delete-other-windows)][|1]]"
-     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] ##### [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] ######"
      )
     )
   )
+
+(defun blee:comeega:panel:menuModernize ()
+  "The initial space deletion is by design"
+  (interactive)
+  (save-excursion 
+    (goto-char (point-min))
+    (replace-string
+     "[[elisp:(org-cycle)][| ]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     "[[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     )
+    )
+  )
+
 
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "blee-comeega"

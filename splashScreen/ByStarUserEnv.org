@@ -1,13 +1,12 @@
 *  Controls:   [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][ S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
 * 
-                 
 *         [[~/lisp/images/copyleft.png]]                                          [[~/lisp/images/libreservice.jpg]]          [[~/lisp/images/bystarInside.jpg]]   
 *      [[http://www.freeprotocols.org][Libre-Halaal]] | [[http://www.freeprotocols.org][Rejection Of]] | [[http://www.freeprotocols.org][Definition Of]] |  [[http://www.freeprotocols.org][Definition Of]] | [[http://www.freeprotocols.org][The L-H (ByStar)]]
 *  [[elisp:(org-cycle)][+-]]  [[http://www.freeprotocols.org][(L-H) Label]]  | [[http://www.freeprotocols.org][IPR Regime]]   | [[http://www.freeprotocols.org][L-H Software]]  |  [[http://www.freeprotocols.org][L-H Services]]  | [[http://www.freeprotocols.org][By* Digital Ecosystem]]   [[elisp:(org-cycle)][+-]]
 **   [[~/lisp/images/GreenCopyleft-120px.png]] 
 **   [[~/lisp/images/Anti-copyright-220px.png]]
 * 
-*           Welcome to [[elisp:(bx:bnsm:top:panel-blee)][Blee]] :: *The [[http://www.by-star.net][ByStar]] [[http://www.libreservices.org][Libre-Halaal]] [[http://www.gnu.org/software/emacs][Emacs]] Environment (Blee)*
+*           ~Welcome to [[elisp:(bx:bnsm:top:panel-blee)][Blee]]~ :: _The [[http://www.by-star.net][ByStar]] [[http://www.libreservices.org][Libre-Halaal]] [[http://www.gnu.org/software/emacs][Emacs]] Environment_
 * 
 *  [[elisp:(org-cycle)][+-]]  About Blee :: The [[Big Picture]] Of Your [[http://www.by-star.net][By* Digital Ecosystem]] Integrated User Environment [[elisp:(org-cycle)][+-]]
 ** Major Modes Panel

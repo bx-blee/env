@@ -16,6 +16,8 @@
 ;;(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
 ;;(add-hook 'message-mode-hook 'outline-minor-mode)
 
+(add-hook 'org-insert-heading-hook (lambda () (insert  "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")))
+
 ;;(require 'org-install)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))

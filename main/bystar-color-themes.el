@@ -322,7 +322,7 @@
      (tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :style released-button)))))
      (tooltip ((t (:family "Sans Serif" :background "lightyellow" :foreground "black"))))
      (trailing-whitespace ((t (:background "red1"))))
-     (underline ((t (:underline t))))
+     (underline ((t (:foreground "red" :height 1.1))))   ;;;  Was previously underlined -- (:underline t :foreground "red" :height 1.1)
      (variable-pitch ((t (:family "Sans Serif"))))
      (vertical-border ((t (nil))))
      (w3m-anchor ((t (:foreground "cyan"))))
