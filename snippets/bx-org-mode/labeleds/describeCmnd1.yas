@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Labeled Describe Command 1
-# key: labeled/describeCmnd1
-# group: labeled
-# type: snippet
-# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
-# --
-*  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  $0                  :: [[elisp:(lsip-local-run-command "cmnd")][cmnd]] |

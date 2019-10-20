@@ -121,23 +121,152 @@
     nil))
 
 
-(defun bx:dblock:org-mode:func-open (@funcName)
-  (insert (format "\
-%s /->/ [[elisp:(describe-function '%s)][(dblock-func]]
+
+(defun bx:dblock:org-mode:func-open (@outLevel @funcName &rest @args)
+  "Inserts open string based on :style argument. As one of:
+openTerse -- No function name in opening
+openCloseBlank --
+openBlank --
+
+openFull
+openCloseFull
+default
+.*
 "
-		  "*"
+  (let (
+	(@style (or (plist-get @args :style) nil))
+	  ;;;
+	($atLeastOnceWhen nil)
+	($styleOpen)
+	($styleClose)
+	)
+
+    (when (stringp @style)
+      (setq $styleOpen @style)
+      (setq $styleClose nil)
+      )
+
+    (when (or
+	   (consp @style)
+	   (listp @style)
+	   )
+      (setq $styleOpen (pop @style))
+      (setq $styleClose (pop @style))
+      )
+
+    (when (not (or
+		(string= $styleOpen "openTerse")
+		(string= $styleOpen "openContinue")		
+		(string= $styleOpen "openLine")		
+		(string= $styleOpen "openBlank")
+		(string= $styleOpen "openCloseBlank")		
+	   ))
+      (setq $styleOpen nil)
+      )
+    
+    (unless $styleOpen
+      (insert (format "\
+%s [[elisp:(show-all)][(>]] [[elisp:(describe-function '%s)][dbf]]
+"
+		  (blee:panel:outLevelStr @outLevel)
 		  @funcName
 		  )))
-
-(defun bx:dblock:org-mode:func-close (@funcName)
-  (insert (format "\
-%s /<-/ [[elisp:(describe-function '%s)][dblock-func)]]  E|
+    (when (string= $styleOpen "openTerse")
+      (insert (format "\
+%s [[elisp:(show-all)][(>]]
 "
-		  "*"
-		  @funcName
-		  )))
+		      (blee:panel:outLevelStr @outLevel)		      
+		      )))
+    
+    (when (string= $styleOpen "openContinue")
+      (insert (format "\
+%s [[elisp:(show-all)][(>]] \
+"
+		      (blee:panel:outLevelStr @outLevel)		      
+		      )))
+
+    
+    (when (string= $styleOpen "openLine")
+      (insert (format "\
+%s [[elisp:(show-all)][(>]] %s \
+"
+		      (blee:panel:outLevelStr @outLevel)
+		      (make-string 98 ?-)
+		      )))
+
+    
+    (when (or
+	   (string= $styleOpen "openCloseBlank")
+	   (string= $styleOpen "openBlank")
+	   )
+      (insert (format "")))
+    ))
 
 
+
+(defun bx:dblock:org-mode:func-close (@outLevel @funcName &rest @args)
+  "Inserts closing string based on :style argument. As one of:
+closeTerse -- No  function name in closing
+closeContinue -- No outline *, no funcName
+closeBlank -- Nothing at all
+"
+  (let (
+	(@style (or (plist-get @args :style) nil))
+	  ;;;
+	($atLeastOnceWhen nil)
+	($styleOpen)
+	($styleClose)
+	)
+
+    (when (stringp @style)
+      (setq $styleOpen nil)
+      (setq $styleClose @style)
+      )
+
+    (when (or
+	   (consp @style)
+	   (listp @style)
+	   )
+      (setq $styleOpen (pop @style))
+      (setq $styleClose (pop @style))
+      )
+
+    (when (not (or
+		(string= $styleClose "closeTerse")
+		(string= $styleClose "closeContinue")
+		(string= $styleClose "closeBlank")
+		(string= $styleClose "openCloseBlank")				
+	   ))
+      (setq $styleClose nil)
+      )
+    
+    (unless $styleClose
+      (insert (format "
+%s [[elisp:(org-shifttab)][<)]] [[elisp:(describe-function '%s)][dbFunc)]]  E|
+"
+		      (blee:panel:outLevelStr @outLevel)		      
+		      @funcName
+		      )))
+    (when (string= $styleClose "closeTerse")
+      (insert (format "
+%s [[elisp:(org-shifttab)][<)]] E|\
+"
+		      (blee:panel:outLevelStr @outLevel)
+		      )))
+
+    (when (string= $styleClose "closeContinue")
+      (insert (format "\
+ [[elisp:(org-shifttab)][<)]] E|\
+"
+		      )))
+
+    (when (or
+	   (string= $styleClose "closeBlank")
+	   (string= $styleClose "openCloseBlank")
+	   )
+      (insert (format "")))
+    ))
+   
 
 ;;; 
 (defun blee:dblock:find-function ()

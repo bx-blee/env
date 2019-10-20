@@ -164,7 +164,7 @@
 	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
 	  
-	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
 	  
 	  (insert (format "\
 *  [[elisp:(beginning-of-buffer)][Top]] ################  [[elisp:(delete-other-windows)][(1)]]   /*%s-%s -- LCNT Panel -- lcntProc.sh, presProc.sh and Mailings*/
@@ -190,7 +190,7 @@
 	  ;;;(insert (format "\n*      ================\n" ))
           (insert (format "\n"))
 
-	  (bx:dblock:org-mode:func-close (compile-time-function-name))
+	  (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
 	  
 	  (bx:dblock:global:moded:insert-end bx:mode)
 
@@ -223,7 +223,7 @@
 
     (bx:dblock:global:moded:insert-begin bx:mode)
 
-    (bx:dblock:org-mode:func-open (compile-time-function-name))
+    (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
     
 
     (insert (format "\
@@ -245,7 +245,7 @@
 		    bufferFileName bufferFileName bufferFileName bufferFileName
 		    ))
     
-    (bx:dblock:org-mode:func-close (compile-time-function-name))
+    (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
 	  
     (bx:dblock:global:moded:insert-end bx:mode)
     
@@ -5504,11 +5504,29 @@ Star at the begining of line is avoided not to show up in org-mode view.
 
 (defun blee:dblock:params:desc (@mode @descStr)
   "Inserts $commentStr+@docstr at point -- @mode is used for comment delim"
-  (when (equal @mode 'latex-mode)
-    (insert (format "%%%%%% Args: %s\n" @descStr))
-    )
-  (when (equal @mode 'shell-script-mode)
-    (insert (format "### Args: %s\n" @descStr))
+  (let (
+	;;;
+	($atLeastOnceWhen nil)
+	)
+  
+    (when (equal @mode 'latex-mode)
+      (insert (format "%%%%%% Args: %s\n" @descStr))
+      (setq $atLeastOnceWhen t)
+      )
+    (when (equal @mode 'shell-script-mode)
+      (insert (format "### Args: %s\n" @descStr))
+      (setq $atLeastOnceWhen t)      
+      )
+    (when (equal @mode 'org-mode)
+      (insert (format "### Args: %s\n" @descStr))
+      (setq $atLeastOnceWhen t)      
+      )
+    (bx:eh:assert:atLeastOnceWhen
+     $atLeastOnceWhen
+     :context "any"
+     :info (format "Unknown mode =%s=\n"
+		   @mode)
+     )
     )
   )
 

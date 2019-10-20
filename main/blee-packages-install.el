@@ -55,6 +55,10 @@
   ;; 	       '("marmalade" . "http://marmalade-repo.org/packages/") t)
   ;; )
 
+
+;;
+;; (bx:package:install-if-needed 'yasnippet-snippets)
+;; 
 (defun bx:package:install-if-needed (package)
   (unless (package-installed-p package)
     (package-install package)))

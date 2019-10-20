@@ -119,12 +119,19 @@
     (when (equal "default" bx:surround)
       (insert (format "%s /->/ (%s\n" outlineStars orgFileLink))
       )
+    (when (equal "terseEnd" bx:surround)
+      (insert (format "%s /->/ (%s\n" outlineStars orgFileLink))
+      )
     (insert fileAsString)
     ;;; This does not work right -- hence above (insert-file (format "%s" bx:file))
     (when (equal "default" bx:surround)
       (insert (format "%s /<-/ %s)  E|" outlineStars orgFileLink))      
       )
+    (when (equal "terseEnd" bx:surround)
+      (insert (format "%s /<-/ )  E|" outlineStars))      
+      )
 
+    
     (bx:dblock:global:moded:insert-end bx:mode)
     
     ;;; An extra line end up there -- Not Solved Yet
@@ -163,6 +170,7 @@
 	(bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
 	(bx:mode (or (plist-get params :mode) "auto"))       
 	(out-string)
+	($outLevel 1)
 	)
     (if (not
 	 (or (equal "TRUE" bx:disabledP)
@@ -175,7 +183,7 @@
 	  
 	  (bx:dblock:global:moded:insert-begin bx:mode)
 
-	  (bx:dblock:org-mode:func-open (compile-time-function-name))
+	  (bx:dblock:org-mode:func-open $outLevel (compile-time-function-name))
 	  
 	  ;;; This needs to become when major-mode based
 	  
@@ -186,7 +194,7 @@
  | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
 "))
 
-	  (bx:dblock:org-mode:func-close (compile-time-function-name))
+	  (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
 
 	  
 	  (bx:dblock:global:moded:insert-end bx:mode)
@@ -195,6 +203,113 @@
       )
     )
   )
+
+
+(defun org-dblock-write:bx:dblock:global:org-controls (params)
+  (let (
+	(bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
+	(bx:mode (or (plist-get params :mode) "auto"))       
+	(out-string)
+	)
+    (if (not
+	 (or (equal "TRUE" bx:disabledP)
+	     (equal "true" bx:disabledP)))
+	(progn
+	  (if (string-equal "auto" bx:mode)
+	      (progn
+		(setq bx:mode major-mode)
+		))
+	  
+	  (bx:dblock:global:moded:insert-begin bx:mode)
+
+	  (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
+	  
+	  ;;; This needs to become when major-mode based
+	  
+	  (insert (format "\
+*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][|O]]  [[elisp:(progn (org-shifttab) (org-content))][|C]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][|N]] | [[elisp:(delete-other-windows)][|1]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+*  /Maintain/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]\
+ | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-This]] [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-This]]\
+ | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
+"))
+
+	  (bx:dblock:org-mode:func-close 1 (compile-time-function-name))
+
+	  
+	  (bx:dblock:global:moded:insert-end bx:mode)
+	  )
+      (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+      )
+    )
+  )
+
+;;;
+(defun org-dblock-write:bx:blee:panel:relatedGeneralPanels (params)
+  (let (
+	(bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
+	(bx:mode (or (plist-get params :mode) "auto"))       
+	(out-string)
+	)
+    (if (not
+	 (or (equal "TRUE" bx:disabledP)
+	     (equal "true" bx:disabledP)))
+	(progn
+	  (if (string-equal "auto" bx:mode)
+	      (progn
+		(setq bx:mode major-mode)
+		))
+	  
+	  (bx:dblock:global:moded:insert-begin bx:mode)
+
+	  (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
+	  
+	  ;;; This needs to become when major-mode based
+	  
+	  (insert (format "\
+* Related General BxPanels ::  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral/fullUsagePanel-en.org\")][bxCentral]] || [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxDE/main/fullUsagePanel-en.org\")][bxDE]] || Category Panels
+"))
+
+	  (bx:dblock:org-mode:func-close 1
+	   (compile-time-function-name)
+	   :style "terse"
+	   )
+	  
+	  (bx:dblock:global:moded:insert-end bx:mode)
+	  )
+      (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+      )
+    )
+  )
+
+
+;;;
+(defun org-dblock-write:bx:blee:panel:maintenanceTodos (@params)
+  (let (
+	($style (or (plist-get @params :style) ""))
+	)
+	  
+    (bx:dblock:global:moded:insert-begin bx:mode)
+
+    (bx:dblock:org-mode:func-open 1 (compile-time-function-name))
+	  
+    ;; This needs to become when major-mode based
+    
+    (insert (format "\
+%s 
+* Related General BxPanels ::  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral/fullUsagePanel-en.org\")][bxCentral]] || [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/bxDE/main/fullUsagePanel-en.org\")][bxDE]] || Category Panels
+"))
+
+    (bx:dblock:org-mode:func-close 1
+     (compile-time-function-name)
+     :style "terse"
+     )
+	  
+    (bx:dblock:global:moded:insert-end bx:mode)
+    (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+    )
+  )
+
+
 
 ;;;
 (defun org-dblock-write:bx:dblock:global:org-contents-list (params)
@@ -544,7 +659,7 @@
 
   (progn
     (cond ((string-equal "emacs-lisp-mode" mode)
-	   (insert "\")")	   
+	   (insert "\n\")")	   
 	   )
 	  ((string-equal "latex-mode" mode)
 	   (bx:latex:insert-end-comment)	     
@@ -563,7 +678,6 @@
 	  )
     )
   )
-
 
 
 (defun bx:latex:insert-begin-comment ()

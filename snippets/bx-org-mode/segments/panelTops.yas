@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Segment Panel Top
-# key: segment/panelTop
-# group: segment
+# key: segments/panelTop
+# group: segments
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

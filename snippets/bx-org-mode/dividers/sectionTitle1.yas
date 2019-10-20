@@ -5,4 +5,4 @@
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-*  [[elisp:(beginning-of-buffer)][|^]] ==================== [[elisp:(delete-other-windows)][|1]]       *= $0 =*
+* [[elisp:(blee:ppmm:org-mode-toggle)][|N]] ======      *$0*

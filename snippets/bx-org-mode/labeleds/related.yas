@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Labeled Related
-# key: labeled/related
-# group: labeled
-# type: snippet
-# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
-# --
-*  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(org-tree-to-indirect-buffer)][|>]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(delete-other-windows)][|1]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] &&  Related BxPanels  :: [[elisp:(find-file "/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral/fullUsagePanel-en.org")][bxCentral]] || [[elisp:(find-file "/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral/handleSys/fullUsagePanel-en.org")][Handle System]] || [[elisp:(find-file "/libre/ByStar/InitialTemplates/activeDocs/bxDE/main/fullUsagePanel-en.org")][bxDE]]  |
-

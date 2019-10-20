@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: This File Dblock
+# key: begin/thisFile
+# group: segments
+# type: command
+# --
+(progn
+  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/segmentsOfPanels/thisFile.org")
+  (org-dblock-update-buffer-bx)
+  (blee:ppmm:org-mode-content-list)  
+  )

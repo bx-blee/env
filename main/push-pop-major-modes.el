@@ -17,7 +17,7 @@
   )
 
 (defun blee:ppmm:org-mode-toggle ()
-  "If org-mode, pop switch to that.
+  "If org-mode, pop and switch to that.
 If Other than org-mode, push, switch-to-org
 "
   (interactive)
@@ -34,7 +34,7 @@ If Other than org-mode, push, switch-to-org
     )
   )	  
 
-(defun blee:ppmm:org-mode-content-list ()
+(defun blee:ppmm:org-mode-content-list-24fProblem ()
   "If org-mode, pop switch to that.
 If Other than org-mode, push, switch-to-org
 "
@@ -60,7 +60,7 @@ If Other than org-mode, push, switch-to-org
   )	  
 
 
-(defun blee:ppmm:org-mode-content-listOrig ()
+(defun blee:ppmm:org-mode-content-list ()
   "If org-mode, pop switch to that.
 If Other than org-mode, push, switch-to-org
 "
@@ -119,6 +119,14 @@ the pop will fail, in which case we'll do normal-mode to recover.
       (normal-mode)
       )
     )
+  )
+
+(defun blee:ppmm:mode-stack-get ()
+  "pop path on stack, visit menu-file
+If the file is opened not in its natural major mode, but org-mode instead,
+the pop will fail, in which case we'll do normal-mode to recover.
+"
+  blee:ppmm:mode-stack
   )
 
 ;;(provide 'blee-ppmm)

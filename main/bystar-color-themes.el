@@ -251,7 +251,7 @@
      (org-checkbox-statistics-done ((t (:bold t :weight bold :foreground "PaleGreen"))))
      (org-checkbox-statistics-todo ((t (:bold t :weight bold :foreground "Pink"))))
      (org-clock-overlay ((t (:background "SkyBlue4"))))
-     (org-code ((t (:foreground "grey70"))))
+     (org-code ((t (:bold t :foreground "pale turquoise" :weight bold :height 1.2))))     ;; Somehow the base size changes -- Meant to be equivalent to org-document-title
      (org-column ((t (:background "grey30" :strike-through nil :underline nil :slant normal :weight normal :height 120 :family "Bitstream Vera Sans Mono"))))
      (org-column-title ((t (:bold t :background "grey30" :underline t :weight bold))))
      (org-date ((t (:foreground "Cyan" :underline t))))
@@ -322,7 +322,7 @@
      (tool-bar ((t (:background "grey75" :foreground "black" :box (:line-width 1 :style released-button)))))
      (tooltip ((t (:family "Sans Serif" :background "lightyellow" :foreground "black"))))
      (trailing-whitespace ((t (:background "red1"))))
-     (underline ((t (:underline t))))
+     (underline ((t (:foreground "red" :height 1.1))))   ;;;  Was previously underlined -- (:underline t :foreground "red" :height 1.1)
      (variable-pitch ((t (:family "Sans Serif"))))
      (vertical-border ((t (nil))))
      (w3m-anchor ((t (:foreground "cyan"))))

@@ -5,4 +5,5 @@
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-*  [[elisp:(beginning-of-buffer)][|^]] #################### [[elisp:(delete-other-windows)][|1]]                /* $0 */
+$0####+BEGIN: blee:bxPanel:delimiterSection :outLevel 1 :title "$1" :anchor nil
+####+END

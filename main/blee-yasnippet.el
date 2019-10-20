@@ -25,16 +25,24 @@
   ""
   (interactive)
 
-  ;; (add-to-list 'load-path
-  ;;               "~/.emacs.d/elpa/yasnippet-20140314.255")
+  ;;;
+  ;;; Make sure needed packages have been installed
+  ;;;
 
-  ;; 
+  (bx:package:install-if-needed 'yasnippet)  
+  (bx:package:install-if-needed 'yasnippet-snippets)
+
 
   (require 'yasnippet) ;; not yasnippet-bundle
 
   (add-to-list 'auto-mode-alist '("\\.yas$" . snippet-mode))
 
   ;;(setq yas-snippet-dirs "~/.emacs.d/elpa/yasnippet-20140314.255/snippets")
+
+  ;;;
+  ;;; NB: This is problematic -- as of 0.13 yas-installed-snippets-dir is obsolete?
+  ;;;
+  ;;;(add-to-list 'yas-snippet-dirs yas-installed-snippets-dir)
 
   ;;; Set Bx Snippets Load Path
   (let ((full-dir-name))
@@ -58,6 +66,8 @@
       (add-to-list 'yas-snippet-dirs full-dir-name)
       )
     )
+
+
 
   ;; Stoped Working after 201401 update
   (yas-global-mode 1)

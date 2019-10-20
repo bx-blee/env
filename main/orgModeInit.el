@@ -16,6 +16,8 @@
 ;;(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
 ;;(add-hook 'message-mode-hook 'outline-minor-mode)
 
+(add-hook 'org-insert-heading-hook (lambda () (insert  "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")))
+
 ;;(require 'org-install)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
@@ -164,6 +166,15 @@
 
 (global-set-key "\C-cr" 'org-remember)
 (global-set-key [(f12)] 'org-remember)
+
+(bx:package:install-if-needed 'use-package)
+(bx:package:install-if-needed 'org-bullets)
+
+(use-package org-bullets
+   :config
+   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(setq org-hide-emphasis-markers t)
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "orgModeInit"
 (lambda () "

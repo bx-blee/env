@@ -5,4 +5,4 @@
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-*  *@Panel Key WordsIDEs, Programing@*        ::   [[elisp:(blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/softwareDev")][@Panel Name@]]   =Extra Info=
+* [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(org-cycle)][| /$1/ |]]  ::   [[elisp:(blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxBootstrap/withPyPi")][@ $2 @]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  |
