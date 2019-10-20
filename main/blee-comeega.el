@@ -142,8 +142,13 @@
   (save-excursion 
     (goto-char (point-min))
     (replace-string
-     "[[elisp:(org-cycle)][| ]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
-     "[[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     "[[elisp:(blee:menu-sel:outline:popupMenu)][||F]]"
+     "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]]"
+     )
+    (goto-char (point-min))
+    (replace-string
+     "[[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     "[[elisp:(blee:menu-sel:navigation:popupMenu)][==]]"
      )
     )
   )
