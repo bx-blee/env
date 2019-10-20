@@ -58,7 +58,7 @@
 (defvar *emacs-type* "fsf"
   "Historic but kept for future resurrections -- used to distinguish lucid emacs etc")
 
-(defvar *eoe-emacs-type* (format "%df" emacs-major-version)
+(defvar *eoe-emacs-type* (intern (format "%df" emacs-major-version))
   "major-version+f for fsf-emacs")
 
 (message "Emacs version: %s %d.%d  -- Blee-Emacs Type: %s"
