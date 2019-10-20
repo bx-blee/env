@@ -38,7 +38,7 @@
 
 (funcall  (lambda () "
 *     *blee-emacs25*
-** TODO Global Activities tracker
+** TODO This file should be broken into two blee-setup.el blee-common.el.
 "
 	     (setq debug-on-error t)
 	     ))
@@ -368,7 +368,7 @@ This must be non-emacs version specific code.")
 	)
   )
 
-
+(require 'blee-comeega)
 
 (setq debug-on-error nil)
 ;;(setq debug-on-error t)
