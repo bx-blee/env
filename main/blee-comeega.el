@@ -70,6 +70,8 @@
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:navigation:define) [[elisp:(org-cycle)][| ]]
   ")
 
+;;;   (blee:menu-sel:comeega:maintenance:define)
+;;;
 (defun blee:menu-sel:comeega:maintenance:define ()
   "Facilities that help consistently maintain and update blee panels"
   (interactive)
@@ -89,6 +91,7 @@
 	))
     )
   )
+
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:navigation:popupMenu) [[elisp:(org-cycle)][| ]]

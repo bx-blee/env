@@ -208,7 +208,7 @@ This must be non-emacs version specific code.")
 
 
 ;;
-;; Now setup the load-path
+;; Now setup the load-path -- (describe-variable 'load-path)
 ;;
 (setq load-path (append (list *eoe-sys-dir*) ; eoe base files
 			;;
@@ -368,7 +368,13 @@ This must be non-emacs version specific code.")
 	)
   )
 
-(require 'blee-comeega)
+
+
+;;(require 'blee-comeega)
+;;(load-file "blee-comeega.el")  ;;; require does not work with (compile-time-function-name), so we load
+
+
+
 
 (setq debug-on-error nil)
 ;;(setq debug-on-error t)

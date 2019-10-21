@@ -701,6 +701,15 @@ This must be non-emacs version specific code.")
 
 
 
+;;;#+BEGINNOT: blee:pkg:adopt :eanble :org-level 2 pkgName
+(funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Adopted Component   ::      *Dired* [[elisp:(org-cycle)][| ]]
+	
+"
+	     (require 'bac-dired)
+	     ))
+;;;#+END:
+
 
 
 

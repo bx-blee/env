@@ -720,6 +720,17 @@
 
 
 (funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *Dunamic Menu* [[elisp:(org-cycle)][| ]]
+	Dynamic Menus -- Use Through Out -- For Now Centralized. Will be split across later.
+"
+	     (require 'blee-lib-widget)
+	     (blee-lib-widget:all-defaults-set)
+
+	     (require 'blee-comeega)
+	     ))
+
+
+(funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Specific-Minor-Mode   ::      *Screencast Mode* [[elisp:(org-cycle)][| ]]
 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
 "
@@ -749,6 +760,16 @@
 	     (load "bystar-ispell")
 	     ))
 
+
+
+;;;#+BEGINNOT: blee:pkg:adopt :eanble :org-level 2 pkgName
+(funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Adopted Component   ::      *Dired* [[elisp:(org-cycle)][| ]]
+	
+"
+	     (require 'bac-dired)
+	     ))
+;;;#+END:
 
 
 
