@@ -1105,8 +1105,7 @@
 	      (s-lines
 	       (format "\
 Local Variables:
-eval: (make-local-variable '~selectedSubject)
-eval: (setq ~selectedSubject \"noSubject\")
+eval: (setq-local ~selectedSubject \"noSubject\")
 eval: (make-local-variable '~primaryMajorMode)
 eval: (setq ~primaryMajorMode '%s)
 eval: (setq-local ~doThisInsteadOfAbove \"NotYet\")

@@ -3,16 +3,21 @@
 
 ;;;#+BEGIN: bx:dblock:global:org-controls :disabledP "false" :mode "auto"
 (lambda () "
-*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
-*  /Maintain/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]]  [[elisp:(vc-update)][vc-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-List]]  [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-List]] 
-*      ================
+* [[elisp:(show-all)][(>]] [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][dbf]]
+*  /Controls/ ::  [[elisp:(org-cycle)][| ]]  [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][|O]]  [[elisp:(progn (org-shifttab) (org-content))][|C]] | [[file:Panel.org][Panel]] | [[elisp:(blee:ppmm:org-mode-toggle)][|N]] | [[elisp:(delete-other-windows)][|1]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] [[elisp:(org-cycle)][| ]]
+*  /Maintain/ ::  [[elisp:(call-interactively (quote cvs-update))][cvs-update]] | [[elisp:(bx:org:agenda:this-file-otherWin)][Agenda-This]] [[elisp:(bx:org:todo:this-file-otherWin)][ToDo-This]] | [[elisp:(bx:org:agenda:these-files-otherWin)][Agenda-These]] [[elisp:(bx:org:todo:these-files-otherWin)][ToDo-These]]
+
+* [[elisp:(org-shifttab)][<)]] [[elisp:(describe-function 'org-dblock-write:bx:dblock:global:org-controls)][dbFunc)]]  E|
+
 ")
 ;;;#+END:
 
 ;;;#+BEGIN: bx:dblock:global:org-contents-list :disabledP "false" :mode "auto"
 (lambda () "
-*      ################ CONTENTS-LIST ###############
+*      ################ CONTENTS-LIST   ###############
 *  [[elisp:(org-cycle)][| ]]  *Document Status, TODOs and Notes*          ::  [[elisp:(org-cycle)][| ]]
+*  /OBSOLETED by  org-dblock-write:bx:global:org-contents-list/
+
 ")
 ;;;#+END:
 
@@ -50,14 +55,30 @@
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:lcnt:latex:doc-class params) [[elisp:(org-cycle)][| ]]
   ")
 
+
+
 (defun org-dblock-write:bx:dblock:lcnt:latex:doc-class (params)
+  "Comes at very top. Specifies class/lcnt-class, sides, texClass, langs.
+
+Each of these become buffer local variables that can be used by other dblocks in same buffer.
+inserts:
+documentclass[$effectiveTexOptions]{$effectiveTexClass}
+usepackage{comment}
+"
+
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
+	(@texClass (or (plist-get params :texClass) nil))
+	(@sides (or (plist-get params :sides) "two"))	
 	)
     (bx:lcnt:info:base-read)
 
+    (setq-local ~lcnt:texClass @texClass)
+    (setq-local ~lcnt:class bx:class)    
 
-    (blee:dblock:params:desc 'latex-mode ":class \"pres+art|art+pres|art|memo|book\" :langs \"en+fa|fa+en|en\"")
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"pres+art|art+pres|art|memo|book\" :langs \"en+fa|fa+en|en\" :texClass \"book|article\"")
     
 
     (when (equal bx:class "memo")
@@ -1981,12 +2002,29 @@ Subject:   & This Matter\\\\
       )
 
     (when (equal @toggle "enabled")
-      (when (equal @bibProvider "biblatex")
-	(setq $atLeastOnceWhen t)
+      
+      (when (string-equal ~lcnt:texClass "article")
+	(insert "
+
+\\phantomsection 
+\\addcontentsline{toc}{section}{Bibliography} 
+"
+		)
+	)
+      
+      (when (string-equal ~lcnt:texClass "book")
 	(insert "
 
 \\phantomsection 
 \\addcontentsline{toc}{chapter}{Bibliography} 
+"
+		)
+	)
+
+      
+      (when (equal @bibProvider "biblatex")
+	(setq $atLeastOnceWhen t)
+	(insert "
 
 \\printbibliography
 "
@@ -1996,12 +2034,6 @@ Subject:   & This Matter\\\\
       (when (equal @bibProvider "bibtex")
 	(setq $atLeastOnceWhen t)
         ;;; % NOTYET \bibliographystyle{amsalpha} should come here.
-	(insert "
-
-\\phantomsection 
-\\addcontentsline{toc}{chapter}{Bibliography} 
-"
-		)
 
 	(when (not (equal @bibSrcPaths ""))
 	  (insert
@@ -4851,6 +4883,108 @@ otherwise labelInfo is inserted as label"
       (insert
        (format "\
 \\begin{comment}%s
+%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  *%s*   /%s/ ::  [[elisp:(org-cycle)][| ]]
+\\end{comment}"
+	       delimiterLinePerhaps
+	       (make-string orgDepth ?*)
+	       (str:capitalize-first-char segType)
+	       $labelTitleStr
+	       )))
+    
+    (when (not (string-equal segType "part"))
+      (insert
+       (format "\
+\\begin{comment}%s
+%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /%s/   %s ::  [[elisp:(org-cycle)][| ]]
+\\end{comment}"
+	       delimiterLinePerhaps
+	       (make-string orgDepth ?*)
+	       (str:capitalize-first-char segType)
+	       $labelTitleStr
+	       )))
+
+    (when @shortTitle
+      (setq $shortTitleStr
+	    (format "[%s]\n" @shortTitle)))
+    
+    (insert
+     (format "
+%s
+\\%s%s{%s}"
+	     newPagePerhaps
+	     segType
+	     $shortTitleStr
+	     segTitle
+	     ))
+
+    
+    (when (string-equal labelInfo "auto")
+      (setq labelInfo (str:spacesElim $labelTitleStr)))
+
+    (when (not (or (string-equal labelInfo "UnSpecified") (string-equal labelInfo "")))
+      (insert
+       (format "
+\\label{%s}"
+	       (concat (getTagForLabelFromSegType segType) labelInfo)
+	       )))
+    )
+  )
+
+
+(lambda () "
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (lcnt:latex:insertSegmentOld orgDepth segType segTitle labelInfo) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun lcnt:latex:insertSegmentOld (orgDepth segType segTitle @shortTitle labelInfo)
+  "segType is one of chapter, section, subsection, etc.
+When labelInfo is UnSpecified, no label is inserted.
+When labelInfo is 'auto', the label is derived from segTitle --
+otherwise labelInfo is inserted as label"
+  
+  (defun getTagForLabelFromSegType (segType)
+    "Returns something like 'sec:' for use in a lable"
+    (let ((tagForLabel "unknown:"))
+      (when (member segType (list
+			     "section"
+			     "subsection"
+			     "subsubsection"
+			     ))
+	(setq tagForLabel "sec:"))
+      (when (member segType (list
+			     "chapter"
+			     ))
+	(setq tagForLabel "chap:"))
+      (when (member segType (list
+			     "part"
+			     ))
+	(setq tagForLabel "part:"))
+      tagForLabel))
+
+  (let (
+	(delimiterLinePerhaps "")
+	(newPagePerhaps "")
+	($shortTitleStr "")
+	($labelTitleStr "")
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"book|pres+art\" :langs \"en+fa\" :disabledP \"false\" :seg-title \"str\" :short-title \"str\" :label \"auto\""
+     )
+
+    (setq $labelTitleStr segTitle)
+    (when @shortTitle
+      (setq $labelTitleStr shortTitle))
+    
+    (when (member segType (list "part" "chapter"))
+      (setq delimiterLinePerhaps "\n*      ================"))
+
+    (when (string-equal segType "part")
+      (setq newPagePerhaps "\n\\newpage")
+
+      (insert
+       (format "\
+\\begin{comment}%s
 %s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  *%s*   /%s/ ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}"
 	       delimiterLinePerhaps
@@ -4897,6 +5031,7 @@ otherwise labelInfo is inserted as label"
 	       )))
     )
   )
+
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (str:capitalize-first-char string) [[elisp:(org-cycle)][| ]]
@@ -4987,14 +5122,30 @@ otherwise labelInfo is inserted as label"
 	   )
 
 	  (when (string-equal bx:part "")
-	    (setq bx:part bx:toc)
-	    )
-	     
-	     
-	  (insert (format "\
+	    ;;(setq bx:part bx:toc)
+	    (insert (format "\
 \\begin{comment}
 %s      ================
-%s  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]  *Part %s*   /%s/ ::  [[elisp:(org-cycle)][| ]]
+%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  *Part*   _%s_ ::  [[elisp:(org-cycle)][| ]]
+\\end{comment}
+
+\\newpage
+\\part{%s}"
+			  "*"
+			  "*"
+			  bx:seg-title
+			  bx:seg-title
+			  ))
+	    
+
+	    )
+	     
+
+	  (when (not (string-equal bx:part ""))
+	    (insert (format "\
+\\begin{comment}
+%s      ================
+%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  *Part %s*   _%s_ ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}
 
 \\newpage
@@ -5005,6 +5156,7 @@ otherwise labelInfo is inserted as label"
 			  bx:seg-title
 			  bx:seg-title
 			  ))
+	    )
 
 	  (when (string-equal labelInfo "auto")
 	    (setq labelInfo (str:spacesElim bx:seg-title)))
@@ -5480,7 +5632,7 @@ Star at the begining of line is avoided not to show up in org-mode view.
      (format "\
 \\begin{comment}\n\
 %s\
-  [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]] \
+ [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] \
  /%s%s%s/  %s%s%s\
  ::  [[elisp:(org-cycle)][| ]]
 \\end{comment}\
@@ -5535,7 +5687,7 @@ Star at the begining of line is avoided not to show up in org-mode view.
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "dblock-lcnt-latex"
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  Provide       :: Provide [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
 ")
 
 (provide 'dblock-lcnt-latex)

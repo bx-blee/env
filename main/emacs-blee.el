@@ -51,7 +51,7 @@
 
 ;; (blee:env:base-obtain)
 (defun blee:env:base-obtain ()
-  "Eg /bisos/blee/env/"
+  "Eg /bisos/blee/env/ -- This function will be invoked frequently, so it uses the obtained variable"
   blee:env:base
   )
 
@@ -73,6 +73,16 @@
 (defvar blee:boot:devel (format  "%smain/boot-devel.el" (blee:env:base-obtain))
   "Development and extras experimentation part of Blee boot.")
 
+(lambda () " org-mode
+* [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   Blee Boot order: 
+** [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   [[file:~/.emacs]]                                  # Loads blee-emacs.el in the right env
+** [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   file:/bisos/blee/env/main/boot-blee.el         # Loads everything below in that order
+** [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   file:/bisos/blee/env/main/boot-setup.el        # Sets up base variables
+** [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   file:/bisos/blee/env/main/boot-pre-common.el   # Loads common pre (early) packages
+** [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   file:/bisos/blee/env/main/boot-versioned.el    # Loads version specific packages
+** [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   file:/bisos/blee/env/main/boot-post-common.el  # Loads common post (late) packages
+** [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   file:/bisos/blee/env/main/boot-devel.el        # Loads development (experimental) pkgs
+")
 
 (when (file-exists-p blee:boot:common) (load blee:boot:common))
 (when (file-exists-p blee:boot:typed) (load blee:boot:typed))

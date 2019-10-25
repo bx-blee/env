@@ -10,7 +10,8 @@
 	   "diredPlus")
    )
 
-  (require 'dired-sort-menu+)  
+  (require 'dired+)  
+  (require 'dired-sort-menu+)
   )
 
  (defun bac:pkg:enable:dired ()
