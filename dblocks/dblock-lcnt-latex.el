@@ -380,9 +380,21 @@ usepackage{comment}
       (setq $modernStr " -- MODERNIZED")
       )
     
-    (org-latex-section-insert-dblock-name
-     (format "early-common-packages%s" $modernStr)
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t :curBuild nil|t :paperSize \"8.5x11|6x9\" :when \"main|mailing\""
      )
+
+    (org-latex-node-insert-note
+     :label "DBLOCK:"
+     :name (format
+	    "early-common-packages%s"
+	    $modernStr
+	    )
+     :level 1
+     :comment (format "")
+     )
+    
     
     (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || memo  [[elisp:(org-cycle)][| ]]
@@ -764,6 +776,8 @@ usepackage{comment}
     ))
 
 
+
+
 (lambda () "
 *  [[elisp:(beginning-of-buffer)][Top]] ################ [[elisp:(delete-other-windows)][(1)]]            *Optional Packages And Style Settings*
 ")
@@ -912,7 +926,7 @@ usepackage{comment}
        :label (format "DBLOCK:")
        :name "late-common-packages"
        :level 1
-       :comment (format "")
+       :comment (format "Place Holder For Now")
        ))
 
     (insert "
@@ -961,7 +975,14 @@ usepackage{comment}
 
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageNu nil|t :style \"bystar\"")
     
-    (org-latex-section-insert-dblock-name "common-packages-style-settings")
+    ;; (org-latex-section-insert-dblock-name "common-packages-style-settings")
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK: common-packages-style-settings")
+     :name ""
+     :level 1
+     :comment (format "")
+     )    
 
     (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || art+pres OR art OR memo [[elisp:(org-cycle)][| ]]
@@ -1111,6 +1132,8 @@ Email: \\href{%s}{%s}\\\\
 
 
 
+
+
 (defun org-dblock-write:bx:dblock:lcnt:latex:common-packages-style-settings-OBSOLETED (params)
   (let ((bx:class (or (plist-get params :class) ""))
 	(bx:langs (or (plist-get params :langs) ""))
@@ -1137,7 +1160,7 @@ Email: \\href{%s}{%s}\\\\
 
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :pageNu nil")
     
-    (org-latex-section-insert-dblock-name "common-packages-style-settings")
+    (org-latex-section-insert-dblock-name "DBLOCK: common-packages-style-settings")
 
     (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || art+pres OR art OR memo [[elisp:(org-cycle)][| ]]
@@ -1367,7 +1390,15 @@ Email: \\href{%s}{%s}\\\\
 
     ;;;(insert "%{{{ DBLOCK-main-begin\n")
 
-    (org-latex-section-insert-dblock-name "begin-document")
+    ;;(org-latex-section-insert-dblock-name "begin-document")
+
+    (org-latex-node-insert-note
+       :label (format "DBLOCK: begin-document")
+       :name ""
+       :level 1
+       :comment (format "Delineator")
+       )
+
 
     (when (equal bx:class "memo")
       (insert "
@@ -1479,6 +1510,7 @@ Subject:   & This Matter\\\\
 
     ;;;(insert "%}}} DBLOCK-main-begin")
     ))
+
 
 
 (defun org-dblock-write:bx:dblock:lcnt:latex:geometry (@params)
@@ -1877,8 +1909,15 @@ Subject:   & This Matter\\\\
     
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
     
-    (org-latex-section-insert-dblock-name
-     (format "BX-BIDI ==="))
+    ;; (org-latex-section-insert-dblock-name
+    ;;  (format "BX-BIDI ==="))
+
+    (org-latex-node-insert-note
+     :label (format "DBLOCK: BX-BIDI")
+     :name ""
+     :level 1
+     :comment (format "With HeVeA Support")
+     )
 
     (insert "
 \\newenvironment{bidiSepBeforeHevea}{}{}
@@ -1891,6 +1930,8 @@ Subject:   & This Matter\\\\
 	    )
     ))
 
+
+
 (defun org-dblock-write:bx:lcnt:latex:begin-document  (@params)
   (let (
 	(<class (or (plist-get @params :class) ""))
@@ -1898,9 +1939,17 @@ Subject:   & This Matter\\\\
 	)
     
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\"")
+   
     
-    (org-latex-section-insert-dblock-name
-     (format "Pure Begin Document ==="))
+    ;; (org-latex-section-insert-dblock-name (format "Pure Begin Document ==="))
+
+    (org-latex-node-insert-note
+     :label (format "Dblock: Pure Begin Document ===")
+     :name ""
+     :level 1
+     :comment (format "")
+     )
+    
 
     (insert "\n
 \\begin{document}
@@ -1920,8 +1969,13 @@ Subject:   & This Matter\\\\
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" ")
 
     (when (not (equal <toggle "hide"))
-      (org-latex-section-insert-dblock-name
-       (format "appendices-begin --- toggle=%s" <toggle))
+      ;;(org-latex-section-insert-dblock-name (format "appendices-begin --- toggle=%s" <toggle))
+      (org-latex-node-insert-note
+       :label (format "Dblock: appendices-begin --- toggle=%s" <toggle)
+       :name ""
+       :level 1
+       :comment (format "")
+       )
       )
     
     (when (equal <toggle "hide")
@@ -1946,8 +2000,13 @@ Subject:   & This Matter\\\\
     (blee:dblock:params:desc 'latex-mode ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" ")
 
     (when (not (equal <toggle "hide"))
-      (org-latex-section-insert-dblock-name
-       (format "appendices-end --- toggle=%s" <toggle))
+      ;;(org-latex-section-insert-dblock-name (format "appendices-end --- toggle=%s" <toggle))
+      (org-latex-node-insert-note
+       :label (format "Dblock: appendices-end --- toggle=%s" <toggle)
+       :name ""
+       :level 1
+       :comment (format "")
+       )
       )
     
     (when (equal <toggle "hide")
@@ -2102,11 +2161,17 @@ Subject:   & This Matter\\\\
 	(@langs (or (plist-get @params :langs) ""))
 	(@toggle (or (plist-get @params :toggle) "enabled"))
 	(@curBuild (or (plist-get @params :curBuild) ""))
-	(@bibProvider (or (plist-get @params :bibProvider) "biblatex"))
+	(@bibProvider (or (plist-get @params :bibProvider) nil))
 	(@style (or (plist-get @params :style) "plain"))		
 	;;;
 	($atLeastOnceWhen nil)
 	)
+
+    (when @bibProvider 
+      (setq-local ~lcnt:bibProvider @bibProvider))
+    (unless  @bibProvider 
+      (setq @bibProvider ~lcnt:bibProvider ))
+    
     
     (blee:dblock:params:desc
      'latex-mode
@@ -2141,7 +2206,7 @@ Subject:   & This Matter\\\\
 
 \\usepackage[style=%s]{biblatex}
 
-\\addbibresource{/lcnt/outputs/all/plpcUrl.bib}
+%%%% \\addbibresource{/lcnt/outputs/all/plpcUrl.bib}
 "
 		@style
 		))
@@ -2217,8 +2282,15 @@ atLeastOnceWhen=ANY  %s\n"
      )
 
     (when (not (equal <toggle "hide"))
-      (org-latex-section-insert-dblock-name
-       (format "print-glossaries --- toggle=%s" <toggle))
+      (org-latex-node-insert-note      
+       :label (format "DBLOCK:")
+       :name (format
+	      "print-glossaries --- toggle=%s"
+	      <toggle
+	      )
+       :level 1
+       :comment (format "")
+       )
       )
     
     (when (equal <toggle "hide")
@@ -2255,8 +2327,16 @@ atLeastOnceWhen=ANY  %s\n"
      )
 
     (when (not (equal <toggle "hide"))
-      (org-latex-section-insert-dblock-name
-       (format "print-index --- toggle=%s" <toggle))
+      ;;(org-latex-section-insert-dblock-name (format "print-index --- toggle=%s" <toggle))
+      (org-latex-node-insert-note      
+       :label (format "DBLOCK:")
+       :name (format
+	      "print-index --- toggle=%s"
+	      <toggle
+	      )
+       :level 1
+       :comment (format "")
+       )
       )
     
     (when (equal <toggle "hide")
@@ -3093,7 +3173,8 @@ This is a Libre-Halaal poly-existential.
 "))
 
 ;; \\title[%s]
-;; {%s}\n" lcnt-shortTitle lcnt-mainTitle))
+      ;; {%s}\n" lcnt-shortTitle lcnt-mainTitle)
+      )
 
 ;;       (if (not (string-equal lcnt-subTitle ""))
 ;; 	  (insert (format "
@@ -3545,8 +3626,8 @@ Font size and spacing can be based on paper size.
 	  (setq $atLeastOnceWhenStyle t)
 
 	  (setq $mainTitleSize "Huge")
-	  (setq $subTitleSize "Large")
-	  (setq $subSubTitleSize "Large")
+	  (setq $subTitleSize "huge")
+	  (setq $subSubTitleSize "LARGE")
 	  )
 	(bx:eh:assert:atLeastOnceWhen
 	 $atLeastOnceWhenStyle
@@ -3980,6 +4061,65 @@ Font size and spacing can be based on paper size.
 
 
 
+(defun org-dblock-write:bx:lcnt:latex:dblock-params (@params)
+  "In addition to lcnt:info, common dblock parameters are specified once at the top to be used by subsequent dblocks.
+
+Each of these dblock-params match a buffer-local variables.
+"
+  (bx:lcnt:info:base-read)
+  
+  (let (
+	(@curBuild (or (plist-get @params :curBuild) nil))	
+	(@bibProvider (or (plist-get @params :bibProvider) nil))
+	(@paperSize (or (plist-get @params :paperSize) nil))	
+	;;;
+	($bufferFileName (file-name-nondirectory buffer-file-name))	
+	)
+
+    (blee:dblock:params:desc
+     'latex-mode
+     ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t :curBuild nil|t :paperSize \"8.5x11|6x9\" :when \"main|mailing\""
+     )
+
+    (org-latex-node-insert-note
+     :label "DBLOCK:"
+     :name (format
+	    "Buffer Local dblock params --- curBuild=%s bibProvider=%s paperSize=%s"
+	    @curBuild
+	    @bibProvider
+	    @paperSize
+	    )
+     :level 1
+     :comment (format "")
+     )
+
+    (when @bibProvider
+      (setq-local ~lcnt:bibProvider @bibProvider))
+    (unless @bibProvider
+      (setq-local ~lcnt:bibProvider "bibtex"))
+	  
+    (when @paperSize
+      (setq-local ~lcnt:paperSize @paperSize))
+    (unless @paperSize
+      (unless @curBuild    
+	(setq-local ~lcnt:paperSize "8.5x11"))
+      (when @curBuild
+	(when (bx:lcnt:curBuild:base-read)
+	  (setq-local ~lcnt:paperSize (get 'bx:lcnt:curBuild:base 'paperSize)))
+	(unless ~lcnt:paperSize
+	  (insert "\n%%% ERROR:: curBuild paperSize not is not valid."))))
+    
+    (insert
+     (format "
+%%%%%% bibProvider = %s
+%%%%%% paperSize = %s
+"
+	     ~lcnt:bibProvider
+	     ~lcnt:paperSize
+	     ))
+    ))
+
+
 (defun org-dblock-write:bx:lcnt:latex:when-conditionals (@params)
   "Deterinable common when include and excludes.
 "
@@ -4072,7 +4212,21 @@ Font size and spacing can be based on paper size.
 		 )
 	 )
 	)
-	
+      
+      (when (string= ~lcnt:bibProvider "bibtex")
+	(insert (format "
+\\includecomment{whenBibProviderIsBibtex}
+\\excludecomment{whenBibProviderIsBiblatex}
+"
+			)))
+
+      (when (string= ~lcnt:bibProvider "biblatex")
+	(insert (format "
+\\includecomment{whenBibProviderIsBiblatex}
+\\excludecomment{whenBibProviderIsBibtex}
+"
+			)))
+      
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhenConditionals
        :context "latex"
@@ -4083,7 +4237,6 @@ Font size and spacing can be based on paper size.
       )
     )
   )
-
 
 
 (defun org-dblock-write:bx:lcnt:latex:title-page-online-at (@params)
@@ -4111,7 +4264,7 @@ Font size and spacing can be based on paper size.
 
     (blee:dblock:params:desc
      'latex-mode
-     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\"  :toggle \"enabled|disabled|hide\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t"
+     ":class \"book|pres+art\" :langs \"en+fa\"  :form \"priv|std\"  :toggle \"enabled|disabled|hide\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t :qrcode nil|t"
      )
 
     (when (not (equal @toggle "hide"))    
@@ -4895,7 +5048,7 @@ otherwise labelInfo is inserted as label"
       (insert
        (format "\
 \\begin{comment}%s
-%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /%s/   %s ::  [[elisp:(org-cycle)][| ]]
+%s  [[elisp:(blee:ppmm:org-mode-toggle)][|n]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /%s/   [[elisp:(org-cycle)][| =%s= |]] :: |
 \\end{comment}"
 	       delimiterLinePerhaps
 	       (make-string orgDepth ?*)
@@ -5423,7 +5576,14 @@ otherwise labelInfo is inserted as label"
 	  ;;; Processing Body
 	  (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
 
-          (org-latex-section-insert-dblock-name "End-Of-Document")	  
+          ;;(org-latex-section-insert-dblock-name "End-Of-Document")
+	  (org-latex-node-insert-note
+	   :label "DBLOCK:"
+	   :name (format "End-Of-Document")
+	   :level 1
+	   :comment (format "")
+	   )
+	  
 	  
 	  (when (equal bx:class "memo")
 	    (insert "

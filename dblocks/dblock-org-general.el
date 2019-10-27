@@ -1106,18 +1106,42 @@
 	       (format "\
 Local Variables:
 eval: (setq-local ~selectedSubject \"noSubject\")
-eval: (make-local-variable '~primaryMajorMode)
-eval: (setq ~primaryMajorMode '%s)
-eval: (setq-local ~doThisInsteadOfAbove \"NotYet\")
-eval: (bx:load-file:ifOneExists \"./panelActions.el\")
-End:"
+eval: (setq-local ~primaryMajorMode '%s)"
 		       @primMode
 		       ))
 	      )
+      
+      (when (string= @primMode "latex-mode")
+	(mapcar (lambda (x)
+		  (insert
+		   (format "%s%s\n"
+			   $commentStartStr
+			   x
+			   )))
+	      
+		(s-lines
+		 (format "\
+eval: (setq-local ~lcnt:texClass nil)
+eval: (setq-local ~lcnt:bibProvider nil)
+eval: (setq-local ~lcnt:paperSize nil)"
+			 ))
+		)
+	)
+
+      (mapcar (lambda (x)
+		(insert
+		 (format "%s%s\n"
+			 $commentStartStr
+			 x
+			 )))
+	      
+	      (s-lines
+	       (format "\
+eval: (bx:load-file:ifOneExists \"./panelActions.el\")
+End:"
+		       ))
+	      )
       )
-
-    
-
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine
