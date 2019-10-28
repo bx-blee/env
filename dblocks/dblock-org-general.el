@@ -1067,13 +1067,11 @@
 	(@style (or (plist-get @params :style) "closeBlank")) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
-	(@primMode (or (plist-get @params :primMode) major-mode))
+	(@primMode (or (plist-get @params :primMode) (symbol-name major-mode)))
 	;;
 	($commentStartStr)
 	($primModeSymb)
 	)
-
-
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
@@ -1106,7 +1104,8 @@
 	       (format "\
 Local Variables:
 eval: (setq-local ~selectedSubject \"noSubject\")
-eval: (setq-local ~primaryMajorMode '%s)"
+eval: (setq-local ~primaryMajorMode '%s)
+eval: (setq-local ~blee:dblockEnabler nil)"		       
 		       @primMode
 		       ))
 	      )
@@ -1140,8 +1139,8 @@ eval: (setq-local ~lcnt:paperSize nil)"
 eval: (bx:load-file:ifOneExists \"./panelActions.el\")
 End:"
 		       ))
-	      )
-      )
+	      ))
+    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine
@@ -1170,13 +1169,24 @@ End:"
    )
   )
 
+(defun blee:dblockEnablerFunc (@origFunc &rest args)
+  (when ~blee:dblockEnabler
+    (apply @origFunc args)
+    )
+  (unless ~blee:dblockEnabler
+    ;;(message "%s skipped due to blee:dblockEnabler" (symbol-name '@origFunc)
+    (message "skipped due to blee:dblockEnabler")
+    )
+  )
 
+(advice-add 'org-dblock-write:blee:bxPanel:runResult :around #'blee:dblockEnablerFunc)
 (defun org-dblock-write:blee:bxPanel:runResult (@params)
   "@command, @comment and @results control the behaviour.
 
 ** When @results is nil, D-Run and Results are eliminated
 ** When @results is t, both stdout and stderr are captured
 ** When @results is \"stdout\", only stdout is captured
+** When @results is not specified, same a t
 "
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
@@ -1186,12 +1196,19 @@ End:"
 	;;
 	(@command (or (plist-get @params :command) ""))
 	(@comment (or (plist-get @params :comment) nil))
-	(@results (and (plist-get @params :results) t))	
+	(@afterComment (or (plist-get @params :afterComment) nil))	
+	(@results (or (plist-get @params :results) nil))	
 	;;(@stdErr (and (plist-get @params :stdErr) t))
 	;;
 	($stdErrStr "")
+	($stdOutOnlyIndicator "")
 	)
 
+    ;;; unspecified results is t
+    (unless (plist-member @params :results)
+      (setq @results t))
+    
+	    
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
@@ -1203,6 +1220,11 @@ End:"
 
     (defun bodyContent ()
 
+      (when (string-equal "stdout" @results)
+	(setq $stdErrStr " 2> /dev/null")
+	(setq $stdOutOnlyIndicator "stdout "))     
+
+
       (insert
        (format
 	"%s" (blee:panel:foldingFrontControl @outLevel
@@ -1211,26 +1233,27 @@ End:"
 
       (when @comment
 	(insert 
-	 (format "       %s" @comment)))
+	 (format "       =%s=" @comment)))
 
       (insert "   [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  ")
 
       (insert (blee:panel:button:shCommand @command))
 
-      (insert (format "results %s" @results))
+      ;;(insert (format "results %s" @results))
       
       (when @results
 	(insert " || ")
       
 	(insert "[[elisp:(blee:org-update-named-dblocks-above)][D-Run]]  ")
 
-	(insert "[[elisp:(org-cycle)][| /Results:/ |]]")
+	(insert (format "[[elisp:(org-cycle)][| /%sResults:/ |]] " $stdOutOnlyIndicator))
 	)
+
+      (when @afterComment
+	(insert (format " %s " @afterComment)))
 
       (insert " |\n")
 
-      (when (string-equal "stdout" @results)
-	(setq $stdErrStr " 2> /dev/null"))
 
       (when @results      
 	(setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
@@ -1244,7 +1267,6 @@ End:"
 	 )
 	)
       )
-       
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
@@ -1254,7 +1276,6 @@ End:"
 				)
 
     ))
-
 
 
 (defun org-dblock-write:blee:bxPanel:runResultOrig (@params)
