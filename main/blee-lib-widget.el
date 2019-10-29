@@ -554,6 +554,9 @@ Some Comment under current
 	["View  -- Usage & Viewing Model" (blee:org:viewModel) t]
 	["Edit  -- Development & Editing Model" (blee:org:editModel) t]
 	"---"
+	["Dblock  -- Enable" (setq-local ~blee:dblockEnabler t) t]
+	["Dblock  -- Disable" (setq-local ~blee:dblockEnabler nil) t]
+	"---"
 	["Beauty  -- Hide emphasis-markers" (blee:org:emphasisMarkers:hide) t]
 	["Beauty  -- Show emphasis-markers" (blee:org:emphasisMarkers:show) t]
 	["Beauty  -- Enable Bullets-Mode" (blee:org:bulletsMode:enable) t]

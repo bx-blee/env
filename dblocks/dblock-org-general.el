@@ -1169,13 +1169,30 @@ End:"
    )
   )
 
-(defun blee:dblockEnablerFunc (@origFunc &rest args)
+(defun blee:dblockEnablerFunc (@origFunc &rest @params)
+  "Experiment with  (compile-time-function-name) to see if we get @origFunc name.
+
+Mystery: (apply 'disabledReport @params) works. (disabledReport @params) does not. @params are not accessible after &rest.
+
+NOTYET, See if this can be improved to include bx:dblock:governor:process when
+@origFunc returns a plist of contentPlus, content, helpLine functions.
+"
+
+  (defun disabledReport (@params)
+      (let (
+	    (@content (plist-get @params :content))
+	    (@name (plist-get @params :name))	
+	    )
+	(setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
+	(insert (format "%s dblock skipped due to blee:dblockEnabler %s\n" @name (time-stamp-string)))
+	(insert (format "%s" @content))
+	)
+      )
   (when ~blee:dblockEnabler
-    (apply @origFunc args)
+    (apply @origFunc @params)
     )
   (unless ~blee:dblockEnabler
-    ;;(message "%s skipped due to blee:dblockEnabler" (symbol-name '@origFunc)
-    (message "skipped due to blee:dblockEnabler")
+    (apply 'disabledReport @params)      
     )
   )
 
@@ -1197,18 +1214,22 @@ End:"
 	(@command (or (plist-get @params :command) ""))
 	(@comment (or (plist-get @params :comment) nil))
 	(@afterComment (or (plist-get @params :afterComment) nil))	
-	(@results (or (plist-get @params :results) nil))	
+	(@results (or (plist-get @params :results) nil))
+	(@content (plist-get @params :content))
+	(@name (plist-get @params :name))		
 	;;(@stdErr (and (plist-get @params :stdErr) t))
 	;;
 	($stdErrStr "")
 	($stdOutOnlyIndicator "")
+	($name "")
 	)
 
     ;;; unspecified results is t
     (unless (plist-member @params :results)
       (setq @results t))
+
+    ;;(insert (format "%s dblock skipped due to blee:dblockEnabler\n" @name))
     
-	    
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
