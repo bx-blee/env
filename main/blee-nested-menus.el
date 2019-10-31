@@ -94,6 +94,8 @@
 	(find-file menu-filename)
 	(setq org-confirm-elisp-link-function nil)
 	(when (not (string-equal opRunDistFamily "MAEMO"))
+	  (when (boundp '~blee:dblockEnabler)
+		(setq-local ~blee:dblockEnabler nil))
 	  (org-dblock-update-buffer-bx)
 	  (org-shifttab)
 	  )
