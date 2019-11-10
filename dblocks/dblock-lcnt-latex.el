@@ -1526,6 +1526,10 @@ Subject:   & This Matter\\\\
 	($atLeastOnceWhen nil)
 	)
 
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
+
     (blee:dblock:params:desc
      'latex-mode
      ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
@@ -1758,6 +1762,10 @@ Subject:   & This Matter\\\\
 	($atLeastOnceWhen nil)
 	)
 
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
+    
     (blee:dblock:params:desc
      'latex-mode
      ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\""
@@ -2043,6 +2051,10 @@ Subject:   & This Matter\\\\
 	;;;
 	($atLeastOnceWhen nil)
 	)
+
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
     
     (blee:dblock:params:desc
      'latex-mode
@@ -2128,6 +2140,10 @@ Subject:   & This Matter\\\\
 	(@curBuild (or (plist-get @params :curBuild) ""))
 	;;;
 	)
+
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
     
     (blee:dblock:params:desc
      'latex-mode
@@ -2395,6 +2411,10 @@ atLeastOnceWhen=ANY  %s\n"
 	(@curBuild (or (plist-get @params :curBuild) ""))
 	;;;
 	)
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
+
     
     (blee:dblock:params:desc
      'latex-mode
@@ -2419,6 +2439,10 @@ atLeastOnceWhen=ANY  %s\n"
 	;;;
 	)
     
+    ;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
+
     (blee:dblock:params:desc
      'latex-mode
      ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
@@ -2442,6 +2466,9 @@ atLeastOnceWhen=ANY  %s\n"
 	(@curBuild (or (plist-get @params :curBuild) ""))
 	;;;
 	)
+    ;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
     
     (blee:dblock:params:desc
      'latex-mode
@@ -2466,6 +2493,10 @@ atLeastOnceWhen=ANY  %s\n"
 	(@curBuild (or (plist-get @params :curBuild) ""))
 	;;;
 	)
+
+    ;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
     
     (blee:dblock:params:desc
      'latex-mode
@@ -2490,7 +2521,7 @@ atLeastOnceWhen=ANY  %s\n"
 	(<curBuild (or (plist-get @params :curBuild) ""))
 	;;;
 	)
-    
+
     (blee:dblock:params:desc
      'latex-mode
      ":class \"book|pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild \"t|path\""
@@ -3549,6 +3580,10 @@ Font size and spacing can be based on paper size.
 	($subSubTitleSize nil)	
 	)
 
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
+    
     (blee:dblock:params:desc
      'latex-mode
      ":class \"book|pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :style \"HUGE|Huge|huge\" :spacing nil|t"
@@ -3814,9 +3849,9 @@ Font size and spacing can be based on paper size.
 "
 		)
 	)
-      )
-    )
-  )
+      )))
+
+
     
 
 (defun org-dblock-write:bx:lcnt:latex:title-page-authors (@params)
@@ -3838,6 +3873,10 @@ Font size and spacing can be based on paper size.
 	;;;
 	($bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
+
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
 
     (bx:lcnt:info:base-read)
 
@@ -4002,6 +4041,10 @@ Font size and spacing can be based on paper size.
 	($bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
 
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
+    
     (blee:dblock:params:desc
      'latex-mode
      ":class \"pres+art\" :langs \"en+fa\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t"
@@ -4083,6 +4126,10 @@ Each of these dblock-params match a buffer-local variables.
 	($bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
 
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
+
     (blee:dblock:params:desc
      'latex-mode
      ":class \"pres+art\" :langs \"en+fa\" :toggle \"enabled|disabled|hide\" :curBuild nil|t :paperSize \"8.5x11|6x9\" :spacing nil|t :curBuild nil|t :paperSize \"8.5x11|6x9\" :when \"main|mailing\""
@@ -4148,6 +4195,10 @@ Each of these dblock-params match a buffer-local variables.
 	;;;
 	($bufferFileName (file-name-nondirectory buffer-file-name))	
 	)
+
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
 
     (blee:dblock:params:desc
      'latex-mode
@@ -4268,6 +4319,10 @@ Each of these dblock-params match a buffer-local variables.
 	($bufferFileName (file-name-nondirectory buffer-file-name))
 	($atLeastOnceWhenPaperSize nil)
 	)
+
+    ;;; when unspecified, @curBuild is t
+    (unless (plist-member @params :curBuild)
+      (setq @curBuild t))
 
     (blee:dblock:params:desc
      'latex-mode
