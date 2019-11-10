@@ -1068,6 +1068,7 @@
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@primMode (or (plist-get @params :primMode) (symbol-name major-mode)))
+	(@latexMasters (or (plist-get @params :latexMasters) nil))	
 	;;
 	($commentStartStr)
 	($primModeSymb)
@@ -1125,7 +1126,13 @@ eval: (setq-local ~lcnt:bibProvider nil)
 eval: (setq-local ~lcnt:paperSize nil)"
 			 ))
 		)
+	 
 	)
+	(when @latexMasters
+	  (insert (format "%sTeX-master: \"%s\"\n"
+		  $commentStartStr
+		  @latexMasters
+		  )))
 
       (mapcar (lambda (x)
 		(insert
@@ -1149,7 +1156,6 @@ End:"
 				)
 
     ))
-
 
 (defun org-dblock-write:bx:dblock:org:parameters (params)
   "Old Style. Kept for backwards comptibilitty. Also shown to pean."
