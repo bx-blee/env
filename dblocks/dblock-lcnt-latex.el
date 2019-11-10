@@ -1675,6 +1675,10 @@ Subject:   & This Matter\\\\
     ;;;
 
     (when @paperSize
+
+      (insert "
+\\begin{latexonly}"
+	      )      
       
       (insert 
        (format "\n
@@ -1734,6 +1738,9 @@ Subject:   & This Matter\\\\
        :info (format "Unknown Title New NewGeometry %s\n"
 		     @paperSize)
        )
+
+      (insert "\\end{latexonly}")
+      
       )
     )
   )
