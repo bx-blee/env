@@ -167,6 +167,7 @@
 (defun blee:panel:foldingSection (@outLevel
 				  @title
 				  @anchor
+				  @extraInfo
 				  &rest @args				  
 				  )
   
@@ -190,16 +191,25 @@
 	  (format "<<%s>>"@anchor)
 	""
 	))
+    ;;
+    ;; (effectiveExtraInfo nil)
+    ;; (effectiveExtraInfo "str")    
+    (defun effectiveExtraInfo (@extraInfo)
+      (if @extraInfo
+	  (format "%s" @extraInfo)
+	""
+	))
     
     (format "\
 %s \
-   [[elisp:(org-cycle)][| %s %s%s:%s |]] \
+   [[elisp:(org-cycle)][| %s %s%s:%s |]] %s \
 "
 	    (blee:panel:frontControl @outLevel :inDblock @inDblock)
 	    (effectiveAnchor @anchor)
 	    $openTitleStr
 	    @title
 	    $closeTitleStr
+	    (effectiveExtraInfo @extraInfo)
      )))
 
 
@@ -253,7 +263,8 @@
 	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
 	;;
 	(@title (or (plist-get @params :title) "TBD"))
-	(@anchor (or (plist-get @params :anchor) nil))	
+	(@anchor (or (plist-get @params :anchor) nil))
+	(@extraInfo (or (plist-get @params :extraInfo) nil))		
 	;;
 	($fileAsString)
 	)
@@ -273,6 +284,7 @@
 	"%s" (blee:panel:foldingSection @outLevel
 					@title
 					@anchor
+					@extraInfo
 					:inDblock t
 					)
 	)))
@@ -1335,6 +1347,7 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
        (format
 	"%s" (blee:panel:foldingSection @outLevel
 					"Results"
+					nil
 					nil
 					:inDblock t
 					)))
