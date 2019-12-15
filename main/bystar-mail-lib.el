@@ -74,9 +74,14 @@
 (require 'gnus-score)
 (require 'gnus-cite)
 
-(when (not (string-equal opRunDistGeneration "1404"))
-  (require 'bbdb-gnus)  
-  )
+
+;;;
+;;; bbdb-gnus is loaded in bystar-bbdb-lib.el
+;;;
+
+;; (when (not (string-equal opRunDistGeneration "1404"))
+;;   (require 'bbdb-gnus)  
+;;   )
 
 ;;(require 'gnus-xmas)
 (require 'spam)
@@ -931,6 +936,7 @@
 ")
 
 
+;; (bystar:mail:ua:defaults-set)
 (defun bystar:mail:ua:defaults-set ()
   ""
   (interactive)
@@ -950,8 +956,13 @@
   (setq gnus-use-sc t)
   (setq gnus-use-bbdb t)
   ;; now load gnus-setup
-  (require 'gnus-setup)
+  (when (<= emacs-major-version 24)   ;;;;  gnus-setup was part of emacs 24 Gnus
+    (require 'gnus-setup))
 
+  (unless (<= emacs-major-version 24)   ;;;; 2019 For emacs 25, we are using a repalcement -- perhaps not necessary
+    (when (< emacs-major-version 27)
+    (require 'gnus-setup-replacement)))
+  
    ;;; User sophistication
   (setq gnus-novice-user t)		; 'cos GNUS has changed *a lot*
 

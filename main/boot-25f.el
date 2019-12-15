@@ -17,6 +17,10 @@
 
 (setq bidi-display-reordering t)
 
+(setq network-security-level 'low)
+
+(setq nnimap-record-commands t)
+
 
 (defun blee:env:base-obtain-based-on-here ()
   "Eg /bisos/blee/env/"
@@ -519,7 +523,7 @@ This must be non-emacs version specific code.")
 (funcall  '(lambda () "
 **     *Mail -- Gnus And Addons*
 "
-	     ;;(load "bystar-mail")
+	     (load "bystar-mail")
 	     ))
 
 (funcall  '(lambda () "

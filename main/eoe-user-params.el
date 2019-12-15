@@ -42,7 +42,8 @@
   (setq gnus-use-bbdb t)
 
   ;; now load gnus-setup
-  (require 'gnus-setup)
+  (when (<= emacs-major-version 24)   ;;;; NOTYET 2019 For emacs 25, What happened to gnus-setup
+    (require 'gnus-setup))
 
   ;; User sophistication
   (setq gnus-novice-user t)		; 'cos GNUS has changed *a lot*

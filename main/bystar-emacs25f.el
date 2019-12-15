@@ -18,6 +18,8 @@
 
 (setq bidi-display-reordering t)
 
+(setq network-security-level 'low)
+(setq nnimap-record-commands t)
 
 (defun blee:env:base-obtain-based-on-here ()
   "Eg /bisos/blee/env/"

@@ -1,18 +1,23 @@
 ;;; bbdb-site.el
 
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/bbdb/lisp")
+
 (require 'bbdb)
 (require 'bbdb-com)
 
 (when (not (bx:emacs24.5p))
-  (require 'bbdb-gnus)
-  (require 'bbdb-hooks)
-  )
+  (when (< emacs-major-version 27)
+    (require 'bbdb-gnus)
+    (require 'bbdb-hooks)
+  ))
 
 (when (bx:emacs24.5p)
   (when (not (string-equal opRunDistGeneration "1404"))
     (require 'bbdb-gnus)
     (require 'bbdb-hooks)      
     ))
+
+
 
 ;;(require 'bbdb-xemacs)
 
@@ -52,7 +57,9 @@
 ;;; There is also GNUS's BBDB interface setup in gnus-site.el
 
 ;;; NEWS (GNUS) READING INTERFACE
-(autoload 'bbdb/gnus-lines-and-from "bbdb-gnus")
+(when (< emacs-major-version 27)
+  (autoload 'bbdb/gnus-lines-and-from "bbdb-gnus")
+  )
 ;(setq gnus-optional-headers 'bbdb/gnus-lines-and-from) ; doesn't exist in 19.15's GNUS
 ;(or (member 'bbdb-insinuate-gnus gnus-startup-hook)
  ;   (setq gnus-startup-hook 'bbdb-insinuate-gnus))
