@@ -81,7 +81,12 @@
 * file:/libre/ByStar/InitialTemplates/activeDocs/blee/bleeActivities/fullUsagePanel-en.org::BleeBootProcess
 ")
 
-(when (file-exists-p blee:boot:common) (load blee:boot:common))
+(when (file-exists-p blee:boot:common)
+  (load blee:boot:common)
+  (boot:common:main-init)
+  )
+
+
 (when (file-exists-p blee:boot:typed) (load blee:boot:typed))
 (when (file-exists-p blee:boot:devel) (load blee:boot:devel))
 
