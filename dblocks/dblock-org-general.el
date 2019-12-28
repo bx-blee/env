@@ -39,7 +39,7 @@
 (defun blee:panel:frontControl (@outLevel &rest @args)
   "Outline level is included.
 |N is not in a dblock
--> is immediately in a dblock (above line is BEGIN)
+(> is immediately in a dblock (above line is BEGIN)
 |n is in a dblock but not immediatley (above line is not BEGIN)
 "
 
@@ -59,10 +59,17 @@
       (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|N]]"
 					  (blee:panel:outLevelStr @outLevel)
 					  )))
-    (when @inDblock
+    (when (equal @inDblock t)
       (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][(>]]"
 					   (blee:panel:outLevelStr @outLevel)
 					   )))
+
+    (when (equal @inDblock "yes")
+      (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|n]]"
+					   (blee:panel:outLevelStr @outLevel)
+					   )))
+
+
     (setq $result (format "%s %s "
 			  $primaryNaturalControl
 			  ($commonFrontControls)
@@ -74,7 +81,7 @@
 (defun blee:panel:delimiterFrontControl (@outLevel &rest @args)
   "Outline level is included.
 |N is not in a dblock
--> is immediately in a dblock (above line is BEGIN)
+(> is immediately in a dblock (above line is BEGIN)
 |n is in a dblock but not immediatley (above line is not BEGIN)
 "
 
@@ -100,7 +107,7 @@
 					   )))
     (setq $result (format "%s %s "
 			  $primaryNaturalControl
-			  "#####"
+			  "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]"
 			  ))
     $result
    ))
@@ -202,13 +209,13 @@
     
     (format "\
 %s \
-   [[elisp:(org-cycle)][| %s %s%s:%s |]] %s \
+   [[elisp:(org-cycle)][| %s%s:%s |]] %s %s \
 "
 	    (blee:panel:frontControl @outLevel :inDblock @inDblock)
-	    (effectiveAnchor @anchor)
 	    $openTitleStr
 	    @title
 	    $closeTitleStr
+	    (effectiveAnchor @anchor)
 	    (effectiveExtraInfo @extraInfo)
      )))
 
@@ -327,7 +334,7 @@
     
     (format "\
 %s \
-  %s %s%s:%s   [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  \
+  %s %s%s:%s  \
 "
 	    (blee:panel:delimiterFrontControl @outLevel :inDblock @inDblock)
 	    (effectiveAnchor @anchor)
@@ -544,7 +551,7 @@
       (insert
        (format
 	"%s  Related Panels ::   [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]]\n"
-	(blee:panel:frontControl @outLevel)
+	(blee:panel:frontControl @outLevel :inDblock "yes")
 	@panelsList
 	))
       (when (ignore-errors (get-string-from-file (format "%s" @inFile)))
@@ -599,7 +606,7 @@
        (format 	"\
 %s \
    [[elisp:(org-cycle)][| <<Evolution>> *Maintenance:* | ]]  [[elisp:(blee:menu-sel:agenda:popupMenu)][||Agenda]] "
-	(blee:panel:frontControl @outLevel)
+	(blee:panel:frontControl @outLevel :inDblock "yes")
 	))
       )
 
@@ -690,7 +697,7 @@
 %s \
    [[elisp:(org-cycle)][| /= Bug Reports, Development Team: =/ | ]]  <<Maintainers>>  
 "
-	(blee:panel:frontControl @outLevel)
+	(blee:panel:frontControl @outLevel :inDblock "yes")
 	))
       (insert
        (format 	"\
@@ -1027,7 +1034,7 @@
       (insert
        (format
 	"%s    [[elisp:(org-cycle)][| *= Org-Mode Local Params: =* | ]]\n"
-	(blee:panel:frontControl @outLevel)
+	(blee:panel:frontControl @outLevel :inDblock "yes")
 	))
       
       (insert
@@ -1099,7 +1106,7 @@
       (insert
        (format
 	"%s    [[elisp:(org-cycle)][| *= Emacs Local Params: =* | ]]\n"
-	(blee:panel:frontControl @outLevel)
+	(blee:panel:frontControl @outLevel :inDblock "yes")
 	))
 
       (setq $primModeSymb (intern @primMode))
@@ -1204,6 +1211,7 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 	(setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
 	(insert (format "%s dblock skipped due to blee:dblockEnabler %s\n" @name (time-stamp-string)))
 	(insert (format "%s" @content))
+	(org-kill-line)   ;;; @content adds an extra line at the end -- need this as it can be repeated
 	)
       )
   (when ~blee:dblockEnabler

@@ -672,6 +672,9 @@
 	  ((string-equal "html-mode" major-mode)
 	   (message (format "Set to: %s -  ####+END..." mode))
 	   )
+	  ((string-equal "org-mode" major-mode)
+	   (message (format "Set to: %s - blank end" mode))
+	   )
 	  (t
 	   (message (format "major-mode: %s - dblock re unchanged" mode))
 	   )

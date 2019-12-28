@@ -83,7 +83,6 @@ If that fails, we return major-mode.
 				  @bodyContent)
 
   (bx:dblock:governor:close @outLevel @governor @style @dblockFuncName)
-
   (bx:dblock:global:moded:insert-end major-mode)
   )
 
