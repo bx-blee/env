@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Region IIM Command SelectedSubject
 # key: link/iimCmndSelectedSubject
-# group: link
+# group: Create Link
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

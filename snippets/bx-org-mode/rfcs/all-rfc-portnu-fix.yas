@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: All RFC Port Nu Fix
 # key: convert/all-rfc-portnu-fix
-# group: convert
+# group: rfcs
 # type: command
 # --
 (progn

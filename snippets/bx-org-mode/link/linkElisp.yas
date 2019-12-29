@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Link Elisp Form
 # key: link/elisp
-# group: link
+# group: Create Link
 # type: command
 # --
 

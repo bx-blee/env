@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Control Org EndOfLine
 # key: control/orgEndOfLine
-# group: control
+# group: Control Fragment
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

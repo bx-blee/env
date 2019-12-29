@@ -1274,28 +1274,33 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 
       (insert
        (format
-	"%s" (blee:panel:foldingFrontControl @outLevel
+	"%s" (blee:panel:delimiterFrontControl @outLevel
 					     :inDblock t
 					     )))
 
-      (when @comment
-	(insert 
-	 (format "       =%s=" @comment)))
+   
+      ;;(insert "   [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  ")
 
-      (insert "   [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  ")
-
+      (insert "    ")
+      
       (insert (blee:panel:button:shCommand @command))
 
       ;;(insert (format "results %s" @results))
       
       (when @results
-	(insert " || ")
+	(insert " _::_ ")
       
 	(insert "[[elisp:(blee:org-update-named-dblocks-above)][D-Run]]  ")
 
 	(insert (format "[[elisp:(org-cycle)][| /%sResults:/ |]] " $stdOutOnlyIndicator))
 	)
 
+      (when @comment
+	(insert " ~||~ ")
+	(insert 
+	 (format " =%s=" @comment)))
+
+      
       (when @afterComment
 	(insert (format " %s " @afterComment)))
 

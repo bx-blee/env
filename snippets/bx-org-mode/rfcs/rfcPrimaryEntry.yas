@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: RFC Primary Entry
 # key: entry/rfcPrimary
-# group: entry
+# group: rfcs
 # type: command
 # --
 (progn

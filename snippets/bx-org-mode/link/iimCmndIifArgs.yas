@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Invoke IIM Command IifArgs
 # key: link/iimCmndIifArgs
-# group: link
+# group: Create Link
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

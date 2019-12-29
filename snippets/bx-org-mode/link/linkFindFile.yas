@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Link Elisp Find File
 # key: link/elispFindFile
-# group: link
+# group: Create Link
 # type: command
 # --
 
