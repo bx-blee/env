@@ -249,9 +249,45 @@ This must be non-emacs version specific code.")
 
 ;;; (blee:elpa:base-obtain)
 (defun blee:elpa:base-obtain ()
-  "Eg. /bisos/blee/elpa/27f"
+  "Eg. /bisos/blee/27f/elpa/"
   (let ((baseName (expand-file-name
-		  (concat (blee:base-obtain) "/elpa/" (symbol-name *eoe-emacs-type*))))
+		   (concat
+		    (blee:base-obtain)
+		    (symbol-name *eoe-emacs-type*)		    
+		    "/elpa/"
+		    )))
+	)
+    (unless (file-directory-p baseName)
+      (make-directory baseName :parents))
+    baseName
+    )
+  )
+
+;;; (blee:run:base-obtain)
+(defun blee:run:base-obtain ()
+  "Eg. /bisos/blee/27f/run/"
+  (let ((baseName (expand-file-name
+		   (concat
+		    (blee:base-obtain)
+		    (symbol-name *eoe-emacs-type*)		    
+		    "/run/"
+		    )))
+	)
+    (unless (file-directory-p baseName)
+      (make-directory baseName :parents))
+    baseName
+    )
+  )
+
+;;; (blee:tmp:base-obtain)
+(defun blee:tmp:base-obtain ()
+  "Eg. /bisos/blee/27f/tmp/"
+  (let ((baseName (expand-file-name
+		   (concat
+		    (blee:base-obtain)
+		    (symbol-name *eoe-emacs-type*)		    
+		    "/tmp/"
+		    )))
 	)
     (unless (file-directory-p baseName)
       (make-directory baseName :parents))

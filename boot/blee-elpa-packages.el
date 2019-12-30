@@ -64,21 +64,45 @@
 ;;; (blee:elpa:main-init)
 (defun blee:elpa:main-init ()
   "Desc:"
-  (setq package-user-dir (blee:elpa:base-obtain))
 
-  (message (format "package-user-dir=%s" package-user-dir))
+  (when (blee:elpa:updatePkgs:needUpdating-p)  
+    (setq package-user-dir (blee:elpa:base-obtain))
 
-  ;; Below require will auto-create `package-user-dir' it doesn't exist.
-  (require 'package)
+    (message (format "package-user-dir=%s" package-user-dir))
 
-  (blee:elpa:repositories:setup)
+    ;; Below require will auto-create `package-user-dir' it doesn't exist.
+    (require 'package)
 
-  (blee:elpa:install-if-needed 'use-package)  
-  ;;;(bx:package:install-if-needed 'org-bullets)
+    (blee:elpa:repositories:setup)
+    
+    (blee:elpa:install-if-needed 'use-package)  
+    ;;;(bx:package:install-if-needed 'org-bullets)
 
-  (bx:package:install:all)
+    (bx:package:install:all)
+
+    (blee:elpa:updatePkgs:disable)
+    )
   
   )
+
+(setq blee:elpa:updatePkgs:areUpToDateFile  "/bisos/blee/27f/run/elpa-pkgs-are-up-to-date")
+
+;;; (blee:elpa:updatePkgs:needUpdating-p)
+(defun blee:elpa:updatePkgs:needUpdating-p ()
+  "When /bisos/blee/27f/run/elpa-pkgs-are-up-to-date exists, return nil, otherwise t"
+  (not (file-exists-p blee:elpa:updatePkgs:areUpToDateFile))
+  )
+
+(defun blee:elpa:updatePkgs:enable ()
+  "Create /bisos/blee/27f/run/elpa-pkgs-are-up-to-date"
+  (delete-file blee:elpa:updatePkgs:areUpToDateFile)
+  )
+
+(defun blee:elpa:updatePkgs:disable ()
+  "Create /bisos/blee/27f/run/elpa-pkgs-are-up-to-date"
+  (write-region "" nil  blee:elpa:updatePkgs:areUpToDateFile)
+  )
+
 
 
 
@@ -87,13 +111,15 @@
   ""
   (interactive)
 
-  (setq package-archives nil)
 
-  ;;(package-initialize)
-  (unless package--initialized (package-initialize t))
+  
+    (setq package-archives nil)
 
-  (add-to-list 'package-archives
-  	       '("gnu" . "https://elpa.gnu.org/packages/"))
+    ;;(package-initialize)
+    (unless package--initialized (package-initialize t))
+
+    (add-to-list 'package-archives
+  		 '("gnu" . "https://elpa.gnu.org/packages/"))
   
   (add-to-list 'package-archives
   	       '("melpa" . "https://melpa.milkbox.net/packages/") t)
@@ -137,54 +163,61 @@ Does not run at start up. Run as new packages are to be installed.
 "
   (interactive)
 
-  (package-refresh-contents)
+  ;;(when (blee:elpa:updatePkgs:needUpdating-p)
 
-  ;; make more packages available with the package installer
-  (let (
-	(to-install)
-	)
-    (setq to-install
-	  '(
-	    auto-complete
-	    auctex
-	    yasnippet 
-	    jedi 
-	    autopair 
-	    python-mode 
-            flymake-python-pyflakes
-	    magit
-	    google-maps
-	    highlight-indentation
-	    tabbar
-	    ;;ipython 25f
-	    realgud
-	    ;;
-	    offlineimap
-	    notmuch
-	    ;;
-	    w3m
-	    bbdb
-	    emms
-	    f
-	    load-dir
-	    markdown-mode
-	    ;;
-	    seq
-	    ;;rw-hunspell 25f
-	    ;;
-	    ;;helm
-	    ;;
-	    ;;fill-column-indicator
-	    ;;dic-lookup-w3m
-	    ;;find-file-in-repository
-	    )
+    (package-refresh-contents)
+
+    ;; make more packages available with the package installer
+    (let (
+	  (to-install)
 	  )
-    (when (equal emacs-major-version 24)
-      (add-to-list 'to-install 'ipython)
-      (add-to-list 'to-install 'rw-hunspell)
+      (setq to-install
+	    '(
+	      auto-complete
+	      auctex
+	      yasnippet 
+	      jedi 
+	      autopair 
+	      python-mode 
+              flymake-python-pyflakes
+	      magit
+	      google-maps
+	      highlight-indentation
+	      tabbar
+	      ;;ipython 25f
+	      realgud
+	      ;;
+	      offlineimap
+	      notmuch
+	      ;;
+	      w3m
+	      bbdb
+	      emms
+	      f
+	      load-dir
+	      markdown-mode
+	      ;;
+	      seq
+	      ;;rw-hunspell 25f
+	      ;;
+	      ;;helm
+	      ;;
+	      ;;fill-column-indicator
+	      ;;dic-lookup-w3m
+	      ;;find-file-in-repository
+	      )
+	    )
+      (when (equal emacs-major-version 24)
+	(add-to-list 'to-install 'ipython)
+	(add-to-list 'to-install 'rw-hunspell)
+	)
+      
+      (mapc 'bx:package:install-if-needed to-install)
       )
-    (mapc 'bx:package:install-if-needed to-install)
-    )
+
+    ;;(blee:elpa:updatePkgs:disable)
+    
+    ;;)
   )
 
 

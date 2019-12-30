@@ -49,8 +49,8 @@
       "---"
       ["ByStar Human And Machine Languages And Standards" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxLanguages") t]
       "---"
-      ["BUE: Blee Emacs Activities (By* Emacs Major Modes)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bleeActivities") t]
-      ["BUE: Blee Emacs Features (By* Emacs Minor Modes)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bleeFeatures") t]
+      ["BUE: Blee Emacs Activities (By* Emacs)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bleeActivities") t]
+      ;;;["BUE: Blee Emacs Features (By* Emacs Minor Modes)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bleeFeatures") t]
       ["BUE: Firefox Browser Features (Extensions and Customizations)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bleeBrowsers") t]      
       ;;; F11 g x
       ["BUE: Gnome Desktop Applications (Gnome Apps)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/globalFacilities") t]

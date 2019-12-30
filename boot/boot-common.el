@@ -44,6 +44,13 @@
 (defun boot:common:main-init ()
   "Desc:"
 
+  ;;;
+  ;;; These include make-directory as needed
+  ;;;
+  (blee:run:base-obtain)
+  (blee:tmp:base-obtain)
+  (blee:elpa:base-obtain)
+  
   (blee:elpa:main-init)
   
   )

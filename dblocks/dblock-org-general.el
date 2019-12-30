@@ -1137,6 +1137,7 @@
 Local Variables:
 eval: (setq-local ~selectedSubject \"noSubject\")
 eval: (setq-local ~primaryMajorMode '%s)
+eval: (setq-local ~blee:panelUpdater nil)
 eval: (setq-local ~blee:dblockEnabler nil)"		       
 		       @primMode
 		       ))
@@ -1223,7 +1224,8 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 	(setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
 	(insert (format "%s dblock skipped due to blee:dblockEnabler %s\n" @name (time-stamp-string)))
 	(insert (format "%s" @content))
-	(org-kill-line)   ;;; @content adds an extra line at the end -- need this as it can be repeated
+	;; solution below does not work
+	;;(org-kill-line)   ;;; @content adds an extra line at the end -- need this as it can be repeated
 	)
       )
   (when ~blee:dblockEnabler
