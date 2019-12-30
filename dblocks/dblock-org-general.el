@@ -308,6 +308,7 @@
 (defun blee:panel:delimiterSection (@outLevel
 				  @title
 				  @anchor
+				  @extraInfo				  
 				  &rest @args				  
 				  )
   
@@ -331,16 +332,25 @@
 	  (format "<<%s>>"@anchor)
 	""
 	))
+
+    ;; (effectiveExtraInfo nil)
+    ;; (effectiveExtraInfo "str")    
+    (defun effectiveExtraInfo (@extraInfo)
+      (if @extraInfo
+	  (format "%s" @extraInfo)
+	""
+	))
     
     (format "\
 %s \
-  %s %s%s:%s  \
+  %s %s%s:%s %s \
 "
 	    (blee:panel:delimiterFrontControl @outLevel :inDblock @inDblock)
 	    (effectiveAnchor @anchor)
 	    $openTitleStr
 	    @title
 	    $closeTitleStr
+	    (effectiveExtraInfo @extraInfo)
      )))
 
 
@@ -354,7 +364,8 @@
 	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
 	;;
 	(@title (or (plist-get @params :title) "TBD"))
-	(@anchor (or (plist-get @params :anchor) nil))	
+	(@anchor (or (plist-get @params :anchor) nil))
+	(@extraInfo (or (plist-get @params :extraInfo) nil))	
 	;;
 	($fileAsString)
 	)
@@ -374,6 +385,7 @@
 	"%s" (blee:panel:delimiterSection @outLevel
 					@title
 					@anchor
+					@extraInfo
 					:inDblock t
 					)
 	)))
@@ -1254,6 +1266,9 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
     (unless (plist-member @params :results)
       (setq @results t))
 
+    (when (string-equal "none" @results)
+      (setq @results nil))
+    
     ;;(insert (format "%s dblock skipped due to blee:dblockEnabler\n" @name))
     
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
@@ -1304,10 +1319,9 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
       (when @afterComment
 	(insert (format " %s " @afterComment)))
 
-      (insert " |\n")
-
-
-      (when @results      
+ 
+      (when @results
+	(insert " |\n")
 	(setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
 	(insert (format "Last Executed at: %s  by: %s on: %s\n" (time-stamp-string) (user-login-name) (system-name)))      
 
@@ -1318,6 +1332,10 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 	  (format "source ~/.bashrc; %s %s" @command $stdErrStr))
 	 )
 	)
+      )
+
+    (when (not @results)
+      (setq @style (list "openBlank" "closeContinue"))
       )
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
