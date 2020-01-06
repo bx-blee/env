@@ -1,10 +1,9 @@
 ;;; -*- Mode: Emacs-Lisp; -*-
 
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Library (boot-common:),  [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Library (boot-setup:),  [[elisp:(org-cycle)][| ]]
 * 
 ")
-
 
 ;;;#+BEGIN: bx:dblock:global:org-controls :disabledP "false" :mode "auto"
 (lambda () "
@@ -29,48 +28,33 @@
 *  [[elisp:(org-cycle)][| ]]  Requires                    :: Requires [[elisp:(org-cycle)][| ]]
 ")
 
-(require 'blee-elpa-packages)
-(message "requiring cl-lib")
-(require 'cl-lib)
-(require 'compile-time-function-name)
-
 
 (lambda () "
-####+BEGIN: bx:dblock:bnsm:top-of-menu "basic"
-*  #Controls:   [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]] 
-####+END:
+* Emacs and Blee type defvars
 ")
 
+(defvar *emacs-type* "fsf"
+  "Historic -- but kept for future resurrections -- used to distinguish lucid emacs etc")
+
+(defvar blee:emacs:type "fsf"
+  "We are assuming that other than fsf emacs types could exist -- used to distinguish lucid emacs etc")
 
 
-;;;
-(defun boot:common|main-init ()
-  "Desc:"
+(defvar *eoe-emacs-type* (intern (format "%df" emacs-major-version))
+  "Historic -- A symbol (not a string) major-version+f for fsf-emacs.
+Eg 27f. Used to tag filenames.")
 
-  (blee:ann|this-func (compile-time-function-name))
-  ;;;
-  ;;; These include make-directory as needed
-  ;;;
-  (blee:vered:run|base-obtain)
-  (blee:vered:tmp|base-obtain)
-  (blee:vered:elpa|base-obtain)
-  
-  (blee:elpa:main-init)
-
-  (require 'bap-magit)
-  (bap:magit:full/update)
-
-  (require 'bap-bbdb)
-  (bap:bbdb:full/update)
-  )
+(defvar blee:emacs:id (intern (format "%df" emacs-major-version))
+  "A symbol (not a string) major-version+f for fsf-emacs.
+Eg 27f. Used to tag filenames.")
 
 
-;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "boot-common"
+;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "blee-emacs"
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
 ")
 
-(provide 'boot-common)
+(provide 'blee-emacs)
 ;;;#+END:
 
 

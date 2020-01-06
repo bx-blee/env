@@ -180,10 +180,14 @@
   
   "Returns a string with outline level string included."
   (let (
-	(@inDblock (or (plist-get @args :inDblock) nil))	
+	(@inDblock (or (plist-get @args :inDblock) nil))
+	(@rawTitle (or (plist-get @args :rawTitle) nil))		
 	($openTitleStr "==")
 	($closeTitleStr "==")
 	)
+    (unless (plist-member @params :rawTitle)
+      (setq @rawTitle nil))
+    
     (when (equal @outLevel 1)
       (setq $openTitleStr "*")
       (setq $closeTitleStr "*")
@@ -191,6 +195,11 @@
     (when (equal @outLevel 2)
       (setq $openTitleStr "/")
       (setq $closeTitleStr "/")
+      )
+
+    (when @rawTitle
+      (setq $openTitleStr "")
+      (setq $closeTitleStr "")
       )
 
     (defun effectiveAnchor (@anchor)
@@ -270,6 +279,7 @@
 	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
 	;;
 	(@title (or (plist-get @params :title) "TBD"))
+	(@rawTitle (or (plist-get @params :rawTitle) nil))	
 	(@anchor (or (plist-get @params :anchor) nil))
 	(@extraInfo (or (plist-get @params :extraInfo) nil))		
 	;;
@@ -293,6 +303,7 @@
 					@anchor
 					@extraInfo
 					:inDblock t
+					:rawTitle @rawTitle
 					)
 	)))
 

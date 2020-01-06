@@ -46,62 +46,53 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
 *      ======[[elisp:(org-cycle)][Fold]]====== Loading Announcement 
 ")
 
-(message "ByStar Magit LOADING")
-
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Requires 
 ")
 
-
-(when (not (bx:emacs24.5p))
-  (require 'magit)    
-  )
-
-(when (bx:emacs24.5p)
-  (when (not (string-equal opRunDistGeneration "1404"))
-    (require 'magit)  
-    ))
-
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:magit:defaults-set -- Define 
 ")
 
+(setq bap:magit:usage:enabled-p t)
 
-;; (bx:setup:magit:defaults-set)
-(defun bx:setup:magit:defaults-set ()
+(defun bap:magit:full/update ()
   ""
   (interactive)
-
-  ;;;
-  ;;;  This changed in Emacs25 -- NOTYET for sslVerify
-  ;;;
-  (when (bx:emacs24.5p)
-    (setq magit-git-standard-options
-	  (append magit-git-standard-options '("-c") '("http.sslVerify=false")))
+  (blee:ann|this-func (compile-time-function-name))
+  (when bap:magit:usage:enabled-p
+    (bap:magit:install/update)
+    (bap:magit:config/main)
     )
-
-  (message "bystar:magit:all-defaults-set -- Done." )
   )
 
-(lambda () "
-*      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:magit:defaults-set -- Invoke 
-")
-
-(when (not (bx:emacs24.5p))
-  (bx:setup:magit:defaults-set)  
+(defun bap:magit:install/update ()
+  ""
+  (interactive)
+  (blee:ann|this-func (compile-time-function-name))
+  
+  (message "blee:ann -- TMP -- bap:magit:install/update")
+  (use-package magit
+    :ensure t
+    ;;; :pin melpa-stable
+    )
   )
 
-(when (bx:emacs24.5p)
-  (when (not (string-equal opRunDistGeneration "1404"))
-    (bx:setup:magit:defaults-set)    
-    ))
+(defun bap:magit:config/main ()
+  ""
+  (interactive)
+  (blee:ann|this-func (compile-time-function-name))    
+  (message "blee:ann -- TMP -- bap:magit:install/update")
+  ;;(setq magit-git-standard-options
+  ;; (append magit-git-standard-options '("-c") '("http.sslVerify=false")))
+  )
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
 ")
 
-(provide 'setup-global-magit)
+(provide 'bap-magit)
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== /[dblock] -- End-Of-File Controls/

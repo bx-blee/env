@@ -51,6 +51,22 @@
 *  [[elisp:(org-cycle)][| ]]  Requires                    :: Requires [[elisp:(org-cycle)][| ]]
 ")
 
+(defvar *emacs-type* "fsf"
+  "Historic but kept for future resurrections -- used to distinguish lucid emacs etc")
+
+(defvar blee:emacs:type "fsf"
+  "We are assuming that other than fsf emacs types could exist -- used to distinguish lucid emacs etc")
+
+
+(defvar *eoe-emacs-type* (intern (format "%df" emacs-major-version))
+  "A symbol (not a string) major-version+f for fsf-emacs.
+Eg 27f. Used to tag filenames.")
+
+(defvar blee:emacs:id (intern (format "%df" emacs-major-version))
+  "A symbol (not a string) major-version+f for fsf-emacs.
+Eg 27f. Used to tag filenames.")
+
+
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Top Entry                   :: blee:elpa:main-init [[elisp:(org-cycle)][| ]]
@@ -64,9 +80,8 @@
 ;;; (blee:elpa:main-init)
 (defun blee:elpa:main-init ()
   "Desc:"
-
   (when (blee:elpa:updatePkgs:needUpdating-p)  
-    (setq package-user-dir (blee:elpa:base-obtain))
+    (setq package-user-dir (blee:vered:elpa|base-obtain))
 
     (message (format "package-user-dir=%s" package-user-dir))
 
@@ -75,17 +90,21 @@
 
     (blee:elpa:repositories:setup)
     
-    (blee:elpa:install-if-needed 'use-package)  
+    (blee:elpa:install-if-needed 'use-package)
+    
     ;;;(bx:package:install-if-needed 'org-bullets)
 
-    (bx:package:install:all)
+    ;;(bx:package:install:all)
 
     (blee:elpa:updatePkgs:disable)
     )
   
   )
 
-(setq blee:elpa:updatePkgs:areUpToDateFile  "/bisos/blee/27f/run/elpa-pkgs-are-up-to-date")
+
+;;; (format "/lisp/pkgs/%s" *eoe-emacs-type*)
+(setq blee:elpa:updatePkgs:areUpToDateFile
+      (format "/bisos/blee/%s/run/elpa-pkgs-are-up-to-date" *eoe-emacs-type*))
 
 ;;; (blee:elpa:updatePkgs:needUpdating-p)
 (defun blee:elpa:updatePkgs:needUpdating-p ()
@@ -110,26 +129,26 @@
 (defun blee:elpa:repositories:setup ()
   ""
   (interactive)
-
-
   
-    (setq package-archives nil)
+  (setq package-archives nil)
 
-    ;;(package-initialize)
-    (unless package--initialized (package-initialize t))
+  ;;(package-initialize)
+  (unless package--initialized (package-initialize t))
 
-    (add-to-list 'package-archives
+  (add-to-list 'package-archives
   		 '("gnu" . "https://elpa.gnu.org/packages/"))
   
   (add-to-list 'package-archives
   	       '("melpa" . "https://melpa.milkbox.net/packages/") t)
-  ;;;)
 
   (when (equal emacs-major-version 24)
     (add-to-list 'package-archives
 		 '("marmalade" . "http://marmalade-repo.org/packages/") t)
     )
 
+  ;;;
+  ;;; This is necessary for package-install to work.
+  ;;; 
   (package-refresh-contents)
 
   ;;(package-list-packages)
@@ -158,6 +177,34 @@
 
 ;;; (bx:package:install:all)
 (defun bx:package:install:all ()
+  "\
+Does not run at start up. Run as new packages are to be installed.
+"
+  (interactive)
+
+  ;;(when (blee:elpa:updatePkgs:needUpdating-p)
+
+  (package-refresh-contents)
+
+  ;; make more packages available with the package installer
+  (let (
+	(to-install)
+	)
+    (setq to-install
+	  '(
+	    magit
+	    )
+	  )
+    (mapc 'bx:package:install-if-needed to-install)
+    )
+
+  ;;(blee:elpa:updatePkgs:disable)
+    
+    ;;)
+  )
+
+
+(defun bx:package:install:all-full ()
   "\
 Does not run at start up. Run as new packages are to be installed.
 "

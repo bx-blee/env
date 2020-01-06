@@ -75,9 +75,18 @@
 (defvar *emacs-type* "fsf"
   "Historic but kept for future resurrections -- used to distinguish lucid emacs etc")
 
+(defvar blee:emacs:type "fsf"
+  "We are assuming that other than fsf emacs types could exist -- used to distinguish lucid emacs etc")
+
+
 (defvar *eoe-emacs-type* (intern (format "%df" emacs-major-version))
   "A symbol (not a string) major-version+f for fsf-emacs.
 Eg 27f. Used to tag filenames.")
+
+(defvar blee:emacs:id (intern (format "%df" emacs-major-version))
+  "A symbol (not a string) major-version+f for fsf-emacs.
+Eg 27f. Used to tag filenames.")
+
 
 
 (lambda () "

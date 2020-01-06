@@ -51,17 +51,26 @@
      ))
   )
 
-(defvar blee:boot:setup
-  (expand-file-name (concat (blee:env:here-directory) "boot-setup.el"))
-  "Setup for Blee boot.")
 
-(load-file blee:boot:setup)
+(load-file  (expand-file-name (concat (blee:env:here-directory)
+				      "blee-emacs.el")))
+
+(load-file  (expand-file-name (concat (blee:env:here-directory)
+				      "blee-bases.el")))
+
+(load-file  (expand-file-name (concat (blee:env:here-directory)
+				      "blee-elpa-packages.el")))
+
+;; (load-file  (expand-file-name (concat (blee:env:here-directory)
+;; 				      "compile-time-function-name.el")))
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Boot Components Of Blee [[elisp:(org-cycle)][| ]]
 ")
 
-
+;;;
+;;; NOTYET, This does not belong here
+;;;
 (message "Emacs version: %s %d.%d  -- Blee-Emacs Type: %s"
 	 *emacs-type* emacs-major-version emacs-minor-version *eoe-emacs-type*)
 
@@ -83,12 +92,12 @@
 
 (when (file-exists-p blee:boot:common)
   (load blee:boot:common)
-  (boot:common:main-init)
+  (boot:common|main-init)
   )
 
 
 (when (file-exists-p blee:boot:typed) (load blee:boot:typed))
-(when (file-exists-p blee:boot:devel) (load blee:boot:devel))
+;;(when (file-exists-p blee:boot:devel) (load blee:boot:devel))
 
 (when blee:gc-cons-threshold--orig
   (run-with-idle-timer 5 nil (lambda () (setq gc-cons-threshold blee:gc-cons-threshold--orig))))

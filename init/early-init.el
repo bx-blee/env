@@ -4,5 +4,24 @@
 ;; (setq package-user-dir (let ((elpa-dir-name (format "elpa_%s" emacs-major-version))) ;default = ~/.emacs.d/elpa/
 ;;                          (file-name-as-directory (expand-file-name elpa-dir-name user-emacs-directory))))
 
-(setq package-user-dir (expand-file-name "/bisos/blee/27f/elpa"))
+
+(defun $blee:emacs|early-init ()
+  "Package initialization happens after this but before init.el
+The variables determined here are local in scope, 
+they will be determined globally later."
+  (let (
+	($blee:emacs:type "fsf")
+	($blee:emacs:id (intern (format "%df" emacs-major-version)))
+	)
+    (setq package-user-dir
+	  (file-name-as-directory 
+	   (expand-file-name
+	    (format "/bisos/blee/%s/elpa" $blee:emacs:id))))
+    )
+  )
+	  
+($blee:emacs|early-init)
+
+
+
 
