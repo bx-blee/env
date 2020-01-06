@@ -138,9 +138,20 @@ Eg 27f. Used to tag filenames.")
   (add-to-list 'package-archives
   		 '("gnu" . "https://elpa.gnu.org/packages/"))
   
-  (add-to-list 'package-archives
-  	       '("melpa" . "https://melpa.milkbox.net/packages/") t)
+  ;; (add-to-list 'package-archives
+  ;; 	       '("melpa" . "https://melpa.milkbox.net/packages/") t)
 
+  (unless (assoc-default "melpa" package-archives)
+    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+  
+  (unless (assoc-default "melpa-stable" package-archives)
+    (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t))
+  
+  (unless (assoc-default "org" package-archives)
+    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
+
+
+  
   (when (equal emacs-major-version 24)
     (add-to-list 'package-archives
 		 '("marmalade" . "http://marmalade-repo.org/packages/") t)
