@@ -167,6 +167,14 @@ Eg 27f. Used to tag filenames.")
   
   )
 
+(defun bap:auto-package-update:install|update ()
+  "NOTYET, un tested."
+  (use-package auto-package-update
+    :config
+    (setq auto-package-update-delete-old-versions t)
+    (setq auto-package-update-hide-results t)
+    (auto-package-update-maybe))
+  )
 
 ;;
 ;; (package-installed-p 'use-package)

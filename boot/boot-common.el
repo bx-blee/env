@@ -30,7 +30,7 @@
 ")
 
 (require 'blee-elpa-packages)
-(message "requiring cl-lib")
+
 (require 'cl-lib)
 (require 'compile-time-function-name)
 
@@ -56,6 +56,9 @@
   (blee:vered:elpa|base-obtain)
   
   (blee:elpa:main-init)
+
+  (require 'bcg-libs)
+  (bcg:libs:full/update)
 
   (require 'bap-magit)
   (bap:magit:full/update)
