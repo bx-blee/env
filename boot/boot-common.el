@@ -60,8 +60,14 @@
   (require 'bcg-libs)
   (bcg:libs:full/update)
 
+  (require 'bcg-core)
+  (bcg:core:full/update)
+
   (require 'bap-magit)
   (bap:magit:full/update)
+
+  (require 'bf-font)
+  (bf:font:full/update)
 
   (require 'bap-bbdb)
   (bap:bbdb:full/update)

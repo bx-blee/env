@@ -55,71 +55,42 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 *      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:bbdb:defaults-set -- Define 
 ")
 
-(setq bcg:core:usage:enabled-p t)
+(setq bf:font:usage:enabled-p t)
 
-(defun bcg:core:full/update ()
+;;; (bf:font:full/update)
+(defun bf:font:full/update ()
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
-  (when bcg:core:usage:enabled-p
-    (bcg:core:install/update)
-    (bcg:core:config/main)
+  (when bf:font:usage:enabled-p
+    (bf:font:install/update)
+    (bf:font:dejavu-sans-mono/select)
     )
   )
 
-(defun bcg:core:install/update ()
-  ""
+(defun bf:font:install/update ()
+  "Could make sure that needed fonts are installed. Place holder for now."
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
   )
 
-(defun bcg:core:config/main ()
+(defun bf:font:iosevka/select ()
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
 
-  (bcg:core:charset/config)
-
-  (bcg:core:displayEngine/config)
-  
-  (bcg:core:help/config)
+  (setq bf:font:default (font-spec :family "Iosevka" :size 18))
+  (set-face-attribute 'default nil :font bf:font:default)
   )
 
-(defun bcg:core:charset/config ()
+
+(defun bf:font:dejavu-sans-mono/select ()
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
 
-  (when (fboundp 'set-charset-priority)
-    (set-charset-priority 'unicode))
-  (prefer-coding-system        'utf-8)
-  (set-terminal-coding-system  'utf-8)
-  (set-keyboard-coding-system  'utf-8)
-  (set-selection-coding-system 'utf-8)
-  (setq locale-coding-system   'utf-8)
-  (setq-default buffer-file-coding-system 'utf-8)
-  )
-
-(defun bcg:core:displayEngine/config ()
-  "NOTYET ::Revisit UI Section of https://github.com/gilbertw1/bmacs/blob/master/bmacs.org#ui"
-  (interactive)
-  (blee:ann|this-func (compile-time-function-name))    
-
-  (setq frame-title-format (list (format "%%b – Blee 3.1-E-%s @ %s" emacs-version system-name)))
-
-  (setq-default bidi-display-reordering t)         ; Blee wants to be bidi-aware
-
-  (fset #'yes-or-no-p #'y-or-n-p)     ; y/n instead of yes/no
-  )
-
-
-
-(defun bcg:core:help/config ()
-  ""
-  (interactive)
-  (blee:ann|this-func (compile-time-function-name))    
-
-  (setq help-window-select t)  ;;; Force focus to the help menu
+  (setq bf:font:default (font-spec :family "DejaVu Sans Mono" :size 16))
+  (set-face-attribute 'default nil :font bf:font:default)
   )
 
 
@@ -127,7 +98,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
 ")
 
-(provide 'bcg-core)
+(provide 'bf-font)
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== /[dblock] -- End-Of-File Controls/
