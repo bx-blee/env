@@ -44,6 +44,8 @@
 
 
 ;;;
+;;; (boot:common|main-init)
+;;;
 (defun boot:common|main-init ()
   "Desc:"
 
@@ -375,9 +377,10 @@
 ;;; -----------------------------------------------------------------
 
 (require 'eoeKbdMenuSupport)
-;;(require 'blee-kbd-global)
+(require 'blee-kbd-global)
 
-;;(eoe-kbd)
+
+(eoe-kbd)
 
 
 (autoload 'babel "babel"
@@ -472,7 +475,67 @@
 (require 'bystar-printing-lib)
 (bystar:printing:all-defaults-set)
 
-  
+
+(funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *festival -- TTS -- Say* [[elisp:(org-cycle)][| ]]
+	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
+"
+	     (load-file "/bisos/git/auth/bxRepos/blee/env/main/festival.el")
+	     ))
+
+(funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *ISPELL* [[elisp:(org-cycle)][| ]]
+	Just Load. 
+"
+	     ;;(load "bystar-ispell")
+	     ))
+
+(funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *Tabbar* [[elisp:(org-cycle)][| ]]
+	Tabbar setup needs to come late in the setup, perhaps after color-theme
+"
+	     (require 'setup-tabbar)
+	     ))
+
+
+(funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *Dunamic Menu* [[elisp:(org-cycle)][| ]]
+	Dynamic Menus -- Use Through Out -- For Now Centralized. Will be split across later.
+"
+	     ;;;(require 'blee-lib-widget)
+	     ;;;(blee-lib-widget:all-defaults-set)
+
+	     ;;;(require 'blee-comeega)
+	     ))
+
+
+
+(funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Temporary             ::      *old2new* [[elisp:(org-cycle)][| ]]
+"
+	     (load-file "/bisos/git/auth/bxRepos/blee/env/lib/old2new/elispBleePanelUpdate.el")
+	     ))
+
+
+;;; 
+;;; To Be Sorted Later
+;;;
+
+(defun mb-policy-9 (string-arg)
+""
+string-arg
+)
+
+
+(require 'tramp)
+(setq tramp-default-method "scp")
+
+(load-file "/bisos/git/auth/bxRepos/blee/env/lib/Incoming/top-mode.el")
+
+(load-file "/bisos/git/auth/bxRepos/blee/env/main/choose-comletion.el")
+
+(cd "~")
+
   )
 
 

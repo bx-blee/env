@@ -245,10 +245,21 @@
 *     load-path setup
 **    +env/main +env/lib +env/dblocks
 "
+	    (message "Setting Up load-path")
+	    
 	    (blee:load-path:add (blee:env:main:base-obtain))
 	    (blee:load-path:add (blee:env:lib:base-obtain))
 	    (blee:load-path:add (blee:env:dblocks:base-obtain))
-	    (blee:load-path:add (blee:env:widgets:base-obtain))	    
+	    (blee:load-path:add (blee:env:widgets:base-obtain))
+	    (blee:load-path:add (blee:env:eoe:base-obtain))
+	    (blee:load-path:add 
+	     (file-name-as-directory
+	      (concat (file-name-as-directory (blee:env:base-obtain)) "eoe/lisp/sys/")))
+
+	    (blee:load-path:add 
+	     (file-name-as-directory
+	      (concat (file-name-as-directory (blee:env:base-obtain)) "eoe/lisp/pkgs/27f")))
+	    
 	    (blee:load-path:add "~/BUE/elisp")
 	    (blee:load-path:add "/opt/public/neweoe/lisp/public/bbdb-filters-0.51")	    
 	    ))
@@ -280,7 +291,7 @@
 *  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
 ")
 
-(provide 'blee-bases-setup)
+(provide 'blee-bases)
 ;;;#+END:
 
 
