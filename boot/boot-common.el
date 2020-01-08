@@ -29,10 +29,10 @@
 *  [[elisp:(org-cycle)][| ]]  Requires                    :: Requires [[elisp:(org-cycle)][| ]]
 ")
 
-(require 'blee-elpa-packages)
+(require 'blee-elpa-packages)          ;;; elpa packages have already been loaded and prepared
 
-(require 'cl-lib)
-(require 'compile-time-function-name)
+(require 'cl-lib)                      ;;; Needed for blee:ann
+(require 'compile-time-function-name)  ;;; Provides blee:ann -- used here
 
 
 (lambda () "
@@ -377,7 +377,7 @@
 ;;; -----------------------------------------------------------------
 
 (require 'eoeKbdMenuSupport)
-(require 'blee-kbd-global)
+(require 'blee-kbd-global)    ;;; NOTYET -- Messes up magit and other stuff
 
 
 (eoe-kbd)

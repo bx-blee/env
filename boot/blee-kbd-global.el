@@ -12,12 +12,12 @@
 ;; 
 ;;
 
-(require 'eoe)
-(require 'basic-ext)
-(require 'misc-lim)
-(require 'compile-ext)
-;;(require 'bx-bbdb-lib) ; OBSOLETED	for bbdb-complete-name-only
-(require 'font-lock-ext)
+;;;(require 'eoe)
+;;;(require 'basic-ext)
+;;;(require 'misc-lim)
+;;;(require 'compile-ext)
+;;; ;;(require 'bx-bbdb-lib) ; OBSOLETED	for bbdb-complete-name-only
+;;;(require 'font-lock-ext)
 
 ;;; (eoe-kbd)
 (defun eoe-kbd ()
