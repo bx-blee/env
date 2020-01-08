@@ -71,7 +71,140 @@
 
   (require 'bap-bbdb)
   (bap:bbdb:full/update)
+
+  (require 'eoeLsip)
+
+  (require 'blee-lib-common)
+  (require 'blee-lib-general)
+
+  (require 'blee-dict)
+  (require 'bx-lib)
+  (require 'fv-lib)
+  (require 'fto-lib)
+  (require 'fileParam-lib)
+  (require 'blee-iims-panel)
+  (require 'blee-iim-bash-cmnd)
+  (require 'blee-iicm-py-cmnd)
+
+  (require 'blee-global)
+  ;;;;(require 'blee-packages-install)
+
+
+  ;; (require 'bystar-ue-lib)  -- Wants misc-lim
+  ;; (bystar:ue:params-auto-set)
+
+;;; -----------------------------------------------------------------
+;;; Shell stuff
+;;; -----------------------------------------------------------------
+;;(require 'ksh-mode)
+
+  (setq explicit-shell-file-name		"/bin/bash")
+  (setq      shell-command-switch			"-c")
+
+  (setq     shell-cd-regexp			"cd")
+  (setq     shell-popd-regexp			"popd\\|\-")
+  (setq     shell-pushd-regexp		"pd\\|pushd\\|\=\\|\+")
+  (setq     shell-prompt-pattern		"^[^#$%>\n]*[#$%>] *")
+
+  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+  (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
+
+  (defun comintPlus-editInput (arg)
+    (interactive "p")
+    (setq debug-on-error t)
+    (comint-kill-whole-line 0)
+    (end-of-buffer)
+    (yank)
+    ;;(comint-send-input t)
+    ;;(comint-send-input)
+    )
+
+  
+  ;;;(require 'fshell)  ;; What is this?? NOTYET
+
+					; ;; CVS
+					; ;;
+					; (eoe-require 'pcl-cvs)
+  (setq vc-follow-symlinks nil)   ;;; Following symlinks messes up /lcnt assumptions for example
+
+  ;; Choose bystar account or none
+
+  ;; bystar-star does either (require 'bystar-all) or (require 'bystar-all-nobody)
+  (require 'bystar-start)
+
+  (load "bystar-acct")
+  
+  (require 'eoe-user-params)
+
+  ;;; (require 'lsip-basic) -- Needs misc-lim
+
+
+  ;; -----------------------------------------------------------------
+  ;; Email AND News  (gnus, bbdb, supercite, msend, ...)
+  ;; -----------------------------------------------------------------
+  (add-to-list 'auto-mode-alist '("\\.mail\\'" . message-mode))
+
+
+  (setq bystar:ue:form-factor 'desktop)  ;;; Notyet where should this go?
+
+  (funcall  '(lambda () "
+**     *Mail -- Gnus And Addons*
+"
+	       (load "bystar-mail")
+	       ))
+
+  (funcall  '(lambda () "
+**     *Mail -- offlineimap*
+"
+	     (require 'bystar-offlineimap)
+	     ))
+
+
+
+  (funcall  '(lambda () "
+**     *Mail -- Search -- notmuch, nnir*
+"
+	       ;;(require 'bystar-mail-search)
+	       ))
+  
+;;; -----------------------------------------------------------------
+;;; Email Citations -- SuperCite
+;;; -----------------------------------------------------------------
+;;; NOTYET, Perhaps requires GNUS conversion
+;(eoe-require 'supercite)
+  (require 'supercite)
+  (load "supercite-user")
+
+;;; -----------------------------------------------------------------
+;;; EMMS
+;;; -----------------------------------------------------------------
+  ;;; (load "bystar-emms")  NOTYET, package is needed
+
+; ;;; -----------------------------------------------------------------
+; ;;; Mozilla Browser integration
+; ;;; -----------------------------------------------------------------
+;;;
+;;; configure browse-url.el
+;;;
+  (require 'browse-url)
+
+  ;;(setq browse-url-browser-function 'browse-url-mozilla)
+  ;;(setq browse-url-browser-function 'browse-url-firefox)
+  ;;(setq browse-url-firefox-program "/opt/public/osmt/bin/firefox-bx")
+  (setq browse-url-browser-function 'browse-url-generic)
+  (setq browse-url-generic-program "/opt/public/osmt/bin/firefox-bx")
+
+;;; -----------------------------------------------------------------
+;;; C and C++ Programming Language -- Software Development 
+;;; -----------------------------------------------------------------
+  (require 'cc-mode)			; covers C, C++
+
+  ;;;(require 'compile-ext)
+  
+  
   )
+
+
 
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "boot-common"
