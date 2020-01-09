@@ -37,7 +37,7 @@
 *  [[elisp:(org-cycle)][| ]]  Requires      :: Requires [[elisp:(org-cycle)][| ]]
 ")
 
-(require 'load-dir)
+;;(require 'load-dir)
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  Top Entry     :: (bx:dblock:all-defaults-set) [[elisp:(org-cycle)][| ]]

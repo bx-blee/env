@@ -2,8 +2,8 @@
 ;;; RCS: $Id: lsip-basic.el,v 1.10 2016-02-07 02:39:18 lsipusr Exp $
 ;;;
 
-(require 'misc-lim)			; insert-time
-(require 'fshell)			; (shell t)
+;;(require 'misc-lim)			; insert-time
+;;(require 'fshell)			; (shell t)
 ;;(require 'shell-font)			; highlighting in shell mode
 
 

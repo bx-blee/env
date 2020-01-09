@@ -50,6 +50,7 @@
   "Desc:"
 
   (blee:ann|this-func (compile-time-function-name))
+  
   ;;;
   ;;; These include make-directory as needed
   ;;;
@@ -61,7 +62,7 @@
 
   (require 'bcg-libs)
   (bcg:libs:full/update)
-
+  
   (require 'bcg-core)
   (bcg:core:full/update)
 
@@ -73,6 +74,13 @@
 
   (require 'bap-bbdb)
   (bap:bbdb:full/update)
+
+  (require 'bcg-org)
+  (bcg:org:full/update)
+
+  (require 'bap-shell)
+  (bap:shell:full/update)
+  
 
 (setq eoe-uses-wide-screen t)
 (setq eoe-font "10x20")
@@ -107,35 +115,6 @@
 
   ;; (require 'bystar-ue-lib)  -- Wants misc-lim
   ;; (bystar:ue:params-auto-set)
-
-;;; -----------------------------------------------------------------
-;;; Shell stuff
-;;; -----------------------------------------------------------------
-;;(require 'ksh-mode)
-
-  (setq explicit-shell-file-name		"/bin/bash")
-  (setq      shell-command-switch			"-c")
-
-  (setq     shell-cd-regexp			"cd")
-  (setq     shell-popd-regexp			"popd\\|\-")
-  (setq     shell-pushd-regexp		"pd\\|pushd\\|\=\\|\+")
-  (setq     shell-prompt-pattern		"^[^#$%>\n]*[#$%>] *")
-
-  (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-  (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
-
-  (defun comintPlus-editInput (arg)
-    (interactive "p")
-    (setq debug-on-error t)
-    (comint-kill-whole-line 0)
-    (end-of-buffer)
-    (yank)
-    ;;(comint-send-input t)
-    ;;(comint-send-input)
-    )
-
-  
-  ;;;(require 'fshell)  ;; What is this?? NOTYET
 
 					; ;; CVS
 					; ;;
@@ -281,7 +260,6 @@
 	     ))
 
 
-
 ;;;#+BEGINNOT: blee:pkg:adopt :eanble :org-level 2 pkgName
 (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Adopted Component   ::      *Dired* [[elisp:(org-cycle)][| ]]
@@ -315,28 +293,6 @@
 ;;; -----------------------------------------------------------------
 (load "bystar-calendar")
 
-; ;;; -----------------------------------------------------------------
-; ;;; Org-Mode and Remember
-; ;;; -----------------------------------------------------------------
-;; /bisos/git/auth/bxRepos/blee/env/main/orgModeInit.el
-
-;;(load-file "/bisos/git/auth/bxRepos/blee/env/main/orgModeInit.el") -- Missing Org Bullets
-(require 'bx-org-exports)
-
-;;; Work Logs For Projects
-;;;(eoe-require 'worklog)
-
-;;; TODO-MODE
-(autoload 'todo-mode "todo-mode"
-  "Major mode for editing TODO lists." t)
-(autoload 'todo-show "todo-mode"
-  "Show TODO items." t)
-(autoload 'todo-insert-item "todo-mode"
-  "Add TODO item." t)
-(autoload 'todo-top-priorities "todo-mode"
-  "Add TODO item." t)
-
-(setq todo-show-priorities 2) ;; 0 shows all entries
 
 ;; Writing / Publishing
 
