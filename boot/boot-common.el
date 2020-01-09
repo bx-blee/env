@@ -2,7 +2,10 @@
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Library (boot-common:),  [[elisp:(org-cycle)][| ]]
-* 
+*
+** Known problems:
+*** F12 fails
+*** New package adds fail
 ")
 
 
