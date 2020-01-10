@@ -77,18 +77,20 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
     ;;; :pin melpa-stable
     )
   
-  ;;;(use-package f
+  (use-package f
     ;;; :demand t
-    ;;; :ensure nil
+    :ensure t
     ;;; :pin melpa-stable
-    ;;;)
-  
+    )
+
   (use-package subr-x
     :ensure nil
     ;;; :pin melpa-stable
     )
   
   (require 'cl-lib)
+
+  (require 'blee-lib-widget)
 
   )
 

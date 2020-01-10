@@ -80,15 +80,17 @@ Eg 27f. Used to tag filenames.")
 ;;; (blee:elpa:main-init)
 (defun blee:elpa:main-init ()
   "Desc:"
+  
+  (setq package-user-dir (blee:vered:elpa|base-obtain))
+  
+  (message (format "package-user-dir=%s" package-user-dir))
+
+  ;; Below require will auto-create `package-user-dir' it doesn't exist.
+  (require 'package)
+
+  (blee:elpa:repositories:setup)
+  
   (when (blee:elpa:updatePkgs:needUpdating-p)  
-    (setq package-user-dir (blee:vered:elpa|base-obtain))
-
-    (message (format "package-user-dir=%s" package-user-dir))
-
-    ;; Below require will auto-create `package-user-dir' it doesn't exist.
-    (require 'package)
-
-    (blee:elpa:repositories:setup)
     
     (blee:elpa:install-if-needed 'use-package)
     
@@ -103,6 +105,7 @@ Eg 27f. Used to tag filenames.")
 
 
 ;;; (format "/lisp/pkgs/%s" *eoe-emacs-type*)
+;;; NOTYET Convert this to a defvar and include a docstring
 (setq blee:elpa:updatePkgs:areUpToDateFile
       (format "/bisos/blee/%s/run/elpa-pkgs-are-up-to-date" *eoe-emacs-type*))
 
@@ -121,8 +124,6 @@ Eg 27f. Used to tag filenames.")
   "Create /bisos/blee/27f/run/elpa-pkgs-are-up-to-date"
   (write-region "" nil  blee:elpa:updatePkgs:areUpToDateFile)
   )
-
-
 
 
 ;;; (blee:elpa:repositories:setup)

@@ -107,7 +107,7 @@
 ;;;(tool-bar-mode 1)
    (menu-bar-showhide-tool-bar-menu-customize-enable-top)
 
-(menu-bar-right-scroll-bar)
+   (menu-bar-right-scroll-bar)
   
 
   (require 'eoeLsip)
