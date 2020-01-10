@@ -59,11 +59,21 @@
   ;;;
   ;;; These include make-directory as needed
   ;;;
-  (blee:vered:run|base-obtain)
-  (blee:vered:tmp|base-obtain)
-  (blee:vered:elpa|base-obtain)
+  (blee:vered:run|base-obtain)       ;;; eg, /bisos/blee/27f/run
+  (blee:vered:tmp|base-obtain)       ;;; eg, /bisos/blee/27f/tmp
+  (blee:vered:elpa|base-obtain)      ;;; eg, /bisos/blee/27f/elpa
   
-  (blee:elpa:main-init)
+  (blee:elpa:main-init)              ;;; Sets up load-path
+
+
+ ;; Convert all inclusions to fit in this model
+;;;#+BEGINNOT: blee:pkg:adopt :eanble :org-level 2 pkgName
+  (funcall  '(lambda () "
+**  [[elisp:(org-cycle)][| ]]  Adopted Component   ::      *Dired* [[elisp:(org-cycle)][| ]]
+	
+"
+	     ))
+;;;#+END:
 
   (require 'bcg-libs)
   (bcg:libs:full/update)
