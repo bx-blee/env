@@ -93,18 +93,22 @@
   (require 'bap-shell)
   (bap:shell:full/update)
   
+  (require 'bap-emms)
+  (bap:emms:full/update)
+  
 
-(setq eoe-uses-wide-screen t)
-(setq eoe-font "10x20")
-;;(setq eoe-keybinding-style "neda")
-(setq eoe-use-toolbars nil)
-(setq eoe-use-sound t)
+  
+  (setq eoe-uses-wide-screen t)
+  (setq eoe-font "10x20")
+  ;;(setq eoe-keybinding-style "neda")
+  (setq eoe-use-toolbars nil)
+  (setq eoe-use-sound t)
 
-;;; (tool-bar-mode -1)  
-;;;(tool-bar-mode 1)
-   (menu-bar-showhide-tool-bar-menu-customize-enable-top)
+  ;; (tool-bar-mode -1)  
+  ;;(tool-bar-mode 1)
+  (menu-bar-showhide-tool-bar-menu-customize-enable-top)
 
-   (menu-bar-right-scroll-bar)
+  (menu-bar-right-scroll-bar)
   
 
   (require 'eoeLsip)
@@ -128,9 +132,9 @@
   ;; (require 'bystar-ue-lib)  -- Wants misc-lim
   ;; (bystar:ue:params-auto-set)
 
-					; ;; CVS
-					; ;;
-					; (eoe-require 'pcl-cvs)
+  ;; CVS
+  ;;
+  ;; (eoe-require 'pcl-cvs)
   (setq vc-follow-symlinks nil)   ;;; Following symlinks messes up /lcnt assumptions for example
 
   ;; Choose bystar account or none
@@ -143,7 +147,6 @@
   (require 'eoe-user-params)
 
   ;;; (require 'lsip-basic) -- Needs misc-lim
-
 
   ;; -----------------------------------------------------------------
   ;; Email AND News  (gnus, bbdb, supercite, msend, ...)
@@ -166,32 +169,31 @@
 	     ))
 
 
-
   (funcall  '(lambda () "
 **     *Mail -- Search -- notmuch, nnir*
 "
 	       ;;(require 'bystar-mail-search)
 	       ))
   
-;;; -----------------------------------------------------------------
-;;; Email Citations -- SuperCite
-;;; -----------------------------------------------------------------
-;;; NOTYET, Perhaps requires GNUS conversion
-;(eoe-require 'supercite)
+  ;; -----------------------------------------------------------------
+  ;; Email Citations -- SuperCite
+  ;; -----------------------------------------------------------------
+  ;; NOTYET, Perhaps requires GNUS conversion
+  ;;(eoe-require 'supercite)
   (require 'supercite)
   (load "supercite-user")
 
-;;; -----------------------------------------------------------------
-;;; EMMS
-;;; -----------------------------------------------------------------
+  ;; -----------------------------------------------------------------
+  ;; EMMS
+  ;; -----------------------------------------------------------------
   ;;; (load "bystar-emms")  NOTYET, package is needed
 
-; ;;; -----------------------------------------------------------------
-; ;;; Mozilla Browser integration
-; ;;; -----------------------------------------------------------------
-;;;
-;;; configure browse-url.el
-;;;
+  ;; -----------------------------------------------------------------
+  ;; Mozilla Browser integration
+  ;; -----------------------------------------------------------------
+  ;;
+  ;; configure browse-url.el
+  ;;
   (require 'browse-url)
 
   ;;(setq browse-url-browser-function 'browse-url-mozilla)
@@ -200,22 +202,22 @@
   (setq browse-url-browser-function 'browse-url-generic)
   (setq browse-url-generic-program "/opt/public/osmt/bin/firefox-bx")
 
-;;; -----------------------------------------------------------------
-;;; C and C++ Programming Language -- Software Development 
-;;; -----------------------------------------------------------------
+  ;; -----------------------------------------------------------------
+  ;; C and C++ Programming Language -- Software Development 
+  ;; -----------------------------------------------------------------
   (require 'cc-mode)			; covers C, C++
 
   ;;;(require 'compile-ext)
 
-;;; -----------------------------------------------------------------
-;;; Python Programming Language -- Software Development 
-;;; -----------------------------------------------------------------
-;;(require 'blee-python)
+  ;; -----------------------------------------------------------------
+  ;; Python Programming Language -- Software Development 
+  ;; -----------------------------------------------------------------
+  ;;(require 'blee-python)  ;; Notyet flymake
 
-;;; -----------------------------------------------------------------
-;;; markdown-mode
-;;; -----------------------------------------------------------------
-;;;(require 'blee-markdown)
+  ;; -----------------------------------------------------------------
+  ;; markdown-mode
+  ;; -----------------------------------------------------------------
+  ;;(require 'blee-markdown)
   (load-file "/bisos/git/auth/bxRepos/blee/env/main/blee-markdown.el")
 
 
@@ -223,250 +225,250 @@
 **     *YASnippet*
 *** TODO yasnippit should obsolete template
 "
-	       ;;(require 'blee-yasnippet)  ;;; NOTYET (error "Package ‘yasnippet-snippets-’ is unavailable")
+	       (require 'blee-yasnippet)  ;;; NOTYET (error "Package ‘yasnippet-snippets-’ is unavailable")
 	       ))
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **     *Auto-Complete*
 "
-	     ;; (require 'blee-af-auto-complete) NOTYET
+	       ;; (require 'blee-af-auto-complete) ;;; NOTYET
 	     ))
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **     *Google Maps*
 "
-;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master"))
-;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master")
-;; 		      load-path)))
-
+	       ;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master"))
+	       ;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master")
+	       ;; 		      load-path)))
+	     
 	     ;;; (require 'google-maps)  NOTYET
 	     ;;; (require 'org-location-google-maps) NOTYET
-	     ))
+	       ))
 
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *LanguageTool -- +diction/style* [[elisp:(org-cycle)][| ]]
 "
-	     (require 'bystar-langtool)
-	     ))
+	       (require 'bystar-langtool)
+	       ))
 
 
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Menu                  ::      *ProgTools* [[elisp:(org-cycle)][| ]]
 "
-	     (require 'bystar-progtools-menu)
-	     ))
+	       (require 'bystar-progtools-menu)
+	       ))
 
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *Bx Tool-Bar* [[elisp:(org-cycle)][| ]]
 "
-	     (require 'bx-tool-bar)
-	     ))
+	       (require 'bx-tool-bar)
+	       ))
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *BAC highlight-indentation* [[elisp:(org-cycle)][| ]]
 "
 	     ;;; (require 'bac-highlight-indentation) NOTYET
-	     ))
+	       ))
 
 
 ;;;#+BEGINNOT: blee:pkg:adopt :eanble :org-level 2 pkgName
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Adopted Component   ::      *Dired* [[elisp:(org-cycle)][| ]]
 	
 "
-	     (require 'bac-dired)
-	     ))
+	       (require 'bac-dired)
+	       ))
 ;;;#+END:
 
 
-;;; -----------------------------------------------------------------
-;;; DOS mode
-;;; -----------------------------------------------------------------
-;;;(require 'dos-mode)			; hide ^M characters
+  ;; -----------------------------------------------------------------
+  ;; DOS mode
+  ;; -----------------------------------------------------------------
+  ;;(require 'dos-mode)			; hide ^M characters
 
 
-;;; -----------------------------------------------------------------
-;;; Calc -- Arbitrary precision calculator
-;;; -----------------------------------------------------------------
-(load "bystar-calc")
+  ;; -----------------------------------------------------------------
+  ;; Calc -- Arbitrary precision calculator
+  ;; -----------------------------------------------------------------
+  (load "bystar-calc")
 
 
-;;; -----------------------------------------------------------------
-;;; Info -- more info directories
-;;; -----------------------------------------------------------------
-(load "bystar-info")
+  ;; -----------------------------------------------------------------
+  ;; Info -- more info directories
+  ;; -----------------------------------------------------------------
+  (load "bystar-info")
 
 
-;;; -----------------------------------------------------------------
-;;; CALENDAR MODE -- And Appointment (APPT) -- And Diary
-;;; -----------------------------------------------------------------
-(load "bystar-calendar")
+  ;; -----------------------------------------------------------------
+  ;; CALENDAR MODE -- And Appointment (APPT) -- And Diary
+  ;; -----------------------------------------------------------------
+  (load "bystar-calendar")
 
 
-;; Writing / Publishing
+  ;; Writing / Publishing
 
-;;; -----------------------------------------------------------------
-;;; Dictem -- Dictionary/Thesaurus lookup
-;;; -----------------------------------------------------------------
-(load "bystar-dictem")
-
-
-;;; -----------------------------------------------------------------
-;;; LaTeX, TeX, Bib, ttytex, 
-;;; -----------------------------------------------------------------
-;;;(load "bystar-tex")  ;;;For 24.4 and 24.5 NOTYET
+  ;; -----------------------------------------------------------------
+  ;; Dictem -- Dictionary/Thesaurus lookup
+  ;; -----------------------------------------------------------------
+  (load "bystar-dictem")
 
 
-;;
-;; visible or audible bell...
-;;
-(cond (eoe-use-sound
-       (setq visible-bell nil))
-      (t
-       (setq visible-bell t)))
+  ;; -----------------------------------------------------------------
+  ;; LaTeX, TeX, Bib, ttytex, 
+  ;; -----------------------------------------------------------------
+  ;;(load "bystar-tex")  ;;;For 24.4 and 24.5 NOTYET
 
-;;; -----------------------------------------------------------------
-;;; Screen Dressups -- Should be Done After All Packages Have Been Loaded
-;;; -----------------------------------------------------------------
+  
+  ;;
+  ;; visible or audible bell...
+  ;;
+  (cond (eoe-use-sound
+	 (setq visible-bell nil))
+	(t
+	 (setq visible-bell t)))
 
-;;(load "dressups.el")
-;;(eoe-dressup-auto)
-;;(eoe-set-font "10x20")
+  ;; -----------------------------------------------------------------
+  ;; Screen Dressups -- Should be Done After All Packages Have Been Loaded
+  ;; -----------------------------------------------------------------
 
-; Wheel mouse
-(autoload 'mwheel-install "mwheel" "Enabal mouse wheel support.")
-(mwheel-install)
+  ;;(load "dressups.el")
+  ;;(eoe-dressup-auto)
+  ;;(eoe-set-font "10x20")
 
-;;; -----------------------------------------------------------------
-;;; Global Key Bindings are maintained centrally in /bisos/git/auth/bxRepos/blee/env/main/blee-kbd-global.el
-;;; -----------------------------------------------------------------
+					; Wheel mouse
+  (autoload 'mwheel-install "mwheel" "Enabal mouse wheel support.")
+  (mwheel-install)
 
-(require 'eoeKbdMenuSupport)
-(require 'blee-kbd-global)    ;;; NOTYET -- Messes up magit and other stuff
+  ;; -----------------------------------------------------------------
+  ;; Global Key Bindings are maintained centrally in /bisos/git/auth/bxRepos/blee/env/main/blee-kbd-global.el
+  ;; -----------------------------------------------------------------
 
-
-(eoe-kbd)
-
-
-(autoload 'babel "babel"
-  "Use a web translation service to translate the message MSG." t)
-(autoload 'babel-region "babel"
-  "Use a web translation service to translate the current region." t)
-(autoload 'babel-as-string "babel"
-  "Use a web translation service to translate MSG, returning a string." t)
-(autoload 'babel-buffer "babel"
-  "Use a web translation service to translate the current buffer." t)
-
-(setq babel-preferred-to-language "French")
-
-(setq google-license-key "Q1n7eV5QFHLUgKEGMzcVQr9bX34Rv7SP")
-
-(require 'recentf)
-(setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
-(setq recentf-save-file (recentf-expand-file-name "~/BUE/emacs/recentf.el"))
-(recentf-mode 1)
-
-;;; iswitchb + recentf
-(require 'bx-iswitch)
-(bx:iswitch:all-defaults-set)
-
-;;(require 'bx-dblock)
-
-;;; ./bystar-m17n.el
-;;;(load "bystar-m17n.el")
-
-;;;
-;;; TOP LEVEL MENUS
-;;;
-
-;; ./handset-menu-top.el
-(if (string-equal opRunDistFamily "MAEMO")
-    (load "handset-menu-top")
-  )   
-
-(require 'blee-menu-activities)
-(blee:activities:menu)
-
-(require 'blee-menu-blee)
-;;(blee:blee:menu) -- NOTYET Missing emms
-
-(require 'blee-menu-my)
-(blee:my:menu)
-
-(if (file-directory-p (expand-file-name "~/BUE/elisp"))
-    (progn
-      (require 'bue-acct-main)
-      (if (fboundp 'bue:acct:main)
-	  (bue:acct:main))
-      ))
-
-;;
-(setq-default lpr-switches '("-2P -t"))
-(setq-default lpr-command "mpage")
-
-;; /bisos/git/auth/bxRepos/blee/env/main/murl-base.el /bisos/git/auth/bxRepos/blee/env/main/murl-craigslist.el /bisos/git/auth/bxRepos/blee/env/main/murl-slink.el /bisos/git/auth/bxRepos/blee/env/main/murl-bbdb.el
-
-(load "murl-base.el")
-(load "murl-bbdb.el")            ;;; Captures mailto: into bbdb
-
-; ;;; -----------------------------------------------------------------
-; ;;; GNU Server -- Should Run Last  after all else that is needed 
-; ;;; -----------------------------------------------------------------
-(require 'mozmail)
-
-;; (when (string-equal (getenv "DISPLAY") ":0.0")
-;;   (setq server-
-;;   (server-force-delete)
-;;   (server-start)
-;;   )
-
-;;(setq server-use-tcp t)
+  (require 'eoeKbdMenuSupport)
+  (require 'blee-kbd-global)    ;;; NOTYET -- Messes up magit and other stuff
 
 
-(blee:server:ensure)
-
-(require 'bystar-init-screen)
-(bystar:init:startup-message)
-
-;;(bystar:mail:faces:background-dark)
-
-(require 'color-theme)
-;; emacsPlus/22Plus/themes/color-theme-library.el 
-(load-library "themes/color-theme-library")
-
-(require 'bystar-color-themes)
-(color-theme:bystar:black-green)
-
-(require 'bystar-printing-lib)
-(bystar:printing:all-defaults-set)
+  (eoe-kbd)
 
 
-(funcall  '(lambda () "
+  (autoload 'babel "babel"
+    "Use a web translation service to translate the message MSG." t)
+  (autoload 'babel-region "babel"
+    "Use a web translation service to translate the current region." t)
+  (autoload 'babel-as-string "babel"
+    "Use a web translation service to translate MSG, returning a string." t)
+  (autoload 'babel-buffer "babel"
+    "Use a web translation service to translate the current buffer." t)
+
+  (setq babel-preferred-to-language "French")
+
+  (setq google-license-key "Q1n7eV5QFHLUgKEGMzcVQr9bX34Rv7SP")
+
+  (require 'recentf)
+  (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
+  (setq recentf-save-file (recentf-expand-file-name "~/BUE/emacs/recentf.el"))
+  (recentf-mode 1)
+
+  ;; iswitchb + recentf
+  (require 'bx-iswitch)
+  (bx:iswitch:all-defaults-set)
+
+  (require 'bx-dblock)
+
+  ;; ./bystar-m17n.el
+  ;;(load "bystar-m17n.el")   ;;; NOTYET, emacs version problem -- likely simple to fix
+
+  ;;
+  ;; TOP LEVEL MENUS
+  ;;
+
+  ;; ./handset-menu-top.el
+  (if (string-equal opRunDistFamily "MAEMO")
+      (load "handset-menu-top")
+    )   
+
+  (require 'blee-menu-activities)
+  (blee:activities:menu)
+
+  (require 'blee-menu-blee)
+  (blee:blee:menu)
+
+  (require 'blee-menu-my)
+  (blee:my:menu)
+
+  (if (file-directory-p (expand-file-name "~/BUE/elisp"))
+      (progn
+	(require 'bue-acct-main)
+	(if (fboundp 'bue:acct:main)
+	    (bue:acct:main))
+	))
+
+  ;;
+  (setq-default lpr-switches '("-2P -t"))
+  (setq-default lpr-command "mpage")
+
+  ;; /bisos/git/auth/bxRepos/blee/env/main/murl-base.el /bisos/git/auth/bxRepos/blee/env/main/murl-craigslist.el /bisos/git/auth/bxRepos/blee/env/main/murl-slink.el /bisos/git/auth/bxRepos/blee/env/main/murl-bbdb.el
+
+  (load "murl-base.el")
+  (load "murl-bbdb.el")            ;;; Captures mailto: into bbdb
+
+  ;; -----------------------------------------------------------------
+  ;; GNU Server -- Should Run Last  after all else that is needed 
+  ;; -----------------------------------------------------------------
+  (require 'mozmail)
+
+  ;; (when (string-equal (getenv "DISPLAY") ":0.0")
+  ;;   (setq server-
+  ;;   (server-force-delete)
+  ;;   (server-start)
+  ;;   )
+
+  ;;(setq server-use-tcp t)
+
+
+  (blee:server:ensure)
+
+  (require 'bystar-init-screen)
+  (bystar:init:startup-message)
+
+  ;;(bystar:mail:faces:background-dark)
+
+  (require 'color-theme)
+  ;; emacsPlus/22Plus/themes/color-theme-library.el 
+  (load-library "themes/color-theme-library")
+
+  (require 'bystar-color-themes)
+  (color-theme:bystar:black-green)
+
+  (require 'bystar-printing-lib)
+  (bystar:printing:all-defaults-set)
+
+
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *festival -- TTS -- Say* [[elisp:(org-cycle)][| ]]
 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
 "
-	     (load-file "/bisos/git/auth/bxRepos/blee/env/main/festival.el")
-	     ))
+	       (load-file "/bisos/git/auth/bxRepos/blee/env/main/festival.el")
+	       ))
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *ISPELL* [[elisp:(org-cycle)][| ]]
 	Just Load. 
 "
-	     ;;(load "bystar-ispell")
-	     ))
+	       ;;(load "bystar-ispell")
+	       ))
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *Tabbar* [[elisp:(org-cycle)][| ]]
 	Tabbar setup needs to come late in the setup, perhaps after color-theme
 "
-	     (require 'setup-tabbar)
-	     ))
+	       (require 'setup-tabbar)
+	       ))
 
 
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Minor-Mode            ::      *Dunamic Menu* [[elisp:(org-cycle)][| ]]
 	Dynamic Menus -- Use Through Out -- For Now Centralized. Will be split across later.
 "
@@ -474,39 +476,35 @@
 	     ;;;(blee-lib-widget:all-defaults-set)
 
 	     ;;;(require 'blee-comeega)
-	     ))
+	       ))
+  
 
 
-
-(funcall  '(lambda () "
+  (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Temporary             ::      *old2new* [[elisp:(org-cycle)][| ]]
 "
-	     (load-file "/bisos/git/auth/bxRepos/blee/env/lib/old2new/elispBleePanelUpdate.el")
-	     ))
+	       (load-file "/bisos/git/auth/bxRepos/blee/env/lib/old2new/elispBleePanelUpdate.el")
+	       ))
 
+  ;; 
+  ;; To Be Sorted Later
+  ;;
 
-;;; 
-;;; To Be Sorted Later
-;;;
+  (defun mb-policy-9 (string-arg)
+    ""
+    string-arg
+    )
 
-(defun mb-policy-9 (string-arg)
-""
-string-arg
-)
+  (require 'tramp)
+  (setq tramp-default-method "scp")
 
+  (load-file "/bisos/git/auth/bxRepos/blee/env/lib/Incoming/top-mode.el")
 
-(require 'tramp)
-(setq tramp-default-method "scp")
+  (load-file "/bisos/git/auth/bxRepos/blee/env/main/choose-comletion.el")
 
-(load-file "/bisos/git/auth/bxRepos/blee/env/lib/Incoming/top-mode.el")
-
-(load-file "/bisos/git/auth/bxRepos/blee/env/main/choose-comletion.el")
-
-(cd "~")
+  (cd "~")
 
   )
-
-
 
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "boot-common"

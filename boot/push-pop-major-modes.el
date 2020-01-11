@@ -35,6 +35,7 @@ If Other than org-mode, push, switch-to-org
   )
 
 (defun bap:org/switch-to-org-mode ()
+  "In emacs and 26 and 27 just doing (org-mode) does not set major-mode properly"
   (interactive)
   (org-mode)
   (setq major-mode 'org-mode)
