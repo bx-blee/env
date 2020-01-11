@@ -28,11 +28,17 @@ If Other than org-mode, push, switch-to-org
 	)
     (progn
       (blee:ppmm:mode-push major-mode)
-      (org-mode)
+      (bap:org/switch-to-org-mode)
       (move-beginning-of-line 1)      
       )
     )
-  )	  
+  )
+
+(defun bap:org/switch-to-org-mode ()
+  (interactive)
+  (org-mode)
+  (setq major-mode 'org-mode)
+  )
 
 (defun blee:ppmm:org-mode-content-list-24fProblem ()
   "If org-mode, pop switch to that.
@@ -85,20 +91,23 @@ If Other than org-mode, push, switch-to-org
 	)
     (progn
       (blee:ppmm:mode-push major-mode)
-      (org-mode)
+      (bap:org/switch-to-org-mode)      
       (blee:ppmm:org-mode-content-list)
       (recenter-top-bottom)
       )
     )
-  )	  
+  )
+
 
 
 ;;;  (setq blee:ppmm:mode-stack (list nil))
 ;;;  (blee:ppmm:mode-push 'emacs-lisp-mode)
-(defun blee:ppmm:mode-push (mode)
+(defun blee:ppmm:mode-push (@mode)
   "Given mode,  push mode on stack"
   (interactive)
-  (push mode (car blee:ppmm:mode-stack))
+  (blee:ann|this-func (compile-time-function-name))
+  (message "Blee:ann Pushing @mode=%s" @mode)  
+  (push @mode (car blee:ppmm:mode-stack))
   )
 
 ;;; (blee:ppmm:mode-pop)
@@ -108,9 +117,11 @@ If the file is opened not in its natural major mode, but org-mode instead,
 the pop will fail, in which case we'll do normal-mode to recover.
 "
   (interactive)
+  (blee:ann|this-func (compile-time-function-name))  
   (let (
 	($poped (pop (car blee:ppmm:mode-stack)))
 	)
+    (message "Blee:ann Poped $poped=%s" $poped)      
     (when $poped
 	(call-interactively $poped)
 	)

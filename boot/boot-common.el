@@ -5,9 +5,6 @@
 *
 ** Known problems:
 *** F12 fails
-*** New package adds fail
-*** Add f library
-*** Add libs for +- and ==
 ")
 
 
