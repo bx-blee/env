@@ -159,7 +159,7 @@
   (funcall  '(lambda () "
 **     *Mail -- Gnus And Addons*
 "
-	       ;;(load "bystar-mail")
+	       (load "bystar-mail")
 	       ))
 
   (funcall  '(lambda () "
@@ -320,8 +320,9 @@
   ;; LaTeX, TeX, Bib, ttytex, 
   ;; -----------------------------------------------------------------
   ;;(load "bystar-tex")  ;;;For 24.4 and 24.5 NOTYET
+  (require 'bcg-tex)
+  (bcg:tex:full/update)
 
-  
   ;;
   ;; visible or audible bell...
   ;;
