@@ -71,21 +71,87 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))  
-  (message "blee:ann -- TMP -- bap:bbdb:install/update")
+
   (use-package bbdb
     :ensure t
     ;;; :pin melpa-stable
     )
+
+  (use-package bbdb-ext
+    :ensure t
+    ;;; :pin melpa-stable
+    )
+
+  (use-package bbdb-vcard
+    :ensure t
+    ;;; :pin melpa-stable
+    )
+
+  (require 'bbdb-vcard-export)
+  (require 'bbdb-vcard)
+
+  ;; BBDB Filters
+  ;; NOTYET, can't figure this
+  ;;(load-file "/opt/public/eoe/lisp/esfiles/bbdb-filters-site.el")
+  ;;(eoe-require 'bbdb-filters-site)
+  ;;(load "bbdb-filters-site")
+
+  ;;(load-file "/usr/devenv/doc/nedaComRecs/Content/msend-contents-load.el")
+  
   )
 
 (defun bap:bbdb:config/main ()
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
-  (message "blee:ann -- TMP -- bap:bbdb:install/update")
-  ;;(setq bbdb-git-standard-options
-  ;; (append bbdb-git-standard-options '("-c") '("http.sslVerify=false")))
+
+  (setq bbdb-file "~/.bbdbV9")   ;;; Is It Really V9
+  
+  ;;(add-hook 'bbdb-mode-hook 'bbdb-ext-hook)
+  (bbdb-ext-hook)
+  
   )
+
+
+
+
+
+
+;;; (require 'mozmail)
+;;; Test It
+;;; (progn (murl-pre-hook) (mozmail "mailto:one@example.com") (murl-post-hook))
+;;; (setq debug-on-error t)
+
+
+(defun murl-bbdbCapture-pre ()
+  "Mail URL sendlink-toWeblogs"
+
+  (msend-originator-from-line "")
+
+  (msend-originator-envelope-addr "")
+
+  (msend-compose-setup)
+  )
+
+(defun murl-bbdbCapture-post ()
+  "Mail URL sendlink-toWeblogs"
+  (bbdb-show-all-recipients)
+  (bury-buffer nil)
+   )
+
+
+(defun murl-bbdbCapture ()
+  "Mail URL sendlink-toWeblogs"
+  (interactive)
+
+  (setq  a-murl-pre-hook nil)
+  (add-hook 'a-murl-pre-hook 'murl-bbdbCapture-pre)
+
+  (setq  a-murl-post-hook nil)
+  (add-hook 'a-murl-post-hook 'murl-bbdbCapture-post)
+  )
+
+
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide

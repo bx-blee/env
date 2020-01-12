@@ -102,63 +102,6 @@
 
 
 
-;;; BBDB Printing Interface
-;(require 'bbdb-print)
-
-;(setq bbdb-print-file-name "~/bbdb-print/bbdb.tex")
-;(setq bbdb-print-format-file-name "bbdb-print.tex")
-;(setq bbdb-print-elide '(aka mail-alias nic nic-updated)) ;;  List of fields NOT to print
-;(setq bbdb-print-require '(and name (or address phone)))
-
-;(setq bbdb-print-no-bare-names t)       ;;If nonnil, `bare names' will not be printed.
-
-;;;; Describe Variable to see what means what
-;(setq bbdb-print-alist '((columns . 2)
-;			 (separator . 2)
-;			 (phone-on-first-line . "^[ \t]*$")
-;			 (ps-fonts . nil)
-;			 (font-size . 10)
-;			 (quad-hsize . "3.15in")
-;			 (quad-vsize . "4.5in")))
-
-;;;;(setq bbdb-print-elide '(net aka mail-alias nic nic-updated)) ;;  List of fields NOT to print
-;;;;(setq bbdb-print-alist '((columns . quad)
-;;;;			   (separator . 2)
-;;;;			   (phone-on-first-line . "^[ \t]*$")
-;;;;			   (ps-fonts . nil)
-;;;;			   (font-size . 6)
-;;;;			   (quad-hsize . "3.15in")
-;;;;			   (quad-vsize . "4.5in")))
-
-;;;; BDBD Supercite (Attribution)
-;;; NOTYET, 21x does not like bbdb-supercite
-;;(load "bbdb-supercite")
-
-;;;; BDBD WWW (w3)
-;;;;(load "bbdb-www")
-
-
-;;; BBDB Filters
-;;; NOTYET, can't figure this
-;(load-file "/opt/public/eoe/lisp/esfiles/bbdb-filters-site.el")
-(eoe-require 'bbdb-filters-site)
-;;;(load "bbdb-filters-site")
-
-;(load-file "/usr/devenv/doc/nedaComRecs/Content/msend-contents-load.el")
-
-
-(if (equal (bbdb-version) "2.36")
-    (progn 
-      (load "~/lisp/trebb-bbdb-vcard-fc2394f/vcard.el")
-      (load "~/lisp/trebb-bbdb-vcard-fc2394f/bbdb-vcard.el")
-      )
-  (progn
-    (require 'bbdb-vcard-export)
-    (require 'bbdb-vcard)
-    )
-  )
-    
-
 
 
 (lambda () "
@@ -175,7 +118,7 @@
 (bystar:bbdb:faces:background-dark)
 
 
-;;;(bystar:bbdb:search-here "maryam shafaei")
+;;;(bystar:bbdb:search-here "mohsen banan")
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (bystar:bbdb:search-here string) [[elisp:(org-cycle)][| ]]
   ")
@@ -187,7 +130,7 @@
   (switch-to-buffer (get-buffer "*BBDB*"))
   (delete-other-windows))
 
-;;;(bystar:bbdb:search-other "maryam shafaei")
+;;;(bystar:bbdb:search-other "mohsen banan")
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (bystar:bbdb:search-other string) [[elisp:(org-cycle)][| ]]
   ")
@@ -210,7 +153,6 @@
 
 ;;; (call-interactively 'bbdb-vcard-import-directories)
 ;;; (bbdb-vcard-import-directories "~/tmp")
-;;; (bbdb-vcard-import-directories "/de/bx/nne/mb-tmo/tmoVcards/20161025-preped")
 ;;; (bbdb-vcard-import-directories '("~/tmp" "~/lisp"))
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (bbdb-vcard-import-directories vcards-directories) [[elisp:(org-cycle)][| ]]
@@ -233,8 +175,7 @@ This is primarily intended for elisp usage, but can also be used interactively."
 
 ;;; (call-interactively 'bbdb-vcard-import-files)
 ;;; (bbdb-vcard-import-files "~/tmp/*.vcf")
-;;; (bbdb-vcard-import-files "/de/bx/nne/mb-tmo/tmoVcards/20161025-preped/*.vcf")
-;;; (bbdb-vcard-import-files '("~/tmp/Alejandro Aguirre.vcf" "~/tmp/Joshua Bye.vcf"))
+
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (bbdb-vcard-import-files vcard-files) [[elisp:(org-cycle)][| ]]
   ")

@@ -413,7 +413,7 @@
   ;; /bisos/git/auth/bxRepos/blee/env/main/murl-base.el /bisos/git/auth/bxRepos/blee/env/main/murl-craigslist.el /bisos/git/auth/bxRepos/blee/env/main/murl-slink.el /bisos/git/auth/bxRepos/blee/env/main/murl-bbdb.el
 
   (load "murl-base.el")
-  (load "murl-bbdb.el")            ;;; Captures mailto: into bbdb
+  ;;(load "murl-bbdb.el")            ;;; Captures mailto: into bbdb  -- Moved into bap-bbdb.el
 
   ;; -----------------------------------------------------------------
   ;; GNU Server -- Should Run Last  after all else that is needed 
