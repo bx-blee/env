@@ -89,6 +89,13 @@ Eg 27f. Used to tag filenames.")
   (require 'package)
 
   (blee:elpa:repositories:setup)
+
+  (unless (blee:elpa:standalone/mode?)
+    (blee:elpa:repositories/prep)
+
+    ;; NOTYET, this should happen at the very end -- Not here.
+    (blee:elpa:standalone/enable)
+    )
   
   (when (blee:elpa:updatePkgs:needUpdating-p)  
     
@@ -98,16 +105,17 @@ Eg 27f. Used to tag filenames.")
 
     ;;(bx:package:install:all)
 
+    ;; NOTYET, more to come here. Variable to control :enabled with  pkgEnabled
+
+    ;; NOTYET, this should happen at the very end -- Not here.
     (blee:elpa:updatePkgs:disable)
     )
-  
   )
 
 
-;;; (format "/lisp/pkgs/%s" *eoe-emacs-type*)
-;;; NOTYET Convert this to a defvar and include a docstring
-(setq blee:elpa:updatePkgs:areUpToDateFile
-      (format "/bisos/blee/%s/run/elpa-pkgs-are-up-to-date" *eoe-emacs-type*))
+(defvar blee:elpa:updatePkgs:areUpToDateFile
+  (format "/bisos/blee/%s/run/elpa-pkgs-are-up-to-date" *eoe-emacs-type*)
+  "File whose existence indicates that elpa pkgs are up-to-date and need not be updated.")
 
 ;;; (blee:elpa:updatePkgs:needUpdating-p)
 (defun blee:elpa:updatePkgs:needUpdating-p ()
@@ -116,7 +124,7 @@ Eg 27f. Used to tag filenames.")
   )
 
 (defun blee:elpa:updatePkgs:enable ()
-  "Create /bisos/blee/27f/run/elpa-pkgs-are-up-to-date"
+  "Delete /bisos/blee/27f/run/elpa-pkgs-are-up-to-date"
   (delete-file blee:elpa:updatePkgs:areUpToDateFile)
   )
 
@@ -125,10 +133,36 @@ Eg 27f. Used to tag filenames.")
   (write-region "" nil  blee:elpa:updatePkgs:areUpToDateFile)
   )
 
+(defvar blee:elpa:standalone:standaloneModeFile
+  (format "/bisos/blee/%s/run/standalone-mode" *eoe-emacs-type*)
+  "File whose existence indicates that blee should operate in standalone mode."
+  )
+
+;;; (blee:elpa:standalone/mode?)
+(defun blee:elpa:standalone/mode? ()
+  "When /bisos/blee/27f/run/standalone-mode exists, return t, otherwise nil"
+  (interactive)
+  (file-exists-p blee:elpa:standalone:standaloneModeFile)
+  )
+
+;;; (blee:elpa:standalone/enable)
+(defun blee:elpa:standalone/enable ()
+  "Create /bisos/blee/27f/run/standalone-mode"
+  (interactive)  
+  (write-region "" nil  blee:elpa:standalone:standaloneModeFile)
+  )
+
+;;; (blee:elpa:standalone/disable)
+(defun blee:elpa:standalone/disable ()
+  "Delete /bisos/blee/27f/run/standalone-mode"
+  (interactive)  
+  (delete-file blee:elpa:standalone:standaloneModeFile)  
+  )
 
 ;;; (blee:elpa:repositories:setup)
 (defun blee:elpa:repositories:setup ()
-  ""
+  "Sets up package-archives list but does not prep/contact the repos.
+Also initializes the package system."
   (interactive)
   
   (setq package-archives nil)
@@ -151,22 +185,26 @@ Eg 27f. Used to tag filenames.")
   (unless (assoc-default "org" package-archives)
     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
 
-
   
   (when (equal emacs-major-version 24)
     (add-to-list 'package-archives
 		 '("marmalade" . "http://marmalade-repo.org/packages/") t)
     )
 
-  ;;;
-  ;;; This is necessary for package-install to work.
-  ;;; 
+  )
+
+;;; (blee:elpa:repositories/prep)
+(defun blee:elpa:repositories/prep ()
+  "Prepares elpa for usage. This requires network access for obtaining pkgs list.
+This is necessary for package-install to work."
+  (interactive)
+  
   (package-refresh-contents)
 
   ;;(package-list-packages)
   ;;(quit-window)
-  
   )
+
 
 (defun bap:auto-package-update:install|update ()
   "NOTYET, un tested."

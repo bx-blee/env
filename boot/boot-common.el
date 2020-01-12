@@ -3,8 +3,9 @@
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Library (boot-common:),  [[elisp:(org-cycle)][| ]]
 *
-** Known problems:
-*** F12 fails
+** [[elisp:(show-all)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]     [[elisp:(org-cycle)][| *Known Problems:* |]] |
+*** TODO [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] bap-bbdb.el Needs cleanup -- needs merge with bystar-bbdb-lib.el bystar-bbdb.el
+*** TODO [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] add standalone to blee:elpu
 ")
 
 
