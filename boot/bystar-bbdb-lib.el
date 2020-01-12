@@ -1,23 +1,12 @@
 ;;; bbdb-site.el
 
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/bbdb/lisp")
+;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/bbdb/lisp")
 
 (require 'bbdb)
 (require 'bbdb-com)
 
-(when (not (bx:emacs24.5p))
-  (when (< emacs-major-version 27)
-    (require 'bbdb-gnus)
-    (require 'bbdb-hooks)
-  ))
-
-(when (bx:emacs24.5p)
-  (when (not (string-equal opRunDistGeneration "1404"))
-    (require 'bbdb-gnus)
-    (require 'bbdb-hooks)      
-    ))
-
-
+(require 'bbdb-gnus)
+;;(require 'bbdb-hooks)
 
 ;;(require 'bbdb-xemacs)
 
@@ -27,15 +16,8 @@
 (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
 ;;f(add-hook 'gnus-startup-hook 'gnus-visual-hook)
 
-(when (bx:bbdbV3p)
-  (add-hook 'message-setup-hook 'bbdb-mail-aliases)
-  (add-hook 'mail-setup-hook 'bbdb-mail-aliases)
-  )
-
-(when (not (bx:bbdbV3p))
-  (add-hook 'message-setup-hook 'bbdb-define-all-aliases)
-  (add-hook 'mail-setup-hook 'bbdb-define-all-aliases)
-  )
+(add-hook 'message-setup-hook 'bbdb-mail-aliases)
+(add-hook 'mail-setup-hook 'bbdb-mail-aliases)
 
 
 ;;(add-hook 'gnus-article-mode-hook 'bbdb/gnus-show-sender)   ;; emacs24 testing
@@ -73,7 +55,6 @@
 
 
 ;;; Customization Parameters
-(setq bbdb-file "~/.bbdb")
 (setq bbdb-default-area-code 425)
 (setq bbdb-north-american-phone-numbers-p nil)
 

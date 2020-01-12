@@ -81,14 +81,14 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
     :ensure t
     ;;; :pin melpa-stable
     )
+  
+  ;; (use-package bbdb-vcard
+  ;;   :ensure t
+  ;;   ;;; :pin melpa-stable
+  ;;   )
 
-  (use-package bbdb-vcard
-    :ensure t
-    ;;; :pin melpa-stable
-    )
-
-  (require 'bbdb-vcard-export)
-  (require 'bbdb-vcard)
+  ;;(require 'bbdb-vcard-export)
+  ;;(require 'bbdb-vcard)
 
   ;; BBDB Filters
   ;; NOTYET, can't figure this
@@ -98,7 +98,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 
   ;;(load-file "/usr/devenv/doc/nedaComRecs/Content/msend-contents-load.el")
 
-  (require 'bystar-bbdb-lib)
+  ;;(require 'bystar-bbdb-lib)
   
   )
 
@@ -111,6 +111,57 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   
   ;;(add-hook 'bbdb-mode-hook 'bbdb-ext-hook)
   (bbdb-ext-hook)
+
+
+  ;;(bbdb-insinuate-reportmail)
+  (bbdb-insinuate-message)
+  (bbdb-insinuate-sc)
+  ;;(bbdb-insinuate-w3)
+  (setq bbdb-north-american-phone-numbers nil)
+  (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+  (setq bbdb-check-zip-codes-p nil)
+  ;;(setq bbdb-default-area-code 632)
+  ;;(setq bbdb-default-country "Philippines")
+  ;;(setq bbdb-ignore-some-messages-alist (quote (("From" . "hotmail") ("To" . "handhelds") ("From" . "yahoo.com"))))
+  (setq bbdb-notice-hook (quote (bbdb-auto-notes-hook)))
+  (setq bbdb/mail-auto-create-p t)
+  (setq bbdb/news-auto-create-p (quote bbdb-ignore-some-messages-hook))
+
+  (setq bbdb-complete-name-allow-cycling t)
+  ;;No popup-buffers
+  (setq bbdb-use-pop-up nil)  
+
+  ;;;(bbdb-initialize 'gnus 'message 'reportmail 'w3)
+  (bbdb-initialize 'gnus
+           ;;bbdb-insinuate-gnus adds bindings for the default
+           ;;keys to Gnus and configures Gnus to notify the
+           ;;BBDB when new messages are loaded. This
+           ;;notification is required if the BBDB is to be
+           ;;able to display BBDB entries for messages
+           ;;displayed in Gnus.
+
+           'message
+           ;; bbdb-insinuate-message adds a binding for M-TAB
+           ;; to Message mode. This will enable completion of
+           ;; addressees based on BBDB records.
+	   )
+
+           ;;'mu4e
+           ;;'anniv)
+
+  (bbdb-mua-auto-update-init 'gnus 'message 'mu4e)
+
+  ;; size of the bbdb popup
+  (setq bbdb-mua-pop-up-window-size 1)
+
+  ;; how to handle new entries
+  ;; (setq bbdb-mua-update-interactive-p '(query . create))
+
+  ;; look at every address; not only the first one
+  ;; (setq bbdb-message-all-addresses t)
+
+  (setq bbdb-phone-style 'nil)
+
   
   )
 
