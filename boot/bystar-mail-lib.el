@@ -960,8 +960,9 @@
     (require 'gnus-setup))
 
   (unless (<= emacs-major-version 24)   ;;;; 2019 For emacs 25, we are using a repalcement -- perhaps not necessary
-    (when (< emacs-major-version 27)
-    (require 'gnus-setup-replacement)))
+    (when (< emacs-major-version 26)
+    (require 'gnus-setup-replacement))
+    )
   
    ;;; User sophistication
   (setq gnus-novice-user t)		; 'cos GNUS has changed *a lot*
