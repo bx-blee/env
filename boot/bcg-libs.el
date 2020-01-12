@@ -90,6 +90,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   
   (require 'cl-lib)
 
+  (require 'blee-lib-common)
+  (require 'blee-lib-general)
   (require 'blee-lib-widget)
 
   )

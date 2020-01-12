@@ -97,6 +97,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ;;(load "bbdb-filters-site")
 
   ;;(load-file "/usr/devenv/doc/nedaComRecs/Content/msend-contents-load.el")
+
+  (require 'bystar-bbdb-lib)
   
   )
 
