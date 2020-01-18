@@ -96,8 +96,15 @@
   
   (require 'bap-emms)
   (bap:emms:full/update)
-  
 
+;;;#+BEGINNOT: blee:pkg:adopt :eanble :org-level 2 markdown  
+  (funcall  '(lambda () "
+**     *markdown-mode*
+"
+	       (require 'bap-markdown)
+	       (bap:markdown:full/update)
+	       ))
+;;;#+END:
   
   (setq eoe-uses-wide-screen t)
   (setq eoe-font "10x20")
