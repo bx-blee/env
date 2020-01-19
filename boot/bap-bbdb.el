@@ -115,7 +115,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 
   ;;(bbdb-insinuate-reportmail)
   (bbdb-insinuate-message)
-  (bbdb-insinuate-sc)
+  ;;(bbdb-insinuate-sc)   ;;; NOTYET has problems with 26f
   ;;(bbdb-insinuate-w3)
   (setq bbdb-north-american-phone-numbers nil)
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
