@@ -90,11 +90,17 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
       (server-start)
     ))
 
-
+;; (bf:server/ensure)
 (defun bf:server/ensure ()
-  "Set variable server-name based on (emacs-pid)"
+  "Set variable server-name based on (emacs-pid), start/restart as needed.
+ls -ld /run/user/$(id -u)/emacs/*
+"
   (interactive)
-  (setq server-name (format "blee-%s" (emacs-pid)))
+  (setq server-name (format
+		     "blee-%s-%s-%s"
+		     blee:version:full
+		     emacs-version
+		     (emacs-pid)))
   (unless (server-running-p)
     (server-force-delete)    
     (server-start)
