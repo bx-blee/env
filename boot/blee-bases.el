@@ -29,7 +29,7 @@
 *  [[elisp:(org-cycle)][| ]]  Requires                    :: Requires [[elisp:(org-cycle)][| ]]
 ")
 
-(require 'blee-emacs)
+(require 'blee-version)
 
 (lambda () "
 ####+BEGIN: bx:dblock:bnsm:top-of-menu "basic"

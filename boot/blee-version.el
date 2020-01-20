@@ -45,10 +45,11 @@ and is not especially meaningful.")
 (defvar blee:version:minor 1
   "Minor version number of this version of Blee.")
 
+(defvar *emacs-type* "fsf"
+  "Historic -- but kept for future resurrections -- used to distinguish lucid emacs etc")
 
 (defvar blee:emacs:type "fsf"
   "We are assuming that other than fsf emacs types could exist -- used to distinguish lucid emacs etc")
-
 
 (defvar *eoe-emacs-type* (intern (format "%df" emacs-major-version))
   "Historic -- A symbol (not a string) major-version+f for fsf-emacs.
@@ -64,7 +65,7 @@ Eg 27f. Used to tag filenames.")
 *  [[elisp:(org-cycle)][| ]]  Provide                     :: Provide [[elisp:(org-cycle)][| ]]
 ")
 
-(provide 'blee-emacs)
+(provide 'blee-version)
 ;;;#+END:
 
 

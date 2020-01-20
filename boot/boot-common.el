@@ -105,6 +105,20 @@
 	       (bap:markdown:full/update)
 	       ))
 ;;;#+END:
+
+  ;; (when (string-equal (getenv "DISPLAY") ":0.0")
+  ;;   (setq server-
+  ;;   (server-force-delete)
+  ;;   (server-start)
+  ;;   )
+
+  ;;(setq server-use-tcp t)
+
+
+  ;;(blee:server:ensure)
+
+  (require 'bf-server)
+  (bf:server:full/update)
   
   (setq eoe-uses-wide-screen t)
   (setq eoe-font "10x20")
@@ -296,6 +310,8 @@
 ;;;#+END:
 
 
+
+
   ;; -----------------------------------------------------------------
   ;; DOS mode
   ;; -----------------------------------------------------------------
@@ -432,16 +448,6 @@
   ;; -----------------------------------------------------------------
   (require 'mozmail)
 
-  ;; (when (string-equal (getenv "DISPLAY") ":0.0")
-  ;;   (setq server-
-  ;;   (server-force-delete)
-  ;;   (server-start)
-  ;;   )
-
-  ;;(setq server-use-tcp t)
-
-
-  (blee:server:ensure)
 
   (require 'bystar-init-screen)
   (bystar:init:startup-message)

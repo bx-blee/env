@@ -64,7 +64,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (blee:ann|this-func (compile-time-function-name))
   (when bf:server:usage:enabled-p
     (bf:server:install/update)
-    (bap:server:config/main)    
+    (bf:server:config/main)    
     )
   )
 
@@ -80,9 +80,9 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
-  
-  )
 
+  (bf:server/ensure)  
+  )
 
 (defun bf:server|running-ensure ()
   ""

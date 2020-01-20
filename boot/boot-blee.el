@@ -53,7 +53,7 @@
 
 
 (load-file  (expand-file-name (concat (blee:env:here-directory)
-				      "blee-emacs.el")))
+				      "blee-version.el")))
 
 (load-file  (expand-file-name (concat (blee:env:here-directory)
 				      "blee-bases.el")))
