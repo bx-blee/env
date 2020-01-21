@@ -4,6 +4,8 @@
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Library (bx:ispell:), for handelling IspellPlus [[elisp:(org-cycle)][| ]]
+** TODO Revisit the whole file -- Support both aspell and hunspell as backends.
+** TODO [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   Decide on whether or not rw-haunspell should be used
 * 
 ")
 

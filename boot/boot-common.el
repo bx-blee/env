@@ -476,7 +476,7 @@
 **  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *ISPELL* [[elisp:(org-cycle)][| ]]
 	Just Load. 
 "
-	       ;;(load "bystar-ispell")
+	       ;;(load "bystar-ispell")  NOTYET, Revisit this -- Support both aspell and hunspell backends
 	       ))
 
   (funcall  '(lambda () "
