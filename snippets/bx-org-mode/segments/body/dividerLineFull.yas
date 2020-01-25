@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Divider Line Full Dblock
 # key: begin/dividerLineFull
-# group: segments
+# group: segments/body
 # type: command
 # --
 (progn

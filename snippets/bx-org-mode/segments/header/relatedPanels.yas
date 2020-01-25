@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Related Panels Dblock
 # key: begin/relatedPanels
-# group: segments
+# group: segments/header
 # type: commandrelatedPanels
 # --
 (progn

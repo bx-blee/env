@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Destination Controls Dblock
 # key: begin/destinationControls
-# group: segments
+# group: segments/header
 # type: command
 # --
 (progn

@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: This File Dblock
 # key: begin/thisFile
-# group: segments
+# group: segments/header
 # type: command
 # --
 (progn

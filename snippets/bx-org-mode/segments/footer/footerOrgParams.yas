@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Footer Org Params Dblock
 # key: begin/footerOrgParams
-# group: segments
+# group: segments/footer
 # type: command
 # --
 (progn

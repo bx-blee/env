@@ -494,7 +494,7 @@
 	     ;;;(require 'blee-lib-widget)
 	     ;;;(blee-lib-widget:all-defaults-set)
 
-	     ;;;(require 'blee-comeega)
+	       (require 'blee-comeega)
 	       ))
   
 

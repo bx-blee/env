@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Segment Panel Bottom
+# name: Segment Panel Bottom -- OLD and Obsoleted
 # key: segments/panelBottom
-# group: segments
+# group: segments/footer
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

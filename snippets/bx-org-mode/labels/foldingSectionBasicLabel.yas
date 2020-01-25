@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: Folding Basic Label
-# key: node/describedPanelLink
+# name: Basic Label Folding Section 
+# key: node/basicLabelFoldingSection
 # group: Front Labels
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))

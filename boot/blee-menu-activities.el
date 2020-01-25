@@ -42,12 +42,12 @@
       ["By*User Env (BUE) Setup -- BxU<-->BxAUe Association" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxUser") t]
       ["By* Service Realization Modes Management" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxsrModes") t]
       ["By* Software-Service Contiuum Realization" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bystarContinuum") t]
-      ["BISOS Platform Facilities Development and Admin" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bisos/main") t]      
+      ["BISOS Development and Administration" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bisos/main") t]      
       ;;; ["By* Service Capabilities (BxSc) Management (BACS)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxServices/servicesManage") t]
       "---"
       ["ByStar Reference Model and Terminology -- BxIso Transition" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxRefModel") t]
       "---"
-      ["ByStar Human And Machine Languages And Standards" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxLanguages") t]
+      ["General Concepts, Information, Resources And Pointers" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxLanguages") t]
       "---"
       ["BUE: Blee Emacs Activities (By* Emacs)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bleeActivities") t]
       ;;;["BUE: Blee Emacs Features (By* Emacs Minor Modes)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/bleeFeatures") t]

@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Footer Panel Controls Full Dblock
 # key: begin/footerPanelControls
-# group: segments
+# group: segments/footer
 # type: command
 # --
 (progn

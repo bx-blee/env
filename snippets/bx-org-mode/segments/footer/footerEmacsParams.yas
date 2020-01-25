@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Footer Emacs Params Dblock
 # key: begin/footerEmacsParams
-# group: segments
+# group: segments/footer
 # type: command
 # --
 (progn

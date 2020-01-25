@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Bash Controls Dblock
 # key: begin/bashControls
-# group: segments
+# group: segments/header
 # type: command
 # --
 (progn
