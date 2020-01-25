@@ -203,10 +203,18 @@
       )
 
     (defun effectiveAnchor (@anchor)
-      (if @anchor
-	  (format "<<%s>>"@anchor)
-	""
-	))
+      (let (
+	    ($result)
+	    )
+	    (when (string-equal "" @anchor)
+	      (setq @anchor nil))
+	    (when @anchor
+      	      (setq $result (format "<<%s>>"@anchor)))
+	    (unless @anchor
+	      (setq $result ""))
+	    $result
+	    )
+      )
     ;;
     ;; (effectiveExtraInfo nil)
     ;; (effectiveExtraInfo "str")    
