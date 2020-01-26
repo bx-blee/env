@@ -969,7 +969,7 @@
       
       (insert
        (format 	"%s \
- #See:  [[elisp:(bx:bnsm:top:panel-blee)][Blee]] | [[elisp:(bx:bnsm:top:panel-listOfDocs)][All Docs]]  E|\
+ #See:  [[elisp:(bx:bnsm:top:panel-blee)][Blee]] | [[elisp:(bx:bnsm:top:panel-listOfDocs)][All Docs]]\
 "
 	(blee:panel:outLevelStr (+ 1 @outLevel))
 	))

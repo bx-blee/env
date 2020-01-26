@@ -1,11 +1,11 @@
 # -*- mode: snippet -*-
 # name: Bottom From Divider Line
 # key: begin/bottomFromDivider
-# group: bottomOfPanels
+# group: panelFooters
 # type: command
 # --
 (progn
   (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/bottomOfPanels/bottomOfPanelBasic.org")
   (org-dblock-update-buffer-bx)
-  (blee:ppmm:org-mode-content-list)  
+  ;;(blee:ppmm:org-mode-content-list)  
   )

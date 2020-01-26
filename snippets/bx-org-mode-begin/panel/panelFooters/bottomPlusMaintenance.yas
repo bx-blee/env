@@ -1,11 +1,11 @@
 # -*- mode: snippet -*-
 # name: Bottom Plus Maintenance
 # key: begin/bottomPlusMaintenance
-# group: bottomOfPanels
+# group: panelFooters
 # type: command
 # --
 (progn
   (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/bottomOfPanels/bottomPlusMaintenance.org")
   (org-dblock-update-buffer-bx)
-  (blee:ppmm:org-mode-content-list)  
+  ;;(blee:ppmm:org-mode-content-list)  
   )
