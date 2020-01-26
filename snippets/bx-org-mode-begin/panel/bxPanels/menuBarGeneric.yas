@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: MenuBar Leaf Panel
-# key: begin/bleePanelLeaf
+# name: MenuBar Generic Panel
+# key: begin/bleePanelGeneric
 # group: panelMenuBar
 # type: command
 # --
