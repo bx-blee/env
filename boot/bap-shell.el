@@ -123,6 +123,61 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
     ;;(comint-send-input)
     )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; shell interaction
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *preferred-shell-function* 'shell
+  "Name of a function that creates a shell interaction buffer.
+Default value is 'shell.")
+
+(defun goto-shell (change-cd)
+  "Select window for the shell specified by *preferred-shell-function*.
+If the shell buffer already has a window, then that window is selected.  
+Otherwise, the current window is used.
+
+Positions cursor at the end of the shell's buffer.  With argument CHANGE-CD,
+then also do a cd to the default-directory of the current-buffer at
+function invocation time."
+  (interactive "P")
+  (let ((current-buffer (current-buffer))
+	(current-default-directory default-directory)
+	shell-buffer
+	shell-buffer-window)
+
+    ;; find the shell buffer
+    (save-window-excursion
+      (apply *preferred-shell-function* '())
+      (setq shell-buffer (current-buffer)))
+
+    (cond ((setq shell-buffer-window (get-buffer-window shell-buffer))
+	   ;; shell buffer already has window
+	   (select-window shell-buffer-window))
+	  (t
+	   ;; shell buffer does not have window
+	   (switch-to-buffer shell-buffer)))
+
+    (goto-char (point-max))
+    (if (and change-cd current-default-directory)
+	(progn
+	  (process-send-string
+	   (get-buffer-process (current-buffer))
+	   ;;(format "cd %s\n" current-default-directory)
+	   (format "pushd %s\n" current-default-directory)
+	   )
+	  (sleep-for 2)			; give process-send-string some time
+	  (goto-char (point-max))
+	  (cd current-default-directory) ; set for the buffer as well
+	  ))
+    ))
+
+
+(defun goto-shell-with-cd ()
+  "Equivalent to `goto-shell' with ARG."
+  (interactive)
+  (goto-shell t))
+
+
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
