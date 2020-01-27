@@ -13,6 +13,8 @@
 
   But even with the latest org-mode (org-mode 9.1), this does not work for me.
 
+** img-link Syntax
+
   As a work around, we are creating a new org-link-type called:
   "img-link". 
   We would then use it like this:
@@ -23,15 +25,19 @@
 
   [[img-link:https://d1ra4hr810e003.cloudfront.net/media/27FB7F0C-9885-42A6-9E0C19C35242B5AC/0/D968A2D0-35B8-41C6-A94A0C5C5FCA0725/F0E9E3EC-8F99-4ED8-A40DADEAF7A011A5/dbe669e9-40be-51c9-a9a0-001b0e022be7/thul-IMG_2100.jpg][http://www.by-star.net]]
 
+** Installation
 
   You can initialize this package as:
      (require 'org-img-link)
-     (xtn:org-add-link-type:img-link/activate)
+     (xtn:org:link:img-link/activate)
+
+** Usage
 
   You can then use it by:
         (img-link-overlays)          -- to activate it and 
 	(img-link-clear-overlays)    -- to go back to seeing it as text.
 
+** Origin And Status
 
   Much of this code has been lifted from John Kitchn.
 
@@ -59,12 +65,10 @@
     (org-toggle-inline-images) and (org-display-inline-images t)
 
 *** A bad img-link throws and error and stops other good img-links to be displayed.
-
-
 ** Evolution Plans:
 
 *** TODO The backwardsness can easily be fixed 
-    in xtn:org-add-link-type:img-link :path/proc
+    in xtn:org:link:img-link :path/proc
     but img-link-overlays may be harder to fix. 
     Need to see if xtn:org:link:description/get-at-point
     can be used there.
@@ -83,6 +87,7 @@
     border="0" alt="W3Schools" src="logo_w3s.gif" width="100"
     height="100"> </a>
     This is all unrelated to org-exporting.
+
 ;;;#+END:
 ")
 
@@ -91,23 +96,23 @@
 ")
 
 
-;; (xtn:org-add-link-type:img-link/activate)
-(defun xtn:org-add-link-type:img-link/activate ()
+;; (xtn:org:link:img-link/activate)
+(defun xtn:org:link:img-link/activate ()
   ""
   (interactive)
   (org-add-link-type
    "img-link"
-   'xtn:org-add-link-type:img-link:path/proc   
+   'xtn:org:link:img-link:path/proc   
    )
   )
 
 
-(defun xtn:org-add-link-type:img-link:path/proc  (@path)
+(defun xtn:org:link:img-link:path/proc  (@path)
   ""
   (let (
 	($linkDesc (xtn:org:link:description/get-at-point))
 	)
-    (org-end-of-line)
+    ;;(org-end-of-line)
     ;;(insert (format "--Path is %s == desc is %s" @path $linkDesc))
     (org-open-link-from-string $linkDesc)
     )
@@ -120,22 +125,6 @@
 	)
     (buffer-substring (org-element-property :contents-begin $link)
                       (org-element-property :contents-end $link))
-    )
-  )
-
-
-(defun xtn:org-add-link-type:img-link:path/proc-orig (@path)
-  ""
-  (let (
-	($img (expand-file-name
-	       (concat (md5 @path) "." (file-name-extension @path))
-	       temporary-file-directory))
-	)
-    (if (file-exists-p $img)
-	(find-file $img)
-      (url-copy-file path $img)
-      (find-file $img)
-      )
     )
   )
 

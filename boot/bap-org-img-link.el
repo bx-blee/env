@@ -36,7 +36,7 @@
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
 
-  (xtn:org-add-link-type:img-link/activate)  
+  (xtn:org:link:img-link/activate)
   )
 
 
