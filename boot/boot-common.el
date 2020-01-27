@@ -85,6 +85,9 @@
   (require 'bf-font)
   (bf:font:full/update)
 
+  (require 'bf-mode-line)
+  (bf:mode-line:full/update)
+  
   (require 'bap-bbdb)
   (bap:bbdb:full/update)
 
