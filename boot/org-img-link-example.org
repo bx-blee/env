@@ -6,6 +6,11 @@
 
 (xtn:org-add-link-type:img-link/activate)
 
+
+#+CAPTION: This is the caption for the next figure link (or table)
+#+NAME:   fig:SED-HR4049
+[[file:/bisos//blee/env/images/signup.jpg][linkDesc]]
+
 * [[img-link:file:/bisos//blee/env/images/signup.jpg][http://www.neda.com]]     some Text   [[img-link:file:/bisos//blee/env/images/signup.jpg][bbdb:mohsen]]
 
 ** [[img-link:file:/bisos//blee/env/images/signup.jpg][bbdb:mohsen]]
