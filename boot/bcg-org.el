@@ -106,7 +106,15 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (bcg:org:common|config)  
   
   (bcg:org:bullets|config)
+
+  (bcg:org:export|config)  
   )
+
+(defun bcg:org:export|config ()
+  ""
+  (require 'ox-md)          ;; Markdown export backend
+  )
+  
 
 (defun bcg:org:common|config ()
   ""
