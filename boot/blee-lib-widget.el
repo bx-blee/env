@@ -553,6 +553,7 @@ Some Comment under current
 	"---"
 	["View  -- Usage & Viewing Model" (blee:org:viewModel) t]
 	["Edit  -- Development & Editing Model" (blee:org:editModel) t]
+	["Raw   -- Raw" (blee:org:rawModel) t]
 	"---"
 	["Dblock  -- Enable" (setq-local ~blee:dblockEnabler t) t]
 	["Dblock  -- Disable" (setq-local ~blee:dblockEnabler nil) t]
@@ -572,6 +573,9 @@ Some Comment under current
   (interactive)  
   (blee:org:emphasisMarkers:hide)
   (blee:org:bulletsMode:enable)
+  (org-display-inline-images)
+  (img-link-overlays)
+  (xtn:org:link:show/descriptive)  
   )
 
 (defun blee:org:editModel ()
@@ -579,7 +583,34 @@ Some Comment under current
   (interactive)  
   (blee:org:emphasisMarkers:show)
   (blee:org:bulletsMode:disable)
+  (org-remove-inline-images)
+  (img-link-clear-overlays)
+  (xtn:org:link:show/descriptive)
   )
+
+(defun blee:org:rawModel ()
+  ""
+  (interactive)  
+  (blee:org:emphasisMarkers:show)
+  (blee:org:bulletsMode:disable)
+  (org-remove-inline-images)
+  (img-link-clear-overlays)
+  (xtn:org:link:show/literal)
+  )
+
+(defun xtn:org:link:show/descriptive ()
+  ""
+  (interactive)  
+  (unless org-descriptive-links
+    (org-toggle-link-display)
+    ))
+    
+(defun xtn:org:link:show/literal ()
+   ""
+  (interactive)  
+  (when org-descriptive-links
+    (org-toggle-link-display)
+    ))
 
 
 (defun blee:org:bulletsMode:enable ()
