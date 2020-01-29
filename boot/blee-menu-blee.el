@@ -81,6 +81,14 @@
   (bystar:m17n-global:menu)
   (easy-menu-add-item nil '("Blee") 'm17n-menu "Blee Help")
 
+  ;; Navigation Menu
+  (blee:menu-sel:navigation:define)
+  (easy-menu-add-item nil '("Blee") 'blee:menu-sel:navigation:menu "Blee Help")
+
+  ;; Blee Org-Mode Extensions
+  (blee:menu-sel:outline:define)
+  (easy-menu-add-item nil '("Blee") 'blee:menu-sel:outline:menu "Blee Help")
+  
 (when (not (string-equal opRunDistFamily "MAEMO"))
   (bystar:bidi-global:menu)
   (easy-menu-add-item nil '("Blee") 'bidi-menu "Blee Help")
