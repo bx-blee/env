@@ -12,9 +12,19 @@
 
 (require 'bx-lcnt-lib)
 
+(require 's)
+
+(defun read-lines (filePath)
+  "Return a list of lines of a file at filePath."
+  (with-temp-buffer
+    (insert-file-contents filePath)
+    (split-string (buffer-string) "\n" t)))
+
+
 ;;;
 ;;;  Layered as:
-;;;   file-insert                                  :file                  
+;;;   file-insert                                  :file
+;;;   file-insert-prepend                          :file                  
 ;;;   file-insert-cond              :cond x.el     :file
 ;;;   file-insert-replace                          :file      :fileVar1 fileParam   :fileVar2
 ;;;   file-insert-replace-cond      :cond x.el     :file      :fileVar1 fileParam   :fileVar2
@@ -492,6 +502,51 @@
 	(kill-buffer cond-buffer-name)
       )
     ))
+
+
+(defun org-dblock-write:bx|file-insert-prepend (params)
+  "insert :file"
+  (let (
+	(bx:disabledP (or (plist-get params :disabledP) "UnSpecified"))
+	(bx:mode (or (plist-get params :mode) "auto"))       
+	(bx:file (or (plist-get params :file) ""))
+	(tmp-buffer-name (generate-new-buffer-name "dblock-tmp"))
+	(lines)
+	)
+    (if (not
+	 (or (equal "TRUE" bx:disabledP)
+	     (equal "true" bx:disabledP)))
+	(progn
+	  (if (string-equal "auto" bx:mode)
+	      (progn
+		(setq bx:mode major-mode)
+		))
+	  ;;; Processing Body
+	  (message (format "EXECUTING -- disabledP = %s" bx:disabledP))
+	  (save-excursion
+	    (switch-to-buffer (get-buffer-create tmp-buffer-name))
+	    (goto-char (point-min))		  
+	    (mapcar '(lambda (arg)
+		       (progn
+			 (insert
+			  (s-prepend ";;; " arg))
+			 (insert "\n")
+			 ))
+		    (read-lines (format "%s" bx:file))
+		    )
+	    (goto-char (point-max))		  
+	    )
+	  (if (get-buffer tmp-buffer-name)
+	      (progn
+		(insert-buffer tmp-buffer-name)
+		(kill-buffer tmp-buffer-name)
+		)
+	    )
+	  )
+      (message (format "DBLOCK NOT EXECUTED -- disabledP = %s" bx:disabledP))
+      )
+    ))
+
 
 
 
