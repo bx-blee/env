@@ -95,8 +95,8 @@
   (bcg:org:full/update)
 
   (require 'bap-org-img-link)
-  (bap:org-img-link:full/update)  
-
+  (bap:org-img-link:full/update)
+  
   (require 'bap-shell)
   (bap:shell:full/update)
   
