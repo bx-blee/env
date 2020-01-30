@@ -483,12 +483,14 @@
       )
 
     (defun bodyContent ()
+      "NOTYET, use @panelType to choose images." 
       (insert
        (format "
-%s                /* %s: %s */     
+%s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   %s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
 "
+	       ;;;%s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _  %s: %s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
 	       "*"
-	       @panelType
+	       ;;@panelType
 	       @title
 	       ))
       (insert
@@ -581,7 +583,7 @@
     (defun bodyContent ()
       (insert
        (format
-	"%s  Related Panels ::   [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]]\n"
+	"%s  General Panels ::   [[img-link:file:/bisos/blee/env/images/bystarInside.jpg][http://www.by-star.net]] ||  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]]\n"
 	(blee:panel:frontControl @outLevel :inDblock "yes")
 	@panelsList
 	))
@@ -912,7 +914,7 @@
       (insert
        (format
 	"%s \
- [[elisp:(org-cycle)][|#Control|]] :: [[elisp:(blee:bnsm:menu-back)][Back]] [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]]  [[elisp:(save-buffer)][Save]]  [[elisp:(kill-buffer)][Quit]]  [[elisp:(bury-buffer)][Bury]]  [[elisp:(org-cycle)][| ]]
+ [[elisp:(org-cycle)][|#Control|]] :: [[elisp:(blee:bnsm:menu-back)][Back]] [[elisp:(toggle-read-only)][read/wr]] | [[elisp:(show-all)][Show-All]]  [[elisp:(org-shifttab)][Overview]]  [[elisp:(progn (org-shifttab) (org-content))][Content]] | [[elisp:(delete-other-windows)][(1)]] | [[elisp:(progn (save-buffer) (kill-buffer))][S&Q]] [[elisp:(save-buffer)][Save]] [[elisp:(kill-buffer)][Quit]] [[elisp:(bury-buffer)][Bury]]  [[elisp:(magit)][Magit]]  [[elisp:(org-cycle)][| ]]
 "
 	"*"
 	))
@@ -1071,6 +1073,7 @@
       (insert
        (format "\
 #+STARTUP: lognotestate
+#+STARTUP: inlineimages
 #+SEQ_TODO: TODO WAITING DELEGATED | DONE DEFERRED CANCELLED
 #+TAGS: @desk(d) @home(h) @work(w) @withInternet(i) @road(r) call(c) errand(e)
 "
@@ -1157,7 +1160,9 @@ Local Variables:
 eval: (setq-local ~selectedSubject \"noSubject\")
 eval: (setq-local ~primaryMajorMode '%s)
 eval: (setq-local ~blee:panelUpdater nil)
-eval: (setq-local ~blee:dblockEnabler nil)"		       
+eval: (setq-local ~blee:dblockEnabler nil)
+eval: (img-link-overlays)"
+
 		       @primMode
 		       ))
 	      )
