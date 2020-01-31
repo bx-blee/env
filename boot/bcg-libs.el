@@ -84,16 +84,16 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
     )
 
   (use-package subr-x
-    :ensure nil
+    :ensure nil   ;;; NOTYET, where does this come from
     ;;; :pin melpa-stable
     )
 
   ;; Overlay Package
   (use-package ov
-    :ensure nil
+    :ensure t
     ;;; :pin melpa-stable
     )
-   
+  
   (require 'cl-lib)
 
   (require 'blee-lib-common)

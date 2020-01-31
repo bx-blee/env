@@ -217,9 +217,13 @@ This is necessary for package-install to work."
 
 ;;
 ;; (package-installed-p 'use-package)
+;; (package-installed-p 'org-mime)
+;;
 ;; (package-install 'use-package)
+;; (package-install 'org-mime)
 ;; 
 ;; (blee:elpa:install-if-needed 'use-package)
+;; (blee:elpa:install-if-needed 'org-mime)
 ;; 
 (defun blee:elpa:install-if-needed (package)
   (unless (package-installed-p package)
