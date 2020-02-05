@@ -178,12 +178,16 @@
 				  &rest @args				  
 				  )
   
-  "Returns a string with outline level string included."
+  "Returns a string with outline level string included.
+For outlevel=1, we have chapters and sections at same level.
+We then distinguish between chapter and section based on indentation and TitleStr.
+"
   (let (
 	(@inDblock (or (plist-get @args :inDblock) nil))
 	(@rawTitle (or (plist-get @args :rawTitle) nil))		
 	($openTitleStr "==")
 	($closeTitleStr "==")
+	($indentationStr "")
 	)
     (unless (plist-member @params :rawTitle)
       (setq @rawTitle nil))
@@ -191,15 +195,24 @@
     (when (equal @outLevel 1)
       (setq $openTitleStr "*")
       (setq $closeTitleStr "*")
+      (setq $indentationStr "  ")
       )
     (when (equal @outLevel 2)
       (setq $openTitleStr "/")
       (setq $closeTitleStr "/")
+      (setq $indentationStr "  ")      
+      )
+    (when (equal @outLevel 3)
+      (setq $indentationStr "  ")      
+      )
+    (when (equal @outLevel 4)
+      (setq $indentationStr "  ")      
       )
 
     (when @rawTitle
       (setq $openTitleStr "")
       (setq $closeTitleStr "")
+      (setq $indentationStr "")      
       )
 
     (defun effectiveAnchor (@anchor)
@@ -226,9 +239,10 @@
     
     (format "\
 %s \
-   [[elisp:(org-cycle)][| %s%s:%s |]] %s %s \
+%s   [[elisp:(org-cycle)][| %s%s:%s |]] %s %s \
 "
 	    (blee:panel:frontControl @outLevel :inDblock @inDblock)
+	    $indentationStr
 	    $openTitleStr
 	    @title
 	    $closeTitleStr
