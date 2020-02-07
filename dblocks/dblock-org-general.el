@@ -184,7 +184,9 @@ We then distinguish between chapter and section based on indentation and TitleSt
 "
   (let (
 	(@inDblock (or (plist-get @args :inDblock) nil))
-	(@rawTitle (or (plist-get @args :rawTitle) nil))		
+	(@rawTitle (or (plist-get @args :rawTitle) nil))
+	(@sep (or (plist-get @args :sep) nil))
+	;;
 	($openTitleStr "==")
 	($closeTitleStr "==")
 	($indentationStr "")
@@ -237,6 +239,15 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	""
 	))
     
+    (when @sep
+      (insert
+       (format "\
+%s \
+=[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]= 
+"
+	       (blee:panel:outLevelStr @outLevel)
+	       )))
+    
     (format "\
 %s \
 %s   [[elisp:(org-cycle)][| %s%s:%s |]] %s %s \
@@ -249,7 +260,6 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	    (effectiveAnchor @anchor)
 	    (effectiveExtraInfo @extraInfo)
      )))
-
 
 
 (defun blee:panel:foldingSectionOLD (@outLevel
@@ -303,7 +313,8 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	(@title (or (plist-get @params :title) "TBD"))
 	(@rawTitle (or (plist-get @params :rawTitle) nil))	
 	(@anchor (or (plist-get @params :anchor) nil))
-	(@extraInfo (or (plist-get @params :extraInfo) nil))		
+	(@extraInfo (or (plist-get @params :extraInfo) nil))
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
 	;;
 	($fileAsString)
 	)
@@ -326,6 +337,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
 					@extraInfo
 					:inDblock t
 					:rawTitle @rawTitle
+					:sep @sep
 					)
 	)))
 
@@ -347,7 +359,9 @@ We then distinguish between chapter and section based on indentation and TitleSt
   
   "Returns a string with outline level string included."
   (let (
-	(@inDblock (or (plist-get @args :inDblock) nil))	
+	(@inDblock (or (plist-get @args :inDblock) nil))
+	(@sep (or (plist-get @args :sep) nil))
+	;;
 	($openTitleStr "==")
 	($closeTitleStr "==")
 	)
@@ -373,6 +387,15 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	  (format "%s" @extraInfo)
 	""
 	))
+
+    (when @sep
+      (insert
+       (format "\
+%s \
+=[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]= 
+"
+	       (blee:panel:outLevelStr @outLevel)
+	       )))
     
     (format "\
 %s \
@@ -398,7 +421,8 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	;;
 	(@title (or (plist-get @params :title) "TBD"))
 	(@anchor (or (plist-get @params :anchor) nil))
-	(@extraInfo (or (plist-get @params :extraInfo) nil))	
+	(@extraInfo (or (plist-get @params :extraInfo) nil))
+	(@sep (or (plist-get @params :sep) nil))
 	;;
 	($fileAsString)
 	)
@@ -420,6 +444,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
 					@anchor
 					@extraInfo
 					:inDblock t
+					:sep @sep
 					)
 	)))
 
