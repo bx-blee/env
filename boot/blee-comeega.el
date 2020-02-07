@@ -62,6 +62,37 @@
 
 
 
+
+;;;   (blee:menu-sel:comeega:vc/define)
+;;;
+(defun blee:menu-sel:comeega:vc/define ()
+  "Facilities that help consistently maintain and update blee panels"
+  (interactive)
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define 
+      blee:menu-sel:comeega:vc:menu
+      nil 
+      "Version Control Menu"
+      `("Version Control Menu"
+	"---"
+	["Magit" magit t]
+	["CVS Update" (cvs-update "." t) t]	
+	"---"	
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    )
+  )
+
+(defun blee:menu-sel:comeega:vc|popupMenu ()
+  ""
+  (blee:menu-sel:comeega:vc/define)
+  (popup-menu blee:menu-sel:comeega:vc:menu)
+  )
+
+
+
 (lambda () "
 *      Testing/Execution          ::  [[elisp:(blee:menu-sel:navigation:popupMenu)][Popup Org Navigation Menu]] | 
 ")
