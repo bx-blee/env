@@ -5,4 +5,4 @@
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-$0* [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]      [[elisp:(org-cycle)][| _${1:Panel Desc}_ |]]  ::   [[elisp:(blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxBootstrap/withPyPi")][@ ${2:Panel Name} @]]   |
+$0* [[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]     [[elisp:(blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxBootstrap/withPyPi")][@ ~${1:Panel Name}~ @]]    ::  [[elisp:(org-cycle)][| _${2:Panel Desc}_ |]]    |
