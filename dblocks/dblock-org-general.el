@@ -243,7 +243,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
       (insert
        (format "\
 %s \
-=[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]= 
+/[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/ 
 "
 	       (blee:panel:outLevelStr @outLevel)
 	       )))
@@ -392,7 +392,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
       (insert
        (format "\
 %s \
-=[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]= 
+/[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/  
 "
 	       (blee:panel:outLevelStr @outLevel)
 	       )))
