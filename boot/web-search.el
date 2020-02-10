@@ -36,6 +36,9 @@
   )
 
 ;;; "http://www.farsidic.com/")
+;;;
+;;; مالکیت فکری 
+;;;
 
 ;;; Search a query on the Internet using the selected URL.
 (defun search-in-internet (arg)
