@@ -301,6 +301,96 @@ We then distinguish between chapter and section based on indentation and TitleSt
      )))
 
 
+(defun org-dblock-write:blee:bxPanel:mention-lcnt  (@params)
+  "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
+	;;
+	(@anchor (or (plist-get @params :anchor) nil))
+	(@extraInfo (or (plist-get @params :extraInfo) nil))
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
+	;;
+	(@lcntNu (or (plist-get @params :lcnt-nu) ""))	 
+	;;
+	($fileAsString)
+	(lcntBase)	
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+
+    (defun helpLine ()
+      ":taskControls \"default\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      (set 'lcntBase
+	   (shell-command-to-string 
+	    (format "echo -n $( lcnLcntSelect.sh  %s 2> /dev/null | head -1 )" @lcntNu))
+	   )
+    
+      (bx:lcnt:info:base-read-dir lcntBase)
+
+      (let (
+	    (lcnt-shortTitle (get 'bx:lcnt:info:base 'shortTitle))
+	    (lcnt-mainTitle (get 'bx:lcnt:info:base 'mainTitle))
+	    (lcnt-subTitle (get 'bx:lcnt:info:base 'subTitle))
+	    (lcnt-subSubTitle (get 'bx:lcnt:info:base 'subSubTitle))
+	    (lcnt-lcntNu (get 'bx:lcnt:info:base 'lcntNu))
+	    (lcnt-version (get 'bx:lcnt:info:base 'version))
+	    (lcnt-url (get 'bx:lcnt:info:base 'url))
+	    )
+
+      (insert
+       (format
+	"%s" (blee:panel:foldingSection
+	      @outLevel
+	      @lcntNu
+	      @anchor
+	      (format "%s -- %s" lcnt-shortTitle @extraInfo)
+	      :inDblock t
+	      :rawTitle t
+	      :sep @sep
+	      )
+	))
+	
+      (when (not (string-equal (format "%s" lcnt-subTitle) ""))
+	(insert (format "
+%s %s"
+			lcnt-mainTitle			  
+			lcnt-subTitle
+			)))
+
+      (when (not (string-equal (format "%s" lcnt-subSubTitle) ""))
+	(insert (format "
+ %s"
+			lcnt-subSubTitle
+			)))
+
+      (insert (format "
+%s
+"
+		      lcnt-url
+		      ))
+      ))
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
 (defun org-dblock-write:blee:bxPanel:foldingSection  (@params)
   "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
 "
