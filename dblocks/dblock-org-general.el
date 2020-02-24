@@ -317,7 +317,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	(@lcntNu (or (plist-get @params :lcnt-nu) ""))	 
 	;;
 	($fileAsString)
-	(lcntBase)	
+	(lcntBase)
 	)
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
@@ -348,37 +348,44 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	    (lcnt-url (get 'bx:lcnt:info:base 'url))
 	    )
 
-      (insert
-       (format
-	"%s" (blee:panel:foldingSection
-	      @outLevel
-	      @lcntNu
-	      @anchor
-	      (format "%s -- %s" lcnt-shortTitle @extraInfo)
-	      :inDblock t
-	      :rawTitle t
-	      :sep @sep
-	      )
-	))
+	(defun constructedExtraInfo ()
+	  (let (
+		($extraInfoDelim "")
+		($extraInfoEffective "")		
+		)
+	    (when @extraInfo
+	      (when (not (string-equal @extraInfo ""))
+		(setq $extraInfoEffective @extraInfo)
+		(setq $extraInfoDelim "--")))
+	    (format
+	     "[[elisp:(dired-other-window \"%s\")][dired]] || %s %s %s"
+	     lcntBase lcnt-shortTitle $extraInfoDelim $extraInfoEffective)
+	    ))
 	
-      (when (not (string-equal (format "%s" lcnt-subTitle) ""))
-	(insert (format "
-%s %s"
-			lcnt-mainTitle			  
-			lcnt-subTitle
-			)))
+	(insert
+	 (format
+	  "%s" (blee:panel:foldingSection
+		@outLevel
+		@lcntNu
+		@anchor
+		(constructedExtraInfo)
+		:inDblock t
+		:rawTitle t
+		:sep @sep
+		)
+	  ))
 
-      (when (not (string-equal (format "%s" lcnt-subSubTitle) ""))
-	(insert (format "
- %s"
-			lcnt-subSubTitle
-			)))
+	(insert (format "\n~%s~\n" lcnt-mainTitle))
+	
+	(when (not (string-equal (format "%s" lcnt-subTitle) ""))
+	  (insert (format "~%s~\n" lcnt-subTitle)))
 
-      (insert (format "
-%s
-"
-		      lcnt-url
-		      ))
+	(when (not (string-equal (format "%s" lcnt-subSubTitle) ""))
+	  (insert (format "~%s~\n" lcnt-subSubTitle)))
+
+	(insert (blee:bxPanel|pdfViewing (lcnt:base:pdf|article lcntBase)))
+	
+	(insert (format " %s\n" lcnt-url))
       ))
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
@@ -391,6 +398,29 @@ We then distinguish between chapter and section based on indentation and TitleSt
     ))
 
 
+;;; (lcnt:base:pdf|article "/lcnt/lgpc/bystar/permanent/engineering/wsTesting")
+(defun lcnt:base:pdf|article  (@lcntBasePath)
+  "Returns a file path to lcnt pdf article form file."
+  (expand-file-name
+   (shell-command-to-string 
+    (format "cd %s; echo -n $( ./lcntProc.sh  -p extent=name -i lcntBuild cur )" @lcntBasePath)
+    )
+   @lcntBasePath
+   ))
+
+(defun lcnt:base:pdf|presentation  (@lcntBasePath)
+  "Returns a file path to lcnt pdf presentation form file."
+  )
+
+(defun blee:bxPanel|pdfViewing  (@pdfFilePath)
+  "Returns an org-mode string for viewing of the pdf file."
+  (format
+   "[[elisp:(find-file-other-window \"%s\")][Pdf Other Window]] || [[elisp:(lsip-local-run-command \"acroread %s\")][Pdf Acroread]] || "
+   @pdfFilePath
+   @pdfFilePath   
+   ))
+
+  
 (defun org-dblock-write:blee:bxPanel:foldingSection  (@params)
   "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
 "
