@@ -302,7 +302,13 @@ We then distinguish between chapter and section based on indentation and TitleSt
 
 
 (defun org-dblock-write:blee:bxPanel:mention-lcnt  (@params)
-  "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
+  "Produces a section for an lcnt based on the PLPC parameter.
+After expanding, displays complete information about the document.
+---
+** TODO Add author, date, form (article/presentation)
+   SCHEDULED: <2020-02-23 Sun>
+** TODO Add jump to main.org and Panel.org
+   SCHEDULED: <2020-02-23 Sun>
 "
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
@@ -403,7 +409,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
   "Returns a file path to lcnt pdf article form file."
   (expand-file-name
    (shell-command-to-string 
-    (format "cd %s; echo -n $( ./lcntProc.sh  -p extent=name -i lcntBuild cur )" @lcntBasePath)
+    (format "cd %s; echo -n $( ./lcntProc.sh  -p extent=name -i lcntBuild dev )" @lcntBasePath)
     )
    @lcntBasePath
    ))
