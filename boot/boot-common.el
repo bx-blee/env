@@ -82,6 +82,9 @@
   (require 'bap-magit)
   (bap:magit:full/update)
 
+  (require 'bap-doc-view)
+  (bap:doc-view:full/update)
+  
   (require 'bf-font)
   (bf:font:full/update)
 

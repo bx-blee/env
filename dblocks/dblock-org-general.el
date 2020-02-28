@@ -428,7 +428,14 @@ After expanding, displays complete information about the document.
 
   
 (defun org-dblock-write:blee:bxPanel:foldingSection  (@params)
-  "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
+  "foldingSection is often the basic ingredient of a bxPanel. 
+A bxPanel is often structured similar to a LaTeX document With Parts, Chapters, Section, SubSection, etc.
+Parts are rare and can be done with ;rawTitle.
+Chapters are specified as :outLevel 0.
+Sections are specified as :outLevel 1,n
+:style should be closeContinue for folding segment.
+---
+** TODO Chapters specified as :outLevel 0 needs to be implemented.
 "
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
