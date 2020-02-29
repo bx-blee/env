@@ -421,7 +421,7 @@ After expanding, displays complete information about the document.
 (defun blee:bxPanel|pdfViewing  (@pdfFilePath)
   "Returns an org-mode string for viewing of the pdf file."
   (format
-   "[[elisp:(find-file-other-window \"%s\")][Pdf Other Window]] || [[elisp:(lsip-local-run-command \"acroread %s\")][Pdf Acroread]] || "
+   "[[elisp:(find-file-other-window \"%s\")][Pdf Other Window]] || [[elisp:(lsip-local-run-command \"acroread -openInNewInstance %s &\")][Pdf Acroread]] || "
    @pdfFilePath
    @pdfFilePath   
    ))
