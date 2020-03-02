@@ -300,6 +300,74 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	    (effectiveAnchor @anchor)
      )))
 
+(defun org-dblock-write:blee:pdf|dispose  (@params)
+  "Produces a section for an lcnt based on the PLPC parameter.
+After expanding, displays complete information about the document.
+---
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
+	;;
+	(@anchor (or (plist-get @params :anchor) nil))
+	(@extraInfo (or (plist-get @params :extraInfo) nil))
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
+	;;
+	(@file (or (plist-get @params :file) ""))	 
+	;;
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+
+    (defun helpLine ()
+      ":taskControls \"default\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      (defun constructedExtraInfo ()
+	(let (
+	      ($extraInfoDelim "")
+	      ($extraInfoEffective "")		
+	      )
+	  (when @extraInfo
+	    (when (not (string-equal @extraInfo ""))
+	      (setq $extraInfoEffective @extraInfo)
+	      (setq $extraInfoDelim "--")))
+	  (format
+	   "[[elisp:(find-file-other-window \"%s\")][pdf]] || %s %s"
+	   @file $extraInfoDelim $extraInfoEffective)
+	  ))
+	
+	(insert
+	 (format
+	  "%s" (blee:panel:foldingSection
+		@outLevel
+		@lcntNu
+		@anchor
+		(constructedExtraInfo)
+		:inDblock t
+		:rawTitle t
+		:sep @sep
+		)
+	  ))
+
+	(insert (blee:bxPanel|pdfViewing @file))
+      )
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+    ))
+
 
 (defun org-dblock-write:blee:bxPanel:mention-lcnt  (@params)
   "Produces a section for an lcnt based on the PLPC parameter.
