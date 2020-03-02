@@ -300,7 +300,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	    (effectiveAnchor @anchor)
      )))
 
-(defun org-dblock-write:blee:pdf|dispose  (@params)
+(defun org-dblock-write:blee:pdf|disposition  (@params)
   "Produces a section for an lcnt based on the PLPC parameter.
 After expanding, displays complete information about the document.
 ---
@@ -318,7 +318,8 @@ After expanding, displays complete information about the document.
 	(@extraInfo (or (plist-get @params :extraInfo) nil))
 	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
 	;;
-	(@file (or (plist-get @params :file) ""))	 
+	(@title (or (plist-get @params :title) ""))
+	(@file (or (plist-get @params :file) ""))
 	;;
 	)
 
@@ -351,7 +352,7 @@ After expanding, displays complete information about the document.
 	 (format
 	  "%s" (blee:panel:foldingSection
 		@outLevel
-		@lcntNu
+		@title
 		@anchor
 		(constructedExtraInfo)
 		:inDblock t
@@ -359,8 +360,9 @@ After expanding, displays complete information about the document.
 		:sep @sep
 		)
 	  ))
-
+	(insert "\n")
 	(insert (blee:bxPanel|pdfViewing @file))
+	(insert "\n")	
       )
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
