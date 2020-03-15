@@ -806,47 +806,46 @@
 (defun bx:org:capture:templates-setup ()
   (interactive)
   (setq    org-capture-templates 
-	   (quote (
+	   `(
 		   ("t" "Todo -- Sans Context" entry 
 		    (file+headline 
-		     (concat (bx:org:base-dir) "/" "captures.org")
+		     ,(concat (bx:org:base-dir) "/" "captures.org")
 		     "Tasks")
 		    "* TODO %?\n  %U\n"
 		    )
 		   ("T" "Todo -- With Context" entry 
 		    (file+headline 
-		     (concat (bx:org:base-dir) "/" "captures.org")
+		     ,(concat (bx:org:base-dir) "/" "captures.org")
 		     "Tasks")
 		    "* TODO %?\n  %U\n  %i\n  %a"
 		    )
 		   ("j" "Journal" entry 
 		    (file+datetree
-		     (concat (bx:org:base-dir) "/" "journal.org"))
+		     ,(concat (bx:org:base-dir) "/" "journal.org"))
 		     "* %?\nEntered on %U\n  %i\n  %a"
 		    )
 		   ("e" "Calendar Event -- Prompt -- Sans Context" entry 
 		    (file+datetree+prompt
-		     (concat (bx:org:base-dir) "/" "events/main.org"))
+		     ,(concat (bx:org:base-dir) "/" "events/main.org"))
 		     "* %?\nEntry for %T\n"
 		    )
 		   ("E" "Calendar Event -- Prompt -- With Context" entry 
 		    (file+datetree+prompt
-		     (concat (bx:org:base-dir) "/" "events/main.org"))
+		     ,(concat (bx:org:base-dir) "/" "events/main.org"))
 		     "* %?\nEntry for %T\n  %i\n  %a"
 		    )
 		   ("n" "Calendar Event -- Now" entry 
 		    (file+datetree
-		     (concat (bx:org:base-dir) "/" "events/main.org"))
+		     ,(concat (bx:org:base-dir) "/" "events/main.org"))
 		     "* %?\nEntry for %T\n  %i\n  %a"
 		    )
 		   ("N" "Calendar Event -- Now -- Sans Context" entry 
 		    (file+datetree
-		     (concat (bx:org:base-dir) "/" "events/main.org"))
+		     ,(concat (bx:org:base-dir) "/" "events/main.org"))
 		     "* %?\nEntry for %T\n"
 		    )
 		   )
 		  )
-	   )
   )
 
 (defun bx:org:capture:todo ()
