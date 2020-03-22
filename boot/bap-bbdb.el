@@ -120,8 +120,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (setq bbdb-north-american-phone-numbers nil)
   (add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
   (setq bbdb-check-zip-codes-p nil)
-  ;;(setq bbdb-default-area-code 632)
-  ;;(setq bbdb-default-country "Philippines")
+  (setq bbdb-default-area-code 425)   ;;; These should be done in the current BACS 
+  (setq bbdb-default-country "USA")   ;;; These should be done in the current BACS
   ;;(setq bbdb-ignore-some-messages-alist (quote (("From" . "hotmail") ("To" . "handhelds") ("From" . "yahoo.com"))))
   (setq bbdb-notice-hook (quote (bbdb-auto-notes-hook)))
   (setq bbdb/mail-auto-create-p t)

@@ -304,6 +304,8 @@ We then distinguish between chapter and section based on indentation and TitleSt
   "Produces a section for an lcnt based on the PLPC parameter.
 After expanding, displays complete information about the document.
 ---
+** TODO Perhaps colours should be different for folding section
+   SCHEDULED: <2020-03-17 Tue>
 ** TODO Expand this to work on any file. Replace with org-dblock-write:blee:file|disposition
    SCHEDULED: <2020-03-01 Sun>
 *** First determin file type. Then determine how we can display it.
