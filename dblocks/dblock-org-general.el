@@ -191,7 +191,8 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	($closeTitleStr "==")
 	($indentationStr "")
 	)
-    (unless (plist-member @params :rawTitle)
+
+    (unless (plist-member @args :rawTitle)
       (setq @rawTitle nil))
     
     (when (equal @outLevel 1)
@@ -210,7 +211,7 @@ We then distinguish between chapter and section based on indentation and TitleSt
     (when (equal @outLevel 4)
       (setq $indentationStr "  ")      
       )
-
+    
     (when @rawTitle
       (setq $openTitleStr "")
       (setq $closeTitleStr "")
@@ -509,8 +510,6 @@ Parts are rare and can be done with ;rawTitle.
 Chapters are specified as :outLevel 0.
 Sections are specified as :outLevel 1,n
 :style should be closeContinue for folding segment.
----
-** TODO Chapters specified as :outLevel 0 needs to be implemented.
 "
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
@@ -548,6 +547,15 @@ Sections are specified as :outLevel 1,n
 					:sep @sep
 					)
 	)))
+
+    ;;;
+    ;;; A Chapter is a section at @outLevel=0 and @title
+    ;;;
+    (when (eq @outLevel 0)
+      (setq @outLevel 1)
+      (setq @title (format "_%s_" @title))
+      (setq @rawTitle t)
+      )
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
