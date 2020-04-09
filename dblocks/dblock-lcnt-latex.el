@@ -2244,6 +2244,17 @@ Subject:   & This Matter\\\\
 		@style
 		))
 	)
+
+      (when (equal @bibProvider "none")
+	(setq $atLeastOnceWhen t)
+	(insert
+	 (format "
+
+%%%%%% No bibProvider has been selected
+"
+		))
+	)
+
       (bx:eh:assert:atLeastOnceWhen
        $atLeastOnceWhen
        :context "latex"
@@ -3556,6 +3567,7 @@ Font size and spacing can be based on paper size.
   
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))	
 	(@curBuild (or (plist-get @params :curBuild) nil))
 	(@style (or (plist-get @params :style) nil))
 	(@paperSize (or (plist-get @params :paperSize) nil))
@@ -3601,6 +3613,14 @@ Font size and spacing can be based on paper size.
      :level 2
      :comment (format "")
      )
+
+    
+    (when (equal @toggle "hide")  ;;; else
+      (setq @toggle "disabled")
+      )
+   
+    (when (equal @toggle "enabled")
+    
 
     (when (not @paperSize)
       (when (not @curBuild)
@@ -3849,7 +3869,7 @@ Font size and spacing can be based on paper size.
 "
 		)
 	)
-      )))
+      ))))
 
 
     
@@ -3859,6 +3879,7 @@ Font size and spacing can be based on paper size.
 "
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))
 	(@curBuild (or (plist-get @params :curBuild) nil))			
 	(@paperSize (or (plist-get @params :paperSize) nil))
 	(@spacing (or (plist-get @params :spacing) nil))	
@@ -3901,6 +3922,12 @@ Font size and spacing can be based on paper size.
      :comment (format "")
      )
 
+    (when (equal @toggle "hide")  ;;; else
+      (setq @toggle "disabled")
+      )
+   
+    (when (equal @toggle "enabled")
+    
     (when (not @paperSize)
       (when (not @curBuild)
 	(insert
@@ -4015,7 +4042,7 @@ Font size and spacing can be based on paper size.
 		)
 	)
       )
-    )
+    ))
   )
 
 (defun org-dblock-write:bx:lcnt:latex:title-page-lcnt-nu (@params)
@@ -4024,6 +4051,7 @@ Font size and spacing can be based on paper size.
   (bx:lcnt:info:base-read)
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))	
 	(@curBuild (or (plist-get @params :curBuild) nil))			
 	(@paperSize (or (plist-get @params :paperSize) nil))
 	(@spacing (or (plist-get @params :spacing) nil))	
@@ -4062,6 +4090,13 @@ Font size and spacing can be based on paper size.
      :comment (format "")
      )
 
+    (when (equal @toggle "hide")  ;;; else
+      (setq @toggle "disabled")
+      )
+   
+    (when (equal @toggle "enabled")
+
+    
     (when (or (equal @class "art+pres")
 	      (equal @class "art"))
 
@@ -4106,7 +4141,7 @@ Font size and spacing can be based on paper size.
 	(insert "\\end{center}")
 	)
       )
-    )
+    ))
   )
 
 
@@ -4180,7 +4215,7 @@ Each of these dblock-params match a buffer-local variables.
   (bx:lcnt:info:base-read)
   (let ((@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
-	(@toggle (or (plist-get @params :toggle) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))
 	(@curBuild (or (plist-get @params :curBuild) nil))			
 	(@paperSize (or (plist-get @params :paperSize) nil))
 	(@when (or (plist-get @params :when) nil))	
@@ -4216,7 +4251,6 @@ Each of these dblock-params match a buffer-local variables.
      :level 1
      :comment (format "")
      )
-
     
     (when (equal @toggle "hide")  ;;; else
       (setq @toggle "disabled")
@@ -4792,6 +4826,7 @@ Each of these dblock-params match a buffer-local variables.
   (let (
 	(@class (or (plist-get @params :class) ""))
 	(@langs (or (plist-get @params :langs) ""))
+	(@toggle (or (plist-get @params :toggle) "enabled"))
 	(@pageBreak (or (plist-get @params :pageBreak) nil))	
 	(@toc (or (plist-get @params :toc) nil))
 	(@tables (or (plist-get @params :tables) nil))	
@@ -4815,6 +4850,12 @@ Each of these dblock-params match a buffer-local variables.
      :level 1
      :comment (format "")
      )
+
+    (when (equal @toggle "hide")  ;;; else
+      (setq @toggle "disabled")
+      )
+   
+    (when (equal @toggle "enabled")
     
     (when @pageBreak
       (insert "
@@ -4847,7 +4888,7 @@ Each of these dblock-params match a buffer-local variables.
 \\listoffigures"))
 
     (insert "\n\n\\pagenumbering{arabic}\n")
-      ))
+      )))
 
 
 
