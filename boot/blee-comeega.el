@@ -150,7 +150,7 @@
     (goto-char (point-min))
     (replace-string
      " [[elisp:(org-cycle)][| ]] [[elisp:(org-show-subtree)][|=]] [[elisp:(show-children 10)][|V]] [[elisp:(bx:orgm:indirectBufOther)][|>]] [[elisp:(bx:orgm:indirectBufMain)][|I]] [[elisp:(beginning-of-buffer)][|^]] [[elisp:(org-top-overview)][|O]] [[elisp:(progn (org-shifttab) (org-content))][|C]] [[elisp:(delete-other-windows)][|1]]"
-     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][||F]] [[elisp:(blee:menu-sel:navigation:popupMenu)][||M]]"
+     "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]"
      )
     (goto-char (point-min))
     (replace-string
