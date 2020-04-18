@@ -74,9 +74,6 @@ If that fails, we return major-mode.
   (bx:dblock:governor:helpLine @governor @style
 			       @helpLine)
 
-  (insert "* \
-                                      ---------------------------\n")
-
   (bx:dblock:global:moded:insert-begin major-mode)
   
   (bx:dblock:governor:open @outLevel @governor @style @dblockFuncName)
