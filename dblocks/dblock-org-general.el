@@ -900,7 +900,7 @@ Sections are specified as :outLevel 1,n
       (insert
        (format 	"\
 %s \
-   [[elisp:(org-cycle)][| <<Evolution>> *Maintenance:* | ]]  [[elisp:(blee:menu-sel:agenda:popupMenu)][||Agenda]] "
+   [[elisp:(org-cycle)][| *Maintenance:* | ]]  [[elisp:(blee:menu-sel:agenda:popupMenu)][||Agenda]]  <<Evolution>> "
 	(blee:panel:frontControl @outLevel :inDblock "yes")
 	))
       )
@@ -990,7 +990,7 @@ Sections are specified as :outLevel 1,n
       (insert
        (format 	"\
 %s \
-   [[elisp:(org-cycle)][| /= Bug Reports, Development Team: =/ | ]]  <<Maintainers>>  
+     [[elisp:(org-cycle)][| /Bug Reports, Development Team:/ | ]]  <<Maintainers>>  
 "
 	(blee:panel:frontControl @outLevel :inDblock "yes")
 	))
@@ -1216,14 +1216,9 @@ Sections are specified as :outLevel 1,n
 "
 	"**"
 	))
-      (insert
-       (format
-	"%s \
- [[elisp:(blee:buf:re-major-mode)][Re-Major-Mode]] ||  [[elisp:(org-dblock-update-buffer-bx)][Update Buf Dblocks]] || [[elisp:(org-dblock-bx-blank-buffer)][Blank Buf Dblocks]] || [[elisp:(bx:panel:variablesShow)][bx:panel:variablesShow]] 
-"
-	"**"
-	))
 
+      (insert "\n")
+      
       (insert
        (format 	"%s \
  [[elisp:(org-cycle)][|#Destinations|]] :: [[Evolution]] | [[Maintainers]]  [[elisp:(org-cycle)][| ]]
