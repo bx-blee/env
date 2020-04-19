@@ -838,7 +838,7 @@ Sections are specified as :outLevel 1,n
     (defun bodyContent ()
       (insert
        (format
-	"%s  General Panels ::   [[img-link:file:/bisos/blee/env/images/bystarInside.jpg][http://www.by-star.net]] ||  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]]\n"
+	"%s  General Panels ::   [[img-link:file:/bisos/blee/env/images/bystarInside.jpg][http://www.by-star.net]] *|*  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]] *|* [[elisp:(blee:bnsm:panel-goto \"/libre/ByStar/InitialTemplates/activeDocs/bisos/development\")][BISOS Development Planning]]\n"
 	(blee:panel:frontControl @outLevel :inDblock "yes")
 	@panelsList
 	))
@@ -1581,25 +1581,28 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 
       (insert "    ")
       
-      (insert (blee:panel:button:shCommand @command))
-
       ;;(insert (format "results %s" @results))
       
       (when @results
-	(insert " _::_ ")
-      
-	(insert "[[elisp:(blee:org-update-named-dblocks-above)][D-Run]]  ")
 
 	(insert (format "[[elisp:(org-cycle)][| /%sResults:/ |]] " $stdOutOnlyIndicator))
+	
+	(insert " [[elisp:(blee:org-update-named-dblocks-above)][D-Run]]")
+
+	(insert " :: ")	
+
 	)
 
+      (insert (blee:panel:button:shCommand @command))
+      
       (when @comment
-	(insert " ~||~ ")
+	(insert " *|* ")
 	(insert 
 	 (format " =%s=" @comment)))
 
       
       (when @afterComment
+	(insert " *|* ")	
 	(insert (format " %s " @afterComment)))
 
  
