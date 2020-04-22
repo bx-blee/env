@@ -16,7 +16,29 @@
 ;;(add-hook 'outline-minor-mode-hook 'outshine-hook-function)
 ;;(add-hook 'message-mode-hook 'outline-minor-mode)
 
-(add-hook 'org-insert-heading-hook (lambda () (insert  "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")))
+(defun bap:org:key|insert-key-hook ()
+  "Insert blee preface"
+  (insert  "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")
+  )  
+
+(defun bap:org:key/hooked-insert-key ()
+  "M-Ret with a temporary hook"
+  (interactive)
+  (add-hook 'org-insert-heading-hook 'bap:org:key|insert-key-hook)
+  (org-meta-return)
+  (remove-hook 'org-insert-heading-hook 'bap:org:key|insert-key-hook)  
+  )
+
+
+(defun bap:org:key|activate-keys ()
+  "All addional keys come here"
+  (local-set-key (kbd "<C-return>") 'bap:org:key/hooked-insert-key)
+  )
+
+(add-hook 'org-mode-hook 'bap:org:key|activate-keys)
+
+;;;(setq org-insert-heading-hook nil)
+;;;(add-hook 'org-insert-heading-hook (lambda () (insert  "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")))
 
 ;;(require 'org-install)
 

@@ -114,7 +114,26 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ""
   (require 'ox-md)          ;; Markdown export backend
   )
-  
+
+(defun bap:org:key|insert-key-hook ()
+  "Insert blee preface"
+  (insert  "[[elisp:(blee:ppmm:org-mode-toggle)][|N]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")
+  )  
+
+(defun bap:org:key/hooked-insert-key ()
+  "M-Ret with a temporary hook"
+  (interactive)
+  (add-hook 'org-insert-heading-hook 'bap:org:key|insert-key-hook)
+  (org-meta-return)
+  (remove-hook 'org-insert-heading-hook 'bap:org:key|insert-key-hook)  
+  )
+
+
+(defun bap:org:key|activate-keys ()
+  "All addional keys come here"
+  (local-set-key (kbd "<C-return>") 'bap:org:key/hooked-insert-key)
+  )
+
 
 (defun bcg:org:common|config ()
   ""
@@ -122,8 +141,9 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   
   (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
-  (add-hook 'org-insert-heading-hook (lambda () (insert  "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")))
+  ;;; (add-hook 'org-insert-heading-hook (lambda () (insert  "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]   ")))
 
+  (add-hook 'org-mode-hook 'bap:org:key|activate-keys)  
 
 (setq org-agenda-diary-file "/acct/employee/lsipusr/org/events/main.org")
 
