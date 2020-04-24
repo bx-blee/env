@@ -360,3 +360,33 @@
 
 (provide 'bystar-color-themes)
 
+;; (set-face-attribute 'org-block-background nil :inherit 'fixed-pitch)
+;; (org-hide ((t (:foreground "black"))))
+;; (org-block ((t (:foreground "grey70"))))
+;; (set-face-attribute 'org-block nil :foreground "grey70")
+;; (font-lock-add-keywords 'org-mode
+;;                        '(("^ *\\([-]\\) "
+;;                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+;;
+
+;;;
+;;; NOTYET, Add these to view, edit and raw modes.
+;;; 
+
+;; (font-lock-add-keywords 'org-mode '(("^####.END.*$" . 'org-hide)))
+;; (font-lock-add-keywords 'org-mode '(("^####.BEGIN.*$" . 'org-hide)))
+
+
+;; (font-lock-remove-keywords 'org-mode '(("^####.END.*$" . 'org-hide)))
+;; (font-lock-remove-keywords 'org-mode '(("^####.BEGIN.*$" . 'org-hide)))
+
+;; (font-lock-fontify-buffer)
+
+;; (font-lock-add-keywords 'org-mode '(("^####.END$" . font-lock-doc-face)))
+
+;; (font-lock-remove-keywords 'org-mode '(("^####.END$" . font-lock-comment-face)))
+
+;; (font-lock-remove-keywords 'org-mode '(("^####.END$" . font-lock-doc-face)))
+
+;; (facep font-lock-doc-face)
+;; (facep 'org-hide)

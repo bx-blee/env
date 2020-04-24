@@ -838,7 +838,7 @@ Sections are specified as :outLevel 1,n
     (defun bodyContent ()
       (insert
        (format
-	"%s  General Panels ::   [[img-link:file:/bisos/blee/env/images/bystarInside.jpg][http://www.by-star.net]] *|*  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]] *|* [[elisp:(blee:bnsm:panel-goto \"/libre/ByStar/InitialTemplates/activeDocs/bisos/development\")][BISOS Development Planning]]\n"
+	"%s  General Panels ::   [[img-link:file:/bisos/blee/env/images/bystarInside.jpg][http://www.by-star.net]] *|*  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]] *|* [[elisp:(blee:bnsm:panel-goto \"/libre/ByStar/InitialTemplates/activeDocs/planning/Main\")][ByStar Planning]]\n"
 	(blee:panel:frontControl @outLevel :inDblock "yes")
 	@panelsList
 	))

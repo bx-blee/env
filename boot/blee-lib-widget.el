@@ -570,17 +570,19 @@ Some Comment under current
 
 (defun blee:org:viewModel ()
   ""
-  (interactive)  
+  (interactive)
+  (setq org-ellipsis "▾")
   (blee:org:emphasisMarkers:hide)
   (blee:org:bulletsMode:enable)
   (org-display-inline-images)
   (img-link-overlays)
-  (xtn:org:link:show/descriptive)  
+  (xtn:org:link:show/descriptive)
   )
 
 (defun blee:org:editModel ()
   ""
-  (interactive)  
+  (interactive)
+  (setq org-ellipsis nil)  
   (blee:org:emphasisMarkers:show)
   (blee:org:bulletsMode:disable)
   (org-remove-inline-images)
@@ -590,7 +592,8 @@ Some Comment under current
 
 (defun blee:org:rawModel ()
   ""
-  (interactive)  
+  (interactive)
+  (setq org-ellipsis nil)    
   (blee:org:emphasisMarkers:show)
   (blee:org:bulletsMode:disable)
   (org-remove-inline-images)
