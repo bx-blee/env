@@ -561,8 +561,10 @@ Some Comment under current
 	["Beauty  -- Hide emphasis-markers" (blee:org:emphasisMarkers:hide) t]
 	["Beauty  -- Show emphasis-markers" (blee:org:emphasisMarkers:show) t]
 	["Beauty  -- Enable Bullets-Mode" (blee:org:bulletsMode:enable) t]
-	["Beauty  -- Disbale Bullets-Mode" (blee:org:bulletsMode:disable) t]				
-      	"---"	
+	["Beauty  -- Disbale Bullets-Mode" (blee:org:bulletsMode:disable) t]
+	["Beauty  -- Hide Block BEGIN/END" (blee:org:blocks:beginEnd/hide) t]
+	["Beauty  -- Show Block BEGIN/END" (blee:org:blocks:beginEnd/show) t]
+	"---"	
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
@@ -577,6 +579,7 @@ Some Comment under current
   (org-display-inline-images)
   (img-link-overlays)
   (xtn:org:link:show/descriptive)
+  (blee:org:blocks:beginEnd/hide)
   )
 
 (defun blee:org:editModel ()
@@ -588,6 +591,7 @@ Some Comment under current
   (org-remove-inline-images)
   (img-link-clear-overlays)
   (xtn:org:link:show/descriptive)
+  (blee:org:blocks:beginEnd/show)  
   )
 
 (defun blee:org:rawModel ()
@@ -599,6 +603,7 @@ Some Comment under current
   (org-remove-inline-images)
   (img-link-clear-overlays)
   (xtn:org:link:show/literal)
+  (blee:org:blocks:beginEnd/show)
   )
 
 (defun xtn:org:link:show/descriptive ()
@@ -614,6 +619,39 @@ Some Comment under current
   (when org-descriptive-links
     (org-toggle-link-display)
     ))
+
+(defun blee:org:blocks:beginEnd/show ()
+  ""
+  (interactive)
+  (font-lock-remove-keywords 'org-mode '(("^####.END.*$" . 'org-hide)))
+  (font-lock-remove-keywords 'org-mode '(("^####.BEGIN.*$" . 'org-hide)))
+
+  (blee:buf:re-major-mode)
+
+  ;;
+  ;; None of the stuff below worked. blee:buf:re-major-mode does work.
+  ;;
+  ;; (font-lock-flush)
+  ;; (font-lock-fontify-buffer)
+  ;;
+  ;; (save-excursion
+  ;;   (font-lock-fontify-region (point-min) (point-max))
+  ;;   )
+  ;; (font-lock-fontify-buffer)
+  ;; (font-lock-mode -1)
+  ;; (font-lock-mode +1)  
+  )
+
+
+(defun blee:org:blocks:beginEnd/hide ()
+  ""
+  (interactive)  
+  (font-lock-add-keywords 'org-mode '(("^####.END.*$" . 'org-hide)))
+  (font-lock-add-keywords 'org-mode '(("^####.BEGIN.*$" . 'org-hide)))
+
+  (blee:buf:re-major-mode) 
+  )
+
 
 
 (defun blee:org:bulletsMode:enable ()

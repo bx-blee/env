@@ -151,8 +151,6 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 
 (setq org-confirm-elisp-link-function nil)
 
-(setq org-ellipsis "▾")
-
 (eval-after-load "org"
 
   '(progn
