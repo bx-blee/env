@@ -52,7 +52,8 @@
 
     (defun $commonFrontControls ()
       "Other than the front |N or -> or |n "
-      "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]"
+      ;;"[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]"
+      " _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_"
       )
 
     (when (not @inDblock)
@@ -244,8 +245,9 @@ We then distinguish between chapter and section based on indentation and TitleSt
       (insert
        (format "\
 %s \
-/[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/ 
+/[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/ 
 "
+	       ;;; /[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/ 
 	       (blee:panel:outLevelStr @outLevel)
 	       )))
     
