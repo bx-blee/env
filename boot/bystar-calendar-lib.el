@@ -24,6 +24,14 @@
 
 ;;; CALENDAR MODE
 
+;;(setq holiday-general-holidays nil)
+;;(setq holiday-christian-holidays nil)
+;;(setq holiday-hebrew-holidays nil)
+;;(setq holiday-islamic-holidays nil)
+(setq holiday-bahai-holidays nil)
+;;(setq holiday-oriental-holidays nil)
+
+  
 ;; ByWhere Related Parameters For Bellevue, WA
 ;;
 
@@ -37,8 +45,6 @@
 
 ;;; Cal Tex Parameters
 (setq cal-tex-diary t)
-
-
 
 
 ;;; Order is important -- Should be done at this point
@@ -129,6 +135,56 @@
 
   (message "bystar:calendar:defaults-set -- Done." )
   )
+
+;;;
+;;; Should be done after  loading calendar
+;;; 
+(setq calendar-persian-month-name-array
+      ["فروردین" "اردیبهشت" "خرداد" "تیر" "مرداد" "شهریور" "مهر" "آبان" "آذر" "دی" "بهمن" "اسفند" ]
+      )
+
+(let ((map '((?0 . ?۰)
+             (?1 . ?۱)
+             (?2 . ?۲)
+             (?3 . ?۳)
+             (?4 . ?۴)
+             (?5 . ?۵)
+             (?6 . ?۶)
+             (?7 . ?۷)
+             (?8 . ?۸)
+             (?9 . ?۹))))
+  (define-translation-table 'latin-persian-translation-table map))
+
+
+;;;
+;;; (latin-to-persian "1399")
+;;;
+(defun latin-to-persian (inStr)
+  (with-temp-buffer
+    (insert inStr)
+    (translate-region (point-min) (point-max) 'latin-persian-translation-table)
+    (buffer-string)))
+
+;;;
+;;; (calendar-persian-date-string)
+;;;
+(defun calendar-persian-date-string (&optional date)
+  "String of Persian date of Gregorian DATE, default today."
+  (let* ((persian-date (calendar-persian-from-absolute
+                        (calendar-absolute-from-gregorian
+                         (or date (calendar-current-date)))))
+         (y (calendar-extract-year persian-date))
+         (m (calendar-extract-month persian-date))
+         (monthname (aref calendar-persian-month-name-array (1- m)))
+         (day (latin-to-persian (number-to-string (calendar-extract-day persian-date))))
+         (year (latin-to-persian (number-to-string y)))
+         (month (number-to-string m))
+         dayname)
+    ;;; There is an invisible &rlm; in front of the %2s
+    (mapconcat 'eval
+	       '((format "‏%2s %s %4s"  day monthname year))
+	       "")))
+
 
 (defun diary-schedule (m1 d1 y1 m2 d2 y2 dayname)
   "Entry applies if date is between dates on DAYNAME.  

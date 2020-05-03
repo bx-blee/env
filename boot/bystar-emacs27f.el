@@ -616,6 +616,8 @@
 ;; visible or audible bell...
 ;;
 (cond (eoe-use-sound
+
+
        (setq visible-bell nil))
       (t
        (setq visible-bell t)))
@@ -850,7 +852,6 @@ string-arg
 #+STARTUP: showall
 "
 )
-
 
 ;;}}}
 

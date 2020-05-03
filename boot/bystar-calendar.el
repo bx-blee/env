@@ -3,6 +3,7 @@
 
 (message "ByStar CALENDAR LOADING")
 
-(require 'bystar-calendar-lib)
+;;(require 'bystar-calendar-lib)
+(load "bystar-calendar-lib.el")
 
 (bystar:calendar:all-defaults-set)

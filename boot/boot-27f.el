@@ -31,6 +31,11 @@
 (setq debug-on-error nil)
 ;;(setq debug-on-error t)
 
+;;;
+;;; This is being reloaded -- Don't understand why but it is necessary.
+;;;
+(load "bystar-calendar-lib")
+
 (message "Bystar User Env Finished Loading")
 
 
@@ -38,6 +43,7 @@
 #+STARTUP: showall
 "
 )
+
 
 ;;; local variables:
 ;;; major-mode: emacs-lisp-mode

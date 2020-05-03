@@ -123,8 +123,8 @@
   ;; (easy-menu-add-item nil '("Blee") 'bystar:mail:menu:definition "Blee Help")
 
   (require 'bystar-calendar-menu)
-  ;; (bystar:calendar:menu:define)
-  ;; (easy-menu-add-item nil '("Blee") 'bystar:calendar:menu:definition "Blee Help")
+  (bystar:calendar:menu:define)
+  (easy-menu-add-item nil '("Blee") 'bystar:calendar:menu:definition "Blee Help")
 
   (require 'bystar-contact-menu)
   ;; (bystar:contact:menu:define)
