@@ -28,7 +28,8 @@
 ;;(setq holiday-christian-holidays nil)
 ;;(setq holiday-hebrew-holidays nil)
 ;;(setq holiday-islamic-holidays nil)
-(setq holiday-bahai-holidays nil)
+  (setq holiday-bahai-holidays nil)
+  (setq 
 ;;(setq holiday-oriental-holidays nil)
 
   
@@ -100,6 +101,7 @@
 
 (add-hook 'diary-display-hook 'fancy-diary-display)
 
+
 ;;;(add-hook 'list-diary-entries-hook 'sort-diary-entries nil)
 
 ;;; To Allow for file inclusion (e.g., todo) in diary
@@ -143,24 +145,40 @@
       ["فروردین" "اردیبهشت" "خرداد" "تیر" "مرداد" "شهریور" "مهر" "آبان" "آذر" "دی" "بهمن" "اسفند" ]
       )
 
-(let ((map '((?0 . ?۰)
-             (?1 . ?۱)
-             (?2 . ?۲)
-             (?3 . ?۳)
-             (?4 . ?۴)
-             (?5 . ?۵)
-             (?6 . ?۶)
-             (?7 . ?۷)
-             (?8 . ?۸)
-             (?9 . ?۹))))
-  (define-translation-table 'latin-persian-translation-table map))
+;;; Begin perso-arabic.el
 
+(defun blee:translate|init ()
+  "Create needed translation tables"
 
-;;; (calendar-persian-to-absolute '(3 18 1339))
+  ;;; latin to persian numbers table
+  (let ((map '((?0 . ?۰)
+               (?1 . ?۱)
+               (?2 . ?۲)
+               (?3 . ?۳)
+               (?4 . ?۴)
+               (?5 . ?۵)
+               (?6 . ?۶)
+               (?7 . ?۷)
+               (?8 . ?۸)
+               (?9 . ?۹))))
+    (define-translation-table 'latin-persian-translation-table map))
 
-;;;(calendar-extract-day  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
-;;;(calendar-extract-month  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
-;;;(calendar-extract-year  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
+  ;;; latin to arabic numbers table
+  (let ((map '((?0 . ?٠)
+               (?1 . ?١)
+               (?2 . ?٢)
+               (?3 . ?٣)
+               (?4 . ?٤)
+               (?5 . ?٥)
+               (?6 . ?٦)
+               (?7 . ?٧)
+               (?8 . ?٨)
+               (?9 . ?٩))))
+    (define-translation-table 'latin-arabic-translation-table map))
+  )
+
+(blee:translate|init)
+
 
 ;;;
 ;;; (latin-to-persian "1399")
@@ -171,8 +189,38 @@
     (translate-region (point-min) (point-max) 'latin-persian-translation-table)
     (buffer-string)))
 
+
 ;;;
-;;; (calendar-persian-date-string)
+;;; (blee:translate|latin-to-persian "345")
+;;;
+(defun blee:translate|latin-to-persian (inStr)
+  (with-temp-buffer
+    (insert inStr)
+    (translate-region (point-min) (point-max) 'latin-persian-translation-table)
+    (buffer-string)))
+
+
+;;;
+;;; (blee:translate|latin-to-arabic "345")
+;;;
+(defun blee:translate|latin-to-arabic (inStr)
+  (with-temp-buffer
+    (insert inStr)
+    (translate-region (point-min) (point-max) 'latin-arabic-translation-table)
+    (buffer-string)))
+
+;;; End perso-arabic.el
+
+
+;;; (calendar-persian-to-absolute '(3 18 1339))
+
+;;;(calendar-extract-day  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
+;;;(calendar-extract-month  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
+;;;(calendar-extract-year  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
+
+
+;;;
+;;; (calendar--date-string)
 ;;;
 (defun calendar-persian-date-string (&optional date)
   "String of Persian date of Gregorian DATE, default today."
@@ -190,6 +238,51 @@
     (mapconcat 'eval
 	       '((format "‏%2s %s %4s"  day monthname year))
 	       "")))
+
+
+;;;
+;;; (calendar-islamic-date-string)
+;;;
+(defun calendar-islamic-date-string (&optional date)
+  "String of Islamic date before sunset of Gregorian DATE.
+Returns the empty string if DATE is pre-Islamic.
+Defaults to today's date if DATE is not given.
+Driven by the variable `calendar-date-display-form'."
+  (let* ((calendar-month-name-array calendar-islamic-month-name-array)
+        (islamic-date (calendar-islamic-from-absolute
+                       (calendar-absolute-from-gregorian
+                        (or date (calendar-current-date)))))
+        (y (calendar-extract-year islamic-date))
+        (m (calendar-extract-month islamic-date))
+        (monthname (aref calendar-islamic-month-name-array (1- m)))
+        (day (blee:translate|latin-to-arabic (number-to-string (calendar-extract-day islamic-date))))
+        (year (blee:translate|latin-to-arabic (number-to-string y)))
+        (month (number-to-string m))
+        dayname)
+	
+    (if (< (calendar-extract-year islamic-date) 1)
+        ""
+      (progn
+	;; There is an invisible &rlm; in front of the %2s
+	(mapconcat 'eval
+	       '((format "‏%2s %s %4s"  day monthname year))
+	       "")))
+    ))
+
+
+(defun calendar-islamic-date-string-orig (&optional date)
+  "String of Islamic date before sunset of Gregorian DATE.
+Returns the empty string if DATE is pre-Islamic.
+Defaults to today's date if DATE is not given.
+Driven by the variable `calendar-date-display-form'."
+  (let ((calendar-month-name-array calendar-islamic-month-name-array)
+        (islamic-date (calendar-islamic-from-absolute
+                       (calendar-absolute-from-gregorian
+                        (or date (calendar-current-date))))))
+    (if (< (calendar-extract-year islamic-date) 1)
+        ""
+      (calendar-date-string islamic-date nil t))))
+
 
 
 (defun diary-schedule (m1 d1 y1 m2 d2 y2 dayname)
