@@ -551,9 +551,9 @@ Some Comment under current
 	["Outline -- (C) -- All Content" blee:org:content t]
 	["Outline -- (S) -- All Show" show-all t]
 	"---"
-	["View  -- Usage & Viewing Model" (blee:org:viewModel) t]
-	["Edit  -- Development & Editing Model" (blee:org:editModel) t]
-	["Raw   -- Raw" (blee:org:rawModel) t]
+	["OrgView  -- Usage & Viewing Model" (blee:org:viewModel) t]
+	["OrgEdit  -- Development & Editing Model" (blee:org:editModel) t]
+	["OrgRaw   -- Raw" (blee:org:rawModel) t]
 	"---"
 	["Dblock  -- Enable" (setq-local ~blee:dblockEnabler t) t]
 	["Dblock  -- Disable" (setq-local ~blee:dblockEnabler nil) t]
@@ -940,7 +940,6 @@ Some Comment under current
   (popup-menu blee:menu-box:iifSpecific:name)
   (blee:menu-box:parallelBranches)
   )
-
 
 
 ;; (easy-menu-define jrk-menu global-map "MyMenu"

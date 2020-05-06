@@ -478,9 +478,9 @@
  ("&lre;" ?\u202A)   ;; (ucs-insert #x202A)‪   named: زیرمتنِ چپ‌به‌راست
  ("&rle;" ?\u202B)   ;; (ucs-insert #x202B)   named: زیرمتنِ راست‌به‌چپ
  ("&pdf;" ?\u202C)   ;; (ucs-insert #x202C)   named: پایانِ زیرمتن
- ("&lro;" ?\u202D)   ;; (ucs-insert #x202D)   named: زیرمتنِ اکیداً چپ‌به‌راست
+ ("&lro;" ?\u202D)   ;; (ucs-insert #x202D)‭  named: زیرمتنِ اکیداً چپ‌به‌راست
  ("&rlo;" ?\u202D)   ;; (ucs-insert #x202E)   named: زیرمتنِ اکیداً راست‌به‌چپ
- ("&bom;" ?\uFEFF)   ;; (ucs-insert #xFEFF)   named: نشانه‌ی ترتیبِ بایت‌ها
+ ("&bom;" ?\uFEFF)   ;; (ucs-insert #xFEFF)﻿   named: نشانه‌ی ترتیبِ بایت‌ها
 
 
 ;;;;;;;;;;;  isiri-6219 Table 7 -- جدول ۷ -  نشانه‌هایِ فارسی

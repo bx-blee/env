@@ -156,6 +156,12 @@
   (define-translation-table 'latin-persian-translation-table map))
 
 
+;;; (calendar-persian-to-absolute '(3 18 1339))
+
+;;;(calendar-extract-day  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
+;;;(calendar-extract-month  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
+;;;(calendar-extract-year  (calendar-gregorian-from-absolute (calendar-persian-to-absolute '(3 18 1339))))
+
 ;;;
 ;;; (latin-to-persian "1399")
 ;;;
