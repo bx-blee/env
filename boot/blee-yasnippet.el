@@ -30,7 +30,7 @@
   ;;;
 
   (bx:package:install-if-needed 'yasnippet)  
-  (bx:package:install-if-needed 'yasnippet-snippets)
+  (bx:package:install-if-needed 'yasnippet-snippets) ;; NOTYET had to install it from package management.
 
 
   (require 'yasnippet) ;; not yasnippet-bundle

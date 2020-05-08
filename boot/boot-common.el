@@ -255,8 +255,8 @@
   ;; -----------------------------------------------------------------
   ;; markdown-mode
   ;; -----------------------------------------------------------------
-  ;;(require 'blee-markdown)
-  (load-file "/bisos/git/auth/bxRepos/blee/env/main/blee-markdown.el")
+  ;;(require 'blee-markdown) ;;; NOTYET should not be absolute
+  (load-file "/bisos/blee/env/main/blee-markdown.el")
 
 
   (funcall  '(lambda () "
@@ -275,8 +275,8 @@
   (funcall  '(lambda () "
 **     *Google Maps*
 "
-	       ;; (if (file-directory-p (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master"))
-	       ;;     (setq load-path (cons (expand-file-name "/bisos/git/auth/bxRepos/blee/env/main/google-maps.el-master")
+	       ;; (if (file-directory-p (expand-file-name "/bisos/blee/env/main/google-maps.el-master"))
+	       ;;     (setq load-path (cons (expand-file-name "/bisos/blee/env/main/google-maps.el-master")
 	       ;; 		      load-path)))
 	     
 	     ;;; (require 'google-maps)  NOTYET
@@ -384,7 +384,7 @@
   (mwheel-install)
 
   ;; -----------------------------------------------------------------
-  ;; Global Key Bindings are maintained centrally in /bisos/git/auth/bxRepos/blee/env/main/blee-kbd-global.el
+  ;; Global Key Bindings are maintained centrally in /bisos/blee/env/main/blee-kbd-global.el
   ;; -----------------------------------------------------------------
 
   (require 'eoeKbdMenuSupport)
@@ -450,7 +450,7 @@
   (setq-default lpr-switches '("-2P -t"))
   (setq-default lpr-command "mpage")
 
-  ;; /bisos/git/auth/bxRepos/blee/env/main/murl-base.el /bisos/git/auth/bxRepos/blee/env/main/murl-craigslist.el /bisos/git/auth/bxRepos/blee/env/main/murl-slink.el /bisos/git/auth/bxRepos/blee/env/main/murl-bbdb.el
+  ;; /bisos/blee/env/main/murl-base.el /bisos/blee/env/main/murl-craigslist.el /bisos/blee/env/main/murl-slink.el /bisos/blee/env/main/murl-bbdb.el
 
   (load "murl-base.el")
   ;;(load "murl-bbdb.el")            ;;; Captures mailto: into bbdb  -- Moved into bap-bbdb.el
@@ -481,7 +481,7 @@
 **  [[elisp:(org-cycle)][| ]]  Global-Minor-Mode     ::      *festival -- TTS -- Say* [[elisp:(org-cycle)][| ]]
 	Just Load. Not Setup yet. See Blee Minor Mode Panel For Details.
 "
-	       (load-file "/bisos/git/auth/bxRepos/blee/env/main/festival.el")
+	       (load-file "/bisos/blee/env/main/festival.el")  ;;; NOTYET should not be absolute file.
 	       ))
 
   (funcall  '(lambda () "
@@ -514,7 +514,7 @@
   (funcall  '(lambda () "
 **  [[elisp:(org-cycle)][| ]]  Temporary             ::      *old2new* [[elisp:(org-cycle)][| ]]
 "
-	       (load-file "/bisos/git/auth/bxRepos/blee/env/lib/old2new/elispBleePanelUpdate.el")
+	       (load-file "/bisos/blee/env/lib/old2new/elispBleePanelUpdate.el")
 	       ))
 
   ;; 
@@ -529,9 +529,9 @@
   (require 'tramp)
   (setq tramp-default-method "scp")
 
-  (load-file "/bisos/git/auth/bxRepos/blee/env/lib/Incoming/top-mode.el")
+  (load-file "/bisos/blee/env/lib/Incoming/top-mode.el")
 
-  (load-file "/bisos/git/auth/bxRepos/blee/env/main/choose-comletion.el")
+  (load-file "/bisos/blee/env/main/choose-comletion.el")
 
   (cd "~")
 

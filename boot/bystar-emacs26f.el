@@ -449,8 +449,8 @@
 ;;; -----------------------------------------------------------------
 ;;; markdown-mode
 ;;; -----------------------------------------------------------------
-;;;(require 'blee-markdown)
-(load-file "/bisos/git/auth/bxRepos/blee/env/main/blee-markdown.el")
+;;;(require 'blee-markdown) -- NOTYET, Should not be an absolute path
+(load-file "/bisos/blee/env/main/blee-markdown.el")
 
 ;;; -----------------------------------------------------------------
 ;;; Templates and Substitution
