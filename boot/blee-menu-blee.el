@@ -188,7 +188,7 @@
   ;;;
 
   (easy-menu-add-item nil '("Blee") '("--single-dashed-line") "ByStar Send Mail")
-  (easy-menu-add-item nil '("Blee") '("--single-line") "ByStar Calendar")
+  (easy-menu-add-item nil '("Blee") '("--single-line") "Blee Calendar")
   (easy-menu-add-item nil '("Blee") '("--double-dashed-line") "ByStar Synchronization")
   (easy-menu-add-item nil '("Blee") '("--double-line") "Developers Menu")
   (easy-menu-add-item nil '("Blee") '("--shadow-etched-in") "Blee Help")

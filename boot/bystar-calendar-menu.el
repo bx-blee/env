@@ -10,9 +10,15 @@
   (easy-menu-define 
     bystar:calendar:menu:definition 
   nil 
-  "Global ByStar Calendar Menu"
-  '("ByStar Calendar"
+  "Global Blee Calendar Menu"
+  '("Blee Calendar"
     ["Calendar" calendar t]
+    ["CFW Diary" (cfw:open-diary-calendar) t]
+    ["CFW Org" (cfw:open-org-calendar) t]
+    ["CFW Calendar Buffer" (cfw:open-calendar-buffer) t]
+    ["CFW ICal" (cfw:open-ical-calendar) t]
+    ["CFW Refresh" (cfw:refresh-calendar-buffer) t]    
+    ["CFW Git" (cfw:git-open-calendar) t]              
     "---"
     ("Diary Menu"
      ["Diary Insert" (bx:diary:insert-today) t]
@@ -36,6 +42,10 @@
      "---"
      ["Disable Checking Of Appointments" (appt-activate 0) t]
      ) 
+    "---"
+    ("Org-Agenda Menu"
+     ["Org-Agenda Buffer" (bx:org:agenda:projs-all) t]
+     )
     "---"
     ["ByStar Calendar Help" bystar:org:doc:howto:all-help t]
     ))

@@ -1,4 +1,4 @@
-;; 
+; 
 ;; 
 ;; 
 
@@ -10,8 +10,13 @@
 ;;; requires
 ;;; ########
 
-(require 'calendar)
+(setq holiday-bahai-holidays nil)
 
+(require 'calendar)
+(require 'cal-persia)
+(require 'cal-islam)
+
+(load "cal-moslem")
 
 ;; (bystar:calendar:all-defaults-set)
 (defun bystar:calendar:all-defaults-set ()
@@ -29,7 +34,6 @@
 ;;(setq holiday-hebrew-holidays nil)
 ;;(setq holiday-islamic-holidays nil)
   (setq holiday-bahai-holidays nil)
-  (setq 
 ;;(setq holiday-oriental-holidays nil)
 
   
@@ -47,6 +51,7 @@
 ;;; Cal Tex Parameters
 (setq cal-tex-diary t)
 
+(calendar-frame-setup "two-frames")
 
 ;;; Order is important -- Should be done at this point
 (display-time)
@@ -137,6 +142,10 @@
 
   (message "bystar:calendar:defaults-set -- Done." )
   )
+
+(defun calendar-bahai-date-string (&optional date)
+  "Disabling Bahai calendar"
+  "")
 
 ;;;
 ;;; Should be done after  loading calendar
@@ -239,6 +248,19 @@
 	       '((format "‏%2s %s %4s"  day monthname year))
 	       "")))
 
+(defun diary-persian-date ()
+  "Persian calendar equivalent of date diary entry."
+  ;;;(format "Persian date: %s" (calendar-persian-date-string date))
+  (format "DPD: %s" (calendar-persian-date-string date))  
+  )
+
+(defun calendar-persian-print-date ()
+  "Show the Persian calendar equivalent of the selected date."
+  (interactive)
+  ;;(message "Persian date: %s"
+  (message "CPD: %s"	   
+           (calendar-persian-date-string (calendar-cursor-to-date t))))
+
 
 ;;;
 ;;; (calendar-islamic-date-string)
@@ -269,20 +291,93 @@ Driven by the variable `calendar-date-display-form'."
 	       "")))
     ))
 
+(defun calendar-islamic-print-date ()
+  "Show the Islamic calendar equivalent of the date under the cursor."
+  (interactive)
+  (let ((i (calendar-islamic-date-string (calendar-cursor-to-date t))))
+    (if (string-equal i "")
+        (message "Date is pre-Islamic")
+      ;;(message "Islamic date (until sunset): %s" i))
+      (message "CID: %s" i))    
+    ))
 
-(defun calendar-islamic-date-string-orig (&optional date)
-  "String of Islamic date before sunset of Gregorian DATE.
-Returns the empty string if DATE is pre-Islamic.
-Defaults to today's date if DATE is not given.
-Driven by the variable `calendar-date-display-form'."
-  (let ((calendar-month-name-array calendar-islamic-month-name-array)
-        (islamic-date (calendar-islamic-from-absolute
-                       (calendar-absolute-from-gregorian
-                        (or date (calendar-current-date))))))
-    (if (< (calendar-extract-year islamic-date) 1)
-        ""
-      (calendar-date-string islamic-date nil t))))
+(defun diary-islamic-date ()
+  "Islamic calendar equivalent of date diary entry."
+  (let ((i (calendar-islamic-date-string date)))
+    (if (string-equal i "")
+        "Date is pre-Islamic"
+      ;;(format "Islamic date (until sunset): %s" i))))
+      (format "DID: %s" i))))
 
+(require 'calfw-cal)
+;;;(require 'calfw-ical)
+;;;(require 'calfw-howm)
+(require 'calfw-org)
+
+(defun my-open-calendar ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-source "Green")  ; orgmode source
+    ;;;(cfw:howm-create-source "Blue")  ; howm source
+    (cfw:cal-create-source "blue") ; diary source
+    ;;;(cfw:ical-create-source "Moon" "~/moon.ics" "Gray")  ; ICS source1
+    ;;;(cfw:ical-create-source "gcal" "https://..../basic.ics" "IndianRed") ; google calendar ICS
+   ))) 
+
+;;;(my-open-calendar)
+
+(setq cfw:fchar-junction ?╋
+      cfw:fchar-vertical-line ?┃
+      cfw:fchar-horizontal-line ?━
+      cfw:fchar-left-junction ?┣
+      cfw:fchar-right-junction ?┫
+      cfw:fchar-top-junction ?┯
+      cfw:fchar-top-left-corner ?┏
+      cfw:fchar-top-right-corner ?┓)
+
+;; (custom-set-faces
+;;  '(cfw:face-title ((t (:foreground "#f0dfaf" :weight bold :height 2.0 :inherit variable-pitch))))
+;;  '(cfw:face-header ((t (:foreground "#d0bf8f" :weight bold))))
+;;  '(cfw:face-sunday ((t :foreground "#cc9393" :background "grey10" :weight bold)))
+;;  '(cfw:face-saturday ((t :foreground "#8cd0d3" :background "grey10" :weight bold)))
+;;  '(cfw:face-holiday ((t :background "grey10" :foreground "#8c5353" :weight bold)))
+;;  '(cfw:face-grid ((t :foreground "DarkGrey")))
+;;  '(cfw:face-default-content ((t :foreground "#bfebbf")))
+;;  '(cfw:face-periods ((t :foreground "cyan")))
+;;  '(cfw:face-day-title ((t :background "grey10")))
+;;  '(cfw:face-default-day ((t :weight bold :inherit cfw:face-day-title)))
+;;  '(cfw:face-annotation ((t :foreground "RosyBrown" :inherit cfw:face-day-title)))
+;;  '(cfw:face-disable ((t :foreground "DarkGray" :inherit cfw:face-day-title)))
+;;  '(cfw:face-today-title ((t :background "#7f9f7f" :weight bold)))
+;;  '(cfw:face-today ((t :background: "grey10" :weight bold)))
+;;  '(cfw:face-select ((t :background "#2f2f2f")))
+;;  '(cfw:face-toolbar ((t :foreground "Steelblue4" :background "Steelblue4")))
+;;  '(cfw:face-toolbar-button-off ((t :foreground "Gray10" :weight bold)))
+;;  '(cfw:face-toolbar-button-on ((t :foreground "Gray50" :weight bold))))
+
+(custom-set-faces
+ '(cfw:face-title ((t (:foreground "#f0dfaf" :weight bold :height 2.0 :inherit variable-pitch))))
+ '(cfw:face-header ((t (:foreground "#d0bf8f" :weight bold)))) 
+ '(cfw:face-sunday ((t :foreground "orange" :background "black" :weight bold)))
+ '(cfw:face-saturday ((t :foreground "yellow" :background "black" :weight bold)))
+ '(cfw:face-holiday ((t :background "black" :foreground "red" :weight bold)))
+ '(cfw:face-grid ((t :foreground "DarkGrey")))
+ '(cfw:face-default-content ((t :foreground "yellow")))
+ '(cfw:face-periods ((t :foreground "cyan")))
+ '(cfw:face-day-title ((t :background "brown")))
+ '(cfw:face-default-day ((t :weight bold :inherit cfw:face-day-title)))
+ '(cfw:face-annotation ((t :foreground "green" :inherit cfw:face-day-title)))
+ '(cfw:face-disable ((t :foreground "DarkGray" :inherit cfw:face-day-title)))
+ '(cfw:face-today-title ((t :background "blue" :weight bold)))
+ '(cfw:face-today ((t :background: "grey10" :weight bold)))
+ '(cfw:face-select ((t :background "red")))
+ '(cfw:face-toolbar ((t :foreground "blue" :background "magenta")))
+ '(cfw:face-toolbar-button-off ((t :foreground "Gray50" :weight bold)))
+ '(cfw:face-toolbar-button-on ((t :foreground "white" :weight bold))))
+
+(setq cfw:render-line-breaker 'cfw:render-line-breaker-wordwrap)
 
 
 (defun diary-schedule (m1 d1 y1 m2 d2 y2 dayname)

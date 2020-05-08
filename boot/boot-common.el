@@ -97,6 +97,9 @@
   (require 'bcg-org)
   (bcg:org:full/update)
 
+  (require 'bcg-cal)
+  (bcg:cal:full/update)
+  
   (require 'bap-org-img-link)
   (bap:org-img-link:full/update)
   
