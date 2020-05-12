@@ -6,7 +6,7 @@
 **   [[~/lisp/images/GreenCopyleft-120px.png]] 
 **   [[~/lisp/images/Anti-copyright-220px.png]]
 * 
-*           ~Welcome to [[elisp:(bx:bnsm:top:panel-blee)][Blee]]~ :: _The [[http://www.by-star.net][ByStar]] [[http://www.libreservices.org][Libre-Halaal]] [[http://www.gnu.org/software/emacs][Emacs]] Environment_
+*           ~Welcome to~ [[elisp:(bx:bnsm:top:panel-blee)][ ~Blee~ ]] :: _The [[http://www.by-star.net][ByStar]] [[http://www.libreservices.org][Libre-Halaal]] [[http://www.gnu.org/software/emacs][Emacs]] Environment_
 * 
 *  [[elisp:(org-cycle)][+-]]  About Blee :: The [[Big Picture]] Of Your [[http://www.by-star.net][By* Digital Ecosystem]] Integrated User Environment [[elisp:(org-cycle)][+-]]
 ** Major Modes Panel

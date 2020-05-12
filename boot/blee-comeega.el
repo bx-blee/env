@@ -1,4 +1,4 @@
-;;; -*- Mode: Emacs-Lisp; -*-
+;;; -*- Mode: Emacs-Lisp; lexical-binding: t; -*-
 ;; (setq debug-on-error t)
 
 ;;;#+BEGIN: bx:dblock:global:org-controls :disabledP "false" :mode "auto"
