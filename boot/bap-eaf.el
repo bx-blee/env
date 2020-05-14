@@ -1,7 +1,7 @@
 ;;; -*- Mode: Emacs-Lisp; -*-
 
 (lambda () "
-* Short Description: Global Activity: eaf -- GIT mode
+* Short Description: Global Activity: eaf --  mode
 *      ======[[elisp:(org-cycle)][Fold]]======  Revision, Origin And  Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee 
 ####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
 typeset RcsId="$Id: setup-global-eaf.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
@@ -31,14 +31,16 @@ typeset RcsId="$Id: setup-global-eaf.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
 *      ################ CONTENTS-LIST ################
 *      ======[[elisp:(org-cycle)][Fold]]====== *[Current-Info]* Status/Maintenance -- General TODO List
 *      ======[[elisp:(org-cycle)][Fold]]====== *[Related/Xrefs:]*  <<Xref-Here->>  -- External Documents 
-**      ====[[elisp:(org-cycle)][Fold]]==== [[file:/libre/ByStar/InitialTemplates/activeDocs/bxServices/versionControl/git/fullUsagePanel-en.org::Xref-VersionControlGit][VC Panel Roadmap Documentation]]
-**      ====[[elisp:(org-cycle)][Fold]]==== http://www.emacswiki.org/emacs/Eaf
+** TODO [#B] ====[[elisp:(org-cycle)][Fold]]==== Create A Panel For  [[file:/libre/ByStar/InitialTemplates/activeDocs/bxServices/versionControl/git/fullUsagePanel-en.org::Xref-VersionControlGit][Panel Roadmap Documentation]]
+**    https://github.com/manateelazycat/emacs-application-framework
+**    https://www.emacswiki.org/emacs/EmacsApplicationFramework 
 ")
 
 
 (lambda () "
 
-*      ======[[elisp:(org-cycle)][Fold]]====== *[Description:]*
+*      ======[[elisp:(org-cycle)][Fold]]====== *[Description:]* _Emacs Application Framework (EAF)_ |
+
 ")
 
 
@@ -92,6 +94,62 @@ typeset RcsId="$Id: setup-global-eaf.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
   (message "blee:ann -- TMP -- bap:eaf:install/update")
+
+  ;;; (setq browse-url-browser-function 'eaf-open-browser)
+  ;;; (defalias 'browse-web #'eaf-open-browser)
+
+  ;;; Dark Mode
+  ;;(eaf-setq eaf-browser-dark-mode "true")
+  ;;(eaf-setq eaf-pdf-dark-mode "true")
+  ;;(eaf-setq eaf-mindmap-dark-mode "true")
+
+  ;;; Disable Saving Browsing History
+
+  ;;; The browsing history is automatically saved, by default. It is
+  ;;; helpful for users to find a previous opened page using M-x
+  ;;; eaf-open-browser-with-history. You can turn that off by
+  
+  ;; (eaf-setq eaf-browser-remember-history "false")
+
+  ;;; Default Search Engine
+
+  ;;; You can search for any string using M-x eaf-open-browser, M-x
+  ;;; eaf-open-browser-with-history or M-x eaf-search-it. The default
+  ;;; search engine used by EAF Browser is Google, as specified in the
+  ;;; eaf-browser-default-search-engine variable. You can change it by
+
+  ;; (setq eaf-browser-default-search-engine 'duckduckgo)
+
+  ;;; Default “Blank” Page
+
+  ;;; The default blank page is https://www.google.com, it is opened by (eaf-proxy-new_blank_page) by default.
+  ;;; You can configure it by
+
+  ;; (eaf-setq eaf-browse-blank-page-url "https://duckduckgo.com")
+
+
+  ;;; Default Zoom
+
+  ;;; Default zoom of EAF Browser is 1.0, you can set the default zoom by
+
+  ;; (eaf-setq eaf-browser-default-zoom "1.25")
+
+  ;;; Disable JavaScript
+
+  ;;; For reasons, some people may prefer to disable JavaScript for
+  ;;; the EAF Browser. The option has been provided.
+
+  ;; (eaf-setq eaf-browser-enable-plugin "false")
+  ;; (eaf-setq eaf-browser-enable-javascript "false")
+
+  ;;; We don’t recommend it, you will lose a lot of features that EAF Browser provided.
+
+  
+  ;;; EAF Camera
+
+  ;;; The default directory to store images taken by EAF Camera is ~/Downloads. You can change it like this.
+
+  ;; (eaf-setq eaf-camera-save-path "new/path/")
   )
 
 (lambda () "
