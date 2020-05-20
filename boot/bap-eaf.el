@@ -95,6 +95,12 @@ typeset RcsId="$Id: setup-global-eaf.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
   (blee:ann|this-func (compile-time-function-name))    
   (message "blee:ann -- TMP -- bap:eaf:install/update")
 
+  ;;;
+  ;;; https://github.com/manateelazycat/emacs-application-framework/wiki/Customization
+  ;;;
+
+  ;;; eaf-open-mail-as-html in gnus
+
   ;;; (setq browse-url-browser-function 'eaf-open-browser)
   ;;; (defalias 'browse-web #'eaf-open-browser)
 
