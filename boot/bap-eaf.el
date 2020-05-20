@@ -89,6 +89,17 @@ typeset RcsId="$Id: setup-global-eaf.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
     )
   )
 
+(defun blee:browse-url/dispatch (url &rest args)
+  "Based on configuration parameters, decide which blee:browse-url functionality should be chosen
+I
+n Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/dispatch)"
+  (interactive)
+  (save-window-excursion
+    (eaf-open-browser url t)
+    (make-frame (list '(height . 50) '(width . 105) ))
+    )
+  )
+
 (defun bap:eaf:config/main ()
   ""
   (interactive)
@@ -98,9 +109,14 @@ typeset RcsId="$Id: setup-global-eaf.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
   ;;;
   ;;; https://github.com/manateelazycat/emacs-application-framework/wiki/Customization
   ;;;
+  ;;; http://www.neda.com  https://www.google.com
+
 
   ;;; eaf-open-mail-as-html in gnus
 
+  (setq browse-url-browser-function 'blee:browse-url/dispatch)
+
+  ;;; (setq browse-url-new-window-flag "newWindow")
   ;;; (setq browse-url-browser-function 'eaf-open-browser)
   ;;; (defalias 'browse-web #'eaf-open-browser)
 
