@@ -72,6 +72,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
 
+  ;; fill-column-idicator is part of emacs proper
   
   )
 
@@ -80,62 +81,35 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
 
-  ;;; (setq fci-rule-column 115)
-  ;;; (setq fci-rule-color "darkblue")
-
-  (setq display-fill-column-indicator t)
   (setq display-fill-column-indicator-character ?\N{U+2506})
-  (set-fill-column 119)
-  
   ;;;(customize-face 'fill-column-indicator)
   ;; or put something like this in your theme
   ;;; '(fill-column-indicator ((t (:foreground "#4e4e4e"))))
 
+  (set-fill-column 115)
   
   )
 
-(defun bcg:visibility:charset/config ()
-  ""
+(defun blee:fill-column-indicator/enable ()
+  "Enable displaying of fill column indicator."
   (interactive)
-  (blee:ann|this-func (compile-time-function-name))    
-
-  (when (fboundp 'set-charset-priority)
-    (set-charset-priority 'unicode))
-  (prefer-coding-system        'utf-8)
-  (set-terminal-coding-system  'utf-8)
-  (set-keyboard-coding-system  'utf-8)
-  (set-selection-coding-system 'utf-8)
-  (setq locale-coding-system   'utf-8)
-  (setq-default buffer-file-coding-system 'utf-8)
+  (setq display-fill-column-indicator t)
+  (setq display-fill-column-indicator-character ?\N{U+2506})  
   )
 
-(defun bcg:visibility:displayEngine/config ()
-  "NOTYET ::Revisit UI Section of https://github.com/gilbertw1/bmacs/blob/master/bmacs.org#ui"
+(defun blee:fill-column-indicator/disable ()
+  "Toggle displaying of fill column indicator."
   (interactive)
-  (blee:ann|this-func (compile-time-function-name))    
-
-  (setq frame-title-format (list (format "%%b – Blee 3.1-E-%s @ %s" emacs-version system-name)))
-
-  (setq-default bidi-display-reordering t)         ; Blee wants to be bidi-aware
-
-  (fset #'yes-or-no-p #'y-or-n-p)     ; y/n instead of yes/no
+  (setq display-fill-column-indicator nil)
   )
 
-(defun my-toggle-fill-column-indicator ()
+(defun blee:fill-column-indicator/toggle ()
   "Toggle displaying of fill column indicator."
   (interactive)
   (if display-fill-column-indicator
-      (setq display-fill-column-indicator nil)
-    (setq display-fill-column-indicator t)
-    (setq display-fill-column-indicator-character ?\N{U+2506})))
-
-
-(defun bcg:visibility:help/config ()
-  ""
-  (interactive)
-  (blee:ann|this-func (compile-time-function-name))    
-
-  (setq help-window-select t)  ;;; Force focus to the help menu
+      (blee:fill-column-indicator/disable)
+    (blee:fill-column-indicator/enable)
+    )
   )
 
 
@@ -143,7 +117,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
 ")
 
-(provide 'bcg-core)
+(provide 'bcg-visibility)
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== /[dblock] -- End-Of-File Controls/

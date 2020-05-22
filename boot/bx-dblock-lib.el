@@ -192,7 +192,7 @@ default
 "
 		      (blee:panel:outLevelStr @outLevel)
 		      ;;(make-string 98 ?-)
-		      (make-string 98 cfw:fchar-horizontal-line)		      
+		      (make-string 97 cfw:fchar-horizontal-line)		      
 		      )))
 
     

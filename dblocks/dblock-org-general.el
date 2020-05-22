@@ -753,7 +753,7 @@ Sections are specified as :outLevel 1,n
       (insert
        (format "%s %s "
 	       (blee:panel:outLevelStr @outLevel)
-	       (make-string 102 cfw:fchar-horizontal-line)
+	       (make-string 93 cfw:fchar-horizontal-line)
 	       ;;;(make-string 102 ?-)	       
 	       ))
       )
@@ -854,10 +854,10 @@ Sections are specified as :outLevel 1,n
        (format
 	"%s%s_%s_%s"
         (blee:panel:outLevelStr @outLevel)
-	(make-string 38 ? )
+	(make-string 35 ? )
 	;;(make-string 30 ?=)
 	(make-string 30 cfw:fchar-horizontal-line)		
-	(make-string 36 ? )
+	(make-string 25 ? )
 	))
       )
     
@@ -1436,7 +1436,7 @@ eval: (img-link-overlays)"
 			   $commentStartStr
 			   x
 			   )))
-	      
+		
 		(s-lines
 		 (format "\
 eval: (setq-local ~lcnt:texClass nil)
@@ -1446,12 +1446,31 @@ eval: (setq-local ~lcnt:paperSize nil)"
 		)
 	 
 	)
-	(when @latexMasters
-	  (insert (format "%sTeX-master: \"%s\"\n"
-		  $commentStartStr
-		  @latexMasters
-		  )))
 
+      (when (string= @primMode "org-mode")
+	(mapcar (lambda (x)
+		  (insert
+		   (format "%s%s\n"
+			   $commentStartStr
+			   x
+			   )))
+		
+		(s-lines
+		 (format "\
+eval: (set-fill-column 115)
+eval: (blee:fill-column-indicator/enable)"
+			 ))
+		)
+	 
+	)
+
+      (when @latexMasters
+	(insert (format "%sTeX-master: \"%s\"\n"
+			$commentStartStr
+			@latexMasters
+			))
+	)
+      
       (mapcar (lambda (x)
 		(insert
 		 (format "%s%s\n"
@@ -1460,11 +1479,12 @@ eval: (setq-local ~lcnt:paperSize nil)"
 			 )))
 	      
 	      (s-lines
-	       (format "\
+		 (format "\
 eval: (bx:load-file:ifOneExists \"./panelActions.el\")
 End:"
-		       ))
-	      ))
+			 ))
+	      )
+      )
     
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)

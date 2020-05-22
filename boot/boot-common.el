@@ -99,6 +99,9 @@
 
   (require 'bcg-cal)
   (bcg:cal:full/update)
+
+  (require 'bcg-visibility)
+  (bcg:visibility:full/update)
   
   (require 'bap-org-img-link)
   (bap:org-img-link:full/update)
