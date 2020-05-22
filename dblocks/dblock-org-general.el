@@ -753,7 +753,8 @@ Sections are specified as :outLevel 1,n
       (insert
        (format "%s %s "
 	       (blee:panel:outLevelStr @outLevel)
-	       (make-string 102 ?-)
+	       (make-string 102 cfw:fchar-horizontal-line)
+	       ;;;(make-string 102 ?-)	       
 	       ))
       )
     
@@ -854,7 +855,8 @@ Sections are specified as :outLevel 1,n
 	"%s%s_%s_%s"
         (blee:panel:outLevelStr @outLevel)
 	(make-string 38 ? )
-	(make-string 30 ?=)	
+	;;(make-string 30 ?=)
+	(make-string 30 cfw:fchar-horizontal-line)		
 	(make-string 36 ? )
 	))
       )
@@ -894,7 +896,8 @@ Sections are specified as :outLevel 1,n
 	"%s%s_%s_\n"
         (blee:panel:outLevelStr @outLevel)
 	(make-string 38 ? )
-	(make-string 30 ?=)	
+	;;(make-string 30 ?=)
+	(make-string 30 cfw:fchar-horizontal-line)		
 	))
       )
 

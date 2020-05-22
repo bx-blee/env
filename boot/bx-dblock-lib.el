@@ -191,7 +191,8 @@ default
 %s [[elisp:(show-all)][(>]] %s \
 "
 		      (blee:panel:outLevelStr @outLevel)
-		      (make-string 98 ?-)
+		      ;;(make-string 98 ?-)
+		      (make-string 98 cfw:fchar-horizontal-line)		      
 		      )))
 
     
