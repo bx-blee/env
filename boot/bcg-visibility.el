@@ -73,7 +73,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (blee:ann|this-func (compile-time-function-name))
 
   ;; fill-column-idicator is part of emacs proper
-  
+
+  (require 'whitespace)
   )
 
 (defun bcg:visibility:config/main ()
@@ -87,6 +88,12 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ;;; '(fill-column-indicator ((t (:foreground "#4e4e4e"))))
 
   (set-fill-column 115)
+
+  ;; (setq whitespace-line-column 80) ;; limit line length
+  ;; (setq whitespace-style '(face lines-tail))
+
+  ;; (add-hook 'prog-mode-hook 'whitespace-mode)
+  ;; (global-whitespace-mode +1)
   
   )
 

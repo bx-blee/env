@@ -437,6 +437,9 @@
       (load "handset-menu-top")
     )   
 
+  (require 'blee-menu-xia)
+  (blee:menu:top|xia)
+  
   (require 'blee-menu-activities)
   (blee:activities:menu)
 

@@ -895,7 +895,7 @@ Sections are specified as :outLevel 1,n
        (format
 	"%s%s_%s_\n"
         (blee:panel:outLevelStr @outLevel)
-	(make-string 38 ? )
+	(make-string 35 ? )
 	;;(make-string 30 ?=)
 	(make-string 30 cfw:fchar-horizontal-line)		
 	))
