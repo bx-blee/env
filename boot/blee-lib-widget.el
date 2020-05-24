@@ -532,6 +532,7 @@ Some Comment under current
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-sel:outline:define) [[elisp:(org-cycle)][| ]]
   ")
 
+;;; (blee:menu-sel:outline:define)
 (defun blee:menu-sel:outline:define ()
   ""
   (interactive)
