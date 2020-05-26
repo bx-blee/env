@@ -438,7 +438,7 @@
     )   
 
   (require 'blee-menu-xia)
-  (blee:menu:top|xia)
+  (blee:menu:top:xia|define)
   
   (require 'blee-menu-activities)
   (blee:activities:menu)

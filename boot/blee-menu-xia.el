@@ -10,18 +10,23 @@
 ;;;
 
 
-;; (blee:menu:top|xia)
-(defun blee:menu:top|xia ()
+(defvar blee:search-engine:primary "https://duckduckgo.com"
+  "The primary blee search-engine.")
+
+;; (blee:menu:top:xia|define)
+(defun blee:menu:top:xia|define ()
   "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
   (let (
 	($thisFuncName (compile-time-function-name))
 	)
     (easy-menu-define
-      blee-menu-global
+      blee:menu:top|xia
       global-map
       "Global XIA Menu"
       `("XIA" :help "eXternally Integrated Apps"
 	["XIA Blee Panel" bx:bnsm:top:panel-blee t]
+	"---"
+	[,(format "Search with %s" blee:search-engine:primary) (blee:browse-url/dispatch blee:search-engine:primary)  t]	
 	"---"
 	("XIA Help"
 	 ["Help: Blee Overview" blee:blee:menu:overview-help t]
@@ -30,11 +35,15 @@
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]
 	))
 
+    (blee:menu:search-engines|define)
+    (easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "XIA Help")
+    
     (blee:menu:browse-url|define)
     (easy-menu-add-item nil '("XIA") 'blee:menu|browse-url "XIA Help")
 
     (blee:menu:destinations|define)
     (easy-menu-add-item nil '("XIA") 'blee:menu|destinations "XIA Help")
+
     )
   )
 
@@ -55,14 +64,14 @@
 	 ["browse-url-secondary-browser-function" (describe-variable 'browse-url-secondary-browser-function) t]	 
 	 )
 	"---"
-	("Set At Point Url Browser"
+	("Select At Point Url Browser"
 	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:browse-url/dispatch) t]
 	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
 	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
 	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
 	 )
 	"---"
-	("Set Mail Html Browser"
+	("Select Mail Html Browser"
 	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:browse-url/dispatch) t]
 	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
 	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
@@ -97,6 +106,30 @@
 	))
     ))
 
+(defun blee:menu:search-engines|define ()
+  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define
+      blee:menu|search-engines
+      nil
+      "Menu For Common Destinations"
+      `("Search Engine Selections" :help "Show And Set Relevant Parameters"
+	("Show Current Settings"	
+	 ["blee:search-engine:default" (describe-variable 'blee:search-engine:primary) t]
+	 )
+	"---"
+	("Select Search Engine"
+	 ["duckduckgo" (progn (setq blee:search-engine:primary "https://duckduckgo.com") (blee:menu:top:xia|define)) t]
+	 ;;["google"  (custom-set-default blee:search-engine:primary "https://google.com")  t]
+	 ["google"  (progn (setq blee:search-engine:primary "https://google.com") (blee:menu:top:xia|define))  t]
+	 ["bing" (progn (setq blee:search-engine:primary "https://bing.com") (blee:menu:top:xia|define)) t]	 
+	 )
+	"---"
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
 
 
 (provide 'blee-menu-xia)
