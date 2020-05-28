@@ -89,6 +89,13 @@ typeset RcsId="$Id: setup-global-eaf.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
     )
   )
 
+;;;
+;;; 
+;;; (find-file-at-point "https://google.com")
+;;; (find-file-at-point nil)
+;;;
+
+
 (defun blee:browse-url/dispatch (url &rest args)
   "Based on configuration parameters, decide which blee:browse-url functionality should be chosen
 I

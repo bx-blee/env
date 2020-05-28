@@ -13,7 +13,7 @@
 (defvar blee:search-engine:primary "https://duckduckgo.com"
   "The primary blee search-engine.")
 
-;; (blee:menu:top:xia|define)
+;; (blee:menu:top:xia|define) 
 (defun blee:menu:top:xia|define ()
   "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
   (let (
@@ -26,26 +26,45 @@
       `("XIA" :help "eXternally Integrated Apps"
 	["XIA Blee Panel" bx:bnsm:top:panel-blee t]
 	"---"
-	[,(format "Search with %s" blee:search-engine:primary) (blee:browse-url/dispatch blee:search-engine:primary)  t]	
-	"---"
-	("XIA Help"
-	 ["Help: Blee Overview" blee:blee:menu:overview-help t]
-	 )
-	"---"	
-	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]
+	[,(format "Browse with %s" browse-url-browser-function) (find-file-at-point  blee:search-engine:primary)  t]
+	"----"
+	[,(format "Search with %s" blee:search-engine:primary) (find-file-at-point blee:search-engine:primary)  t]
+	"-----"
 	))
 
-    (blee:menu:search-engines|define)
-    (easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "XIA Help")
-    
     (blee:menu:browse-url|define)
-    (easy-menu-add-item nil '("XIA") 'blee:menu|browse-url "XIA Help")
+    (easy-menu-add-item nil '("XIA") 'blee:menu|browse-url "----")
+    
+    (blee:menu:search-engines|define)
+    ;;(easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "XIA Help")
+    (easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "-----")    
 
     (blee:menu:destinations|define)
-    (easy-menu-add-item nil '("XIA") 'blee:menu|destinations "XIA Help")
+    (easy-menu-add-item nil '("XIA") 'blee:menu|destinations)
+
+    (blee:menu:xia:help|define)
+    (easy-menu-add-item nil '("XIA") 'blee:menu:xia|help)
 
     )
   )
+
+
+(defun blee:menu:xia:help|define ()
+  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define
+      blee:menu:xia|help
+      nil
+      "Menu For XIA"
+      `("XIA Help"
+	["Help: Blee Overview" blee:blee:menu:overview-help t]	
+	"---"
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
 
 
 ;; 
@@ -59,6 +78,8 @@
       nil
       "Menu For Configuration Of browse-url"
       `("Browse-URL Selections" :help "Show And Set Relevant Parameters"
+	[,(format "Browse with %s" browse-url-browser-function) (find-file-at-point  blee:search-engine:primary)  t]	
+	"---"	
 	("Show Current Settings"	
 	 ["browse-url-browser-function" (describe-variable 'browse-url-browser-function) t]
 	 ["browse-url-secondary-browser-function" (describe-variable 'browse-url-secondary-browser-function) t]	 
@@ -81,6 +102,9 @@
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
+
+
+
 
 (defun blee:menu:destinations|define ()
   "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
@@ -116,7 +140,10 @@
       nil
       "Menu For Common Destinations"
       `("Search Engine Selections" :help "Show And Set Relevant Parameters"
-	("Show Current Settings"	
+	"---"
+	[,(format "Search with %s" blee:search-engine:primary) (find-file-at-point blee:search-engine:primary)  t]	
+	"---"	
+	("Show Search Engine Current Settings"	
 	 ["blee:search-engine:default" (describe-variable 'blee:search-engine:primary) t]
 	 )
 	"---"
@@ -130,6 +157,7 @@
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
+
 
 
 (provide 'blee-menu-xia)
