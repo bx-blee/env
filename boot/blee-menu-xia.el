@@ -9,7 +9,7 @@
 * TODO Blee Frames Design -- Place Holder
   SCHEDULED: <2020-05-28 Thu>
 ** 
-** This Information should be moved to blee manual ...
+** This Information should be moved to blee manual etc.
 ** 
 ** A Model For Emacs Frames And Linked Application Windows 
 *** Native Emacs Frames
@@ -21,11 +21,17 @@
 **** Web-Browser-At-Point Frame
 **** Web-Browser-Html-File Frame
 **** Web-Browser-Interactive Frame
+**** PDF-Viewer-At-Point Frame
+**** 
 ** 
 ** Blee Named Frames
 Availability of a number of emacs frames is assumed. These are called [[namedBleeFrames]]
 Creation of windows within these buffers and display of buffers in the named frames is 
 part of blee.
+*** List of Named Blee Emacs Frames as defvars
+*** Initial implementation of Web-Browser-At-Point Frame
+*** Raising of named-frames
+*** Adoption of frame-fnc.el from both noah friedman and xxx
 ** 
 ")
 
