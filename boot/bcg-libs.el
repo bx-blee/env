@@ -93,6 +93,15 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
     :ensure t
     ;;; :pin melpa-stable
     )
+
+  (use-package frame-fns
+    :load-path "/bisos/blee/extPkgs/frame-fns"
+    )
+
+  (use-package frame-cmds
+    :load-path "/bisos/blee/extPkgs/frame-cmds"
+    )
+ 
   
   (require 'cl-lib)
 
@@ -100,6 +109,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (require 'blee-lib-general)
   (require 'blee-lib-widget)
 
+  (require 'blee-frames)
+  
   )
 
 (defun bcg:libs:config/main ()

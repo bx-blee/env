@@ -47,6 +47,48 @@ part of blee.
 ;;;
 
 
+;; (get-frame-name)
+;; (get-a-frame "blee:xia:browser:atpoint")
+;; (read-frame "specify frame name:")
+;; (flash-ding)
+
+;; (blee:xia:frame:at-point)
+
+;; (progn 
+;;   (make-frame-visible
+;;    (get-a-frame "blee:xia:browser:atpoint")
+;;    )
+
+;;   (raise-frame
+;;    (get-a-frame "blee:xia:browser:atpoint")
+;;    )
+;;   )
+
+;; (select-frame-set-input-focus (get-a-frame "blee:xia:browser:atpoint"))
+
+;; (iconify-or-deiconify-frame (get-a-frame "blee:xia:browser:atpoint"))
+;; (iconify-frame (get-a-frame "blee:xia:browser:atpoint"))
+
+;; (frame-visible-p (get-a-frame "blee:xia:browser:atpoint"))
+
+
+  
+(defun blee:xia:frame:at-point ()
+  (let (
+	($name "blee:xia:browser:atpoint")
+	)
+    (make-frame `((name                 . ,$name)
+                  (icon-name            . ,$name)
+                  (title                . "some Title")
+                  (menu-bar-lines       . 1)
+                  (tool-bar-lines       . 3)
+                  (vertical-scroll-bars . t)
+		  )
+		)
+    ))
+
+
+
 (defvar blee:search-engine:primary "https://duckduckgo.com"
   "The primary blee search-engine.")
 
@@ -63,10 +105,30 @@ part of blee.
       `("XIA" :help "eXternally Integrated Apps"
 	["XIA Blee Panel" bx:bnsm:top:panel-blee t]
 	"---"
-	[,(format "Browse with %s" browse-url-browser-function) (find-file-at-point  blee:search-engine:primary)  t]
+	[
+	 ,(format "Browse with %s" browse-url-browser-function)
+	 (find-file-at-point  blee:search-engine:primary)
+	 :help "Current setting for browse-url-browser-function"
+	 :active t
+	 :visible t
+	 ]
 	"----"
-	[,(format "Search with %s" blee:search-engine:primary) (find-file-at-point blee:search-engine:primary)  t]
+	[
+	 ,(format "Search with %s" blee:search-engine:primary)
+	 (find-file-at-point blee:search-engine:primary)
+	 :help "Search with selected browser setting and selected engine"
+	 :active t
+	 :visible t
+	 ]
 	"-----"
+	[
+	 ,(format "XIA Browser At-Point Destination %s" blee:search-engine:primary)
+	 (find-file-at-point blee:search-engine:primary)
+	 :help "Uses this function"
+	 :active t
+	 :visible t
+	 ]
+	"------"
 	))
 
     (blee:menu:browse-url|define)
@@ -77,11 +139,10 @@ part of blee.
     (easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "-----")    
 
     (blee:menu:destinations|define)
-    (easy-menu-add-item nil '("XIA") 'blee:menu|destinations)
+    (easy-menu-add-item nil '("XIA") 'blee:menu|destinations  "------")
 
     (blee:menu:xia:help|define)
     (easy-menu-add-item nil '("XIA") 'blee:menu:xia|help)
-
     )
   )
 
@@ -95,7 +156,7 @@ part of blee.
       blee:menu:xia|help
       nil
       "Menu For XIA"
-      `("XIA Help"
+      `("XIA Help" :help "Help For This Menu"
 	["Help: Blee Overview" blee:blee:menu:overview-help t]	
 	"---"
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
@@ -123,7 +184,7 @@ part of blee.
 	 )
 	"---"
 	("Select At Point Url Browser"
-	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:browse-url/dispatch) t]
+	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:xif:browse-url/at-point) t]
 	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
 	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
 	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
