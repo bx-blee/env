@@ -153,7 +153,7 @@ n Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/dis
 (defvar menu-bar-frames-menu (make-sparse-keymap "Frames"))
 
 
-;;; (menu-bar-frames-define)
+;;; 
 (defun menu-bar-frames-define ()
   (define-key global-map [menu-bar frames]
     (cons "Frames" menu-bar-frames-menu))
@@ -200,6 +200,8 @@ n Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/dis
     '(menu-item "Hide Frames / Show Buffers" show-hide
       :help "Show, if only one frame visible; else hide."))
   )
+
+(menu-bar-frames-define)
 
 (provide 'blee-frames)
 
