@@ -1,8 +1,6 @@
 ;;;
 ;;;
 
-(require 'blee-doc-howto)   ;;; NOTYET -- un-needed -- remove after cleanup after 
-
 (lambda () "
 * TODO Blee Frames Design -- Place Holder
   SCHEDULED: <2020-05-28 Thu>
@@ -34,10 +32,16 @@ part of blee.
 ")
 
 
+
+
 (lambda () "
-* Global
+* Requires
 
 ")
+
+(require 'easymenu)
+(require 'blee-doc-howto)   ;;; NOTYET -- un-needed -- remove after cleanup after 
+
 
 
 ;; (get-frame-name)
@@ -100,16 +104,22 @@ part of blee.
 ")
 
 
-(defvar lee:frame:name:xif:web-browser:at-point "Blee Primary"
+(defvar lee:frame:name:xif:web-browser:at-point "NOTYET Blee Primary"
   "Name of Blee primary frame.")
 
+(defvar blee:search-engine:primary "https://duckduckgo.com"
+  "The primary blee search-engine.")
 
 
+(lambda () "
+* Named Frame Creation And Population
+")
 
-(defun blee:xia:frame|at-point ()
+
+(defun blee:xia:frame|at-point (@name)
   "Create a frame for web-browser"
   (let (
-	($name blee:frame:name:xif:web-browser-at-point)
+	($name @name)
 	)
     (make-frame `((name                 . ,$name)
                   (icon-name            . ,$name)
@@ -129,15 +139,14 @@ part of blee.
 ;;;
 (defun blee:xif:browse-url/at-point (url &rest args)
   "Based on configuration parameters, decide which blee:browse-url functionality should be chosen
-I
-n Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/dispatch)"
+In Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/dispatch)"
   (interactive)
   (let* (
 	 ($originalFrame (selected-frame))	 
-	 ($browserFrame (get-a-frame blee:frame:name:xif:web-browser-at-point))
+	 ($browserFrame (get-a-frame blee:frame:name:xif:web-browser:at-point@default))
 	 )
     (when (not $browserFrame)
-      (setq $browserFrame (blee:xia:frame|at-point))
+      (setq $browserFrame (blee:xia:frame|at-point blee:frame:name:xif:web-browser:at-point@default))
       )
 
     ;;(save-window-excursion        
@@ -149,59 +158,174 @@ n Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/dis
     ;;)
     ))
 
+(lambda () "
+* Global Blee Menu
+")
 
-(defvar menu-bar-frames-menu (make-sparse-keymap "Frames"))
+;; (blee:menu:top:xia|define) 
+(defun blee:menu:top:xia|define ()
+  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define
+      blee:menu:top|xia
+      global-map
+      "Global XIA Menu"
+      `("XIA" :help "eXternally Integrated Apps"
+	["XIA Blee Panel" bx:bnsm:top:panel-blee t]
+	"---"
+	[
+	 ,(format "Browse with %s" browse-url-browser-function)
+	 (find-file-at-point  blee:search-engine:primary)
+	 :help "Current setting for browse-url-browser-function"
+	 :active t
+	 :visible t
+	 ]
+	"----"
+	[
+	 ,(format "Search with %s" blee:search-engine:primary)
+	 (find-file-at-point blee:search-engine:primary)
+	 :help "Search with selected browser setting and selected engine"
+	 :active t
+	 :visible t
+	 ]
+	"-----"
+	[
+	 ,(format "XIA Browser At-Point Destination %s" blee:search-engine:primary)
+	 (find-file-at-point blee:search-engine:primary)
+	 :help "Uses this function"
+	 :active t
+	 :visible t
+	 ]
+	"------"
+	))
 
+    (blee:menu:browse-url|define)
+    (easy-menu-add-item nil '("XIA") 'blee:menu|browse-url "----")
+    
+    (blee:menu:search-engines|define)
+    ;;(easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "XIA Help")
+    (easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "-----")    
 
-;;; 
-(defun menu-bar-frames-define ()
-  (define-key global-map [menu-bar frames]
-    (cons "Frames" menu-bar-frames-menu))
-  (define-key menu-bar-frames-menu [set-all-params-from-frame]
-    '(menu-item "Set All Frame Parameters from Frame" set-all-frame-alist-parameters-from-frame
-      :help "Set frame parameters of a frame to their current values in frame"))
-  (define-key menu-bar-frames-menu [set-params-from-frame]
-    '(menu-item "Set Frame Parameter from Frame..." set-frame-alist-parameter-from-frame
-      :help "Set parameter of a frame alist to its current value in frame"))
-  (define-key menu-bar-frames-menu [separator-frame-1] '("--"))
-  (define-key menu-bar-frames-menu [tile-frames-vertically]
-    '(menu-item "Tile Frames Vertically..." tile-frames-vertically
-      :help "Tile all visible frames vertically"))
-  (define-key menu-bar-frames-menu [tile-frames-horizontally]
-    '(menu-item "Tile Frames Horizontally..." tile-frames-horizontally
-      :help "Tile all visible frames horizontally"))
-  (define-key menu-bar-frames-menu [separator-frame-2] '("--"))
-  (define-key menu-bar-frames-menu [toggle-max-frame-vertically]
-    '(menu-item "Toggle Max Frame Vertically" toggle-max-frame-vertically
-      :help "Maximize or restore the selected frame vertically"
-      :enable (frame-parameter nil 'restore-height)))
-  (define-key menu-bar-frames-menu [toggle-max-frame-horizontally]
-    '(menu-item "Toggle Max Frame Horizontally" toggle-max-frame-horizontally
-      :help "Maximize or restore the selected frame horizontally"
-      :enable (frame-parameter nil 'restore-width)))
-  (define-key menu-bar-frames-menu [toggle-max-frame]
-    '(menu-item "Toggle Max Frame" toggle-max-frame
-      :help "Maximize or restore the selected frame (in both directions)"
-      :enable (or (frame-parameter nil 'restore-width) (frame-parameter nil 'restore-height))))
-  (define-key menu-bar-frames-menu [maximize-frame-vertically]
-    '(menu-item "Maximize Frame Vertically" maximize-frame-vertically
-      :help "Maximize the selected frame vertically"))
-  (define-key menu-bar-frames-menu [maximize-frame-horizontally]
-    '(menu-item "Maximize Frame Horizontally" maximize-frame-horizontally
-      :help "Maximize the selected frame horizontally"))
-  (define-key menu-bar-frames-menu [maximize-frame]
-    '(menu-item "Maximize Frame" maximize-frame
-      :help "Maximize the selected frame (in both directions)"))
-  (define-key menu-bar-frames-menu [separator-frame-3] '("--"))
-  (define-key menu-bar-frames-menu [iconify-everything]
-    '(menu-item "Iconify All Frames" iconify-everything
-      :help "Iconify all frames of session at once"))
-  (define-key menu-bar-frames-menu [show-hide]
-    '(menu-item "Hide Frames / Show Buffers" show-hide
-      :help "Show, if only one frame visible; else hide."))
+    (blee:menu:destinations|define)
+    (easy-menu-add-item nil '("XIA") 'blee:menu|destinations  "------")
+
+    (blee:menu:xia:help|define)
+    (easy-menu-add-item nil '("XIA") 'blee:menu:xia|help)
+    )
   )
 
-(menu-bar-frames-define)
+
+(defun blee:menu:xia:help|define ()
+  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define
+      blee:menu:xia|help
+      nil
+      "Menu For XIA"
+      `("XIA Help" :help "Help For This Menu"
+	["Help: Blee Overview" blee:blee:menu:overview-help t]	
+	"---"
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
+
+
+;; 
+(defun blee:menu:browse-url|define ()
+  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define
+      blee:menu|browse-url
+      nil
+      "Menu For Configuration Of browse-url"
+      `("Browse-URL Selections" :help "Show And Set Relevant Parameters"
+	[,(format "Browse with %s" browse-url-browser-function) (find-file-at-point  blee:search-engine:primary)  t]	
+	"---"	
+	("Show Current Settings"	
+	 ["browse-url-browser-function" (describe-variable 'browse-url-browser-function) t]
+	 ["browse-url-secondary-browser-function" (describe-variable 'browse-url-secondary-browser-function) t]	 
+	 )
+	"---"
+	("Select At Point Url Browser"
+	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:xif:browse-url/at-point) t]
+	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
+	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
+	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
+	 )
+	"---"
+	("Select Mail Html Browser"
+	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:browse-url/dispatch) t]
+	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
+	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
+	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
+	 )
+	"---"
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
+
+
+
+(defun blee:menu:destinations|define ()
+  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define
+      blee:menu|destinations
+      nil
+      "Menu For Common Destinations"
+      `("Common Destinations" :help "Show And Set Relevant Parameters"
+	["duckduckgo" (find-file-at-point "https://www.duckduckgo.com") t]
+	["google" (find-file-at-point "https://google.com") t]	 
+	["bing" (find-file-at-point "https://bing.com") t]	 
+	"---"
+	("ByStar"
+	["by-star.net" (find-file-at-point "http://www.by-star.net") t]
+	["neda.com" (find-file-at-point "http://www.neda.com") t]	 
+	["ByStar Overview Presentation" (find-file-at-point "http://www.by-star.net/PLPC/180054") t]	 
+	 )
+	"---"
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
+(defun blee:menu:search-engines|define ()
+  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+  (let (
+	($thisFuncName (compile-time-function-name))
+	)
+    (easy-menu-define
+      blee:menu|search-engines
+      nil
+      "Menu For Common Destinations"
+      `("Search Engine Selections" :help "Show And Set Relevant Parameters"
+	"---"
+	[,(format "Search with %s" blee:search-engine:primary) (find-file-at-point blee:search-engine:primary)  t]	
+	"---"	
+	("Show Search Engine Current Settings"	
+	 ["blee:search-engine:default" (describe-variable 'blee:search-engine:primary) t]
+	 )
+	"---"
+	("Select Search Engine"
+	 ["duckduckgo" (progn (setq blee:search-engine:primary "https://duckduckgo.com") (blee:menu:top:xia|define)) t]
+	 ;;["google"  (custom-set-default blee:search-engine:primary "https://google.com")  t]
+	 ["google"  (progn (setq blee:search-engine:primary "https://google.com") (blee:menu:top:xia|define))  t]
+	 ["bing" (progn (setq blee:search-engine:primary "https://bing.com") (blee:menu:top:xia|define)) t]	 
+	 )
+	"---"
+	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
+	))
+    ))
+
 
 (provide 'blee-frames)
 
