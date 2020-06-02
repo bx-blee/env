@@ -120,7 +120,7 @@
   (define-key doremi-map "." 'save-frame-config)
   )
 
-(frames:keyboard|map)
+;;(frames:keyboard|map)
 
 (menu-bar-frames-define)
 
