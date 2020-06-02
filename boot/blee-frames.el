@@ -192,9 +192,9 @@ In Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/di
 	 ]
 	"-----"
 	[
-	 ,(format "XIA Browser At-Point Destination %s" blee:search-engine:primary)
-	 (find-file-at-point blee:search-engine:primary)
-	 :help "Uses this function"
+	 "XIA Browser At-Point Open URL"
+	 (call-interactively 'eaf-open-browser)
+	 :help "Prompt for specification of a URL in minibufer"
 	 :active t
 	 :visible t
 	 ]
@@ -205,7 +205,6 @@ In Blee, you should assume (setq browse-url-browser-function 'blee:browse-url/di
     (easy-menu-add-item nil '("XIA") 'blee:menu|browse-url "----")
     
     (blee:menu:search-engines|define)
-    ;;(easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "XIA Help")
     (easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "-----")    
 
     (blee:menu:destinations|define)
