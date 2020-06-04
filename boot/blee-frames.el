@@ -674,8 +674,9 @@ For Named Frames and More
     ;;(save-window-excursion        
     
     (select-frame-set-input-focus $browserFrame)
+    (tab-bar-new-tab)    
     (eaf-open-browser @url t)
-    (tab-bar-new-tab)
+    (tab-bar-rename-tab (url-host (url-generic-parse-url @url)))
     )
   )
 
