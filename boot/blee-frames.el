@@ -19,7 +19,12 @@ Linked Application Window is an external (non-integrated) application such as fi
 **
 ")
 
-
+(list
+ "https://presstv.com"
+ "https://france24.com"
+ "https://www.aljazeera.com"
+ "https://cnn.com"
+ )
 
 
 (lambda () "
