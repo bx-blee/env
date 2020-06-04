@@ -846,6 +846,29 @@ Some Comment under current
   )
 
 
+;; 
+;; org-confirm-babel-evaluate
+
+(defun blee:org:code-block/below-run ()
+  ""
+  (interactive)
+  (let (
+	($orig-org-confirm-babel-evaluate org-confirm-babel-evaluate)
+	)
+    (save-excursion
+      (move-beginning-of-line 1)    
+      (search-forward "+BEGIN_SRC" nil t)
+      (save-excursion
+	;;(org-mode)
+	(when org-confirm-babel-evaluate
+	  (setq org-confirm-babel-evaluate nil)
+	  )
+	(org-babel-execute-src-block)
+	(setq org-confirm-babel-evaluate $orig-org-confirm-babel-evaluate)
+	)
+      )))
+
+
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:menu-box:iif:define "lcaVirshManage.sh") [[elisp:(org-cycle)][| ]]

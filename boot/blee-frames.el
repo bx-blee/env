@@ -19,13 +19,6 @@ Linked Application Window is an external (non-integrated) application such as fi
 **
 ")
 
-(list
- "https://presstv.com"
- "https://france24.com"
- "https://www.aljazeera.com"
- "https://cnn.com"
- )
-
 
 (lambda () "
 * Requires
@@ -33,32 +26,6 @@ Linked Application Window is an external (non-integrated) application such as fi
 
 (require 'easymenu)
 (require 'blee-doc-howto)   ;;; NOTYET -- un-needed -- remove after cleanup after 
-
-
-
-;; (get-frame-name)
-;; (get-a-frame "blee:xia:browser:atpoint")
-;; (read-frame "specify frame name:")
-;; (flash-ding)
-
-;; (blee:xia:frame:at-point)
-
-;; (progn 
-;;   (make-frame-visible
-;;    (get-a-frame "blee:xia:browser:atpoint")
-;;    )
-
-;;   (raise-frame
-;;    (get-a-frame "blee:xia:browser:atpoint")
-;;    )
-;;   )
-
-;; (select-frame-set-input-focus (get-a-frame "blee:xia:browser:atpoint"))
-
-;; (iconify-or-deiconify-frame (get-a-frame "blee:xia:browser:atpoint"))
-;; (iconify-frame (get-a-frame "blee:xia:browser:atpoint"))
-
-;; (frame-visible-p (get-a-frame "blee:xia:browser:atpoint"))
 
 
 (lambda () "
@@ -98,10 +65,6 @@ For Named Frames and More
   )
 
 
-
-;;;(message (blee:named-frame:struct:-title blee:xinf:web-browser:interactive:default))
-
-
 (lambda () "
 ** XINF :: search-engine
 ")
@@ -126,7 +89,7 @@ For Named Frames and More
    :type "medium"
    :description "description of named-frame"
    )
-  "Default XINF for web browsing"
+  "Primary Native Named Frame."
   )
 
 (lambda () "
@@ -141,15 +104,12 @@ For Named Frames and More
    :type "medium"
    :description "description of named-frame"
    )
-  "Default XINF for web browsing"
+  "Secondary Native Named Frame."
   )
-
-
 
 (lambda () "
 ** eXternally Integrated Named Frames (XINF)
 ")
-
 
 (lambda () "
 *** XINF :: web-browser
@@ -232,7 +192,7 @@ For Named Frames and More
    :type "medium"
    :description "description of named-frame"
    )
-  "Default XINF for at-point web browsing"
+  "BXDE XINF for at-point web browsing"
   )
 
 (lambda () "
@@ -242,7 +202,7 @@ For Named Frames and More
 (defvar
   blee:xinf:web-browser:at-point:selected
   blee:xinf:web-browser:at-point:default
-  "Named-Frame-Info of Active XINF For At-Point Web Browsing.")
+  "Named-Frame-Info of Selected XINF For At-Point Web Browsing.")
 
 
 (lambda () "
@@ -263,7 +223,7 @@ For Named Frames and More
    :type "medium"
    :description "description of named-frame"
    )
-  "Default XINF for at-point web browsing"
+  "XINF for HTML-File result web browsing"
   )
 
 
@@ -280,7 +240,7 @@ For Named Frames and More
    :type "medium"
    :description "description of named-frame"
    )
-  "Default XINF for at-point web browsing"
+  "XINF for HTML-file mail web browsing"
   )
 
 (lambda () "
@@ -290,7 +250,7 @@ For Named Frames and More
 (defvar
   blee:xinf:name:web-browser:file:selected
   blee:xinf:web-browser:file:result
-  "Name of Active XINF For HTML-File Web Browsing.")
+  "Name of Selected XINF For HTML-File Web Browsing.")
 
 
 (lambda () "
@@ -316,7 +276,7 @@ For Named Frames and More
    :type "medium"
    :description "description of named-frame"
    )
-  "Default XINF for at-point web browsing"
+  "XINF for at-point Pdf viewing."
   )
 
 (lambda () "
@@ -347,7 +307,7 @@ For Named Frames and More
    :type "medium"
    :description "description of named-frame"
    )
-  "Default XINF for at-point web browsing"
+  "Default XINF for result pdf viewing."
   )
 
 (lambda () "
@@ -357,7 +317,7 @@ For Named Frames and More
 (defvar
   blee:xinf:pdf:result:selected
   blee:xinf:pdf:result:default
-  "Name of Blee primary frame.")
+  "Selected XINF for result pdf viewing.")
 
 
 (lambda () "
@@ -459,7 +419,6 @@ For Named Frames and More
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
-
 
 
 ;;
@@ -586,7 +545,8 @@ For Named Frames and More
 	 )
 	"---"
 	("Select Search Engine"
-	 ["duckduckgo" (progn (setq blee:search-engine:selected "https://duckduckgo.com") (blee:menu:top:xia|define)) t]
+	 ["duckduckgo" (blee:search-engine|selected-set "https://duckduckgo.com") t]
+	 ;;["duckduckgo" (progn (setq blee:search-engine:selected "https://duckduckgo.com") (blee:menu:top:xia|define)) t]	 
 	 ;;["google"  (custom-set-default blee:search-engine:selected "https://google.com")  t]
 	 ["google"  (progn (setq blee:search-engine:selected "https://google.com") (blee:menu:top:xia|define))  t]
 	 ["bing" (progn (setq blee:search-engine:selected "https://bing.com") (blee:menu:top:xia|define)) t]	 
@@ -596,6 +556,11 @@ For Named Frames and More
 	))
     ))
 
+(defun blee:search-engine|selected-set (@searchEngineUrl)
+  ""
+  (setq blee:search-engine:selected @searchEngineUrl)
+  (blee:menu:top:xia|define)
+  )
 
 (lambda () "
 * Keybindings
