@@ -339,6 +339,7 @@ For Named Frames and More
 * Menus
 ")
 
+http://www.neda.com
 
 (lambda () "
 ** Global Blee Menu
@@ -358,8 +359,8 @@ For Named Frames and More
 	;;["XIA Blee Panel" bx:bnsm:top:panel-blee t]
 	"---"
 	[
-	 ,(format "Browse At-Point With %s" browse-url-browser-function)
-	 (find-file-at-point)
+	 ,(format "Browse At-Point With:\n  %s" browse-url-browser-function)
+	 (find-file-at-point (ffap-url-at-point))
 	 :help "Browse at-point with current value of browse-url-browser-function"
 	 :active t
 	 :visible t
@@ -382,7 +383,7 @@ For Named Frames and More
 	 ]
 	"------"
 	[
-	 ,(format "Raise Selected XINF Browser At-Point Frame: \"%s\"" (blee:named-frame:struct:-shortTitle blee:xinf:web-browser:at-point:selected))
+	 ,(format "Raise Selected XINF Browser At-Point Frame:\n  \"%s\"" (blee:named-frame:struct:-shortTitle blee:xinf:web-browser:at-point:selected))
 	 (raise-frame (get-a-frame (blee:named-frame:struct:-name blee:xinf:web-browser:at-point:selected)))
 	 :help "Raise XINF At Value Of blee:xinf:web-browser:at-point:selected"
 	 :active t
@@ -402,7 +403,10 @@ For Named Frames and More
 
     (blee:menu:xinf:browse-url:at-point|define)
     (easy-menu-add-item nil '("XIA") 'blee:menu:xinf|browse-url "-------")
-    
+
+    (blee:nf:manage/menuSelectDef blee:named-frame:list)
+    (easy-menu-add-item nil '("XIA") 'blee:nf:manage:menuSelect)
+			
     (blee:menu:xia:help|define)
     (easy-menu-add-item nil '("XIA") 'blee:menu:xia|help)
     )
@@ -661,6 +665,94 @@ For Named Frames and More
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
+
+
+(lambda () "
+**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:menuSelectDef kvmHost) [[elisp:(org-cycle)][| ]]
+  ")
+
+;;
+;; (blee:nf:manage/menuSelectDef blee:named-frame:list)
+;; 
+
+(defun blee:nf:manage/menuSelectDef (@nfList)
+  ""
+  (interactive)
+  (let (
+	(menuHeading (format "%s -- Named Frames Selection Menu" "NOTYET"))
+	)  
+    (easy-menu-define
+      blee:nf:manage:menuSelect
+      nil
+      "" 
+      (append
+       (list menuHeading)
+       (list "---")
+       (mapcar (lambda (each)
+		 (vector (format "%s: ReVisitNOTYET" each)
+			 `(lambda ()
+			    (interactive)
+			    (message (format "%s EACH-NOTYET" ,each))
+			    )
+			 ))
+	       @nfList
+	       )))))
+
+
+(lambda () "
+**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:selectPopupMenu kvmHost) [[elisp:(org-cycle)][| ]]
+  ")
+
+;;
+;; (blee:virsh:domain:selectPopupMenu blee:named-frame:list)
+;;
+(defun blee:nf:manage:selectPopupMenu  (@nfList)
+  ""
+  (blee:nf:manage/menuSelectDef @nfList)  
+  (popup-menu blee:nf:manage:menuSelect)
+  (blee:menu-box:parallelBranches)  
+  )
+
+
+
+(lambda () "
+**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:menuSelectDef kvmHost) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:virsh:domain:menuSelectDef (kvmHost)
+  ""
+  (interactive)
+  (let ((menuHeading (format "%s -- KVM Virtual Machines Selection Menu" kvmHost)))  
+  (easy-menu-define blee:virsh:domain:menuSelect nil "" 
+    (append
+     (list menuHeading)
+     (list "---")
+     (mapcar (lambda (x)
+	       (vector (format "%s:  %s" kvmHost x)
+		       `(lambda ()
+			  (interactive)
+			  (let ((lineAsList)
+				(vmName)
+				)
+			    (setq lineAsList (split-string ,x))
+			    (setq vmName (car (cdr lineAsList)))
+			    (setq bufloc:selectedSubject vmName)
+			    ))))
+	     (virsh:list:linesList kvmHost)
+	     )))))
+
+
+(lambda () "
+**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:selectPopupMenu kvmHost) [[elisp:(org-cycle)][| ]]
+  ")
+
+(defun blee:virsh:domain:selectPopupMenu  (kvmHost)
+  ""
+  (blee:virsh:domain:menuSelectDef kvmHost)
+  (popup-menu blee:virsh:domain:menuSelect)
+  (blee:menu-box:parallelBranches)  
+  )
+
 
 
 (lambda () "
