@@ -41,6 +41,7 @@ For Named Frames and More
   "Named Frames Structure"
   (name nil :read-only t)
   title
+  shortTitle
   type
   description
   )
@@ -86,6 +87,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:nnf:name:primary"
    :title "Emacs Primary Native Frame"
+   :shortTitle "Primary Native Frame"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -101,6 +103,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:nnf:name:secondary"
    :title "Emacs Secondary Native Frame"
+   :shortTitle "Secondary Native Frame"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -128,6 +131,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:web-browser:interactive:default"
    :title "Default Emacs XINF For Interactive Web Browsing"
+   :shortTitle "Default Interactive Web Browsing XINF"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -158,6 +162,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:web-browser:at-point:default"
    :title "Emacs XINF For At-Point Default Web Browsing"
+   :shortTitle "Default At-Point Browsing XINF"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -173,6 +178,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:web-browser:at-point:news"
    :title "Emacs XINF For At-Point News Web Browsing"
+   :shortTitle "News At-Point Browsing XINF"      
    :type "medium"
    :description "description of named-frame"
    )
@@ -188,7 +194,8 @@ For Named Frames and More
   blee:xinf:web-browser:at-point:bxde
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:web-browser:at-point:bxde"
-   :title "Emacs XINF For At-Point News Web Browsing"
+   :title "Emacs XINF For At-Point BXDE Web Browsing"
+   :shortTitle "BXDE At-Point Browsing XINF"         
    :type "medium"
    :description "description of named-frame"
    )
@@ -321,8 +328,11 @@ For Named Frames and More
 
 
 (lambda () "
-* Activation Commands
+* Activation And Selection Commands
 ")
+
+(setq browse-url-browser-function 'blee:xinf:selected:browse-url/at-point)
+
 
 (lambda () "
 * Menus
@@ -330,7 +340,7 @@ For Named Frames and More
 
 
 (lambda () "
-* Global Blee Menu
+** Global Blee Menu
 ")
 
 ;; (blee:menu:top:xia|define) 
@@ -344,12 +354,12 @@ For Named Frames and More
       global-map
       "Global XIA Menu"
       `("XIA" :help "eXternally Integrated Apps"
-	["XIA Blee Panel" bx:bnsm:top:panel-blee t]
+	;;["XIA Blee Panel" bx:bnsm:top:panel-blee t]
 	"---"
 	[
-	 ,(format "Browse with %s" browse-url-browser-function)
-	 (find-file-at-point  blee:search-engine:selected)
-	 :help "Current setting for browse-url-browser-function"
+	 ,(format "Browse At-Point With %s" browse-url-browser-function)
+	 (find-file-at-point)
+	 :help "Browse at-point with current value of browse-url-browser-function"
 	 :active t
 	 :visible t
 	 ]
@@ -363,7 +373,7 @@ For Named Frames and More
 	 ]
 	"-----"
 	[
-	 "XIA Browser At-Point Open URL"
+	 "Open URL With XIA Browser In Selected XINF"
 	 (call-interactively 'eaf-open-browser-with-history)
 	 :help "Prompt for specification of a URL in minibufer"
 	 :active t	 
@@ -371,22 +381,13 @@ For Named Frames and More
 	 ]
 	"------"
 	[
-	 ,(format "XIA Frame Browser At Point: %s" blee:search-engine:selected)
-	 (call-interactively 'eaf-open-browser-with-history)
-	 :help "Prompt for specification of a URL in minibufer"
+	 ,(format "Raise Selected XINF Browser At-Point Frame: \"%s\"" (blee:named-frame:struct:-shortTitle blee:xinf:web-browser:at-point:selected))
+	 (raise-frame (get-a-frame (blee:named-frame:struct:-name blee:xinf:web-browser:at-point:selected)))
+	 :help "Raise XINF At Value Of blee:xinf:web-browser:at-point:selected"
 	 :active t
 	 :visible t
 	 ]
-	"------"
-	[
-	 ,(format "XIA Frame Browser File:  %s" blee:search-engine:selected)
-	 (call-interactively 'eaf-open-browser-with-history)
-	 :help "Prompt for specification of a URL in minibufer"
-	 :active t
-	 :visible t
-	 ]
-	"------"
-	
+	"-------" ;; (blee:menu:xinf:browse-url:at-point|define)
 	))
 
     (blee:menu:browse-url:at-point|define)
@@ -396,8 +397,11 @@ For Named Frames and More
     (easy-menu-add-item nil '("XIA") 'blee:menu|search-engines "-----")    
 
     (blee:menu:destinations|define)
-    (easy-menu-add-item nil '("XIA") 'blee:menu|destinations  "------")
+    (easy-menu-add-item nil '("XIA") 'blee:menu|destinations "------")
 
+    (blee:menu:xinf:browse-url:at-point|define)
+    (easy-menu-add-item nil '("XIA") 'blee:menu:xinf|browse-url "-------")
+    
     (blee:menu:xia:help|define)
     (easy-menu-add-item nil '("XIA") 'blee:menu:xia|help)
     )
@@ -429,32 +433,73 @@ For Named Frames and More
   (let (
 	($thisFuncName (compile-time-function-name))
 	)
+
+    (defun $set-selected (@selected)
+      (setq browse-url-browser-function @selected)
+      (blee:menu:top:xia|define)
+      )
+    
     (easy-menu-define
       blee:menu|browse-url
       nil
-      "Menu For Configuration Of browse-url"
-      `("Browse-URL Selections" :help "Show And Set Relevant Parameters"
-	[,(format "Browse with %s" browse-url-browser-function) (find-file-at-point  blee:search-engine:selected)  t]	
+      "Menu For Configuration Of browse-url-browser-function"
+      `("Browse-URL Selections"
+	:help "Show And Set Relevant Parameters"
+	,(format "**browse-url-browser-function = %s**" browse-url-browser-function)
+	,(format "**browse-url-secondary-browser-function = %s**" browse-url-secondary-browser-function)	
 	"---"	
-	("Show Current Settings"	
-	 ["browse-url-browser-function" (describe-variable 'browse-url-browser-function) t]
-	 ["browse-url-secondary-browser-function" (describe-variable 'browse-url-secondary-browser-function) t]	 
+	("Show Current browser-function Settings"	
+	 [
+	  "browse-url-browser-function"
+	  (describe-variable 'browse-url-browser-function)
+	  :help "Describe current value of browse-url-browser-function"
+	  :active t
+	  :visible t
+	  ]
+	 ["browse-url-secondary-browser-function"
+	  (describe-variable 'browse-url-secondary-browser-function)
+	  :help "Describe current value of browse-url-secondary-browser-function"
+	  :active t
+	  :visible t
+	  ]	 
 	 )
 	"---"
 	("Select At Point Url Browser"
-	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:xinf:selected:browse-url/at-point) t]
-	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
-	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
-	 ["EWW" (setq browse-url-browser-function 'eww-browse-url) t]	 
-	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
-	 )
-	"---"
-	("Select Mail Html Browser -- Defunct"
-	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:browse-url/dispatch) t]
-	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
-	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
-	 ["EWW" (setq browse-url-browser-function 'eww-browse-url) t]	 	 
-	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
+	 [
+	  "XIA Browser Frame"
+	  ($set-selected 'blee:xinf:selected:browse-url/at-point)
+	  :help "blee:xinf:selected:browse-url/at-point is based on NOTYET"
+	  :active t
+	  :visible t
+	  ]
+	 [
+	  "Firefox"
+	  ($set-selected 'browse-url-firefox)
+	  :help "Send Url to Firefox tab with: browse-url-firefox"
+	  :active t
+	  :visible t
+	  ]
+	 [
+	  "Chrome"
+	  ($set-selected 'browse-url-chromium)
+	  :help "Send Url to Chrom new tab with: browse-url-chromium"
+	  :active t
+	  :visible t
+	  ]
+	 [
+	  "EWW"
+	  ($set-selected 'eww-browse-url)
+	  :help "Send Url to eww with eww-browse-url"
+	  :active t
+	  :visible t
+	  ]	 
+	 [
+	  "Default Browser"
+	  ($set-selected 'browse-url-default-browser)
+	  :help "Send Url to default browser with browse-url-default-browser"
+	  :active t
+	  :visible t
+	  ]	 
 	 )
 	"---"
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
@@ -462,44 +507,65 @@ For Named Frames and More
     ))
 
 
-;;; http://mohsen.1.banan.byname.net
-
-
-(defun blee:menu:browse-url:file|define ()
-  "Top Level Menu For eXternal Integrated emacs-Apps and Frames"
+;;
+;; 
+(defun blee:menu:xinf:browse-url:at-point|define ()
+  "Define menu for setting and viewing of blee:xinf:web-browser:at-point:selected"
   (let (
 	($thisFuncName (compile-time-function-name))
 	)
+
+    (defun $set-selected (@selected)
+      (setq blee:xinf:web-browser:at-point:selected @selected)
+      (blee:menu:top:xia|define)
+      )
+    
     (easy-menu-define
-      blee:menu|browse-url
+      blee:menu:xinf|browse-url
       nil
-      "Menu For Configuration Of browse-url"
-      `("Browse-URL Selections" :help "Show And Set Relevant Parameters"
-	[,(format "Browse with %s" browse-url-browser-function) (find-file-at-point  blee:search-engine:selected)  t]	
+      "Menu for setting and viewing of blee:xinf:web-browser:at-point:selected"
+      `("XINF Browse-URL-At-Point Selections"
+	:help "Show And Set Relevant Parameters"
+	,(format "**blee:xinf:web-browser:at-point:selected = %s**"
+		 (blee:named-frame:struct:-name blee:xinf:web-browser:at-point:selected))
 	"---"	
-	("Show Current Settings"	
-	 ["browse-url-browser-function" (describe-variable 'browse-url-browser-function) t]
-	 ["browse-url-secondary-browser-function" (describe-variable 'browse-url-secondary-browser-function) t]	 
+	("Show Current blee:xinf:web-browser:at-point:selected Settings"	
+	 [
+	  "blee:xinf:web-browser:at-point:selected"
+	  (describe-variable 'blee:xinf:web-browser:at-point:selected)
+	  :help "Describe current value of blee:xinf:web-browser:at-point:selected"
+	  :active t
+	  :visible t
+	  ]
 	 )
 	"---"
-	("Select At Point Url Browser"
-	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:xinf:browse-url/at-point) t]
-	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
-	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
-	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
-	 )
-	"---"
-	("Select Mail Html Browser"
-	 ["XIA Browser Frame" (setq browse-url-browser-function 'blee:browse-url/dispatch) t]
-	 ["Firefox" (setq browse-url-browser-function 'browse-url-firefox) t]
-	 ["Chrome" (setq browse-url-browser-function 'browse-url-chromium) t]
-	 ["Default Browser" (setq browse-url-browser-function 'browse-url-default-browser) t]	 
+	("Select At-Point Url Browser Frame"
+	 [
+	  "Default"
+	  ($set-selected blee:xinf:web-browser:at-point:default)
+	  :help "Common default destination for at-point urls"
+	  :active t
+	  :visible t
+	  ]
+	 [
+	  "News"
+	  ($set-selected blee:xinf:web-browser:at-point:news)
+	  :help "News at-point url XINF destination"
+	  :active t
+	  :visible t
+	  ]
+	 [
+	  "BXDE"
+	  ($set-selected blee:xinf:web-browser:at-point:bxde)
+	  :help "BXDE at-point url XINF destination"
+	  :active t
+	  :visible t
+	  ]
 	 )
 	"---"
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
-
 
 
 (defun blee:menu:destinations|define ()
@@ -532,35 +598,59 @@ For Named Frames and More
   (let (
 	($thisFuncName (compile-time-function-name))
 	)
+    
+    (defun $selected-set (@searchEngineUrl)
+      (setq blee:search-engine:selected @searchEngineUrl)
+      (blee:menu:top:xia|define)
+      )
+
     (easy-menu-define
       blee:menu|search-engines
       nil
-      "Menu For Common Destinations"
-      `("Search Engine Selections" :help "Show And Set Relevant Parameters"
+      "Menu Search Engine Selections"
+      `("Search Engine Selections"
+	:help "Show And Set Selection Of Search Engine by blee:search-engine:selected"
 	"---"
-	[,(format "Search with %s" blee:search-engine:selected) (find-file-at-point blee:search-engine:selected)  t]	
+	,(format "**blee:search-engine:selected = %s**" blee:search-engine:selected)
 	"---"	
 	("Show Search Engine Current Settings"	
-	 ["blee:search-engine:default" (describe-variable 'blee:search-engine:selected) t]
+	 [
+	  "blee:search-engine:selected"
+	  (describe-variable 'blee:search-engine:selected)
+	  :help "Describe current value of blee:search-engine:selected"
+	  :active t
+	  :visible t
+	  ]
 	 )
 	"---"
 	("Select Search Engine"
-	 ["duckduckgo" (blee:search-engine|selected-set "https://duckduckgo.com") t]
-	 ;;["duckduckgo" (progn (setq blee:search-engine:selected "https://duckduckgo.com") (blee:menu:top:xia|define)) t]	 
-	 ;;["google"  (custom-set-default blee:search-engine:selected "https://google.com")  t]
-	 ["google"  (progn (setq blee:search-engine:selected "https://google.com") (blee:menu:top:xia|define))  t]
-	 ["bing" (progn (setq blee:search-engine:selected "https://bing.com") (blee:menu:top:xia|define)) t]	 
+	 [
+	  "duckduckgo"
+	  ($selected-set "https://duckduckgo.com")
+	  :help "Set blee:search-engine:selected to https://duckduckgo.com"
+	  :active t
+	  :visible t
+	  ]
+	 [
+	  "google"
+	  ($selected-set "https://google.com")
+	  :help "Set blee:search-engine:selected to https://google.com"
+	  :active t
+	  :visible t
+	  ]
+	 [
+	  "bing"
+	  ($selected-set "https://bing.com")
+	  :help "Set blee:search-engine:selected to https://bing.com "
+	  :active t
+	  :visible t
+	  ]	 
 	 )
 	"---"
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
 
-(defun blee:search-engine|selected-set (@searchEngineUrl)
-  ""
-  (setq blee:search-engine:selected @searchEngineUrl)
-  (blee:menu:top:xia|define)
-  )
 
 (lambda () "
 * Keybindings
@@ -572,10 +662,6 @@ For Named Frames and More
 
 (lambda () "
 * Global Functions
-")
-
-(lambda () "
-* Local Functions
 ")
 
 
@@ -644,6 +730,11 @@ For Named Frames and More
     (tab-bar-rename-tab (url-host (url-generic-parse-url @url)))
     )
   )
+
+
+(lambda () "
+* Local Functions
+")
 
 
 (lambda () "
