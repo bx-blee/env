@@ -331,7 +331,8 @@ For Named Frames and More
 * Activation And Selection Commands
 ")
 
-(setq browse-url-browser-function 'blee:xinf:selected:browse-url/at-point)
+
+;;;   (setq browse-url-browser-function 'blee:xinf:selected:browse-url/at-point)
 
 
 (lambda () "
@@ -526,8 +527,18 @@ For Named Frames and More
       "Menu for setting and viewing of blee:xinf:web-browser:at-point:selected"
       `("XINF Browse-URL-At-Point Selections"
 	:help "Show And Set Relevant Parameters"
-	,(format "**blee:xinf:web-browser:at-point:selected = %s**"
-		 (blee:named-frame:struct:-name blee:xinf:web-browser:at-point:selected))
+	,(format
+	  "**blee:xinf:web-browser:at-point:selected = %s**"
+	  (blee:named-frame:struct:-name blee:xinf:web-browser:at-point:selected))
+	,(format
+	  "**blee:xinf:name:web-browser:file:selected = %s**"
+	  (blee:named-frame:struct:-name blee:xinf:name:web-browser:file:selected))
+	,(format
+	  "**blee:xinf:pdf:at-point:selected = %s**"
+	  (blee:named-frame:struct:-name blee:xinf:pdf:at-point:selected))
+	,(format
+	  "**blee:xinf:pdf:result:selected = %s**"
+	  (blee:named-frame:struct:-name blee:xinf:pdf:result:selected))
 	"---"	
 	("Show Current blee:xinf:web-browser:at-point:selected Settings"	
 	 [
@@ -702,6 +713,36 @@ For Named Frames and More
    @url
    )
   )
+
+
+(defun blee:xinf:default:browse-url/at-point (@url &rest @args)
+  "In the named-frame, blee:xinf:web-browser:at-point:selected, open @url."
+  (interactive)
+  (blee:xinf:browse-url/at-point
+   blee:xinf:web-browser:at-point:default
+   @url
+   )
+  )
+
+
+(defun blee:xinf:news:browse-url/at-point (@url &rest @args)
+  "In the named-frame, blee:xinf:web-browser:at-point:selected, open @url."
+  (interactive)
+  (blee:xinf:browse-url/at-point
+   blee:xinf:web-browser:at-point:news
+   @url
+   )
+  )
+
+(defun blee:xinf:bxde:browse-url/at-point (@url &rest @args)
+  "In the named-frame, blee:xinf:web-browser:at-point:selected, open @url."
+  (interactive)
+  (blee:xinf:browse-url/at-point
+   blee:xinf:web-browser:at-point:bxde
+   @url
+   )
+  )
+
 
 ;;; (blee:xinf:browse-url/at-point blee:xinf:web-browser:at-point:selected "https://google.com")
 ;;; (blee:xinf:browse-url/at-point blee:xinf:web-browser:at-point:news "https://presstv.com")
