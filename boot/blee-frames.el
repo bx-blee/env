@@ -16,6 +16,8 @@ XIA is the layer above eaf (emacs-application-framework) that is associated
 with named frames.
 *** Linked Application Windows 
 Linked Application Window is an external (non-integrated) application such as firefox.
+*** Named Frames Management ( A Mini DT-Windows Manager For Named Frames) 
+*** Named Frames Activities Management -- A set of collaborating Name Frames to be managed collectively
 **
 ")
 
@@ -45,26 +47,6 @@ For Named Frames and More
   type
   description
   )
-
-(lambda () "
-** NF :: List Of Named Frames
-")
-
-(defvar
-  blee:named-frame:list
-  (list
-   "blee:xinf:name:web-browser:interactive:default"
-   "blee:xinf:name:web-browser:at-point:default"
-   "blee:xinf:name:web-browser:at-point:news"
-   "blee:xinf:name:web-browser:at-point:bxde"
-   "blee:xinf:name:web-browser:file:result"
-   "blee:xinf:name:web-browser:file:mail"
-   "blee:xinf:name:pdf:at-point:default"
-   "blee:xinf:name:pdf:result:default"
-   )
-  "List of Blee Named Frames"
-  )
-
 
 (lambda () "
 ** XINF :: search-engine
@@ -227,6 +209,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:web-browser:file:result"
    :title "Emacs XINF For Results-File Web Browsing"
+   :shortTitle "Results-File Web Browsing XINF"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -244,6 +227,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:web-browser:file:mail"
    :title "Emacs XINF For Mail-File Web Browsing"
+   :shortTitle "Mail-File Web Browsing XINF"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -280,6 +264,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:pdf:at-point:default"
    :title "Emacs XINF For At-Point PDF Viewing"
+   :shortTitle "At-Point PDF Viewing XINF"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -311,6 +296,7 @@ For Named Frames and More
   (make-blee:named-frame:struct:
    :name "blee:xinf:name:pdf:result:default"
    :title "Emacs XINF For Results PDF Viewing"
+   :shortTitle "Results PDF Viewing XINF"   
    :type "medium"
    :description "description of named-frame"
    )
@@ -327,6 +313,47 @@ For Named Frames and More
   "Selected XINF for result pdf viewing.")
 
 
+
+(lambda () "
+** NF :: List Of Named Frames
+")
+
+(setq
+  blee:named-frame:list
+  (list
+   blee:nnf:primary
+   blee:nnf:secondary
+   blee:xinf:web-browser:interactive:default
+   blee:xinf:web-browser:at-point:default
+   blee:xinf:web-browser:at-point:news
+   blee:xinf:web-browser:at-point:bxde
+   blee:xinf:web-browser:file:result
+   blee:xinf:web-browser:file:mail
+   blee:xinf:pdf:at-point:default
+   blee:xinf:pdf:result:default
+   ))
+
+
+(defvar
+  blee:named-frame:list
+  (list
+   'blee:nnf:primary
+   'blee:nnf:secondary
+   'blee:xinf:web-browser:interactive:default
+   'blee:xinf:name:web-browser:at-point:default
+   'blee:xinf:name:web-browser:at-point:news
+   'blee:xinf:name:web-browser:at-point:bxde
+   'blee:xinf:name:web-browser:file:result
+   'blee:xinf:name:web-browser:file:mail
+   'blee:xinf:name:pdf:at-point:default
+   'blee:xinf:name:pdf:result:default
+   )
+  "List of Blee Named Frames"
+  )
+
+
+
+
 (lambda () "
 * Activation And Selection Commands
 ")
@@ -338,8 +365,6 @@ For Named Frames and More
 (lambda () "
 * Menus
 ")
-
-http://www.neda.com
 
 (lambda () "
 ** Global Blee Menu
@@ -383,7 +408,8 @@ http://www.neda.com
 	 ]
 	"------"
 	[
-	 ,(format "Raise Selected XINF Browser At-Point Frame:\n  \"%s\"" (blee:named-frame:struct:-shortTitle blee:xinf:web-browser:at-point:selected))
+	 ,(format "Raise Selected XINF Browser At-Point Frame:\n  \"%s\""
+		  (blee:named-frame:struct:-shortTitle blee:xinf:web-browser:at-point:selected))
 	 (raise-frame (get-a-frame (blee:named-frame:struct:-name blee:xinf:web-browser:at-point:selected)))
 	 :help "Raise XINF At Value Of blee:xinf:web-browser:at-point:selected"
 	 :active t
@@ -675,27 +701,29 @@ http://www.neda.com
 ;; (blee:nf:manage/menuSelectDef blee:named-frame:list)
 ;; 
 
-(defun blee:nf:manage/menuSelectDef (@nfList)
+(defun blee:nf:manage/menuSelectDef (<nfList)
   ""
   (interactive)
   (let (
-	(menuHeading (format "%s -- Named Frames Selection Menu" "NOTYET"))
+	($menuHeading "Named Frames Management")
 	)  
     (easy-menu-define
       blee:nf:manage:menuSelect
       nil
       "" 
       (append
-       (list menuHeading)
+       (list $menuHeading)
        (list "---")
-       (mapcar (lambda (each)
-		 (vector (format "%s: ReVisitNOTYET" each)
+       (mapcar (lambda (<each)
+		 (vector (format "Raise NF: %s" (blee:named-frame:struct:-shortTitle <each))
 			 `(lambda ()
-			    (interactive)
-			    (message (format "%s EACH-NOTYET" ,each))
+			    (interactive)  ;; Must be a command -- not just a function
+			    (raise-frame
+			     (get-a-frame (blee:named-frame:struct:-name ,<each)))
 			    )
-			 ))
-	       @nfList
+			 )
+		 )
+	       <nfList
 	       )))))
 
 
@@ -710,46 +738,6 @@ http://www.neda.com
   ""
   (blee:nf:manage/menuSelectDef @nfList)  
   (popup-menu blee:nf:manage:menuSelect)
-  (blee:menu-box:parallelBranches)  
-  )
-
-
-
-(lambda () "
-**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:menuSelectDef kvmHost) [[elisp:(org-cycle)][| ]]
-  ")
-
-(defun blee:virsh:domain:menuSelectDef (kvmHost)
-  ""
-  (interactive)
-  (let ((menuHeading (format "%s -- KVM Virtual Machines Selection Menu" kvmHost)))  
-  (easy-menu-define blee:virsh:domain:menuSelect nil "" 
-    (append
-     (list menuHeading)
-     (list "---")
-     (mapcar (lambda (x)
-	       (vector (format "%s:  %s" kvmHost x)
-		       `(lambda ()
-			  (interactive)
-			  (let ((lineAsList)
-				(vmName)
-				)
-			    (setq lineAsList (split-string ,x))
-			    (setq vmName (car (cdr lineAsList)))
-			    (setq bufloc:selectedSubject vmName)
-			    ))))
-	     (virsh:list:linesList kvmHost)
-	     )))))
-
-
-(lambda () "
-**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:selectPopupMenu kvmHost) [[elisp:(org-cycle)][| ]]
-  ")
-
-(defun blee:virsh:domain:selectPopupMenu  (kvmHost)
-  ""
-  (blee:virsh:domain:menuSelectDef kvmHost)
-  (popup-menu blee:virsh:domain:menuSelect)
   (blee:menu-box:parallelBranches)  
   )
 
