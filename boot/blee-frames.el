@@ -48,6 +48,17 @@ For Named Frames and More
   description
   )
 
+(cl-defstruct  blee:nf-activity:struct:
+  "Named Frames Activity Structure"
+  (name nil :read-only t)   ;; activity name
+  title                      
+  shortTitle
+  nfList                   ;; List of NFs for this activity
+  description
+  )
+
+
+
 (lambda () "
 ** XINF :: search-engine
 ")
@@ -75,6 +86,41 @@ For Named Frames and More
    )
   "Primary Native Named Frame."
   )
+
+(lambda () "
+*** Native Named Frames (NNF) -- Secondary
+")
+
+(defvar
+  blee:nnf:secondary
+  (make-blee:named-frame:struct:
+   :name "blee:nnf:name:secondary"
+   :title "Emacs Secondary Native Frame"
+   :shortTitle "Secondary Native Frame"   
+   :type "medium"
+   :description "description of named-frame"
+   )
+  "Secondary Native Named Frame."
+  )
+
+
+
+(lambda () "
+*** Native Named Frames (NNF) -- Gnus
+")
+
+(defvar
+  blee:nnf:gnus
+  (make-blee:named-frame:struct:
+   :name "blee:nnf:name:gnus"
+   :title "Emacs Gnus Native Frame"
+   :shortTitle "Gnus Native Frame"   
+   :type "medium"
+   :description "description of named-frame"
+   )
+  "Gnus Native Named Frame."
+  )
+
 
 (lambda () "
 *** Native Named Frames (NNF) -- Secondary
@@ -313,16 +359,16 @@ For Named Frames and More
   "Selected XINF for result pdf viewing.")
 
 
-
 (lambda () "
 ** NF :: List Of Named Frames
 ")
 
-(setq
+(defvar
   blee:named-frame:list
   (list
    blee:nnf:primary
    blee:nnf:secondary
+   blee:nnf:gnus
    blee:xinf:web-browser:interactive:default
    blee:xinf:web-browser:at-point:default
    blee:xinf:web-browser:at-point:news
@@ -331,26 +377,42 @@ For Named Frames and More
    blee:xinf:web-browser:file:mail
    blee:xinf:pdf:at-point:default
    blee:xinf:pdf:result:default
-   ))
-
-
-(defvar
-  blee:named-frame:list
-  (list
-   'blee:nnf:primary
-   'blee:nnf:secondary
-   'blee:xinf:web-browser:interactive:default
-   'blee:xinf:name:web-browser:at-point:default
-   'blee:xinf:name:web-browser:at-point:news
-   'blee:xinf:name:web-browser:at-point:bxde
-   'blee:xinf:name:web-browser:file:result
-   'blee:xinf:name:web-browser:file:mail
-   'blee:xinf:name:pdf:at-point:default
-   'blee:xinf:name:pdf:result:default
    )
   "List of Blee Named Frames"
   )
 
+
+(lambda () "
+*** XINF :: activity :: gnus
+")
+
+(defvar
+  blee:nf:activity:gnus
+  (make-blee:nf-activity:struct:
+   :name "blee:nf:activity:gnus"
+   :title "Named Frame GNUS Activity"
+   :shortTitle "NF GNUS Activity"   
+   :nfList (list
+	    blee:nnf:gnus
+	    blee:xinf:web-browser:file:mail
+	    )
+   :description "description of named-frame"
+   )
+  "Default XINF for result pdf viewing."
+  )
+
+
+(lambda () "
+** NF :: List Of Named Activity Frames
+")
+
+(defvar
+  blee:nfActivity:list
+  (list
+   blee:nf:activity:gnus
+   )
+  "List of Blee Named Activity Frames"
+  )
 
 
 
@@ -432,7 +494,10 @@ For Named Frames and More
 
     (blee:nf:manage/menuSelectDef blee:named-frame:list)
     (easy-menu-add-item nil '("XIA") 'blee:nf:manage:menuSelect)
-			
+
+    (blee:nfActivity:manage/menuSelectDef blee:nfActivity:list)
+    (easy-menu-add-item nil '("XIA") 'blee:nfActivity:manage:menuSelect)
+    
     (blee:menu:xia:help|define)
     (easy-menu-add-item nil '("XIA") 'blee:menu:xia|help)
     )
@@ -701,7 +766,7 @@ For Named Frames and More
 ;; (blee:nf:manage/menuSelectDef blee:named-frame:list)
 ;; 
 
-(defun blee:nf:manage/menuSelectDef (<nfList)
+(defun blee:nf:manage/menuSelectDefObsolete (<nfList)
   ""
   (interactive)
   (let (
@@ -724,6 +789,68 @@ For Named Frames and More
 			 )
 		 )
 	       <nfList
+	       )))))
+
+
+(defun blee:nf:manage/menuSelectDef (<nfList)
+  ""
+  (interactive)
+  (let (
+	($menuHeading "Named Frames Management")
+	)  
+    (easy-menu-define
+      blee:nf:manage:menuSelect
+      nil
+      "" 
+      (append
+       (list $menuHeading)
+       (list "---")
+       (mapcar (lambda (<each)
+		 (vector (format "Raise NF: %s" (blee:named-frame:struct:-shortTitle <each))
+			 `(blee:$raiseNF ,<each)
+			 )
+		 )
+	       <nfList
+	       )))))
+
+
+
+(defun blee:$raiseNF (<nf)
+  (interactive)  ;; Must be a command -- not just a function
+  (raise-frame
+   (get-a-frame (blee:named-frame:struct:-name <nf))))
+
+
+(lambda () "
+**  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:menuSelectDef kvmHost) [[elisp:(org-cycle)][| ]]
+  ")
+
+;;
+;; (blee:nfActivity:manage/menuSelectDef blee:nfActivity:list)
+;; 
+
+(defun blee:nfActivity:manage/menuSelectDef (<nfActivityList)
+  ""
+  (interactive)
+  (let (
+	($menuHeading "Named Activity Frames Management")
+	)  
+    (easy-menu-define
+      blee:nfActivity:manage:menuSelect
+      nil
+      "" 
+      (append
+       (list $menuHeading)
+       (list "---")
+       (mapcar (lambda (<each)
+		 (vector (format "Raise NF Activities: %s" (blee:nf-activity:struct:-shortTitle <each))
+			 `(lambda ()
+			    (interactive)  ;; Must be a command -- not just a function
+			    (message (blee:nf-activity:struct:-shortTitle ,<each))
+			    )
+			 )
+		 )
+	       <nfActivityList
 	       )))))
 
 
