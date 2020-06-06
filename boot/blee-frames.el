@@ -18,6 +18,16 @@ with named frames.
 Linked Application Window is an external (non-integrated) application such as firefox.
 *** Named Frames Management ( A Mini DT-Windows Manager For Named Frames) 
 *** Named Frames Activities Management -- A set of collaborating Name Frames to be managed collectively
+** Concepts, Terminology, Labels and Acronyms:
+*** Named Frames (NF)
+**** Native Named Frames (NNF)
+**** eXternally Integrated Emacs Frames (XINF)
+**** Emacs Linked Application Windows (ELAW)
+**** Named Activity Frames (NAF) 
+*** EAF: Emacs Applications Framework
+*** eXternally Integrated Applications (XIA)
+**** XIA-Web-Browser
+**** XIA-PDF-Viewer
 **
 ")
 
