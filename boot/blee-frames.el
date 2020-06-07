@@ -24,11 +24,11 @@ Linked Application Window is an external (non-integrated) application such as fi
 **** eXternally Integrated Emacs Frames (XINF)
 **** Emacs Linked Application Windows (ELAW)
 **** Named Activity Frames (NAF) 
-*** EAF: Emacs Applications Framework
-*** eXternally Integrated Applications (XIA)
+*** eXternally Integrated Applications (XIA) on EAF
+**** EAF: Emacs Applications Framework
 **** XIA-Web-Browser
 **** XIA-PDF-Viewer
-**
+** 
 ")
 
 
