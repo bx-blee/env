@@ -530,6 +530,10 @@ For Named Frames and More
 	))
     ))
 
+(when (equal blee:emacs:id '26f)
+  (defvar browse-url-secondary-browser-function nil
+    "Fake temporary 26f variable for same as introduced in 27f"))
+
 
 ;;
 ;; (blee:menu:browse-url:at-point|define)
