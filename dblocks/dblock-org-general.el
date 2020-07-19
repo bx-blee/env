@@ -814,6 +814,82 @@ Sections are specified as :outLevel 1,n
     ))
 
 
+(defun org-dblock-write:blee:bxPanel:sisterPanels  (@params)
+  "
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeBlank"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	(@model (or (plist-get @params :model) "auto"))
+	;;
+	($fileAsString)
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":model \"auto\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      "NOTYET, for each directory create a sister panel"
+      (when (string= @model "auto")      
+	(insert
+	 (format
+	  "*   Sister Panels   :: "
+	  ))
+	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs ".."))
+	  (insert
+	   (format
+	    "[[elisp:(blee:bnsm:panel-goto \"../%s\")][%s]]"
+	    $eachSubDir
+	    $eachSubDir
+	    )
+	   )
+	  (insert " || ")
+	  )
+	(insert
+	 (format
+	  "\n*   =General=         ::  [[elisp:(blee:bnsm:panel-goto \"./main/\")][Main]] ||"
+	  ))
+	)
+      )
+    
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+;;(blee:file:dir:listNotableSubdirs "..")
+(defun blee:file:dir:listNotableSubdirs (<dir)
+  "List Notable subDirs of <dir"
+  (let (($result nil)
+	($filesList (directory-files <dir))
+	)
+    (dolist ($eachFile $filesList)
+      (unless (member
+	       $eachFile
+	       '("." ".." ".git" "CVS" "RCS")
+	       )
+	;;(message (format "DisrListing: %s" $eachFile))
+	(when (file-directory-p (expand-file-name (format "%s/%s" <dir $eachFile)))
+	  ;;(message (format "DirIs: %s" $eachFile))
+	  (add-to-list '$result $eachFile)
+	  )))
+    $result
+    ))
+    
+	
 (defun org-dblock-write:blee:bxPanel:relatedPanels  (@params)
   "Lists related panels in two parts. 1) based on :panelsList -- 2) based on :inFile
 "
@@ -824,7 +900,7 @@ Sections are specified as :outLevel 1,n
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@panelsList (or (plist-get @params :panelsList) "bxPanel"))
-	(@inFile (or (plist-get @params :inFile) "panelSisters.org"))	
+	(@inFile (or (plist-get @params :inFile) "sisterPanels.org"))	
 	;;
 	($fileAsString)
 	)
