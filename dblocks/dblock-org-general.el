@@ -844,7 +844,7 @@ Sections are specified as :outLevel 1,n
 	 (format
 	  "*   Sister Panels   :: "
 	  ))
-	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs ".."))
+	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs "."))
 	  (insert
 	   (format
 	    "[[elisp:(blee:bnsm:panel-goto \"../%s\")][%s]]"
@@ -856,7 +856,7 @@ Sections are specified as :outLevel 1,n
 	  )
 	(insert
 	 (format
-	  "\n*   =General=         ::  [[elisp:(blee:bnsm:panel-goto \"./main/\")][Main]] ||"
+	  "\n*   =General=         ::  [[elisp:(blee:bnsm:panel-goto \"../main/\")][Main]] ||"
 	  ))
 	)
       )
@@ -873,7 +873,7 @@ Sections are specified as :outLevel 1,n
 ;;(blee:file:dir:listNotableSubdirs "..")
 (defun blee:file:dir:listNotableSubdirs (<dir)
   "List Notable subDirs of <dir"
-  (let (($result nil)
+  (let (($result (list))
 	($filesList (directory-files <dir))
 	)
     (dolist ($eachFile $filesList)
@@ -884,12 +884,28 @@ Sections are specified as :outLevel 1,n
 	;;(message (format "DisrListing: %s" $eachFile))
 	(when (file-directory-p (expand-file-name (format "%s/%s" <dir $eachFile)))
 	  ;;(message (format "DirIs: %s" $eachFile))
-	  (add-to-list '$result $eachFile)
+	  (setq $result (append $result (list $eachFile)))
 	  )))
     $result
     ))
-    
-	
+
+
+(defun blee:str:org:stripDblocks (<orgInputString)
+  "Strip lines that include dblocks."
+  (let (
+	($resultLines (list))	
+	($orgInputLines (s-lines <orgInputString))
+	)
+    (dolist ($eachLine $orgInputLines)
+      (unless (or
+	       (s-match "^####.BEGIN: " $eachLine)
+	       (s-match "^####.END" $eachLine)
+	       )
+	(setq $resultLines (append $resultLines (list $eachLine)))
+	))
+    (s-join "\n" $resultLines)
+    ))
+
 (defun org-dblock-write:blee:bxPanel:relatedPanels  (@params)
   "Lists related panels in two parts. 1) based on :panelsList -- 2) based on :inFile
 "
@@ -923,7 +939,7 @@ Sections are specified as :outLevel 1,n
 	))
       (when (ignore-errors (get-string-from-file (format "%s" @inFile)))
 	(setq $fileAsString (ignore-errors (get-string-from-file (format "%s" @inFile))))
-	(insert $fileAsString)
+	(insert (blee:str:org:stripDblocks $fileAsString))
 	)
 
       (insert
