@@ -38,9 +38,9 @@
 
 (defun blee:panel:frontControl (@outLevel &rest @args)
   "Outline level is included.
-|N is not in a dblock
-(> is immediately in a dblock (above line is BEGIN)
-|n is in a dblock but not immediatley (above line is not BEGIN)
+|N (nil)is not in a dblock
+(> (t) is immediately in a dblock (above line is BEGIN)
+|n (yes) is in a dblock but not immediatley (above line is not BEGIN)
 "
 
   (let (
@@ -102,10 +102,17 @@
       (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|N]]"
 					  (blee:panel:outLevelStr @outLevel)
 					  )))
-    (when @inDblock
+
+    (when (equal @inDblock t)
       (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][(>]]"
 					   (blee:panel:outLevelStr @outLevel)
 					   )))
+
+    (when (equal @inDblock "yes")
+      (setq $primaryNaturalControl (format "%s [[elisp:(show-all)][|n]]"
+					   (blee:panel:outLevelStr @outLevel)
+					   )))
+
     (setq $result (format "%s %s "
 			  $primaryNaturalControl
 			  "[[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]"
@@ -608,12 +615,8 @@ Sections are specified as :outLevel 1,n
 
     (when @sep
       (insert
-       (format "\
-%s \
-/[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/  
-"
-	       (blee:panel:outLevelStr @outLevel)
-	       )))
+       (blee:org:separatorStr @outLevel))
+      (insert "\n"))
     
     (format "\
 %s \
@@ -814,6 +817,53 @@ Sections are specified as :outLevel 1,n
     ))
 
 
+(defun blee:org:separatorStr (<outLevel)
+  (format "\
+%s \
+/[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/"
+	  (blee:panel:outLevelStr <outLevel)
+	  ))
+
+
+
+(defun org-dblock-write:blee:bxPanel:separator  (@params)
+  "
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeBlank"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	(@model (or (plist-get @params :model) "auto"))
+	;;
+	($fileAsString)
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":model \"auto\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      ""
+      (insert
+       (blee:org:separatorStr @outLevel))
+      )
+    
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
 (defun org-dblock-write:blee:bxPanel:sisterPanels  (@params)
   "
 "
@@ -870,6 +920,78 @@ Sections are specified as :outLevel 1,n
 
     ))
 
+
+(defun org-dblock-write:blee:bxPanel:siblingPanelLinks  (@params)
+  "
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	(@model (or (plist-get @params :model) "auto"))
+	;;
+	($fileAsString)
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":model \"auto\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      "for each directory create a link to sister panel"
+      (when (string= @model "auto")      
+	(insert 
+	 (blee:panel:delimiterSection
+	  @outLevel
+	  "Sibling Links"
+	  nil
+	  "(Dblock Generated)"
+	  :inDblock t
+	  )
+	 )
+	(insert "\n")
+	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs ".."))
+	  (insert
+	   (format
+	    "%s" (blee:panel:delimiterFrontControl @outLevel
+						   :inDblock "yes"
+						   )))
+	  (insert
+	   (format
+	    "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  /%s/"
+	    (expand-file-name (format "../%s" $eachSubDir))
+	    $eachSubDir
+	    $eachSubDir
+	    $eachSubDir	    
+	    )
+	   )
+	  (insert " ||\n")
+	  )
+	)
+      (insert
+       (format
+	"%s"
+        (blee:panel:outLevelStr @outLevel)
+	))
+      )
+      
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
 ;;(blee:file:dir:listNotableSubdirs "..")
 (defun blee:file:dir:listNotableSubdirs (<dir)
   "List Notable subDirs of <dir"
@@ -879,7 +1001,7 @@ Sections are specified as :outLevel 1,n
     (dolist ($eachFile $filesList)
       (unless (member
 	       $eachFile
-	       '("." ".." ".git" "CVS" "RCS")
+	       '("." ".." ".git" "CVS" "RCS" "main")
 	       )
 	;;(message (format "DisrListing: %s" $eachFile))
 	(when (file-directory-p (expand-file-name (format "%s/%s" <dir $eachFile)))
