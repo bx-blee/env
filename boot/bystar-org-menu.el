@@ -501,6 +501,29 @@
   (org-todo-list nil)
   )
 
+
+(defun bx:org:todo:this-node-otherWin ()
+  (interactive)
+  (setq org-agenda-files 
+	(append
+	 (list (buffer-file-name))))
+  (org-todo-list nil)
+  )
+
+(defun bx:org:agenda:this-node ()
+  (interactive)
+  (setq org-agenda-files 
+	(append
+	 (list (buffer-file-name))
+	 (file-expand-wildcards "~/org/events/*.org")
+	 )
+	)
+  (org-agenda-list)
+  (delete-other-windows)
+  )
+
+
+
 (defun bx:org:find-agenda-files-in-orgMode ()
   ;;
   ;; org-agenda-files now may include .org files as well as .tex or .py or .bash or .etc
