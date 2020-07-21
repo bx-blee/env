@@ -730,8 +730,8 @@ Some Comment under current
 	["To Do This" (bx:org:todo:this-file-otherWin) t]
 	["Agenda This" (bx:org:agenda:this-file-otherWin) t]
 	"---"	
-	["To Do These -- NOTYET" beginning-of-buffer t]
-	["Agenda These -- NOTYET" delete-other-windows t]
+	["To Do These -- Node Panels" bx:org:todo:this-node-otherWin t]
+	["Agenda These -- Node Panels" bx:org:agenda:this-node t]
 	"---"	
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))

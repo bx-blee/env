@@ -993,10 +993,13 @@ Sections are specified as :outLevel 1,n
 
 
 ;;(blee:file:dir:listNotableSubdirs "..")
-(defun blee:file:dir:listNotableSubdirs (<dir)
+(defun blee:file:dir:listNotableSubdirs (<dir &rest <args)
   "List Notable subDirs of <dir"
-  (let (($result (list))
+  (let (
+	(<expandedFileName (or (plist-get <args :expandedFileName) nil))
+	($result (list))
 	($filesList (directory-files <dir))
+	($eachExpandedFileName "")
 	)
     (dolist ($eachFile $filesList)
       (unless (member
@@ -1004,9 +1007,13 @@ Sections are specified as :outLevel 1,n
 	       '("." ".." ".git" "CVS" "RCS" "main")
 	       )
 	;;(message (format "DisrListing: %s" $eachFile))
-	(when (file-directory-p (expand-file-name (format "%s/%s" <dir $eachFile)))
+	(setq $eachExpandedFileName (expand-file-name (format "%s/%s" <dir $eachFile)))
+	(when (file-directory-p $eachExpandedFileName)
 	  ;;(message (format "DirIs: %s" $eachFile))
-	  (setq $result (append $result (list $eachFile)))
+	  (if <expandedFileName
+	      (setq $result (append $result (list $eachExpandedFileName)))
+	    (setq $result (append $result (list $eachFile)))
+	    )
 	  )))
     $result
     ))
