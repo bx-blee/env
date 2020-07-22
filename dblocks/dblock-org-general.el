@@ -1523,6 +1523,15 @@ Sections are specified as :outLevel 1,n
 
     ))
 
+;;;
+;;; (blee:org:agenda:category-get)
+;;; 
+(defun blee:org:agenda:category-get ()
+  (file-name-nondirectory
+   (directory-file-name
+    (file-name-directory
+     buffer-file-name))))
+
 
 (defun org-dblock-write:blee:bxPanel:footerOrgParams (@params)
   " Example for pure Blee org-mode dblocks.
@@ -1554,15 +1563,17 @@ Sections are specified as :outLevel 1,n
 	"%s    [[elisp:(org-cycle)][| *= Org-Mode Local Params: =* | ]]\n"
 	(blee:panel:frontControl @outLevel :inDblock "yes")
 	))
-      
+
       (insert
        (format "\
 #+STARTUP: lognotestate
 #+STARTUP: inlineimages
 #+SEQ_TODO: TODO WAITING DELEGATED | DONE DEFERRED CANCELLED
 #+TAGS: @desk(d) @home(h) @work(w) @withInternet(i) @road(r) call(c) errand(e)
+#+CATEGORY: %s\
 "
-	))
+	       (blee:org:agenda:category-get)    
+	       ))
       )
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
