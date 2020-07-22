@@ -1566,6 +1566,7 @@ Sections are specified as :outLevel 1,n
 
       (insert
        (format "\
+#+STARTUP: overview
 #+STARTUP: lognotestate
 #+STARTUP: inlineimages
 #+SEQ_TODO: TODO WAITING DELEGATED | DONE DEFERRED CANCELLED
