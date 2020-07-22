@@ -997,15 +997,17 @@ Sections are specified as :outLevel 1,n
   "List Notable subDirs of <dir"
   (let (
 	(<expandedFileName (or (plist-get <args :expandedFileName) nil))
+	(<includeMain (or (plist-get <args :includeMain) nil))	
 	($result (list))
 	($filesList (directory-files <dir))
 	($eachExpandedFileName "")
+	($excludeDirs (list "." ".." ".git" "CVS" "RCS"))
 	)
+    (unless <includeMain
+      (setq $excludeDirs (append $excludeDirs (list "main")))
+      )
     (dolist ($eachFile $filesList)
-      (unless (member
-	       $eachFile
-	       '("." ".." ".git" "CVS" "RCS" "main")
-	       )
+      (unless (member $eachFile $excludeDirs)
 	;;(message (format "DisrListing: %s" $eachFile))
 	(setq $eachExpandedFileName (expand-file-name (format "%s/%s" <dir $eachFile)))
 	(when (file-directory-p $eachExpandedFileName)

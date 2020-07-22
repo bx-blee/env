@@ -505,7 +505,7 @@
 (defun bx:org:todo:this-node-otherWin ()
   (interactive)
   (setq org-agenda-files
-	(blee:file:dir:listNotableSubdirs ".." :expandedFileName t)
+	(blee:file:dir:listNotableSubdirs ".." :expandedFileName t :includeMain t)
 	)
   (org-todo-list nil)
   )
@@ -513,10 +513,10 @@
 (defun bx:org:agenda:this-node ()
   (interactive)
   (setq org-agenda-files
-	(blee:file:dir:listNotableSubdirs ".." :expandedFileName t)
+	(blee:file:dir:listNotableSubdirs ".." :expandedFileName t :includeMain t)
 	)
   (org-agenda-list)
-  (delete-other-windows)
+  ;;(delete-other-windows)
   )
 
 (defun bx:org:find-agenda-files-in-orgMode ()
