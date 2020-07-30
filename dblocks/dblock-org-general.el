@@ -743,7 +743,22 @@ Sections are specified as :outLevel 1,n
       )
 
     (defun bodyContent ()
-      "NOTYET, use @panelType to choose images." 
+      "NOTYET, use @panelType to choose images."
+      (when (string= @title "auto")
+	(when (fto:withBase:isLeaf? ".")	
+	  (setq @title (format "~Leaf:: %s/%s -- %s~"
+			       (file-name-nondirectory (expand-file-name "../.."))
+			       (file-name-nondirectory (expand-file-name ".."))
+			       (file-name-nondirectory (expand-file-name "."))
+			       )))
+	(when (fto:withBase:isNode? ".")		
+	  (setq @title (format "~Node:: %s/%s -- %s~"
+			       (file-name-nondirectory (expand-file-name "../../.."))
+			       (file-name-nondirectory (expand-file-name "../.."))
+			       (file-name-nondirectory (expand-file-name ".."))
+			       )))
+	)
+	
       (insert
        (format "
 %s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseTop-50.png][http://www.freeprotocols.org]]_ _   %s   [[img-link:file:/bisos/blee/env/images/fpfByStarElipseBottom-50.png][http://www.by-star.net]]
@@ -865,8 +880,7 @@ Sections are specified as :outLevel 1,n
     ))
 
 (defun org-dblock-write:blee:bxPanel:sisterPanels  (@params)
-  "
-"
+  "sisterPanels runs in ../sisterPanels.org with regards to the current panel."
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
@@ -888,21 +902,33 @@ Sections are specified as :outLevel 1,n
       )
 
     (defun bodyContent ()
-      "NOTYET, for each directory create a sister panel"
+      "For each directory create a sister panel"
       (when (string= @model "auto")      
 	(insert
 	 (format
-	  "*   Sister Panels   :: "
+	  "*   =Sibling Panels=  :: "
 	  ))
 	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs "."))
-	  (insert
-	   (format
-	    "[[elisp:(blee:bnsm:panel-goto \"../%s\")][%s]]"
-	    $eachSubDir
-	    $eachSubDir
+	  (when (fto:withBase:isLeaf? (concat (file-name-as-directory ".") $eachSubDir))  
+	    (insert
+	     (format
+	      "[[elisp:(blee:bnsm:panel-goto \"../%s\")][%s]]"
+	      $eachSubDir
+	      $eachSubDir
+	      )
+	     )
+	    (insert " || ")
 	    )
-	   )
-	  (insert " || ")
+	  (when (fto:withBase:isNode? (concat (file-name-as-directory ".") $eachSubDir))
+	    (insert
+	     (format
+	      "[[elisp:(blee:bnsm:panel-goto \"../%s\")][ *%s* ]]"
+	      $eachSubDir
+	      $eachSubDir
+	      )
+	     )
+	    (insert " || ")
+	    )
 	  )
 	(insert
 	 (format
@@ -926,7 +952,6 @@ Sections are specified as :outLevel 1,n
 				)
 
     ))
-
 
 
 (defun org-dblock-write:blee:bxPanel:siblingPanelLinks  (@params)
@@ -1012,7 +1037,7 @@ Sections are specified as :outLevel 1,n
 	      )
 	     )
 	    )
-	  (when (fto:withBase:isNode? (concat (file-name-as-directory "..") $eachSubDir))	  
+	  (when (fto:withBase:isNode? (concat (file-name-as-directory "..") $eachSubDir))
 	    (insert
 	     (format
 	      "%s" (blee:panel:delimiterFrontControl @outLevel
