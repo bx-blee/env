@@ -906,8 +906,15 @@ Sections are specified as :outLevel 1,n
 	  )
 	(insert
 	 (format
-	  "\n*   =General=         ::  [[elisp:(blee:bnsm:panel-goto \"../main/\")][Main]] ||"
+	  "\n*   =Node Panels=     ::  [[elisp:(blee:bnsm:panel-goto \"../main/\")][ *This: (%s)* ]] ||"
+	  (file-name-nondirectory (expand-file-name "."))
 	  ))
+	(insert
+	 (format
+	  " [[elisp:(blee:bnsm:panel-goto \"../../main/\")][ *Parent: (%s)* ]] ||"
+	  (file-name-nondirectory (expand-file-name ".."))
+	  ))
+	
 	)
       )
     
@@ -919,6 +926,7 @@ Sections are specified as :outLevel 1,n
 				)
 
     ))
+
 
 
 (defun org-dblock-write:blee:bxPanel:siblingPanelLinks  (@params)
@@ -947,6 +955,36 @@ Sections are specified as :outLevel 1,n
     (defun bodyContent ()
       "for each directory create a link to sister panel"
       (when (string= @model "auto")      
+	;;; Parent
+	(when (fto:withBase:isNode? (concat (file-name-as-directory "../..") "main"))
+	  (insert 
+	   (blee:panel:delimiterSection
+	    @outLevel
+	    "Parent Link"
+	    nil
+	    "(Dblock Generated)"
+	    :inDblock t
+	    )
+	   )
+	  (insert "\n")	  
+	  (insert
+	   (format
+	    "%s" (blee:panel:delimiterFrontControl @outLevel
+						   :inDblock "yes"
+						   )))
+	    (insert
+	     (format
+	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Parent Node: /%s/"
+	      (expand-file-name (format "../%s/main" ".."))
+	      (file-name-nondirectory (expand-file-name "../.."))
+	      (file-name-nondirectory (expand-file-name "../.."))
+	      (file-name-nondirectory (expand-file-name "../.."))	      
+	      )
+	     )
+	    (insert " ||\n")
+	    )
+	;;; Siblings
+
 	(insert 
 	 (blee:panel:delimiterSection
 	  @outLevel
@@ -958,20 +996,39 @@ Sections are specified as :outLevel 1,n
 	 )
 	(insert "\n")
 	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs ".."))
-	  (insert
-	   (format
-	    "%s" (blee:panel:delimiterFrontControl @outLevel
-						   :inDblock "yes"
-						   )))
-	  (insert
-	   (format
-	    "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  /%s/"
-	    (expand-file-name (format "../%s" $eachSubDir))
-	    $eachSubDir
-	    $eachSubDir
-	    $eachSubDir	    
+	  (when (fto:withBase:isLeaf? (concat (file-name-as-directory "..") $eachSubDir))
+	    (insert
+	     (format
+	      "%s" (blee:panel:delimiterFrontControl @outLevel
+						     :inDblock "yes"
+						     )))
+	    (insert
+	     (format
+	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
+	      (expand-file-name (format "../%s" $eachSubDir))
+	      $eachSubDir
+	      $eachSubDir
+	      $eachSubDir	    
+	      )
+	     )
 	    )
-	   )
+	  (when (fto:withBase:isNode? (concat (file-name-as-directory "..") $eachSubDir))	  
+	    (insert
+	     (format
+	      "%s" (blee:panel:delimiterFrontControl @outLevel
+						     :inDblock "yes"
+						     )))
+	    (insert
+	     (format
+	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
+	      (expand-file-name (format "../%s/main" $eachSubDir))
+	      $eachSubDir
+	      $eachSubDir
+	      $eachSubDir	    
+	      )
+	     )
+	    )
+	   
 	  (insert " ||\n")
 	  )
 	)
@@ -990,6 +1047,7 @@ Sections are specified as :outLevel 1,n
 				)
 
     ))
+
 
 
 ;;(blee:file:dir:listNotableSubdirs "..")

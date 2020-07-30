@@ -65,9 +65,42 @@
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (fto:withBaseNode? ftoBase) [[elisp:(org-cycle)][| ]]
   ")
 
-(defun fto:withBaseNode? (ftoBase)
+
+;;;
+;;; (fto:withBase:treeElementGet  "~/org/assests/houses/3610/main")
+;;; 
+(defun fto:withBase:treeElementGet (<ftoBase)
   "Given ftoBase, return nil if ftoBase is not a Node."
-  
+  (fv:read-as-string (concat <ftoBase "/_tree_"))
+  )
+
+
+;;;
+;;; (fto:withBase:isNode? "~/org/assests/houses/3610/main")
+;;; 
+(defun fto:withBase:isNode? (<ftoBase)
+  "Given ftoBase, return nil if ftoBase is not a Node."
+  (let (
+	($result nil))
+    (when (string= (fto:withBase:treeElementGet <ftoBase) "node")
+      (setq $result t)
+      )
+    $result
+    )
+  )
+
+;;;
+;;; (fto:withBase:isLeaf? "~/org/assests/houses/3610/main")
+;;; 
+(defun fto:withBase:isLeaf? (<ftoBase)
+  "Given ftoBase, return nil if ftoBase is not a Node."
+  (let (
+	($result nil))
+    (when (string= (fto:withBase:treeElementGet <ftoBase) "leaf")
+      (setq $result t)
+      )
+    $result
+    )
   )
 
 
