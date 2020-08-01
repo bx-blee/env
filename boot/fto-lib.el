@@ -103,6 +103,117 @@
     )
   )
 
+;;;
+;;; 
+;;; 
+(defun fto:treeElem|withBaseGetName (<ftoBase)
+  "Name of the treeElem based on fileName base"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:treeElem|withBaseGetType (<ftoBase)
+  "One of Node, Leaf, AuxNode"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:node|withBaseGetName (<ftoBase)
+  "Name of the Node as string"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:node|withBaseGetDescendantsBases (<ftoBase)
+  "Provides a list of descendants bases"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:node|withBaseGetSiblingsBases (<ftoBase)
+  "Provides a list of siblings bases"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:node|withBaseGetAncestorBases (<ftoBase)
+  "Provides a list of ancestor bases"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:leaf|withBaseGetName (<ftoBase)
+  "Name of the leaf as string"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:leaf|withBaseGetSiblingsBases (<ftoBase)
+  "Provides a list of siblings bases"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+;;;
+;;; 
+;;; 
+(defun fto:leaf|withBaseGetAncestorBases (<ftoBase)
+  "Provides a list of ancestor bases"
+  (let (
+	($result nil)
+	)
+    $result
+    )
+  )
+
+
+
+
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "fto-lib"
 (lambda () "

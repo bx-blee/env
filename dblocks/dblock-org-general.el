@@ -776,7 +776,6 @@ Sections are specified as :outLevel 1,n
 	       ))
       )
     
-    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine
@@ -979,13 +978,25 @@ Sections are specified as :outLevel 1,n
 
     (defun bodyContent ()
       "for each directory create a link to sister panel"
-      (when (string= @model "auto")      
+      (when (string= @model "auto")
+	(insert 
+	   (blee:panel:delimiterSection
+	    @outLevel
+	    (format "Self: %s"
+		    (file-name-nondirectory (expand-file-name "..")))
+	    nil
+	    "(Dblock Generated)"
+	    :inDblock t
+	    )
+	   )
+	  (insert "\n")	  
+
 	;;; Parent
 	(when (fto:withBase:isNode? (concat (file-name-as-directory "../..") "main"))
 	  (insert 
 	   (blee:panel:delimiterSection
 	    @outLevel
-	    "Parent Link"
+	    "Ancestor Links"
 	    nil
 	    "(Dblock Generated)"
 	    :inDblock t
@@ -1000,13 +1011,78 @@ Sections are specified as :outLevel 1,n
 	    (insert
 	     (format
 	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Parent Node: /%s/"
-	      (expand-file-name (format "../%s/main" ".."))
+	      (expand-file-name (format "../../main"))
 	      (file-name-nondirectory (expand-file-name "../.."))
 	      (file-name-nondirectory (expand-file-name "../.."))
 	      (file-name-nondirectory (expand-file-name "../.."))	      
 	      )
 	     )
 	    (insert " ||\n")
+	  (insert
+	   (format
+	    "%s" (blee:panel:delimiterFrontControl @outLevel
+						   :inDblock "yes"
+						   )))
+	    (insert
+	     (format
+	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Grand Parent Node: /%s/"
+	      (expand-file-name (format "../../../main"))
+	      (file-name-nondirectory (expand-file-name "../../.."))
+	      (file-name-nondirectory (expand-file-name "../../.."))
+	      (file-name-nondirectory (expand-file-name "../../.."))	      
+	      )
+	     )
+	    (insert " ||\n")
+
+	    
+	    (insert 
+	     (blee:panel:delimiterSection
+	      @outLevel
+	      "Decedent Links"
+	      nil
+	      "(Dblock Generated)"
+	      :inDblock t
+	      )
+	     )
+	    (insert "\n")
+	    (dolist ($eachSubDir (blee:file:dir:listNotableSubdirs "."))
+	      (when (fto:withBase:isLeaf? (concat (file-name-as-directory ".") $eachSubDir))
+		(insert
+		 (format
+		  "%s" (blee:panel:delimiterFrontControl @outLevel
+							 :inDblock "yes"
+							 )))
+		(insert
+		 (format
+		  "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
+		  (expand-file-name (format "./%s" $eachSubDir))
+		  $eachSubDir
+		  $eachSubDir
+		  $eachSubDir	    
+		  )
+		 )
+		)
+	      (when (fto:withBase:isNode? (concat (file-name-as-directory ".") $eachSubDir))
+		(insert
+		 (format
+		  "%s" (blee:panel:delimiterFrontControl @outLevel
+							 :inDblock "yes"
+							 )))
+		(insert
+		 (format
+		  "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
+		  (expand-file-name (format "./%s/main" $eachSubDir))
+		  $eachSubDir
+		  $eachSubDir
+		  $eachSubDir	    
+		  )
+		 )
+		)
+	   
+	      (insert " ||\n")
+
+	    
+	      )
 	    )
 	;;; Siblings
 

@@ -172,7 +172,7 @@
     (let 
     	(out-string user-base-dir user-file-name)
       (setq out-string (replace-regexp-in-string "\n" "" (shell-command-to-string "pwd")))
-      (setq user-base-dir (expand-file-name (string-replace-regexp out-string "/libre/ByStar/InitialTemplates" "~/BUE")))
+      (setq user-base-dir (expand-file-name (replace-regexp-in-string "/libre/ByStar/InitialTemplates" "~/BUE" out-string)))
       (setq user-file-name (concat user-base-dir "/" "fullUsagePanel-en.org"))
       (if (file-exists-p user-file-name)
 	  (progn
@@ -184,6 +184,7 @@
       )
     )
   )
+
 
 (defun org-dblock-write:bx:dblock:bnsm:user-extenstions-point-to (params)
   ""
@@ -213,7 +214,7 @@
     (let 
     	(out-string site-base-dir site-file-name)
       (setq out-string (replace-regexp-in-string "\n" "" (shell-command-to-string "pwd")))
-      (setq site-base-dir (expand-file-name (string-replace-regexp out-string "/libre/ByStar/InitialTemplates" "/private/site")))
+      (setq site-base-dir (expand-file-name (replace-regexp-in-string "/libre/ByStar/InitialTemplates" "/private/site" out-string)))      
       (setq site-file-name (concat site-base-dir "/" "fullUsagePanel-en.org"))
       (if (file-exists-p site-file-name)
 	  (progn
