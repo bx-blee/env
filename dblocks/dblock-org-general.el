@@ -1,4 +1,6 @@
-
+;;;
+;;; (setq debug-on
+;;;
 
 (require 'bx-lcnt-lib)
 (require 'dblock-governor)
@@ -952,10 +954,8 @@ Sections are specified as :outLevel 1,n
 
     ))
 
-
-(defun org-dblock-write:blee:bxPanel:siblingPanelLinks  (@params)
-  "
-"
+(defun org-dblock-write:blee:bxPanel:terseTreeNavigator  (@params)
+  "Creates terse links for navigation surrounding current panel in treeElem."
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
@@ -964,182 +964,140 @@ Sections are specified as :outLevel 1,n
 	;;
 	(@model (or (plist-get @params :model) "auto"))
 	;;
+	(@panelsList (or (plist-get @params :panelsList) "bxPanel"))
+	(@inFile (or (plist-get @params :inFile) "sisterPanels.org"))	
+	;;
 	($fileAsString)
 	)
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
     (defun helpLine ()
-      ":model \"auto\""
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\" :model \"auto\""
       )
 
     (defun bodyContentPlus ()
       )
 
-    (defun bodyContent ()
-      "for each directory create a link to sister panel"
-      (when (string= @model "auto")
-	(insert 
-	   (blee:panel:delimiterSection
-	    @outLevel
-	    (format "Self: %s"
-		    (file-name-nondirectory (expand-file-name "..")))
-	    nil
-	    "(Dblock Generated)"
-	    :inDblock t
-	    )
-	   )
-	  (insert "\n")	  
-
-	;;; Parent
-	(when (fto:withBase:isNode? (concat (file-name-as-directory "../..") "main"))
-	  (insert 
-	   (blee:panel:delimiterSection
-	    @outLevel
-	    "Ancestor Links"
-	    nil
-	    "(Dblock Generated)"
-	    :inDblock t
-	    )
-	   )
-	  (insert "\n")	  
-	  (insert
-	   (format
-	    "%s" (blee:panel:delimiterFrontControl @outLevel
-						   :inDblock "yes"
-						   )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Parent Node: /%s/"
-	      (expand-file-name (format "../../main"))
-	      (file-name-nondirectory (expand-file-name "../.."))
-	      (file-name-nondirectory (expand-file-name "../.."))
-	      (file-name-nondirectory (expand-file-name "../.."))	      
-	      )
-	     )
-	    (insert " ||\n")
-	  (insert
-	   (format
-	    "%s" (blee:panel:delimiterFrontControl @outLevel
-						   :inDblock "yes"
-						   )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Grand Parent Node: /%s/"
-	      (expand-file-name (format "../../../main"))
-	      (file-name-nondirectory (expand-file-name "../../.."))
-	      (file-name-nondirectory (expand-file-name "../../.."))
-	      (file-name-nondirectory (expand-file-name "../../.."))	      
-	      )
-	     )
-	    (insert " ||\n")
-
-	    
-	    (insert 
-	     (blee:panel:delimiterSection
-	      @outLevel
-	      "Decedent Links"
-	      nil
-	      "(Dblock Generated)"
-	      :inDblock t
-	      )
-	     )
-	    (insert "\n")
-	    (dolist ($eachSubDir (blee:file:dir:listNotableSubdirs "."))
-	      (when (fto:withBase:isLeaf? (concat (file-name-as-directory ".") $eachSubDir))
-		(insert
-		 (format
-		  "%s" (blee:panel:delimiterFrontControl @outLevel
-							 :inDblock "yes"
-							 )))
-		(insert
-		 (format
-		  "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
-		  (expand-file-name (format "./%s" $eachSubDir))
-		  $eachSubDir
-		  $eachSubDir
-		  $eachSubDir	    
-		  )
-		 )
-		)
-	      (when (fto:withBase:isNode? (concat (file-name-as-directory ".") $eachSubDir))
-		(insert
-		 (format
-		  "%s" (blee:panel:delimiterFrontControl @outLevel
-							 :inDblock "yes"
-							 )))
-		(insert
-		 (format
-		  "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
-		  (expand-file-name (format "./%s/main" $eachSubDir))
-		  $eachSubDir
-		  $eachSubDir
-		  $eachSubDir	    
-		  )
-		 )
-		)
-	   
-	      (insert " ||\n")
-
-	    
-	      )
-	    )
-	;;; Siblings
-
-	(insert 
-	 (blee:panel:delimiterSection
-	  @outLevel
-	  "Sibling Links"
-	  nil
-	  "(Dblock Generated)"
-	  :inDblock t
-	  )
-	 )
-	(insert "\n")
-	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs ".."))
-	  (when (fto:withBase:isLeaf? (concat (file-name-as-directory "..") $eachSubDir))
-	    (insert
-	     (format
-	      "%s" (blee:panel:delimiterFrontControl @outLevel
-						     :inDblock "yes"
-						     )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
-	      (expand-file-name (format "../%s" $eachSubDir))
-	      $eachSubDir
-	      $eachSubDir
-	      $eachSubDir	    
-	      )
-	     )
-	    )
-	  (when (fto:withBase:isNode? (concat (file-name-as-directory "..") $eachSubDir))
-	    (insert
-	     (format
-	      "%s" (blee:panel:delimiterFrontControl @outLevel
-						     :inDblock "yes"
-						     )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
-	      (expand-file-name (format "../%s/main" $eachSubDir))
-	      $eachSubDir
-	      $eachSubDir
-	      $eachSubDir	    
-	      )
-	     )
-	    )
-	   
-	  (insert " ||\n")
-	  )
-	)
+    (defun generalPanels ()
       (insert
        (format
-	"%s"
+	"%s  General Panels ::   [[img-link:file:/bisos/blee/env/images/bystarInside.jpg][http://www.by-star.net]] *|*  [[elisp:(find-file \"/libre/ByStar/InitialTemplates/activeDocs/listOfDocs/fullUsagePanel-en.org\")][BxDE Top Panel]] *|* [[elisp:(blee:bnsm:panel-goto \"/libre/ByStar/InitialTemplates/activeDocs/planning/Main\")][ByStar Planning]]\n"
+	(blee:panel:frontControl @outLevel :inDblock "yes")
+	@panelsList
+	)))
+
+    (defun topLineDeliminator ()
+      (insert
+       (format
+	"%s%s_%s_%s"
         (blee:panel:outLevelStr @outLevel)
+	(make-string 35 ? )
+	;;(make-string 30 ?=)
+	(make-string 30 cfw:fchar-horizontal-line)		
+	(make-string 25 ? )
 	))
       )
-      
+
+    (defun bodyContent ()
+      "Descendents, Siblings and Ancestors of This Node."
+      (let* (
+	    ($cwd ".")
+	    )	       
+	(when (string= @model "auto")
+	  (generalPanels)
+	  (when (fto:treeElem|atBaseIsNode? $cwd)
+	    (bodyContentNode)
+	    )
+	  (when (fto:treeElem|atBaseIsLeaf? $cwd)
+	    (bodyContentLeaf)
+	    ))))
+
+    (defun bodyContentNode ()
+      "Descendents, Siblings and Ancestors of This Node."
+      (let* (
+	    ($cwd ".")
+	    ($thisNode (fto:node|atBaseGetName $cwd))
+	    ($outString "")
+	    )	       
+	(when (string= @model "auto")
+	  (unless (fto:treeElem|atBaseIsNode? $cwd)
+	    (message "EH_problem"))
+	  (when (fto:treeElem|atBaseIsNode? $cwd)
+	    (insert (format "*   =Decedent Panels=   :: "))
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:node|atBaseGetDescendantsBases
+				  $cwd
+				  :expandedFileName t))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+	      (insert "\n")
+	      )
+
+	    (insert (format "*   =Sibling Panles=   :: "))	    
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:node|atBaseGetSiblingsBases
+				  $cwd
+				  :expandedFileName t))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+	      (insert "\n")
+	      )
+
+	    (insert (format "*   =Ancestor Panles=   :: "))
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:node|atBaseGetAncestorsBases $cwd))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+	      (insert "\n")
+	      )
+	    )
+	  
+	  (topLineDeliminator)
+	  )
+	)
+      )
+
+    (defun bodyContentLeaf ()
+      "Descendents, Siblings and Ancestors of This Leaf."
+      (let* (
+	    ($cwd ".")
+	    ($thisLeaf (fto:leaf|atBaseGetName $cwd))
+	    ($outString "")
+	    )	       
+	(when (string= @model "auto")
+	  (unless (fto:treeElem|atBaseIsLeaf? $cwd)
+	    (message "EH_problem"))
+	  (when (fto:treeElem|atBaseIsLeaf? $cwd)
+	    (insert (format "*   =Sibling Panles=   :: "))	    
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:leaf|atBaseGetSiblingsBases
+				  $cwd
+				  :expandedFileName t))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+	      (insert "\n")
+	      )
+
+	    (insert (format "*   =Ancestor Panles=   :: "))	    
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:leaf|atBaseGetAncestorsBases $cwd))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
+	      (insert "\n")
+	      )
+	    )
+	  
+	  (insert (blee:panel:outLevelStr @outLevel))
+	  )
+	)
+      )
+    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine
@@ -1150,9 +1108,20 @@ Sections are specified as :outLevel 1,n
     ))
 
 
+
+(defun org-dblock-write:blee:bxPanel:siblingPanelLinks  (@params)
+  "Renamed."
+  (org-dblock-write:blee:bxPanel:linedTreeNavigator @params)
+  )
+
 (defun org-dblock-write:blee:bxPanel:linedPanelLinksForNode  (@params)
-  "
-"
+  "Renamed."
+  (org-dblock-write:blee:bxPanel:linedTreeNavigator @params)
+  )
+
+;;;
+(defun org-dblock-write:blee:bxPanel:linedTreeNavigator  (@params)
+  "Creates lined links for navigation surrounding current treeElem."
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
@@ -1174,169 +1143,128 @@ Sections are specified as :outLevel 1,n
       )
 
     (defun bodyContent ()
-      "for each directory create a link to sister panel"
-      (when (string= @model "auto")
-	(insert 
-	   (blee:panel:delimiterSection
-	    @outLevel
-	    (format "Self: %s"
-		    (file-name-nondirectory (expand-file-name "..")))
-	    nil
-	    "(Dblock Generated)"
-	    :inDblock t
+      "Descendents, Siblings and Ancestors of This Node."
+      (let* (
+	    ($cwd ".")
+	    )	       
+	(when (string= @model "auto")
+	  (when (fto:treeElem|atBaseIsNode? $cwd)
+	    (bodyContentNode)
 	    )
-	   )
-	  (insert "\n")	  
+	  (when (fto:treeElem|atBaseIsLeaf? $cwd)
+	    (bodyContentLeaf)
+	    ))))
 
-	;;; Parent
-	(when (fto:withBase:isNode? (concat (file-name-as-directory "../..") "main"))
-	  (insert 
-	   (blee:panel:delimiterSection
-	    @outLevel
-	    "Ancestor Links"
-	    nil
-	    "(Dblock Generated)"
-	    :inDblock t
-	    )
-	   )
-	  (insert "\n")	  
-	  (insert
-	   (format
-	    "%s" (blee:panel:delimiterFrontControl @outLevel
-						   :inDblock "yes"
-						   )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Parent Node: /%s/"
-	      (expand-file-name (format "../../main"))
-	      (file-name-nondirectory (expand-file-name "../.."))
-	      (file-name-nondirectory (expand-file-name "../.."))
-	      (file-name-nondirectory (expand-file-name "../.."))	      
-	      )
-	     )
-	    (insert " ||\n")
-	  (insert
-	   (format
-	    "%s" (blee:panel:delimiterFrontControl @outLevel
-						   :inDblock "yes"
-						   )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Grand Parent Node: /%s/"
-	      (expand-file-name (format "../../../main"))
-	      (file-name-nondirectory (expand-file-name "../../.."))
-	      (file-name-nondirectory (expand-file-name "../../.."))
-	      (file-name-nondirectory (expand-file-name "../../.."))	      
-	      )
-	     )
-	    (insert " ||\n")
-
-	    
-	    (insert 
-	     (blee:panel:delimiterSection
-	      @outLevel
-	      "Decedent Links"
-	      nil
-	      "(Dblock Generated)"
-	      :inDblock t
-	      )
-	     )
+    (defun bodyContentNode ()
+      "Descendents, Siblings and Ancestors of This Node."
+      (let* (
+	    ($cwd ".")
+	    ($thisNode (fto:node|atBaseGetName $cwd))
+	    ($outString "")
+	    )	       
+	(when (string= @model "auto")
+	  (unless (fto:treeElem|atBaseIsNode? $cwd)
+	    (message "EH_problem"))
+	  (when (fto:treeElem|atBaseIsNode? $cwd)
+	    (insert (blee:panel:delimiterSection
+		     @outLevel
+		     (format "Decedent Links Of")
+		     nil
+		     (format "~%s~" $thisNode)	      
+		     :inDblock t))
 	    (insert "\n")
-	    (dolist ($eachSubDir (blee:file:dir:listNotableSubdirs "."))
-	      (when (fto:withBase:isLeaf? (concat (file-name-as-directory ".") $eachSubDir))
-		(insert
-		 (format
-		  "%s" (blee:panel:delimiterFrontControl @outLevel
-							 :inDblock "yes"
-							 )))
-		(insert
-		 (format
-		  "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
-		  (expand-file-name (format "./%s" $eachSubDir))
-		  $eachSubDir
-		  $eachSubDir
-		  $eachSubDir	    
-		  )
-		 )
-		)
-	      (when (fto:withBase:isNode? (concat (file-name-as-directory ".") $eachSubDir))
-		(insert
-		 (format
-		  "%s" (blee:panel:delimiterFrontControl @outLevel
-							 :inDblock "yes"
-							 )))
-		(insert
-		 (format
-		  "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
-		  (expand-file-name (format "./%s/main" $eachSubDir))
-		  $eachSubDir
-		  $eachSubDir
-		  $eachSubDir	    
-		  )
-		 )
-		)
-	   
-	      (insert " ||\n")
-
 	    
+	    (dolist ($eachSubDir (fto:node|atBaseGetDescendantsBases
+				  $cwd
+				  :expandedFileName t))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "line"))
+	      (insert "\n")
 	      )
-	    )
-	;;; Siblings
 
-	(insert 
-	 (blee:panel:delimiterSection
-	  @outLevel
-	  "Sibling Links"
-	  nil
-	  "(Dblock Generated)"
-	  :inDblock t
-	  )
-	 )
-	(insert "\n")
-	(dolist ($eachSubDir (blee:file:dir:listNotableSubdirs ".."))
-	  (when (fto:withBase:isLeaf? (concat (file-name-as-directory "..") $eachSubDir))
-	    (insert
-	     (format
-	      "%s" (blee:panel:delimiterFrontControl @outLevel
-						     :inDblock "yes"
-						     )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
-	      (expand-file-name (format "../%s" $eachSubDir))
-	      $eachSubDir
-	      $eachSubDir
-	      $eachSubDir	    
+	    (insert (blee:panel:delimiterSection
+		     @outLevel
+		     (format "Siblings Links Of")
+		     nil
+		     (format "~%s~" $thisNode)	      
+		     :inDblock t))
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:node|atBaseGetSiblingsBases
+				  $cwd
+				  :expandedFileName t))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "line"))
+	      (insert "\n")
 	      )
-	     )
-	    )
-	  (when (fto:withBase:isNode? (concat (file-name-as-directory "..") $eachSubDir))
-	    (insert
-	     (format
-	      "%s" (blee:panel:delimiterFrontControl @outLevel
-						     :inDblock "yes"
-						     )))
-	    (insert
-	     (format
-	      "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
-	      (expand-file-name (format "../%s/main" $eachSubDir))
-	      $eachSubDir
-	      $eachSubDir
-	      $eachSubDir	    
+
+	    (insert (blee:panel:delimiterSection
+		     @outLevel
+		     (format "Ancestor Links Of")
+		     nil
+		     (format "~%s~" $thisNode)	      
+		     :inDblock t))
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:node|atBaseGetAncestorsBases $cwd))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "line"))
+	      (insert "\n")
 	      )
-	     )
 	    )
-	   
-	  (insert " ||\n")
+	  
+	  (insert (blee:panel:outLevelStr @outLevel))
 	  )
 	)
-      (insert
-       (format
-	"%s"
-        (blee:panel:outLevelStr @outLevel)
-	))
       )
-      
+
+    (defun bodyContentLeaf ()
+      "Descendents, Siblings and Ancestors of This Leaf."
+      (let* (
+	    ($cwd ".")
+	    ($thisLeaf (fto:leaf|atBaseGetName $cwd))
+	    ($outString "")
+	    )	       
+	(when (string= @model "auto")
+	  (unless (fto:treeElem|atBaseIsLeaf? $cwd)
+	    (message "EH_problem"))
+	  (when (fto:treeElem|atBaseIsLeaf? $cwd)
+	    (insert (blee:panel:delimiterSection
+		     @outLevel
+		     (format "Siblings Links Of")
+		     nil
+		     (format "~%s~" $thisLeaf)	      
+		     :inDblock t))
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:leaf|atBaseGetSiblingsBases
+				  $cwd
+				  :expandedFileName t))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "line"))
+	      (insert "\n")
+	      )
+
+	    (insert (blee:panel:delimiterSection
+		     @outLevel
+		     (format "Ancestor Links Of")
+		     nil
+		     (format "~%s~" $thisLeaf)	      
+		     :inDblock t))
+	    (insert "\n")
+	    
+	    (dolist ($eachSubDir (fto:leaf|atBaseGetAncestorsBases $cwd))
+	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "line"))
+	      (insert "\n")
+	      )
+	    )
+	  
+	  (insert (blee:panel:outLevelStr @outLevel))
+	  )
+	)
+      )
+    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine

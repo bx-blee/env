@@ -62,14 +62,17 @@
   )
 
 ;;;
+;;; (blee:panel:fto|atBaseTreeElementLinkStr "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs" :format "line")
 ;;; 
-;;; (blee:panel:fto|atBaseSiblingLink "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs")
-;;; 
-(defun blee:panel:fto|atBaseSiblingLink (<ftoBase  &rest <args)
-  "Given ftoBase, return nil if ftoBase is not a Node."
+(defun blee:panel:fto|atBaseTreeElementLinkStr (<ftoBase  &rest <args)
+  "Given ftoBase, return org-link string for a given descendant.
+When :format is terse, a single link.
+When :format is line, a complete line.
+"
   (let (
 	($result nil)
 	(<format (or (plist-get <args :format) "terse"))
+	($ftoName)
 	)
     (when (fto:treeElem|atBaseIsLeaf? <ftoBase)
       (when (string= <format "terse")
@@ -79,15 +82,40 @@
 	      )
 	)
       (when (string= <format "line")
+	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
+	(setq $result 
+	      (format
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
+	       <ftoBase
+	       $ftoName
+	       $ftoName	       
+	       )
+	      )
+	)
+      )
+    (when (fto:treeElem|atBaseIsNode? <ftoBase)
+      (when (string= <format "terse")
 	(setq $result (format
 		       "%s"
-		       "KK")
+		       "JJNode")
+	      )
+	)
+      (when (string= <format "line")
+	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
+	(setq $result 
+	      (format
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
+	       (fto:node|atBaseGetNodeBase <ftoBase)
+	       $ftoName
+	       $ftoName	       
+	       )
 	      )
 	)
       )
     $result
     )
   )
+
 
 ;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "bxpanel-fto-lib"
 (lambda () "
