@@ -76,16 +76,20 @@ When :format is line, a complete line.
 	)
     (when (fto:treeElem|atBaseIsLeaf? <ftoBase)
       (when (string= <format "terse")
-	(setq $result (format
-		       "%s"
-		       "JJ")
+	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))	
+	(setq $result
+	      (format
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][%s]]"
+	       <ftoBase
+	       $ftoName
+	       )
 	      )
 	)
       (when (string= <format "line")
 	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
 	(setq $result 
 	      (format
-	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Leaf: /%s/"
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ *%s* @]]    ::  Leaf: /%s/"
 	       <ftoBase
 	       $ftoName
 	       $ftoName	       
@@ -95,16 +99,20 @@ When :format is line, a complete line.
       )
     (when (fto:treeElem|atBaseIsNode? <ftoBase)
       (when (string= <format "terse")
-	(setq $result (format
-		       "%s"
-		       "JJNode")
+	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
+	(setq $result 
+	      (format
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][ =%s= ]]"
+	       (fto:node|atBaseGetNodeBase <ftoBase)
+	       $ftoName
+	       )
 	      )
 	)
       (when (string= <format "line")
 	(setq $ftoName (fto:treeElem|atBaseGetName <ftoBase))
 	(setq $result 
 	      (format
-	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ %s @]]    ::  Node: /%s/"
+	       "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ =%s= @]]    ::  Node: /%s/"
 	       (fto:node|atBaseGetNodeBase <ftoBase)
 	       $ftoName
 	       $ftoName	       

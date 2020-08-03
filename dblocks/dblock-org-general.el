@@ -959,7 +959,7 @@ Sections are specified as :outLevel 1,n
   (let (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
-	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
+	(@style (or (plist-get @params :style) (list "openFull" "closeContinue"))) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@model (or (plist-get @params :model) "auto"))
@@ -1019,41 +1019,51 @@ Sections are specified as :outLevel 1,n
 	    ($cwd ".")
 	    ($thisNode (fto:node|atBaseGetName $cwd))
 	    ($outString "")
+	    (count 0)
+	    (countLimit 5)
 	    )	       
 	(when (string= @model "auto")
 	  (unless (fto:treeElem|atBaseIsNode? $cwd)
 	    (message "EH_problem"))
 	  (when (fto:treeElem|atBaseIsNode? $cwd)
-	    (insert (format "*   =Decedent Panels=   :: "))
-	    (insert "\n")
-	    
+
+	    (setq count 0)
 	    (dolist ($eachSubDir (fto:node|atBaseGetDescendantsBases
 				  $cwd
 				  :expandedFileName t))
-	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (when (eq count 0)
+		(insert (format "\n*   =Decedent Panels=  :: ")))
 	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
-	      (insert "\n")
+	      (insert " *|* ")
+	      (setq count (1+ count))
+	      (when (eq count countLimit)
+		(setq count 0))
 	      )
 
-	    (insert (format "*   =Sibling Panles=   :: "))	    
-	    (insert "\n")
-	    
+	    (setq count 0)	    
 	    (dolist ($eachSubDir (fto:node|atBaseGetSiblingsBases
 				  $cwd
 				  :expandedFileName t))
-	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (when (eq count 0)
+		(insert (format "\n*   =Sibling Panles=   :: ")))	    
 	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
-	      (insert "\n")
+	      (insert " *|* ")
+	      (setq count (1+ count))
+	      (when (eq count countLimit)
+		(setq count 0))
 	      )
 
-	    (insert (format "*   =Ancestor Panles=   :: "))
-	    (insert "\n")
-	    
+	    (setq count 0)	    
 	    (dolist ($eachSubDir (fto:node|atBaseGetAncestorsBases $cwd))
-	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (when (eq count 0)
+		(insert (format "\n*   =Ancestor Panles=  :: ")))
 	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
-	      (insert "\n")
+	      (insert " *|* ")
+	      (setq count (1+ count))
+	      (when (eq count countLimit)
+		(setq count 0))
 	      )
+	    (insert "\n")
 	    )
 	  
 	  (topLineDeliminator)
@@ -1067,33 +1077,42 @@ Sections are specified as :outLevel 1,n
 	    ($cwd ".")
 	    ($thisLeaf (fto:leaf|atBaseGetName $cwd))
 	    ($outString "")
+	    (count 0)
+	    (countLimit 5)
 	    )	       
 	(when (string= @model "auto")
 	  (unless (fto:treeElem|atBaseIsLeaf? $cwd)
 	    (message "EH_problem"))
 	  (when (fto:treeElem|atBaseIsLeaf? $cwd)
-	    (insert (format "*   =Sibling Panles=   :: "))	    
-	    (insert "\n")
-	    
+
+	    (setq count 0)
 	    (dolist ($eachSubDir (fto:leaf|atBaseGetSiblingsBases
 				  $cwd
 				  :expandedFileName t))
-	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (when (eq count 0)
+		(insert (format "\n*   =Sibling Panles=   :: ")))	    
 	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
-	      (insert "\n")
+	      (insert " *|* ")
+	      (setq count (1+ count))
+	      (when (eq count countLimit)
+		(setq count 0))
 	      )
 
-	    (insert (format "*   =Ancestor Panles=   :: "))	    
-	    (insert "\n")
-	    
+	    (setq count 0)	    
 	    (dolist ($eachSubDir (fto:leaf|atBaseGetAncestorsBases $cwd))
-	      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock "yes"))
+	      (when (eq count 0)
+		(insert (format "\n*   =Ancestor Panles=  :: ")))
 	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
-	      (insert "\n")
+	      (insert " *|* ")
+	      (setq count (1+ count))
+	      (when (eq count countLimit)
+		(setq count 0))
 	      )
+	    (insert "\n")
 	    )
-	  
-	  (insert (blee:panel:outLevelStr @outLevel))
+
+	  (topLineDeliminator)	  
+
 	  )
 	)
       )
@@ -1106,7 +1125,6 @@ Sections are specified as :outLevel 1,n
 				)
 
     ))
-
 
 
 (defun org-dblock-write:blee:bxPanel:siblingPanelLinks  (@params)
