@@ -954,6 +954,12 @@ Sections are specified as :outLevel 1,n
 
     ))
 
+
+(defun org-dblock-write:blee:bxPanel:relatedPanels (@params)
+  "Lists related panels in two parts. 1) based on :panelsList -- 2) based on :inFile"
+  (org-dblock-write:blee:bxPanel:terseTreeNavigator @params))
+
+
 (defun org-dblock-write:blee:bxPanel:terseTreeNavigator  (@params)
   "Creates terse links for navigation surrounding current panel in treeElem."
   (let (
@@ -1309,7 +1315,7 @@ Sections are specified as :outLevel 1,n
     (s-join "\n" $resultLines)
     ))
 
-(defun org-dblock-write:blee:bxPanel:relatedPanels  (@params)
+(defun org-dblock-write:blee:bxPanel:relatedPanelsOrig  (@params)
   "Lists related panels in two parts. 1) based on :panelsList -- 2) based on :inFile
 "
   (let (
