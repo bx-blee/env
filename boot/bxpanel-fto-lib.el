@@ -61,6 +61,45 @@
   nil
   )
 
+
+(defun blee:panel:fto|atBaseGetFoldDesc (<ftoBase <destDesc)
+  "Return a string for use as DestinationDescriptor in org-link.
+When <destDesc is auto, use name or fileVariable.
+"
+  (let (($result nil))
+    (unless (string= <destDesc "auto")
+      (setq $result <destDesc))
+    (when (string= <destDesc "auto")
+      (setq $result (fto:treeElem|atBaseGetName <ftoBase)))
+    $result))
+
+
+(defun blee:panel:fto|atBaseGetDestDesc (<ftoBase <destDesc)
+  "Return a string for use as DestinationDescriptor in org-link.
+When <destDesc is auto, use name or fileVariable.
+"
+  (let (($result nil))
+    (unless (string= <destDesc "auto")
+      (setq $result <destDesc))
+    (when (string= <destDesc "auto")
+      (setq $result (fto:treeElem|atBaseGetName <ftoBase)))
+    $result))
+
+
+(defun blee:panel:fto|atBaseGetDestDesc (<ftoBase <destDesc)
+  "Return a string for use as FoldDescriptor in a fold-link.
+When <destDesc is auto, use name or fileVariable.
+"
+  (let (
+	($result nil)
+	)
+    (unless (string= <destDesc "auto")
+      (setq $result <destDesc))
+    (when (string= <destDesc "auto")
+      (setq $result (fto:treeElem|atBaseGetName <ftoBase)))
+    $result))
+
+
 ;;;
 ;;; (blee:panel:fto|atBaseTreeElementLinkStr "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs" :format "line")
 ;;; 

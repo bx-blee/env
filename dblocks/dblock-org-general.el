@@ -1146,15 +1146,17 @@ Sections are specified as :outLevel 1,n
 ;;;
 (defun org-dblock-write:blee:bxPanel:linedTreeNavigator  (@params)
   "Creates lined links for navigation surrounding current treeElem."
-  (let (
+  (let* (
 	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
 	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
 	(@model (or (plist-get @params :model) "auto"))
+	(@dest (or (plist-get @params :dest) "."))	
 	;;
 	($fileAsString)
+	($cwd @dest)	
 	)
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
@@ -1169,7 +1171,7 @@ Sections are specified as :outLevel 1,n
     (defun bodyContent ()
       "Descendents, Siblings and Ancestors of This Node."
       (let* (
-	    ($cwd ".")
+	    ($cwdNot ".")
 	    )	       
 	(when (string= @model "auto")
 	  (when (fto:treeElem|atBaseIsNode? $cwd)
@@ -1182,7 +1184,6 @@ Sections are specified as :outLevel 1,n
     (defun bodyContentNode ()
       "Descendents, Siblings and Ancestors of This Node."
       (let* (
-	    ($cwd ".")
 	    ($thisNode (fto:node|atBaseGetName $cwd))
 	    ($outString "")
 	    )	       
@@ -1245,7 +1246,6 @@ Sections are specified as :outLevel 1,n
     (defun bodyContentLeaf ()
       "Descendents, Siblings and Ancestors of This Leaf."
       (let* (
-	    ($cwd ".")
 	    ($thisLeaf (fto:leaf|atBaseGetName $cwd))
 	    ($outString "")
 	    )	       
@@ -1297,6 +1297,57 @@ Sections are specified as :outLevel 1,n
 				)
 
     ))
+
+;;;
+(defun org-dblock-write:blee:bxPanel:linkWithLinedTreeNavigator  (@params)
+  "Creates lined links for navigation surrounding current treeElem."
+  (let* (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	;;
+	(@model (or (plist-get @params :model) "auto"))
+	(@dest (or (plist-get @params :dest) "."))
+	(@destDesc (or (plist-get @params :destDesc) "auto"))
+	(@foldDesc (or (plist-get @params :foldDesc) "auto"))			
+	;;
+	($cwd @dest)	
+	)
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":model \"auto\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      "Descendents, Siblings and Ancestors of This Node."
+      (when (string= @model "auto")
+	(insert (blee:panel:delimiterFrontControl (1- @outLevel) :inDblock t))
+	(insert (format
+		 "[[elisp:(blee:bnsm:panel-goto \"%s\")][@ ~%s~ @]]   ::  [[elisp:(org-cycle)][| /%s/ |]] "
+		 @dest
+		 (blee:panel:fto|atBaseGetDestDesc @dest @destDesc)
+		 (blee:panel:fto|atBaseGetFoldDesc @dest @foldDesc)		 
+		 ))
+	(insert "\n")
+	(org-dblock-write:blee:bxPanel:linedTreeNavigator @params)
+	)
+      )
+	    
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
 
 
 (defun blee:str:org:stripDblocks (<orgInputString)
