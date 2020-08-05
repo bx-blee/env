@@ -62,41 +62,43 @@
   )
 
 
-(defun blee:panel:fto|atBaseGetFoldDesc (<ftoBase <destDesc)
-  "Return a string for use as DestinationDescriptor in org-link.
-When <destDesc is auto, use name or fileVariable.
+(defun blee:panel:fto|atBaseGetFoldDesc (<ftoBase <foldDesc)
+  "Return a string for use as FoldingDescriptor in org-link.
+When <foldDesc is auto, use name or fileVariable.
 "
-  (let (($result nil))
-    (unless (string= <destDesc "auto")
-      (setq $result <destDesc))
-    (when (string= <destDesc "auto")
-      (setq $result (fto:treeElem|atBaseGetName <ftoBase)))
-    $result))
-
-
-(defun blee:panel:fto|atBaseGetDestDesc (<ftoBase <destDesc)
-  "Return a string for use as DestinationDescriptor in org-link.
-When <destDesc is auto, use name or fileVariable.
-"
-  (let (($result nil))
-    (unless (string= <destDesc "auto")
-      (setq $result <destDesc))
-    (when (string= <destDesc "auto")
-      (setq $result (fto:treeElem|atBaseGetName <ftoBase)))
-    $result))
-
-
-(defun blee:panel:fto|atBaseGetDestDesc (<ftoBase <destDesc)
-  "Return a string for use as FoldDescriptor in a fold-link.
-When <destDesc is auto, use name or fileVariable.
-"
-  (let (
+  (let* (
 	($result nil)
+	($foldDescFvFile (concat (file-name-as-directory <ftoBase) "foldDesc"))
+	($foldDescFvValue (fv:read-as-string $foldDescFvFile))
+	)
+    (unless (string= <foldDesc "auto")
+	(setq $result <foldDesc))
+    (when (string= <foldDesc "auto")
+      (when (string= $foldDescFvValue "")
+	(setq $result (fto:treeElem|atBaseGetName <ftoBase)))
+      (unless (string= $foldDescFvValue "")
+	(setq $result $foldDescFvValue))
+      )
+    $result))
+
+
+(defun blee:panel:fto|atBaseGetDestDesc (<ftoBase <destDesc)
+  "Return a string for use as DestinationDescriptor in org-link.
+When <destDesc is auto, use name or fileVariable.
+"
+  (let* (
+	($result nil)
+	($destDescFvFile (concat (file-name-as-directory <ftoBase) "destDesc"))
+	($destDescFvValue (fv:read-as-string $destDescFvFile))
 	)
     (unless (string= <destDesc "auto")
-      (setq $result <destDesc))
+	(setq $result <destDesc))
     (when (string= <destDesc "auto")
-      (setq $result (fto:treeElem|atBaseGetName <ftoBase)))
+      (when (string= $destDescFvValue "")
+	(setq $result (fto:treeElem|atBaseGetName <ftoBase)))
+      (unless (string= $destDescFvValue "")
+	(setq $result $destDescFvValue))
+      )
     $result))
 
 
