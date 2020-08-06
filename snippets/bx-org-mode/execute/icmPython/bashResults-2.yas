@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Bash Run And Capture (ol=2)
-# key: bash/runCaptureAll
-# group: Execute Line
+# name: Python ICM Run And Capture (ol=2)
+# key: pythonIcm/runCaptureAll
+# group: Execute Line / Python ICM
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

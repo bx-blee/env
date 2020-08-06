@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Bash Run And Capture Stdout (ol=2)
 # key: bash/runCaptureStdout
-# group: Execute Line
+# group: Execute Line / Unix
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

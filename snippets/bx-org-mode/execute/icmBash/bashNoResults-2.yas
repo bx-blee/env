@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Bash Run In Psh Only (ol=2)
-# key: bash/runPsh
-# group: Execute Line
+# name: Bash ICM Run In Psh Only (ol=2)
+# key: bashIcm/runPsh
+# group: Execute Line / Bash ICM
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --

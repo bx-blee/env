@@ -342,6 +342,7 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 (defun fto:node|atBaseGetDescendantsBases (<ftoBase &rest <args)
   "Provides a list of descendants bases
 When <expandedFileName use expand-file-name.
+** TODO Descendents should go till thisGitRoot=$( cd $(dirname $0); git rev-parse --show-toplevel 2> /dev/null ) 
 "
   (let (
 	($result nil)

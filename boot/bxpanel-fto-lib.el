@@ -4,7 +4,7 @@
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Library (fto:), for handelling File Tree Objects [[elisp:(org-cycle)][| ]]
-* 
+* TODO Descendents should go till thisGitRoot=$( cd $(dirname $0); git rev-parse --show-toplevel 2> /dev/null ) 
 ")
 
 

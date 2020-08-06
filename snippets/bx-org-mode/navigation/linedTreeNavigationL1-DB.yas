@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Lined Tree Navigation L1
 # key: navigation/linedTreeNavigationL1
-# group: navigation
+# group: file tree navigation
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
