@@ -60,7 +60,11 @@
       ["BxP Peripherals (Print, Scan, Fax, Camera)" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/blee/peripherals") t]            
       "---"
       ["ByStar Central" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral") t]
-      ["BxDE Documents, Information And Development Plans" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxDE/main") t]      
+      ["BxDE Documents, Information And Development Plans" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxDE/main") t]
+
+
+      ["Storage" (blee:bnsm:panel-goto "/bisos/panels/blee/storage/_nodeBase_") t]
+      ["Bootstrap" (blee:bnsm:panel-goto "/bisos/panels/blee/bootstrap/_nodeBase_") t]            
       ;; "---"
       ;; ("Blee and By* Documents and Information"
       ;;  ["Blee:  Model, Usage Procedures, Policies" (blee:bnsm:doc-goto  "/libre/ByStar/InitialTemplates/activeDocs/blee") t]
