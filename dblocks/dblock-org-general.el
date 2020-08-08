@@ -191,11 +191,14 @@
   "Returns a string with outline level string included.
 For outlevel=1, we have chapters and sections at same level.
 We then distinguish between chapter and section based on indentation and TitleStr.
+--
+** TODO Should be renamed to blee:panel:titledSection (sometimes folding, sometimes not)
 "
   (let (
 	(@inDblock (or (plist-get @args :inDblock) nil))
 	(@rawTitle (or (plist-get @args :rawTitle) nil))
 	(@sep (or (plist-get @args :sep) nil))
+	(@folding? (or (plist-get @args :folding?) nil))	
 	;;
 	($openTitleStr "==")
 	($closeTitleStr "==")
@@ -259,19 +262,35 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	       ;;; /[[elisp:(beginning-of-buffer)][|^]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]] [[elisp:(delete-other-windows)][|1]]/ 
 	       (blee:panel:outLevelStr @outLevel)
 	       )))
-    
-    (format "\
+
+    (when @folding?
+      (format "\
 %s \
 %s   [[elisp:(org-cycle)][| %s%s:%s |]] %s %s \
 "
-	    (blee:panel:frontControl @outLevel :inDblock @inDblock)
-	    $indentationStr
-	    $openTitleStr
-	    @title
-	    $closeTitleStr
-	    (effectiveAnchor @anchor)
-	    (effectiveExtraInfo @extraInfo)
-     )))
+	      (blee:panel:frontControl @outLevel :inDblock @inDblock)
+	      $indentationStr
+	      $openTitleStr
+	      @title
+	      $closeTitleStr
+	      (effectiveAnchor @anchor)
+	      (effectiveExtraInfo @extraInfo))
+      )
+    (unless @folding?
+      (format "\
+%s \
+%s    %s%s:%s %s %s \
+"
+	      (blee:panel:frontControl @outLevel :inDblock @inDblock)
+	      $indentationStr
+	      $openTitleStr
+	      @title
+	      $closeTitleStr
+	      (effectiveAnchor @anchor)
+	      (effectiveExtraInfo @extraInfo))
+      )
+    ))
+    
 
 
 (defun blee:panel:foldingSectionOLD (@outLevel
@@ -326,10 +345,11 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
 	;;
 	(@anchor (or (plist-get @params :anchor) nil))
-
+	;;
 	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
 	;;
-	(@file (or (plist-get @params :file) ""))	
+	(@file (or (plist-get @params :file) ""))
+	(@folding? (or (plist-get @params :folding?) nil))
 	(@title (or (plist-get @params :title) ""))
 	(@extraInfo (or (plist-get @params :extraInfo) nil))	
 	;;
@@ -346,35 +366,38 @@ We then distinguish between chapter and section based on indentation and TitleSt
       )
 
     (defun bodyContent ()
+      ""
       (defun constructedExtraInfo ()
+	""
 	(let (
 	      ($extraInfoDelim "")
-	      ($extraInfoEffective "")		
+	      ($extraInfoEffective "")
+	      ($result nil)
 	      )
 	  (when @extraInfo
 	    (when (not (string-equal @extraInfo ""))
 	      (setq $extraInfoEffective @extraInfo)
 	      (setq $extraInfoDelim "--")))
-	  (format
-	   "[[elisp:(find-file-other-window \"%s\")][pdf]] || %s %s"
-	   @file $extraInfoDelim $extraInfoEffective)
-	  ))
-	
-	(insert
-	 (format
-	  "%s" (blee:panel:foldingSection
-		@outLevel
-		@title
-		@anchor
-		(constructedExtraInfo)
-		:inDblock t
-		:rawTitle t
-		:sep @sep
+	  (setq $result (format "%s %s" $extraInfoDelim $extraInfoEffective)
 		)
 	  ))
-	;;(insert "\n")
-	(insert (blee:bxPanel|pdfViewing @file))
-	;;(insert "\n")	
+
+      (insert
+       (blee:panel:foldingSection
+	@outLevel
+	@title
+	@anchor
+	(constructedExtraInfo)
+	:inDblock t
+	:rawTitle t
+	:sep @sep
+	:folding? @folding?
+	)
+       )
+      
+      (insert "  :: ")
+      (insert (blee:bxPanel|pdfViewing @file))
+      ;;(insert "\n")	
       )
 
     (bx:dblock:governor:process @governor @extGov @style @outLevel
@@ -506,8 +529,9 @@ After expanding, displays complete information about the document.
 (defun blee:bxPanel|pdfViewing  (@pdfFilePath)
   "Returns an org-mode string for viewing of the pdf file."
   (format
-   "[[elisp:(find-file-other-window \"%s\")][Pdf Other Window]] || [[elisp:(lsip-local-run-command \"acroread -openInNewInstance %s &\")][Pdf Acroread]] || "
+   "[[elisp:(find-file \"%s\")][Pdf Here]] || [[elisp:(find-file-other-window \"%s\")][Pdf Other]] || [[elisp:(lsip-local-run-command \"acroread -openInNewInstance %s &\")][Pdf Acroread]] || "
    @pdfFilePath
+   @pdfFilePath   
    (expand-file-name @pdfFilePath)
    ))
 
