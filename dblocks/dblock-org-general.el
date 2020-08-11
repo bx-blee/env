@@ -198,11 +198,13 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	(@inDblock (or (plist-get @args :inDblock) nil))
 	(@rawTitle (or (plist-get @args :rawTitle) nil))
 	(@sep (or (plist-get @args :sep) nil))
-	(@folding? (or (plist-get @args :folding?) nil))	
+	(@folding? (or (plist-get @args :folding?) t))	
 	;;
 	($openTitleStr "==")
 	($closeTitleStr "==")
 	($indentationStr "")
+	;;
+	($result nil)
 	)
 
     (unless (plist-member @args :rawTitle)
@@ -264,31 +266,34 @@ We then distinguish between chapter and section based on indentation and TitleSt
 	       )))
 
     (when @folding?
-      (format "\
+      (setq $result 
+	    (format "\
 %s \
 %s   [[elisp:(org-cycle)][| %s%s:%s |]] %s %s \
 "
-	      (blee:panel:frontControl @outLevel :inDblock @inDblock)
-	      $indentationStr
-	      $openTitleStr
-	      @title
-	      $closeTitleStr
-	      (effectiveAnchor @anchor)
-	      (effectiveExtraInfo @extraInfo))
-      )
+		    (blee:panel:frontControl @outLevel :inDblock @inDblock)
+		    $indentationStr
+		    $openTitleStr
+		    @title
+		    $closeTitleStr
+		    (effectiveAnchor @anchor)
+		    (effectiveExtraInfo @extraInfo))
+	    ))
     (unless @folding?
-      (format "\
+      (setq $result       
+	    (format "\
 %s \
 %s    %s%s:%s %s %s \
 "
-	      (blee:panel:frontControl @outLevel :inDblock @inDblock)
-	      $indentationStr
-	      $openTitleStr
-	      @title
-	      $closeTitleStr
-	      (effectiveAnchor @anchor)
-	      (effectiveExtraInfo @extraInfo))
-      )
+		    (blee:panel:frontControl @outLevel :inDblock @inDblock)
+		    $indentationStr
+		    $openTitleStr
+		    @title
+		    $closeTitleStr
+		    (effectiveAnchor @anchor)
+		    (effectiveExtraInfo @extraInfo))
+	    ))
+    $result
     ))
     
 
@@ -1385,6 +1390,8 @@ Sections are specified as :outLevel 1,n
 	(@destDesc (or (plist-get @params :destDesc) "auto"))
 	(@foldDesc (or (plist-get @params :foldDesc) "auto"))			
 	;;
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
+	;;
 	($cwd @dest)	
 	)
 
@@ -1411,6 +1418,11 @@ Sections are specified as :outLevel 1,n
 	;;(org-dblock-write:blee:bxPanel:linedTreeNavigator @params)
 	)
       )
+
+    (when @sep
+      (insert
+       (blee:org:separatorStr (1- @outLevel)))
+      (insert "\n"))
 	    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
