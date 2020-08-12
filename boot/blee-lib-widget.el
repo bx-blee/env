@@ -733,6 +733,9 @@ Some Comment under current
 	["To Do These -- Node Panels" bx:org:todo:this-node-otherWin t]
 	["Agenda These -- Node Panels" bx:org:agenda:this-node t]
 	"---"	
+	["To Do Linked These" bx:org:todo:linkWith-otherWin t]
+	["Agenda Linked These" bx:org:agenda:linkWith-otherWin t]
+	"---"	
 	[,(format "Visit %s" $thisFuncName) (describe-function (intern ,$thisFuncName)) t]	
 	))
     ))
@@ -801,7 +804,7 @@ Some Comment under current
 (defun blee:org-update-named-dblocks (name-of-dblock)
   ""
   (interactive)
-  (goto-char (point-min))    
+  (goto-char (point-min))
   (save-excursion
     (while (search-forward name-of-dblock nil t)
       (save-excursion

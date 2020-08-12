@@ -501,6 +501,11 @@
   (org-todo-list nil)
   )
 
+(defun bx:org:agenda:files/blank ()
+  (interactive)
+  (setq org-agenda-files (list))
+  )
+
 
 (defun bx:org:todo:this-node-otherWin ()
   (interactive)
@@ -518,6 +523,23 @@
   (org-agenda-list)
   ;;(delete-other-windows)
   )
+
+(defun bx:org:todo:linkWith-otherWin ()
+  (interactive)
+  (setq org-agenda-files (list (buffer-file-name)))
+  (goto-char (point-min))  
+  (blee:org-update-named-dblocks "blee:bxPanel:linkWithTreeElem")
+  (org-todo-list nil)
+  )
+
+(defun bx:org:agenda:linkWith-otherWin ()
+  (interactive)
+  (setq org-agenda-files (list (buffer-file-name)))
+  (blee:org-update-named-dblocks "blee:bxPanel:linkWithTreeElem")
+  (org-agenda-list)
+  ;;(delete-other-windows)
+  )
+
 
 (defun bx:org:find-agenda-files-in-orgMode ()
   ;;

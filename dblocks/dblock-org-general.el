@@ -1385,12 +1385,13 @@ Sections are specified as :outLevel 1,n
 	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
 	;;
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
+	;;
 	(@model (or (plist-get @params :model) "auto"))
 	(@dest (or (plist-get @params :dest) "."))
 	(@destDesc (or (plist-get @params :destDesc) "auto"))
-	(@foldDesc (or (plist-get @params :foldDesc) "auto"))			
-	;;
-	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
+	(@foldDesc (or (plist-get @params :foldDesc) "auto"))
+	(@agenda (or (plist-get @params :agenda) nil))				
 	;;
 	($cwd @dest)	
 	)
@@ -1423,13 +1424,27 @@ Sections are specified as :outLevel 1,n
       (insert
        (blee:org:separatorStr (1- @outLevel)))
       (insert "\n"))
-	    
+
+    
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
 				'helpLine
 				'bodyContentPlus
 				'bodyContent
 				)
+
+    (when @agenda
+      ;;; go to @dest, and run these dblocks there
+      (setq org-agenda-files
+	    (append org-agenda-files (list
+				      (concat (file-name-as-directory @dest)
+					      "fullUsagePanel-en.org"))))
+      (with-temp-buffer
+	(insert-file-contents (concat (file-name-as-directory @dest)
+				      "fullUsagePanel-en.org"))
+	(blee:org-update-named-dblocks "blee:bxPanel:linkWithTreeElem")
+	)
+      )
 
     ))
 
