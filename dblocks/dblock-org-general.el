@@ -1395,7 +1395,8 @@ Sections are specified as :outLevel 1,n
 	;;
 	)
 
-    (setq @dest (expand-file-name @dest))
+    ;;(setq @dest (expand-file-name @dest bx:panel:baseDir))
+    (setq @dest (expand-file-name @dest))    
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
@@ -1421,11 +1422,7 @@ Sections are specified as :outLevel 1,n
 	)
       )
 
-    (when @sep
-      (insert
-       (blee:org:separatorStr (1- @outLevel)))
-      (insert "\n"))
-
+    (when @sep (insert (blee:org:separatorStr (1- @outLevel))) (insert "\n"))
     
     (bx:dblock:governor:process @governor @extGov @style @outLevel
 				(compile-time-function-name)
@@ -1435,14 +1432,16 @@ Sections are specified as :outLevel 1,n
 				)
 
     (when @agenda
-      ;;; go to @dest, and run these dblocks there
+      (message "In Agenda")
       (setq org-agenda-files
 	    (append org-agenda-files (list
 				      (concat (file-name-as-directory @dest)
 					      "fullUsagePanel-en.org"))))
+      ;;; go to @dest, and run these dblocks there
       (with-temp-buffer
 	(insert-file-contents (concat (file-name-as-directory @dest)
 				      "fullUsagePanel-en.org"))
+	(setq default-directory (file-name-as-directory @dest))
 	(blee:org-update-named-dblocks "blee:bxPanel:linkWithTreeElem")
 	)
       )
@@ -2008,10 +2007,10 @@ Sections are specified as :outLevel 1,n
 ;;; (blee:org:agenda:category-get)
 ;;; 
 (defun blee:org:agenda:category-get ()
-  (file-name-nondirectory
-   (directory-file-name
-    (file-name-directory
-     buffer-file-name))))
+  (format "%s:%s"
+	  (fto:treeElem|atBaseGetTypeAsLetter (file-name-directory buffer-file-name))
+	  (fto:treeElem|atBaseGetName (file-name-directory buffer-file-name))
+	  ))
 
 
 (defun org-dblock-write:blee:bxPanel:footerOrgParams (@params)

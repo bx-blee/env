@@ -148,10 +148,12 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 
 ;;;
 ;;; (fto:treeElem|atBaseGetType "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
+;;; (fto:treeElem|atBaseGetType "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_/")
 ;;; (fto:treeElem|atBaseGetType "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/davfs")
+;;; (fto:treeElem|atBaseGetType "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/davfs/")
 ;;; 
 (defun fto:treeElem|atBaseGetType (<ftoBase)
-  "One of Node, Leaf, AuxNode"
+  "One of Node, Leaf, AuxNode or Unknown"
   (let (
 	($result "leaf")
 	)
@@ -162,6 +164,28 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
     $result
     )
   )
+
+;;; (fto:treeElem|atBaseGetTypeAsLetter "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
+;;; (fto:treeElem|atBaseGetTypeAsLetter  "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_/")
+;;; (fto:treeElem|atBaseGetTypeAsLetter  "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/davfs")
+;;; (fto:treeElem|atBaseGetTypeAsLetter  "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/davfs/")
+;;;
+(defun fto:treeElem|atBaseGetTypeAsLetter (<ftoBase)
+  "One of N, L, A, U"
+  (let (
+	($treeElemType (fto:treeElem|atBaseGetType <ftoBase))
+	($result "U")
+	)
+    (cond
+     ((string= $treeElemType "node")
+      (setq $result "N"))
+     ((string= $treeElemType "leaf")
+      (setq $result "L"))
+     )
+    $result
+    )
+  )
+
 
 (make-obsolete 'fto:withBase:treeElementGet 'fto:treeElem:atBaseGetType "blee-3.1.")
 
@@ -213,7 +237,7 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 ;;; (fto:treeElem|atBaseIsLeaf? "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
 ;;; 
 (defun fto:treeElem|atBaseIsLeaf? (<ftoBase)
-  "Given ftoBase, return nil if ftoBase is not a Node."
+  "Given ftoBase, return nil if ftoBase is not a Leaf."
   (let (
 	($result nil))
     (when (string= (fto:treeElem|atBaseGetType <ftoBase) "leaf")
@@ -227,6 +251,10 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 
 ;;;
 ;;; (fto:treeElem|atBaseGetName "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
+;;;
+;;; (fto:treeElem|atBaseGetName "/acct/employee/lsipusr/org/currents/_nodeBase_/")
+;;; (fto:node|atBaseGetName "/acct/employee/lsipusr/org/currents/_nodeBase_/")
+;;; (fto:treeElem|atBaseIsNode? "/acct/employee/lsipusr/org/currents/_nodeBase_/")
 ;;; 
 (defun fto:treeElem|atBaseGetName (<ftoBase)
   "Name of the treeElem based on fileName base"
@@ -245,13 +273,15 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 
 ;;;
 ;;; (fto:node|atBaseGetName "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
+;;; (fto:node|atBaseGetName "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_/")
+;;; (expand-file-name "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_/")
 ;;; 
 (defun fto:node|atBaseGetName (<ftoBase)
   "Name of the Node as string"
   (let (
 	($result nil)
 	)
-    (setq <ftoBase (expand-file-name <ftoBase))    
+    (setq <ftoBase (expand-file-name (directory-file-name <ftoBase)))
     (setq $result (file-name-nondirectory (fto:node|atBaseGetDirBase <ftoBase)))
     $result
     )
@@ -259,6 +289,7 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 
 ;;;
 ;;; (fto:leaf|atBaseGetName "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_")
+;;; (fto:leaf|atBaseGetName "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_/")
 ;;; 
 (defun fto:leaf|atBaseGetName (<ftoBase)
   "Name of the leaf as string"
@@ -266,7 +297,7 @@ When <include_nodeBase_ the _nodeBase_ directory is included.
 	($result nil)
 	)
     (setq $result (file-name-nondirectory
-		   (expand-file-name <ftoBase)
+		   (expand-file-name (directory-file-name <ftoBase))
 		   ))
     $result
     )
