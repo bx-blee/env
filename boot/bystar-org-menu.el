@@ -538,7 +538,7 @@
   (blee:org-update-named-dblocks "blee:bxPanel:linkWithTreeElem")
   (org-agenda-list)
   ;;(delete-other-windows)
-  )
+  )ppwd
 
 
 (defun bx:org:find-agenda-files-in-orgMode ()
