@@ -1393,8 +1393,9 @@ Sections are specified as :outLevel 1,n
 	(@foldDesc (or (plist-get @params :foldDesc) "auto"))
 	(@agenda (or (plist-get @params :agenda) nil))				
 	;;
-	($cwd @dest)	
 	)
+
+    (setq @dest (expand-file-name @dest))
 
     (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
 
