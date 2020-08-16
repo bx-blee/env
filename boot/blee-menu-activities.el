@@ -62,10 +62,19 @@
       ["ByStar Central" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxServices/bxCentral") t]
       ["BxDE Documents, Information And Development Plans" (blee:bnsm:panel-goto "/libre/ByStar/InitialTemplates/activeDocs/bxDE/main") t]
 
-
-      ["BISOS Storage" (blee:bnsm:panel-goto "/bisos/panels/bisos/storage/_nodeBase_") t]
-      ["BISOS Platform" (blee:bnsm:panel-goto "/bisos/panels/bisos/platform/_nodeBase_") t]
-      ["BISOS Bootstrap" (blee:bnsm:panel-goto "/bisos/panels/bisos/bootstrap/_nodeBase_") t]                  
+      "---"
+      ["Blee Core" (blee:bnsm:panel-goto "/bisos/panels/blee/core/_nodeBase_") t]
+      ["Blee Model" (blee:bnsm:panel-goto "/bisos/panels/blee/model/_nodeBase_/") t]
+      ["Blee Development" (blee:bnsm:panel-goto "/bisos/panels/blee/dev/_nodeBase_") t]
+      "---"
+      ["BISOS Core" (blee:bnsm:panel-goto "/bisos/panels/bisos/core/_nodeBase_") t]
+      ["BISOS Model" (blee:bnsm:panel-goto "/bisos/panels/bisos/model/_nodeBase_/") t]
+      ["BISOS Development" (blee:bnsm:panel-goto "/bisos/panels/bisos/dev/_nodeBase_") t]
+      "---"
+      ["BxDE Core" (blee:bnsm:panel-goto "/bisos/panels/bxde/core/_nodeBase_") t]
+      ["BxDE Model" (blee:bnsm:panel-goto "/bisos/panels/bxde/model/_nodeBase_/") t]
+      ["BxDE Development" (blee:bnsm:panel-goto "/bisos/panels/bxde/dev/_nodeBase_") t]
+      
       ;; "---"
       ;; ("Blee and By* Documents and Information"
       ;;  ["Blee:  Model, Usage Procedures, Policies" (blee:bnsm:doc-goto  "/libre/ByStar/InitialTemplates/activeDocs/blee") t]

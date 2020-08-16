@@ -166,6 +166,8 @@
   (require 'blee-iim-bash-cmnd)
   (require 'blee-iicm-py-cmnd)
 
+  (require 'bxpanel-fto-lib)
+  
   (require 'blee-global)
   ;;;;(require 'blee-packages-install)
 

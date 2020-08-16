@@ -556,8 +556,16 @@ Some Comment under current
 	["OrgEdit  -- Development & Editing Model" (blee:org:editModel) t]
 	["OrgRaw   -- Raw" (blee:org:rawModel) t]
 	"---"
-	["Dblock  -- Enable" (setq-local ~blee:dblockEnabler t) t]
-	["Dblock  -- Disable" (setq-local ~blee:dblockEnabler nil) t]
+	["DblockEnabler  -- Current Value" (describe-variable '~blee:dblockEnabler) t]	
+	["DblockEnabler  -- Enable (lock override)" (setq-local ~blee:dblockEnabler t) t]
+	["DblockEnabler  -- Disable (lock enforce)" (setq-local ~blee:dblockEnabler nil) t]
+	["DblockController  -- Current Value" (describe-variable '~blee:dblockController) t]
+	["DblockController  -- interactive" (setq-local ~blee:dblockController "interactive") t]
+	["DblockController  -- update" (setq-local ~blee:dblockController "update") t]
+	["DblockController  -- blank" (setq-local ~blee:dblockController "blank") t]
+	["panelUpdater  -- Current Value" (describe-variable '~blee:panelUpdater) t]
+	["panelUpdater  -- Enable" (setq-local ~blee:panelUpdater t) t]
+	["panelUpdater  -- Disable" (setq-local ~blee:panelUpdater nil) t]	
 	"---"
 	["Beauty  -- Hide emphasis-markers" (blee:org:emphasisMarkers:hide) t]
 	["Beauty  -- Show emphasis-markers" (blee:org:emphasisMarkers:show) t]

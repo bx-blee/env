@@ -432,6 +432,7 @@ This function can be used in a hook."
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-bx-blank-buffer) [[elisp:(org-cycle)][| ]]
 ")
 
+
 (defun org-dblock-bx-blank-buffer ()
   (interactive)
   (org-map-dblocks 'org-dblock-bx-blank-this)

@@ -605,6 +605,7 @@ Sections are specified as :outLevel 1,n
     ))
 
 (defun blee:panel:delimiterSection (@outLevel
+				    - 
 				  @title
 				  @anchor
 				  @extraInfo				  
@@ -659,7 +660,7 @@ Sections are specified as :outLevel 1,n
 	    (effectiveExtraInfo @extraInfo)
      )))
 
-
+(advice-add 'org-dblock-write:blee:bxPanel:delimiterSection :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:delimiterSection  (@params)
   "Non-Folding section delimiter usually with _title_
 "
@@ -668,11 +669,12 @@ Sections are specified as :outLevel 1,n
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
 	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))	
 	;;
 	(@title (or (plist-get @params :title) "TBD"))
 	(@anchor (or (plist-get @params :anchor) nil))
 	(@extraInfo (or (plist-get @params :extraInfo) nil))
-	(@sep (or (plist-get @params :sep) nil))
+
 	;;
 	($fileAsString)
 	)
@@ -2138,6 +2140,7 @@ eval: (setq-local ~selectedSubject \"noSubject\")
 eval: (setq-local ~primaryMajorMode '%s)
 eval: (setq-local ~blee:panelUpdater nil)
 eval: (setq-local ~blee:dblockEnabler nil)
+eval: (setq-local ~blee:dblockController \"interactive\")
 eval: (img-link-overlays)"
 
 		       @primMode
@@ -2228,7 +2231,80 @@ End:"
    )
   )
 
-(defun blee:dblockEnablerFunc (@origFunc &rest @params)
+(defun bx:dblock|reInsertContent (<content)
+  "Re Insert Content Of A Dblock"
+  (org-beginning-of-dblock)
+  (org-prepare-dblock)
+  (insert <content)  
+  (kill-line)
+  )
+
+(defun bx:dblock:control|wrapper (<origFunc &rest <params)
+  "Enforces common features of bx:dblocks. including :lock, ~blee:dblockController.
+If there is no :lock and ~blee:dblockController is blank, then blank it. (look at existing code)
+If there is :lock and ~blee:dblockController is blank, then reinsert content.
+If there is :lock and ~blee:dblockController is not blank, then subject it to ~blee:dblockEnabler.
+"
+
+  (let (
+	(<content)
+	(<name)
+	(<lock)
+	($paramsAsParams)
+	)
+
+    ;;
+    ;; <params is passed as a list of a list.
+    ;; $paramsAsParams is a plist usable  list.
+    ;;
+    (defun paramsAsParams (<params) <params)
+    (setq $paramsAsParams (apply 'paramsAsParams <params))	
+    
+    (setq <content (plist-get $paramsAsParams :content))
+    (setq <name (plist-get $paramsAsParams :name))
+
+    ;;; unspecified lock is nil
+    (when (plist-member $paramsAsParams :lock)
+      (setq <lock (plist-get $paramsAsParams :lock)))
+    (unless (plist-member $paramsAsParams :lock)
+      (setq <lock nil))
+    
+    (defun disabledReport ()
+      (setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
+      (when (string= ~blee:dblockController "interactive")
+	(display-warning "dblock" (format
+				   "%s dblock skipped due to lock and blee:dblockEnabler %s\n"
+				   <name (time-stamp-string))))
+      (when (string= ~blee:dblockController "update")
+	(message (format
+		  "%s dblock skipped due to lock and blee:dblockEnabler %s\n"
+		  <name (time-stamp-string))))
+      (bx:dblock|reInsertContent <content)
+      )
+
+    (when (string= ~blee:dblockController "blank")
+      (when <lock
+	(bx:dblock|reInsertContent <content))
+      (unless <lock
+	(org-dblock-bx-blank-this))
+      )
+
+    (unless (string= ~blee:dblockController "blank")
+      (when <lock 
+	(when ~blee:dblockEnabler
+	  (apply <origFunc <params))
+	(unless ~blee:dblockEnabler
+	    (disabledReport))
+	)
+      (unless <lock
+	(apply <origFunc <params)
+	)
+      )
+    ))
+
+       
+
+(defun blee:dblockEnablerFunc-OBSOLETED (@origFunc &rest @params)
   "Experiment with  (compile-time-function-name) to see if we get @origFunc name.
 
 Mystery: (apply 'disabledReport @params) works. (disabledReport @params) does not. @params are not accessible after &rest.
@@ -2243,8 +2319,12 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 	    (@name (plist-get @params :name))	
 	    )
 	(setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
-	(insert (format "%s dblock skipped due to blee:dblockEnabler %s\n" @name (time-stamp-string)))
-	(insert (format "%s" @content))
+	;;(insert (format "%s dblock skipped due to blee:dblockEnabler %s\n" @name (time-stamp-string)))
+	(display-warning "dblock" (format
+				   "%s dblock skipped due to blee:dblockEnabler %s\n"
+				   @name (time-stamp-string)))
+	;;(insert (format "%s" @content))
+	(insert @content)
 	;; solution below does not work
 	;;(org-kill-line)   ;;; @content adds an extra line at the end -- need this as it can be repeated
 	)
@@ -2257,7 +2337,10 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
     )
   )
 
-(advice-add 'org-dblock-write:blee:bxPanel:runResult :around #'blee:dblockEnablerFunc)
+;;; (advice-add 'org-dblock-write:blee:bxPanel:runResult :around #'blee:dblockEnablerFunc)
+;;; (advice-remove 'org-dblock-write:blee:bxPanel:runResult #'blee:dblockEnablerFunc)
+
+(advice-add 'org-dblock-write:blee:bxPanel:runResult :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:runResult (@params)
   "@command, @comment and @results control the behaviour.
 
@@ -2353,10 +2436,16 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 
 	(insert "----------------------------\n")
 
+	;;(insert
+	 ;;(shell-command-to-string 
+	  ;;(format "source ~/.bashrc; %s %s" @command $stdErrStr))
+	 ;;)
+
 	(insert
 	 (shell-command-to-string 
-	  (format "source ~/.bashrc; %s %s" @command $stdErrStr))
+	  (format "%s" @command))
 	 )
+
 	)
       )
 
