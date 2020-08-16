@@ -540,9 +540,9 @@ After expanding, displays complete information about the document.
    (expand-file-name @pdfFilePath)
    ))
 
-  
+(advice-add 'org-dblock-write:blee:bxPanel:foldingSection :around #'bx:dblock:control|wrapper)  
 (defun org-dblock-write:blee:bxPanel:foldingSection  (@params)
-  "foldingSection is often the basic ingredient of a bxPanel. 
+  "foldingSection is a basic ingredient of bxPanels. 
 A bxPanel is often structured similar to a LaTeX document With Parts, Chapters, Section, SubSection, etc.
 Parts are rare and can be done with ;rawTitle.
 Chapters are specified as :outLevel 0.
@@ -554,12 +554,12 @@ Sections are specified as :outLevel 1,n
 	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
 	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style
 	(@outLevel (or (plist-get @params :outLevel) 2)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line	
 	;;
 	(@title (or (plist-get @params :title) "TBD"))
 	(@rawTitle (or (plist-get @params :rawTitle) nil))	
 	(@anchor (or (plist-get @params :anchor) nil))
 	(@extraInfo (or (plist-get @params :extraInfo) nil))
-	(@sep (or (plist-get @params :sep) nil))    ;; seperator line
 	;;
 	($fileAsString)
 	)
@@ -746,7 +746,7 @@ Sections are specified as :outLevel 1,n
     ))
 
 
-
+(advice-add 'org-dblock-write:blee:bxPanel:title :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:title  (@params)
   "Title of the Panel. :style is expected to be closeBlank.
 "
@@ -983,7 +983,7 @@ Sections are specified as :outLevel 1,n
 
     ))
 
-
+(advice-add 'org-dblock-write:blee:bxPanel:relatedPanels :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:relatedPanels (@params)
   "Lists related panels in two parts. 1) based on :panelsList -- 2) based on :inFile"
   (org-dblock-write:blee:bxPanel:terseTreeNavigator @params))
@@ -1858,7 +1858,7 @@ Sections are specified as :outLevel 1,n
 
     ))
 
-
+(advice-add 'org-dblock-write:blee:bxPanel:topPanelControls :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:topPanelControls  (@params)
   "Top Controls. :style is expected to be openCloseBlank.
 "
