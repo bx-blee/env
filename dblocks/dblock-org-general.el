@@ -871,6 +871,7 @@ Sections are specified as :outLevel 1,n
 
 
 
+(advice-add 'org-dblock-write:blee:bxPanel:separator :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:separator  (@params)
   "
 "

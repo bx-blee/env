@@ -431,6 +431,7 @@ Relevant defvar-local definitions are made in blee-org-panel.el
     (setq $dblockController ~blee:dblockController)
     (setq ~blee:dblockController <specifiedController)
     (message (format "about to org-update-dblock with %s" <specifiedController))
+    (org-show-all) 
     (org-map-dblocks 'org-update-dblock)
     (setq ~blee:dblockController $dblockController)
     ))
