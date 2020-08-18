@@ -302,6 +302,7 @@ closeBlank -- Nothing at all
   (global-auto-revert-mode t)
   (save-window-excursion
     (find-file filename)
+    (org-show-all)
     ;;(revert-buffer :ignore-auto :noconfirm)      
     (ignore-errors
       (org-dblock-update-buffer-bx)
@@ -320,14 +321,17 @@ closeBlank -- Nothing at all
   "For use by emacs client in batch mode"
   (interactive (list (read-file-name "File to dblock blank: ") 
 		     ))
+  (global-auto-revert-mode t)  
   (save-window-excursion
     (find-file filename)
+    (org-show-all)    ;;; Very Necessary
     (ignore-errors
       (org-dblock-bx-blank-buffer)
       )
     (save-buffer)
     (kill-buffer)
     )
+  (global-auto-revert-mode nil)  
   )
 
 (lambda () "
