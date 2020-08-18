@@ -403,32 +403,58 @@ This function can be used in a hook."
   (interactive)
   (org-map-dblocks 'org-update-dblock))
 
-(defun org-update-all-dblocks-bx ()
-  "Check in org-mode was removed in -bx.
-Update all dynamic blocks in the buffer.
-This function can be used in a hook."
+
+(defun bx:panel:dblock/ensureBufLocalVars ()
+  "Ensure that relevant Buffer-Local varialbles.
+Relevant defvar-local definitions are made in blee-org-panel.el
+"
+  (if (not (boundp '~blee:dblockController))
+      (setq-local ~blee:dblockController "interactive"))
+
+  (if (not (boundp '~blee:dblockEnabler))
+      (setq-local ~blee:dblockEnabler nil))
+  )
+
+
+(defun bx:panel:dblock|basedOnSpecifiedControllerUpdateAll (<specifiedController)
+  "Based on <specifiedController, run org-update-dblock on all dblocks.
+"
   (interactive)
   (let (
 	($dblockController)
 	)
+    (bx:panel:dblock/ensureBufLocalVars)
     (setq $dblockController ~blee:dblockController)
-    (setq ~blee:dblockController "update")
+    (setq ~blee:dblockController <specifiedController)
+    (message (format "about to org-update-dblock with %s" <specifiedController))
     (org-map-dblocks 'org-update-dblock)
     (setq ~blee:dblockController $dblockController)
     ))
 
 
+(defun org-update-all-dblocks-bx ()
+  "With ~blee:dblockController as update, run org-update-dblock on all dblocks.
+"
+  (interactive)
+  (bx:panel:dblock|basedOnSpecifiedControllerUpdateAll "update"))
+
+
+
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-bx-strip-begin-end) [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-bx-blank-buffer) [[elisp:(org-cycle)][| ]]
 ")
 
-(defun org-dblock-bx-strip-begin-end ()
+
+(defun org-dblock-bx-blank-buffer ()
+  "With ~blee:dblockController as blank, run org-update-dblock on all dblocks.
+"
   (interactive)
-  (goto-char (point-min))
-  (flush-lines org-dblock-start-re)
-  (goto-char (point-min))
-  (flush-lines org-dblock-end-re)
-  ;;(save-buffer)
+  (bx:panel:dblock|basedOnSpecifiedControllerUpdateAll "blank"))
+
+
+(defun org-dblock-bx-blank-buffer-unconditionally ()
+  (interactive)
+  (org-map-dblocks 'org-dblock-bx-blank-this)
   )
 
 
@@ -443,27 +469,19 @@ This function can be used in a hook."
   (kill-line)
   )
 
+
 (lambda () "
-*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-bx-blank-buffer) [[elisp:(org-cycle)][| ]]
+*  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-bx-strip-begin-end) [[elisp:(org-cycle)][| ]]
 ")
 
-
-(defun org-dblock-bx-blank-buffer-unconditionally ()
+(defun org-dblock-bx-strip-begin-end ()
   (interactive)
-  (org-map-dblocks 'org-dblock-bx-blank-this)
+  (goto-char (point-min))
+  (flush-lines org-dblock-start-re)
+  (goto-char (point-min))
+  (flush-lines org-dblock-end-re)
+  ;;(save-buffer)
   )
-
-(defun org-dblock-bx-blank-buffer ()
-  "Set controller to blank, then update all dynamic blocks in the buffer."
-  (interactive)
-  (let (
-	($dblockController)
-	)
-    (setq $dblockController ~blee:dblockController)
-    (setq ~blee:dblockController "blank")
-    (org-map-dblocks 'org-update-dblock)
-    (setq ~blee:dblockController $dblockController)
-    ))
 
 
 ;;;  ["Set Start/End Mode RegExp" (org-dblock-mode-comment-regexp-bx) t]

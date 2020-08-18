@@ -988,7 +988,7 @@ Sections are specified as :outLevel 1,n
   "Lists related panels in two parts. 1) based on :panelsList -- 2) based on :inFile"
   (org-dblock-write:blee:bxPanel:terseTreeNavigator @params))
 
-
+(advice-add 'org-dblock-write:blee:bxPanel:terseTreeNavigator :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:terseTreeNavigator  (@params)
   "Creates terse links for navigation surrounding current panel in treeElem."
   (let (
@@ -1173,6 +1173,7 @@ Sections are specified as :outLevel 1,n
   )
 
 ;;;
+(advice-add 'org-dblock-write:blee:bxPanel:linedTreeNavigator :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:linedTreeNavigator  (@params)
   "Creates lined links for navigation surrounding current treeElem."
   (let* (
@@ -1575,6 +1576,7 @@ Sections are specified as :outLevel 1,n
 
     ))
 
+(advice-add 'org-dblock-write:blee:bxPanel:evolution :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:evolution  (@params)
   "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
 "
@@ -1673,6 +1675,7 @@ Sections are specified as :outLevel 1,n
 
     ))
 
+(advice-add 'org-dblock-write:blee:bxPanel:evolutionMaintainers :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:evolutionMaintainers  (@params)
   "Maintenance has a controls segment and a folding segment. :style should be closeContinue for folding segment.
 "
@@ -1961,7 +1964,7 @@ Sections are specified as :outLevel 1,n
 
     ))
 
-
+(advice-add 'org-dblock-write:blee:bxPanel:footerPanelControls :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:footerPanelControls  (@params)
   "Similar to topPanelControls but for bottom. :style is expected to be closeBlank.
 "
@@ -2014,7 +2017,7 @@ Sections are specified as :outLevel 1,n
 	  (fto:treeElem|atBaseGetName (file-name-directory buffer-file-name))
 	  ))
 
-
+(advice-add 'org-dblock-write:blee:bxPanel:footerOrgParams :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:footerOrgParams (@params)
   " Example for pure Blee org-mode dblocks.
 "
@@ -2090,6 +2093,7 @@ Sections are specified as :outLevel 1,n
     comment-end))
 
 
+(advice-add 'org-dblock-write:blee:bxPanel:footerEmacsParams :around #'bx:dblock:control|wrapper)
 (defun org-dblock-write:blee:bxPanel:footerEmacsParams (@params)
   " Example for pure Blee org-mode dblocks.
 "
@@ -2253,6 +2257,7 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
 	($paramsAsParams)
 	)
 
+
     ;;
     ;; <params is passed as a list of a list.
     ;; $paramsAsParams is a plist usable  list.
@@ -2268,6 +2273,16 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
       (setq <lock (plist-get $paramsAsParams :lock)))
     (unless (plist-member $paramsAsParams :lock)
       (setq <lock nil))
+
+    (when (not (boundp '~blee:dblockController))
+      (setq-local ~blee:dblockController "interactive")
+      (message "OOPS -- ~blee:dblockController interactive")
+      )
+
+    (when (not (boundp '~blee:dblockEnabler))
+      (setq-local ~blee:dblockEnabler nil)
+      (message "OOPS -- ~blee:dblockEnabler nil")
+      )
     
     (defun disabledReport ()
       (setq time-stamp-format "%02Y%-02m-%02d-%02H:%02M:%02S")
@@ -2283,6 +2298,7 @@ If there is :lock and ~blee:dblockController is not blank, then subject it to ~b
       )
 
     (when (string= ~blee:dblockController "blank")
+      (message "blee-org-dblock-wrapper -- Blanking dblock")
       (when <lock
 	(bx:dblock|reInsertContent <content))
       (unless <lock

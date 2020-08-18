@@ -428,6 +428,7 @@
   (bx:iswitch:all-defaults-set)
 
   (require 'bx-dblock)
+  (require 'blee-org-panel)
 
   ;; ./bystar-m17n.el
   ;;(load "bystar-m17n.el")   ;;; NOTYET, emacs version problem -- likely simple to fix
