@@ -2552,6 +2552,93 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
     ))
 
 
+
+(advice-add 'org-dblock-write:blee:panel:sh:cmnd :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:sh:cmnd (@params)
+  "@command, @comment and @afterComment control the behaviour.
+Similar to runResult with results as nil.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeTerse"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line		
+	;;
+	(@label (or (plist-get @params :label) nil))
+	(@folding? (or (plist-get @params :folding?) nil))	
+	;;
+	(@command (or (plist-get @params :command) ""))
+	(@comment (or (plist-get @params :comment) nil))
+	(@afterComment (or (plist-get @params :afterComment) nil))
+	;;
+	)
+
+    ;;; unspecified results is t
+    ;;(unless (plist-member @params :results)
+    ;;  (setq @results t))
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
+
+      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock t ))
+      
+      (unless @folding?
+	(insert (format " /%s/ :: " @label)))
+      (when @folding?
+	(insert (format " [[elisp:(org-cycle)][| /%s/ |]] :: " @label)))
+      
+      (insert (blee:panel:button:shCommand @command))
+      
+      (when @comment
+	(insert " *|* ")
+	(insert 
+	 (format " =%s=" @comment)))
+
+      (when @afterComment
+	(insert " *|* ")	
+	(insert (format " %s " @afterComment)))
+      )
+
+    (setq @style (list "openBlank" "closeContinue"))
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+  
+(defun bx:str:insert (<str)
+  "Insert <str unless nil"
+  (when <str
+    (insert <str)))
+
+(defun bx:panel:sep|whenRequired (<sep? <outLevel)
+  "Return a seperator string or nil"
+  (let (
+	($result nil)
+	)
+    (when <sep?
+      (setq $result (format "%s\n" (blee:org:separatorStr <outLevel)))
+      )
+    $result
+    ))
+	    
+
 (defun bx:panel:variablesShow ()
   "Relevant Buffer Local Variables Are "
   (interactive)
