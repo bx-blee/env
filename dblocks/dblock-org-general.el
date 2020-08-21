@@ -12,6 +12,47 @@
 	    @commandStr @commandStr))
 
 
+(defun blee:panel:icm:bash:intro (<icmName)
+  "Returns String"
+  (let (
+	($result)
+	)
+    (setq $result
+	  (concat $result
+		  (format "[[elisp:(lsip-local-run-command \"%s -i examples\")][%s]]"
+			  <icmName <icmName)))
+    (setq $result
+	  (concat $result
+		  (format "  [[elisp:(lsip-local-run-command \"%s -i visit\")][visit]]"
+			  <icmName)))
+    (setq $result
+	  (concat $result
+		  (format "  [[elisp:(lsip-local-run-command \"%s -i describe\")][describe]]"
+			  <icmName)))
+    $result
+    ))
+
+(defun blee:panel:icm:py:intro (<icmName)
+  "Returns String"
+  (let (
+	($result)
+	)
+    (setq $result
+	  (concat $result
+		  (format "[[elisp:(lsip-local-run-command \"%s -i examples\")][%s]]"
+			  <icmName <icmName)))
+    (setq $result
+	  (concat $result
+		  (format "  [[elisp:(lsip-local-run-command \"%s -i visit\")][visit]]"
+			  <icmName)))
+    (setq $result
+	  (concat $result
+		  (format "  [[elisp:(lsip-local-run-command \"%s -i describe\")][describe]]"
+			  <icmName)))
+    $result
+    ))
+
+
 (defun blee:panel:outLevelStr (@outLevel)
   "Outline level is included."
   (make-string @outLevel ?*)
@@ -2553,8 +2594,8 @@ NOTYET, See if this can be improved to include bx:dblock:governor:process when
 
 
 
-(advice-add 'org-dblock-write:blee:panel:sh:cmnd :around #'bx:dblock:control|wrapper)
-(defun org-dblock-write:blee:panel:sh:cmnd (@params)
+(advice-add 'org-dblock-write:blee:panel:unix:cmnd :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:unix:cmnd (@params)
   "@command, @comment and @afterComment control the behaviour.
 Similar to runResult with results as nil.
 "
@@ -2621,7 +2662,365 @@ Similar to runResult with results as nil.
 
     ))
 
-  
+
+(advice-add 'org-dblock-write:blee:panel:unix:cmndIntro :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:unix:cmndIntro (@params)
+  "@command, @comment and @afterComment control the behaviour.
+Similar to runResult with results as nil.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeTerse"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line		
+	;;
+	(@label (or (plist-get @params :label) nil))
+	(@folding? (or (plist-get @params :folding?) nil))	
+	;;
+	(@command (or (plist-get @params :command) ""))
+	(@comment (or (plist-get @params :comment) nil))
+	(@afterComment (or (plist-get @params :afterComment) nil))
+	;;
+	)
+
+    ;;; unspecified results is t
+    ;;(unless (plist-member @params :results)
+    ;;  (setq @results t))
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
+
+      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock t ))
+      
+      (unless @folding?
+	(insert (format " /%s/ :: " @label)))
+      (when @folding?
+	(insert (format " [[elisp:(org-cycle)][| /%s/ |]] :: " @label)))
+      
+      (insert (blee:panel:button:shCommand @command))
+      
+      (when @comment
+	(insert " *|* ")
+	(insert 
+	 (format " =%s=" @comment)))
+
+      (when @afterComment
+	(insert " *|* ")	
+	(insert (format " %s " @afterComment)))
+      )
+
+    (setq @style (list "openBlank" "closeContinue"))
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
+(defun bx:panel:label|basedOnFolding (<label <folding?)
+  "Return a string for the label based on folding."
+  (let (
+	($result)
+	)
+      (unless <folding?
+	(setq $result (format " /%s/ :: " <label)))
+      (when <folding?
+	(setq $result (format " [[elisp:(org-cycle)][| /%s/ |]] :: " <label)))
+      $result
+      ))
+
+(defun bx:panel:comment|produce (<comment)
+  "Return a string for the label based on folding."
+  (let (
+	($result nil)
+	)
+    (when @comment
+      (setq $result (format " *|*  =%s=" <comment)))
+    $result
+    ))
+
+(defun bx:panel:afterComment|produce (<afterComment)
+  "Return a string for the label based on folding."
+  (let (
+	($result nil)
+	)
+    (when @afterComment
+      (setq $result (format " *|*  %s" <afterComment)))
+    $result
+    ))
+
+
+(advice-add 'org-dblock-write:blee:panel:icm:bash:intro :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:icm:bash:intro (@params)
+  "@command, @comment and @afterComment control the behaviour.
+Similar to runResult with results as nil.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style 
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line		
+	;;
+	(@label (or (plist-get @params :label) nil))
+	(@folding? (or (plist-get @params :folding?) nil))	
+	;;
+	(@icmName (or (plist-get @params :icmName) ""))
+	(@comment (or (plist-get @params :comment) nil))
+	(@afterComment (or (plist-get @params :afterComment) nil))
+	;;
+	)
+
+    ;;; unspecified results is t
+    ;;(unless (plist-member @params :results)
+    ;;  (setq @results t))
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
+
+      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock t ))
+
+      (bx:str:insert (bx:panel:label|basedOnFolding @label @folding?))
+      
+      (insert (blee:panel:icm:bash:intro @icmName))
+
+      (bx:str:insert (bx:panel:comment|produce @comment))
+
+      (bx:str:insert (bx:panel:afterComment|produce @afterComment))
+      )
+ 
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
+(advice-add 'org-dblock-write:blee:panel:icm:bash:cmnd :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:icm:bash:cmnd (@params)
+  "@command, @comment and @afterComment control the behaviour.
+Similar to runResult with results as nil.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeTerse"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line		
+	;;
+	(@label (or (plist-get @params :label) nil))
+	(@folding? (or (plist-get @params :folding?) nil))	
+	;;
+	(@command (or (plist-get @params :icmName) ""))
+	(@comment (or (plist-get @params :comment) nil))
+	(@afterComment (or (plist-get @params :afterComment) nil))
+	;;
+	)
+
+    ;;; unspecified results is t
+    ;;(unless (plist-member @params :results)
+    ;;  (setq @results t))
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
+
+      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock t ))
+      
+      (unless @folding?
+	(insert (format " /%s/ :: " @label)))
+      (when @folding?
+	(insert (format " [[elisp:(org-cycle)][| /%s/ |]] :: " @label)))
+      
+      (insert (blee:panel:button:shCommand @command))
+      
+      (when @comment
+	(insert " *|* ")
+	(insert 
+	 (format " =%s=" @comment)))
+
+      (when @afterComment
+	(insert " *|* ")	
+	(insert (format " %s " @afterComment)))
+      )
+
+    (setq @style (list "openBlank" "closeContinue"))
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
+
+(advice-add 'org-dblock-write:blee:panel:icm:py:intro :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:icm:py:intro (@params)
+  "@command, @comment and @afterComment control the behaviour.
+Similar to runResult with results as nil.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style 
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line		
+	;;
+	(@label (or (plist-get @params :label) nil))
+	(@folding? (or (plist-get @params :folding?) nil))	
+	;;
+	(@icmName (or (plist-get @params :icmName) ""))
+	(@comment (or (plist-get @params :comment) nil))
+	(@afterComment (or (plist-get @params :afterComment) nil))
+	;;
+	)
+
+    ;;; unspecified results is t
+    ;;(unless (plist-member @params :results)
+    ;;  (setq @results t))
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
+
+      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock t ))
+
+      (bx:str:insert (bx:panel:label|basedOnFolding @label @folding?))
+      
+      (insert (blee:panel:icm:bash:intro @icmName))
+
+      (bx:str:insert (bx:panel:comment|produce @comment))
+
+      (bx:str:insert (bx:panel:afterComment|produce @afterComment))
+      )
+ 
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+(advice-add 'org-dblock-write:blee:panel:icm:py:cmnd :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:icm:py:cmnd (@params)
+  "@command, @comment and @afterComment control the behaviour.
+Similar to runResult with results as nil.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeTerse"))) ;; souroundings style
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line		
+	;;
+	(@label (or (plist-get @params :label) nil))
+	(@folding? (or (plist-get @params :folding?) nil))	
+	;;
+	(@command (or (plist-get @params :command) ""))
+	(@comment (or (plist-get @params :comment) nil))
+	(@afterComment (or (plist-get @params :afterComment) nil))
+	;;
+	)
+
+    ;;; unspecified results is t
+    ;;(unless (plist-member @params :results)
+    ;;  (setq @results t))
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
+
+      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock t ))
+      
+      (unless @folding?
+	(insert (format " /%s/ :: " @label)))
+      (when @folding?
+	(insert (format " [[elisp:(org-cycle)][| /%s/ |]] :: " @label)))
+      
+      (insert (blee:panel:button:shCommand @command))
+      
+      (when @comment
+	(insert " *|* ")
+	(insert 
+	 (format " =%s=" @comment)))
+
+      (when @afterComment
+	(insert " *|* ")	
+	(insert (format " %s " @afterComment)))
+      )
+
+    (setq @style (list "openBlank" "closeContinue"))
+
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
+
 (defun bx:str:insert (<str)
   "Insert <str unless nil"
   (when <str
