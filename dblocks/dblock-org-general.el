@@ -32,6 +32,24 @@
     $result
     ))
 
+(defun blee:panel:file:text|intro (<fileName)
+  "Returns String"
+  (let (
+	($result)
+	)
+    (setq $result
+	  (concat $result
+		  (format
+		   "[[elisp:(find-file \"%s\")][%s]] || [[elisp:(find-file-other-window \"%s\")][Visit In Other]]"
+   <fileName
+   <fileName   
+   (expand-file-name <fileName)
+   )))
+		  
+    $result
+    ))
+
+
 (defun blee:panel:icm:py:intro (<icmName)
   "Returns String"
   (let (
@@ -2967,7 +2985,7 @@ Similar to runResult with results as nil.
 	(@label (or (plist-get @params :label) nil))
 	(@folding? (or (plist-get @params :folding?) nil))	
 	;;
-	(@command (or (plist-get @params :command) ""))
+	(@command (or (plist-get @params :icmName) ""))
 	(@comment (or (plist-get @params :comment) nil))
 	(@afterComment (or (plist-get @params :afterComment) nil))
 	;;
@@ -3036,7 +3054,66 @@ Similar to runResult with results as nil.
       )
     $result
     ))
-	    
+
+
+(advice-add 'org-dblock-write:blee:panel:file:text/intro :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:blee:panel:file:text/intro (@params)
+  "@command, @comment and @afterComment control the behaviour.
+Similar to runResult with results as nil.
+"
+  (let (
+	(@governor (or (plist-get @params :governor) "enabled")) ;; Controls general behaviour
+	(@extGov (or (plist-get @params :extGov) "na")) ;; External Governor
+	(@style (or (plist-get @params :style) (list "openBlank" "closeContinue"))) ;; souroundings style 
+	(@outLevel (or (plist-get @params :outLevel) 1)) ;; Outline Level
+	(@sep (or (plist-get @params :sep) nil))    ;; seperator line		
+	;;
+	(@label (or (plist-get @params :label) nil))
+	(@folding? (or (plist-get @params :folding?) nil))	
+	;;
+	(@fileName (or (plist-get @params :fileName) ""))
+	(@comment (or (plist-get @params :comment) nil))
+	(@afterComment (or (plist-get @params :afterComment) nil))
+	;;
+	)
+
+    ;;; unspecified results is t
+    ;;(unless (plist-member @params :results)
+    ;;  (setq @results t))
+
+    (setq @governor (bx:dblock:governor:effective @governor @extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":panelsList \"bxPanel\" :inFile \"Title Of This Panel\""
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+
+      (bx:str:insert (bx:panel:sep|whenRequired @sep @outLevel))
+
+      (insert (blee:panel:delimiterFrontControl @outLevel :inDblock t ))
+
+      (bx:str:insert (bx:panel:label|basedOnFolding @label @folding?))
+      
+      (insert (blee:panel:file:text|intro @fileName))
+
+      (bx:str:insert (bx:panel:comment|produce @comment))
+
+      (bx:str:insert (bx:panel:afterComment|produce @afterComment))
+      )
+ 
+    (bx:dblock:governor:process @governor @extGov @style @outLevel
+				(compile-time-function-name)
+				'helpLine
+				'bodyContentPlus
+				'bodyContent
+				)
+
+    ))
+
 
 (defun bx:panel:variablesShow ()
   "Relevant Buffer Local Variables Are "
