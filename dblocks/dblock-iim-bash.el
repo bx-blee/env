@@ -187,15 +187,42 @@ _CommentEnd_
 	)
     ;;(insert "# {{{ DBLOCK-seed-spec\n")
     (insert 
-     (format "SEED=\"\n*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip3/bin/%s]] | \n\"\n" bx:types))
+     (format "SEED=\"\n*  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/%s]] | \n\"\n" bx:types))
     (insert 
      (format "FILE=\"\n*  /This File/ :: %s \n\"\n" buffer-file-name))
     (insert "if [ \"${loadFiles}\" == \"\" ] ; then\n")
     (insert
-     (format "    /bisos/core/bsip3/bin/%s -l $0 \"$@\" \n" bx:types))
+     (format "    /bisos/core/bsip/bin/%s -l $0 \"$@\" \n" bx:types))
     (insert "    exit $?
 fi")
     ;;(insert "# }}} DBLOCK-seed-spec")
+    ))
+
+
+(defun org-dblock-write:bx:bsip:bash/processEachArgsOrStdin (params)
+  (let (
+	(files-list)
+	)
+    (insert 
+     "\
+    if [ $# -gt 0 ] ; then
+	local each=\"\"
+	for each in ${inputsList} ; do
+	    lpDo processEach ${each}
+	done
+    else
+	local eachLine=\"\"
+	while read -r -t 1 eachLine ; do
+	    if [ ! -z \"${eachLine}\" ] ; then
+		local each=\"\"
+		for each in ${eachLine} ; do
+		    lpDo processEach ${each}
+		done
+	    fi
+	done
+    fi
+"
+		)
     ))
 
 
