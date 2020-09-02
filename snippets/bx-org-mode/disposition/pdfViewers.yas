@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Media Disposition PDF Viewers
-# key: mediaDisposition/pdf
-# group: Media Disposition Line
+# name: File Disposition PDF Viewers
+# key: fileDisposition/pdf
+# group: File Disposition Line
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
