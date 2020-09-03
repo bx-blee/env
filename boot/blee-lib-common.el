@@ -166,7 +166,12 @@
      )
   )
 
-
+;;; (see-file-other-window "/etc/passwd")
+(defun see-file-other-window (@args)
+  ""
+    (find-file-other-window @args)
+    (other-window 1)
+    )
 
 
 (lambda () "
