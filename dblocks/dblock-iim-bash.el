@@ -181,6 +181,24 @@ _CommentEnd_
 *  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (org-dblock-write:bx:dblock:lsip:bash:seed-spec params) [[elisp:(org-cycle)][| ]]
   ")
 
+(defun org-dblock-write:bx:dblock:lsip:bash:seed-spec (params)
+  (let ((bx:types (or (plist-get params :types) ""))
+	(files-list)
+	)
+    ;;(insert "# {{{ DBLOCK-seed-spec\n")
+    (insert 
+     (format "SEED=\"\n*  /[dblock]/ /Seed/ :: [[file:/opt/public/osmt/bin/%s]] | \n\"\n" bx:types))
+    (insert 
+     (format "FILE=\"\n*  /This File/ :: %s \n\"\n" buffer-file-name))
+    (insert "if [ \"${loadFiles}\" == \"\" ] ; then\n")
+    (insert
+     (format "    /opt/public/osmt/bin/%s -l $0 \"$@\" \n" bx:types))
+    (insert "    exit $?
+fi")
+    ;;(insert "# }}} DBLOCK-seed-spec")
+    ))
+
+
 (defun org-dblock-write:bx:bsip:bash:seed-spec (params)
   (let ((bx:types (or (plist-get params :types) ""))
 	(files-list)
