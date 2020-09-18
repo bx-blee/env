@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: dblock-processEachArgsOrStdin
 # key: icmPattern/dblock-processEachArgsOrStdin
-# group: ICM Pattern
+# group: Obsoleted
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 $0####+BEGIN: bx:bsip:bash/processEachArgsOrStdin 

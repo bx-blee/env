@@ -216,7 +216,7 @@ fi")
     ;;(insert "# }}} DBLOCK-seed-spec")
     ))
 
-
+;;; OBSOLETED
 (defun org-dblock-write:bx:bsip:bash/processEachArgsOrStdin (params)
   (let (
 	(files-list)
@@ -242,6 +242,62 @@ fi")
 "
 		)
     ))
+
+
+(defun org-dblock-write:bx:bsip:bash/processArgsAndStdinEach (params)
+  (insert 
+   "\
+   function processArgsAndStdin {
+	if [ $# -gt 0 ] ; then
+	    local each=\"\"
+	    for each in \"$@\" ; do
+		lpDo processEach \"${each}\"
+	    done
+	fi
+	if [ -t 0 ] ; then # stdin is empty -- FD 0 is opened on a terminal (not piped)
+	    if [ $# -eq 0 ] ; then
+		ANT_raw \"No Args And Stdin Is Empty\"
+	    fi
+	    lpReturn
+	fi
+	local eachLine=\"\"
+	while read  eachLine ; do
+	    if [ ! -z \"${eachLine}\" ] ; then
+		local each=\"\"
+		for each in \"${eachLine}\" ; do
+		    lpDo processEach \"${each}\"
+		done
+	    fi
+	done
+    }
+    lpDo processArgsAndStdin \"$@\"\
+"
+   )
+  )
+
+(defun org-dblock-write:bx:bsip:bash/processArgsAndStdin (params)
+  (insert 
+   "\
+     function processArgsAndStdin {
+	local effectiveArgs=( \"$@\" )
+	local stdinArgs
+	local each
+	if [ ! -t 0 ]; then # FD 0 is not opened on a terminal, there is a pipe
+	    readarray stdinArgs < /dev/stdin
+	    effectiveArgs=( \"$@\" \"${stdinArgs[@]}\" )
+	fi
+	if [ ${#effectiveArgs[@]} -eq 0 ] ; then
+	    ANT_raw \"No Args And Stdin Is Empty\"
+	    lpReturn
+	fi
+	for each in \"${effectiveArgs[@]}\"; do
+	    lpDo processEach \"${each%$'\\n'}\"
+	done
+    }
+    lpDo processArgsAndStdin \"$@\"\
+"
+    )
+  )
 
 
 (lambda () "

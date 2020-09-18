@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: func-processEachArgsOrStdin
-# key: icmPattern/func-processEachArgsOrStdin
-# group: Obsoleted
+# name: func-processArgsAndStdin
+# key: icmPattern/func-processArgsAndStdin
+# group: ICM Pattern
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
 function vis_func$0 {
@@ -10,19 +10,20 @@ function vis_func$0 {
 Function description.
 Design Pattern: processEach based on args or stdin.
 Examples:
-      \${G_myName} -i userAcctsReport bisos
-      echo bisos bystar | \${G_myName} -i userAcctsReport
+      \${G_myName} -i \${G_thisFunc} arg1 arg2
+      printf "stdinArg1\nstdin2\n" | \${G_myName} -i \${G_thisFunc} arg1 arg2
 _EOF_
     }
-    local inputsList="\$@"
     local thisFunc=\${G_thisFunc}
 
     function processEach {
 	EH_assert [[ \$# -eq 1 ]]
-	echo "\${thisFunc}" "\$1"
+	local each=\"\$1\"
+	
+	echo \"Processing \${thisFunc}::  \${each}\"
     }
 
-####+BEGIN: bx:bsip:bash/processEachArgsOrStdin 
+####+BEGIN: bx:bsip:bash/processArgsAndStdin  
 ####+END:
     
     lpReturn
