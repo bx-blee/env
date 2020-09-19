@@ -1140,7 +1140,7 @@ Sections are specified as :outLevel 1,n
 				  $cwd
 				  :expandedFileName t))
 	      (when (eq count 0)
-		(insert (format "\n*   =Sibling Panles=   :: ")))	    
+		(insert (format "\n*   =Sibling Panels=   :: ")))	    
 	      (insert (blee:panel:fto|atBaseTreeElementLinkStr $eachSubDir :format "terse"))
 	      (insert " *|* ")
 	      (setq count (1+ count))
