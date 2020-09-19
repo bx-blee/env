@@ -275,6 +275,28 @@ fi")
    )
   )
 
+(defun org-dblock-write:bx:bsip:bash/processStdinWithArgs (params)
+  (insert 
+   "\
+    function processStdinWithArgs {
+	local stdinArgs
+	local each
+	if [ ! -t 0 ]; then # FD 0 is not opened on a terminal, there is a pipe
+	    readarray stdinArgs < /dev/stdin
+	fi
+	if [ ${#stdinArgs[@]} -eq 0 ] ; then
+	    ANT_raw \"No StdinArgs -- Processing Skipped\"
+	    lpReturn
+	fi
+	for each in \"${stdinArgs[@]}\"; do
+	    lpDo processEach \"${each%$'\\n'}\" \"$@\"
+	done
+    }
+    lpDo processStdinWithArgs \"$@\"\
+"
+    )
+  )
+
 (defun org-dblock-write:bx:bsip:bash/processArgsAndStdin (params)
   (insert 
    "\
