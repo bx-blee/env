@@ -482,7 +482,7 @@
   (when (not (eq bystar:ue:form-factor 'handset))
     (setq bystar:mail:addr:ephemera-envelope-local-part
 	  (shell-command-to-string
-	   ( format "/bin/echo -n $( /opt/public/osmt/bin/bystarMailAddrManage.sh -h -v -n showRun -p bystarUid=%s -i ephemeraGetCurrentLocalPart envelope )" bystar-cp_acctUid) )))
+	   ( format "/bin/echo -n $( /bisos/core/bsip/bin/bystarMailAddrManage.sh -h -v -n showRun -p bystarUid=%s -i ephemeraGetCurrentLocalPart envelope )" bystar-cp_acctUid) )))
 
   (when (eq bystar:ue:form-factor 'handset)
     (setq bystar:mail:addr:ephemera-envelope-local-part "envelope201009"))
@@ -494,7 +494,7 @@
   (when (not (eq bystar:ue:form-factor 'handset))
     (setq bystar:mail:addr:ephemera-generic-local-part
 	  (shell-command-to-string
-	   ( format "/bin/echo -n $( /opt/public/osmt/bin/bystarMailAddrManage.sh -h -v -n showRun -p bystarUid=%s -i ephemeraGetCurrentLocalPart e )" bystar-cp_acctUid) )))
+	   ( format "/bin/echo -n $( /bisos/core/bsip/bin/bystarMailAddrManage.sh -h -v -n showRun -p bystarUid=%s -i ephemeraGetCurrentLocalPart e )" bystar-cp_acctUid) )))
 
   (when (eq bystar:ue:form-factor 'handset)
     (setq bystar:mail:addr:ephemera-generic-local-part "e201009"))
@@ -579,12 +579,12 @@
 
 (add-to-list 'mm-text-html-renderer-alist
 	     '(pipe-to-mozilla mm-inline-render-with-stdin
-			nil "/opt/public/osmt/bin/lcaMozillaAdmin.sh" "-i" "stdin" "text/html"))
+			nil "/bisos/core/bsip/bin/lcaMozillaAdmin.sh" "-i" "stdin" "text/html"))
 
 ;;; NOTYET, Causes problems in SQUEEZE emacs24
 ;; (add-to-list 'mm-text-html-washer-alist
 ;; 	     '(pipe-to-mozilla mm-inline-wash-with-stdin
-;; 			nil "/opt/public/osmt/bin/lcaMozillaAdmin.sh" "-i" "stdin" "text/html"))
+;; 			nil "/bisos/core/bsip/bin/lcaMozillaAdmin.sh" "-i" "stdin" "text/html"))
 
 ;(add-to-list 'mm-text-html-renderer-alist
 ;	     '(mhonarc-and-w3m  mhonarc-save-and-feed nil "" "" "" ""))
@@ -594,7 +594,7 @@
 
 ;; (add-to-list 'mm-text-html-renderer-alist
 ;; 	     `(mhonarc-and-w3m mm-inline-render-with-stdin
-;;    			nil "/opt/public/osmt/bin/bueMailManage.sh" "-i" "msgHtmlProc" ,(concat "~/mhonarc/var/input" "/msg"))
+;;    			nil "/bisos/core/bsip/bin/bueMailManage.sh" "-i" "msgHtmlProc" ,(concat "~/mhonarc/var/input" "/msg"))
 
 
 ;(setq mm-text-html-renderer 'pipe-to-mozilla)
@@ -684,7 +684,7 @@
       (save-excursion
 	(gnus-summary-copy-article 1 "nndraft:drafts")
 	(lsip-run-command
-	 (format "/opt/public/osmt/bin/bueMailManage.sh -h -v -n showRun -p ri=any:mailFolders -p bystarUid=%s -i msgHtmlHook" bystar:acct:uid-name)
+	 (format "/bisos/core/bsip/bin/bueMailManage.sh -h -v -n showRun -p ri=any:mailFolders -p bystarUid=%s -i msgHtmlHook" bystar:acct:uid-name)
 	 "localhost"
 	 "lsipusr"
 	 "nopasswd")
@@ -2238,7 +2238,7 @@ Generated on xx by xx user agent, host, ids
 
   ;; (mm-inline-render-with-stdin
   ;;  HANDLE
-  ;;  nil "/opt/public/osmt/bin/bueMailManage.sh" "-i" "msgHtmlProc" (concat "~/mhonarc/var/input" "/msg"))
+  ;;  nil "/bisos/core/bsip/bin/bueMailManage.sh" "-i" "msgHtmlProc" (concat "~/mhonarc/var/input" "/msg"))
 
   ;(gnus-summary-save-in-pipe)
   ;(gnus-article-hide-headers)
