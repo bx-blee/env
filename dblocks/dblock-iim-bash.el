@@ -129,6 +129,49 @@ ORIGIN=\"
 
 
 
+;;;
+(defun org-dblock-write:bx:bsip:bash/libLoadOnce  (<params)
+  "Load lib just once."
+  (let* (
+	(<governor (or (plist-get <params :governor) "enabled")) ;; Controls general behaviour
+	(<extGov (or (plist-get <params :extGov) "na")) ;; External Governor
+	;;
+	(<libName (or (plist-get <params :libName) "."))
+	;;
+	($libBufferName (file-name-sans-extension
+			 (file-name-nondirectory
+			  (buffer-file-name))))
+	($libBufferPath (buffer-file-name))
+	)
+
+    (setq <governor (bx:dblock:governor:effective <governor <extGov))    ;; Now available to local defuns
+
+    (defun helpLine ()
+      ":libName \"auto\""
+      )
+
+    (defun bodyContent ()
+      ""
+      (when (string= <libName "auto")
+	(setq <libName $libBufferName)
+	)
+      (insert
+       (format
+       "\
+if [ -z \"${%s:-}\" ] ; then
+    bxoLib=\"LOADED\"
+    TM_trace 7 \"%s :: Loading Library -- %s\"
+else
+    TM_trace 7 \"%s :: Prviously Loaded -- Skipping %s\"
+    return
+fi"
+       <libName <libName $libBufferPath <libName $libBufferPath)
+       ))
+
+    (bodyContent)
+    ))
+
+
 (defun org-dblock-write:bx:bash:author (@params)
   (let (
 	(@control (or (plist-get @params :control) "enabled"))

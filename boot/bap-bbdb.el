@@ -50,6 +50,9 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Requires 
 ")
+;; (require 'bbdb-loaddefs)
+;; (require 'bbdb)
+
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:bbdb:defaults-set -- Define 
@@ -158,7 +161,19 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ;; (setq bbdb-mua-update-interactive-p '(query . create))
 
   ;; look at every address; not only the first one
-  ;; (setq bbdb-message-all-addresses t)
+  (setq bbdb-message-all-addresses t)
+
+  
+  ;; use ; on a message to invoke bbdb interactively
+  (add-hook
+   'gnus-summary-mode-hook
+   (lambda ()
+     (define-key gnus-summary-mode-map (kbd ";") 'bbdb-mua-edit-field)
+     ))
+
+  ;; ;; This is for non interactive bbdb invocation, but it was a bit
+  ;; ;; too much
+  ;; (setq bbdb-update-records-p 'query)  
 
   (setq bbdb-phone-style 'nil)
 
