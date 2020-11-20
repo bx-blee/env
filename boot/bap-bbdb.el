@@ -1,7 +1,7 @@
 ;;; -*- Mode: Emacs-Lisp; -*-
 
 (lambda () "
-* Short Description: Global Activity: bbdb -- GIT mode
+* Short Description: Global Activity: bbdb
 *      ======[[elisp:(org-cycle)][Fold]]======  Revision, Origin And  Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee 
 ####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
 typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
