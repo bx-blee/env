@@ -74,7 +74,10 @@
       ["BxDE Core" (blee:bnsm:panel-goto "/bisos/panels/bxde/core/_nodeBase_") t]
       ["BxDE Model" (blee:bnsm:panel-goto "/bisos/panels/bxde/model/_nodeBase_/") t]
       ["BxDE Development" (blee:bnsm:panel-goto "/bisos/panels/bxde/dev/_nodeBase_") t]
-      
+      "---"
+      ["BISOS Periphery (Printers, Scanners, Android, Windows, etc) " (blee:bnsm:panel-goto "/bisos/panels/bisos-periphery/_nodeBase_") t]
+      ["BISOS User Environment Apps" (blee:bnsm:panel-goto "/bisos/panels/bisos-apps/_nodeBase_") t]
+      ["Espoused Languages, Frameworks, Tools" (blee:bnsm:panel-goto "/bisos/panels/espoused/_nodeBase_") t]      
       ;; "---"
       ;; ("Blee and By* Documents and Information"
       ;;  ["Blee:  Model, Usage Procedures, Policies" (blee:bnsm:doc-goto  "/libre/ByStar/InitialTemplates/activeDocs/blee") t]
