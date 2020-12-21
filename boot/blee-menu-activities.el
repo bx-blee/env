@@ -78,6 +78,7 @@
       ["BISOS Periphery (Printers, Scanners, Android, Windows, etc) " (blee:bnsm:panel-goto "/bisos/panels/bisos-periphery/_nodeBase_") t]
       ["BISOS User Environment Apps" (blee:bnsm:panel-goto "/bisos/panels/bisos-apps/_nodeBase_") t]
       ["Espoused Languages, Frameworks, Tools" (blee:bnsm:panel-goto "/bisos/panels/espoused/_nodeBase_") t]
+      ["Non Libre-Halaal Adopted Tools" (blee:bnsm:panel-goto "/bisos/panels/non-libre-halaal/_nodeBase_") t]
       ["Blee Panels Root" (blee:bnsm:panel-goto "/bisos/panels/panelsRoot") t]            
       ;; "---"
       ;; ("Blee and By* Documents and Information"
