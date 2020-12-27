@@ -81,7 +81,8 @@
   (require 'dblock-global-run-results)
   (require 'dblock-emacs-lisp)
   (require 'dblock-org-iims)
-  (require 'dblock-iims-panel) 
+  (require 'dblock-iims-panel)
+  (require 'dblock-org-realms)   
   (message "bx:dblock:defaults-set -- Done." )
   )
 
@@ -155,6 +156,7 @@ default
       )
 
     (when (not (or
+		(string= $styleOpen "openTerseNoNl")
 		(string= $styleOpen "openTerse")
 		(string= $styleOpen "openContinue")		
 		(string= $styleOpen "openLine")		
@@ -163,7 +165,7 @@ default
 	   ))
       (setq $styleOpen nil)
       )
-    
+
     (unless $styleOpen
       (insert (format "\
 %s [[elisp:(show-all)][(>]] [[elisp:(describe-function '%s)][dbf]]
@@ -171,6 +173,13 @@ default
 		  (blee:panel:outLevelStr @outLevel)
 		  @funcName
 		  )))
+    
+    (when (string= $styleOpen "openTerseNoNl")
+      (insert (format "\
+%s [[elisp:(show-all)][(>]]"
+		      (blee:panel:outLevelStr @outLevel)		      
+		      )))
+
     (when (string= $styleOpen "openTerse")
       (insert (format "\
 %s [[elisp:(show-all)][(>]]
@@ -240,7 +249,7 @@ closeBlank -- Nothing at all
 	   ))
       (setq $styleClose nil)
       )
-    
+
     (unless $styleClose
       (insert (format "
 %s [[elisp:(org-shifttab)][<)]] [[elisp:(describe-function '%s)][dbFunc)]]  E|
