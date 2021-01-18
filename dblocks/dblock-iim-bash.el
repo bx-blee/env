@@ -159,11 +159,11 @@ ORIGIN=\"
        (format
        "\
 if [ -z \"${%s:-}\" ] ; then
-    bxoLib=\"LOADED\" ; TM_trace 7 \"%s :: Loading Library -- %s\"
+    %s=\"LOADED\" ; TM_trace 7 \"%s :: Loading Library -- %s\"
 else
     TM_trace 7 \"%s :: Prviously Loaded -- Skipping %s\" ; return
 fi"
-       <libName <libName $libBufferPath <libName $libBufferPath)
+       <libName <libName <libName $libBufferPath <libName $libBufferPath)
        ))
 
     (bodyContent)
