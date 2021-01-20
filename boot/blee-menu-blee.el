@@ -167,6 +167,10 @@
   (bx:buffer:menu:define)
   (easy-menu-add-item nil '("Blee") 'bx:buffer:menu:definition "Blee Help")
 
+  (require 'bxo-list-menu)
+  (bxo:listSubMenuDef)
+  (easy-menu-add-item nil '("Blee") 'bxo:listSubMenu "Blee Help")
+  
   (require 'bystar-selfpub-menu)
   ;; (bystar:selfpub:menu:define)
   ;; (easy-menu-add-item nil '("Blee") 'bystar:selfpub:menu:definition "Blee Help")
