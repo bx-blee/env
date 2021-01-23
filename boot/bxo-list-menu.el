@@ -30,8 +30,19 @@
     (format "bxoReports.sh list")
     )))
 
-;; Usage These happen in 
+;; Usage:  Dynamic installation of this menu happens in blee-menu-blee.el
+;; through:
+;; (require 'bxo-list-menu)
 ;; (bxo:listSubMenuDef)
-;; (easy-menu-add-item nil '("Blee") 'bxo:listSubMenu "Blee Help")
+;; (bxo:listSubMenuDef-update)
+;; (add-hook 'menu-bar-update-hook 'bxo:listSubMenuDef-update)
+;; Where: bxo:listSubMenuDef-update is:
+;; (defun bxo:listSubMenuDef-update ()
+;;  (easy-menu-add-item blee-menu-global '() 'bxo:listSubMenu "Blee Help")
+;;  )
+
+;; See http://kitchingroup.cheme.cmu.edu/blog/2014/08/20/Creating-a-dynamic-menu-for-Emacs/
+;; For an example of "Creating a dynamic menu for Emacs"
+
 
 (provide 'bxo-list-menu)

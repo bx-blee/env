@@ -169,7 +169,8 @@
 
   (require 'bxo-list-menu)
   (bxo:listSubMenuDef)
-  (easy-menu-add-item nil '("Blee") 'bxo:listSubMenu "Blee Help")
+  (bxo:listSubMenuDef-update)
+  (add-hook 'menu-bar-update-hook 'bxo:listSubMenuDef-update)
   
   (require 'bystar-selfpub-menu)
   ;; (bystar:selfpub:menu:define)
@@ -198,6 +199,13 @@
   (easy-menu-add-item nil '("Blee") '("--shadow-etched-in") "Blee Help")
 )
 
+;; (defun update-my-file-menu ()
+;;   (easy-menu-add-item jrk-menu '() (get-menu)))
+
+(defun bxo:listSubMenuDef-update ()
+  ;;(easy-menu-add-item nil '("Blee") 'bxo:listSubMenu "Blee Help")
+  (easy-menu-add-item blee-menu-global '() 'bxo:listSubMenu "Blee Help")
+  )
 
 ;; (blee:blee:menu:overview-help)
 (defun blee:blee:menu:overview-help ()
