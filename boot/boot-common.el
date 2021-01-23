@@ -261,7 +261,14 @@
 
   (require 'bide-python)
   (bide:py:full/update)
-  
+
+  ;; -----------------------------------------------------------------
+  ;; Common Lisp Programming Language -- Software Development 
+  ;; -----------------------------------------------------------------
+
+  (require 'bide-cl)
+  (bide:cl:full/update)
+
 
   ;; -----------------------------------------------------------------
   ;; markdown-mode

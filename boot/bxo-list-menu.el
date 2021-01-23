@@ -14,7 +14,7 @@
     nil
     "Doc String??" 
     (append
-     '("Submenu Listing This Container's BxOs -- Dynamic")
+     '("Dynamic Listing Of This Container's BxOs")
      (mapcar (lambda (x)
 	       (vector x
 		       `(lambda () (interactive)
@@ -27,7 +27,7 @@
   ""
   (split-string
    (shell-command-to-string 
-    (format "bxoAcctManage.sh list")
+    (format "bxoReports.sh list")
     )))
 
 ;; Usage These happen in 
