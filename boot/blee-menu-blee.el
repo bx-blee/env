@@ -204,6 +204,7 @@
 
 (defun bxo:listSubMenuDef-update ()
   ;;(easy-menu-add-item nil '("Blee") 'bxo:listSubMenu "Blee Help")
+  ;; (bxo:listSubMenuDef) ;; Inefficient for now.
   (easy-menu-add-item blee-menu-global '() 'bxo:listSubMenu "Blee Help")
   )
 
