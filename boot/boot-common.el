@@ -1,4 +1,4 @@
-;;; -*- Mode: Emacs-Lisp; -*-
+;;;-*- mode: Emacs-Lisp; lexical-binding: t ; -*-
 
 (lambda () "
 *  [[elisp:(org-cycle)][| ]]  *Short Desription*  :: Library (boot-common:),  [[elisp:(org-cycle)][| ]]
@@ -171,6 +171,8 @@
   (require 'blee-global)
   ;;;;(require 'blee-packages-install)
 
+  ;;;; Mail Sending Distribution And Tracking (msdt)
+  (require 'msdt)
 
   ;; (require 'bystar-ue-lib)  -- Wants misc-lim
   ;; (bystar:ue:params-auto-set)
