@@ -882,6 +882,8 @@
 *      ================ bystar:mail:gnupg -- PGP
 ")
 
+;; (require 'epg)
+;; (setq epa-file-encrypt-to "FD123456")
 
 (defun bystar:mail:gnupg:defaults-set ()
   ""
@@ -1106,15 +1108,15 @@
   (setq smtpmail-smtp-service 25)
   (setq smtpmail-auth-supported nil)
   (setq message-sendmail-f-is-evil t)
-  (setq mail-envelope-from "mohsen.banan1@t-mobile.com")
+  (setq mail-envelope-from "mohsen.banan1@example.com")
 
   (setq message-send-mail-function 'smtpmail-send-it)
   (setq send-mail-function 'smtpmail-send-it)
 
-  (setq smtpmail-smtp-server "mail.t-mobile.com")
-  (setq smtp-server "mail.t-mobile.com")
-  (setq smtpmail-local-domain "t-mobile.com")
-  (setq smtp-local-domain "t-mobile.com")
+  (setq smtpmail-smtp-server "mail.example.com")
+  (setq smtp-server "mail.example.com")
+  (setq smtpmail-local-domain "example.com")
+  (setq smtp-local-domain "example.com")
   )
 
 

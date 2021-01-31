@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: Guns Html Part
+# name: Gnus Html Part
 # key: html/gnusPartHtml
-# group: html
+# group: insertHtmlPart
 # type: snippet
 # --
 <#part type="text/html" disposition=inline>

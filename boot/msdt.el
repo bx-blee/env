@@ -137,6 +137,38 @@ External user uses msdt:setup/with-curBuffer
     (bx:mail:header:field:get-from-file 'x-mailingname <mailingFilePath)
     ))
 
+(defun msdt:mailing:compose|get-function-name (<mailingName)
+  "Given <mailingName, return name of compose function"
+  (concat "msdt:compose/" <mailingName))
+
+(defun msdt:compose/with-file (<mailingFilePath)
+  "Given a mailing file, initiate an outgoing message.
+  - visit the file
+  - setup  msdt:compose/mailingName if needed
+  - invoke msdt:compose/mailingName go to the to field
+ "
+  (interactive)
+  (let (
+	($mailingName nil)
+	($mailingBuffer nil)
+	($funcSymbol nil)
+	)
+    (find-file-read-only-other-frame <mailingFilePath)
+    (setq $mailingBuffer (current-buffer))
+    (setq $mailingName (msdt:mailing:getName/with-curBuffer))
+    (setq $funcSymbol (intern (msdt:mailing:compose|get-function-name $mailingName)))
+    (when (commandp $funcSymbol)
+      ;;(switch-to-buffer $mailingBuffer)
+      (call-interactively $funcSymbol)
+      )
+    (when (not (commandp $funcSymbol))
+      (msdt:setup$with-filePath <mailingFilePath)
+      (call-interactively $funcSymbol)
+      )
+    ;; NOTYET, go to the To field
+    )
+  )
+
 ;;
 ;; (msdt:compose$mailing-defun "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail")
 ;; (macroexpand-all (msdt:compose$mailing-defun "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail"))
