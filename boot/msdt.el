@@ -1,7 +1,8 @@
 ;;;-*- mode: Emacs-Lisp; lexical-binding: t ; -*-
 
 ;;;
-;;; MSDT (Mail Sending, Distributing and Tracking)
+;;; MCDT (Mail Com, Distributing and Tracking)
+;;; Previously MSDT (Mail Sending, Distributing and Tracking)
 ;;; Constant Contact For Everyone
 ;;;
 ;;; This is a Machine Generated File through: mailingProc.sh vis_basic_method_prep
@@ -20,6 +21,11 @@
 ;;;    ======== bxms-bbdb-compose-MailingName  -- BBDB USAGE        -- Interactive on One
 ;;;    ======== bxms-bbdb-batch-MailingName    -- BBDB USAGE        -- Batch on One
 ;;;    ======== bxms-bbdb-toall-MailingName    -- BBDB USAGE        -- Interactive on ALL in To:
+
+(defvar msdt:compose:ephemera:base "/tmp"
+  "Basedir of where ephemera compositions go")
+
+
 
 ;;
 ;; (msdt:setup$with-filePath "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail")
@@ -82,6 +88,22 @@ External user uses msdt:setup/with-curBuffer
   )
 
 ($:msdt:setup$with-curBuffer)
+
+
+
+;;
+;; (msdt:mailing:params/proc-all (msdt:mailing:params/get-from-field))
+;;
+(defun msdt:mailing:params/proc-all (<params)
+  "Creates terse links for navigation surrounding current panel in treeElem."
+  (let* (
+	 ;;
+	 (<extSrc (or (plist-get <params :extSrc) nil))
+	 )
+    (format "XXX %s" <extSrc)
+    )
+  )
+
  
 ;; Example  "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail"
 (defun msdt:setup/with-curBuffer (args)
@@ -102,11 +124,44 @@ External user uses msdt:setup/with-curBuffer
     )
   )
 
+
+
+;;
+;; (msdt:mailing:getName|with-file "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail")
+;;
+(defun msdt:mailing:getName|with-file (<mailingFilePath)
+  "Return the value of x-mailingname field of header of <mailingFilePath.
+May be called from within macros with <mailingFilePath and not the mailingBuf being available.
+x-mailingname should be all lower case."
+  (let* (
+	 ($mailingBuf (switch-to-buffer (find-file <mailingFilePath)))
+	 ($result)
+	 )
+    (save-excursion
+      (setq $result (msdt:mailing:getName/with-buffer $mailingBuf))
+      (kill-buffer $mailingBuf)
+      )
+    $result
+    ))
+
+
 ;;
 ;; "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail"
 ;; (msdt:mailing:getName/with-curBuffer)
 ;;
-(defun msdt:mailing:getName/with-curBuffer ()
+(defun msdt:mailing:getName/with-buffer (<mailingBuf)
+  "Return the value of x-mailingname field of header. x-mailingname should be all lower case."
+  (interactive)
+  (let* (
+	 (result nil)
+	)
+    (setq result (bx:mail:header:field:get-from-buffer 'x-mailingname <mailingBuf))
+    result
+    )
+  )
+
+
+(defun msdt:mailing:getName/with-curBuffer%% ()
   "Return the value of x-mailingname field of header. x-mailingname should be all lower case."
   (interactive)
   (let* (
@@ -127,15 +182,19 @@ External user uses msdt:setup/with-curBuffer
     )
   )
 
+;;
+;; (bx:mail:header:field:get-from-buffer 'x-mailingparams (find-file "~/BUE/mailings/start/family.fa/blank/basicLatex.fa/basicLatex/mailingStatic/content.mail"))
+;; (message "%s" (msdt:mailing:params|from-buf )
+;;
+(defun msdt:mailing:params|from-buf (<mailingBuf)
+  "Return params as a list based on the string"
+  (let* (
+	 ($paramsAsStr (bx:mail:header:field:get-from-buffer 'x-mailingparams <mailingBuf))
+	 (params (append (list :name 'someName)
+			 (read (concat "(" $paramsAsStr ")"))))
+	 )
+    params))
 
-;;
-;; (msdt:mailing:getName|with-file "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail")
-;;
-(defun msdt:mailing:getName|with-file (<mailingFilePath)
-  "Return the value of x-mailingname field of header. x-mailingname should be all lower case."
-  (save-excursion
-    (bx:mail:header:field:get-from-file 'x-mailingname <mailingFilePath)
-    ))
 
 (defun msdt:mailing:compose|get-function-name (<mailingName)
   "Given <mailingName, return name of compose function"
@@ -150,15 +209,15 @@ External user uses msdt:setup/with-curBuffer
   (interactive)
   (let (
 	($mailingName nil)
-	($mailingBuffer nil)
+	($mailingBuf nil)
 	($funcSymbol nil)
 	)
     (find-file-read-only-other-frame <mailingFilePath)
-    (setq $mailingBuffer (current-buffer))
-    (setq $mailingName (msdt:mailing:getName/with-curBuffer))
+    (setq $mailingBuf (current-buffer))
+    (setq $mailingName (msdt:mailing:getName/with-buffer $mailingBuf))
     (setq $funcSymbol (intern (msdt:mailing:compose|get-function-name $mailingName)))
     (when (commandp $funcSymbol)
-      ;;(switch-to-buffer $mailingBuffer)
+      ;;(switch-to-buffer $mailingBuf)
       (call-interactively $funcSymbol)
       )
     (when (not (commandp $funcSymbol))
@@ -182,22 +241,84 @@ interactive p is needed so that there are some params.
   `(fset (intern (concat "msdt:compose/" (msdt:mailing:getName|with-file ,<mailingFilePath)))
 	 (lambda (args)
 	   (interactive "p")
-	   ($:msdt:compose|with-file ,<mailingFilePath args)
+	   (msdt:compose|with-file ,<mailingFilePath args)
 	   )
 	 ))
 
-(defun $:msdt:compose|with-file (<mailingFilePath args)
-"Out of macro work of msdt:compose$mailing-defun.
+;;
+;; 
+;; 
+(defun msdt:compose|with-file (<mailingFilePath args)
+  "Out of macro work of msdt:compose$mailing-defun.
 ModuleLocal."
-  (bxms-compose-from-base (expand-file-name (file-name-directory <mailingFilePath)) args)
-  )
+  (let* (
+	 ($mailingBuf (switch-to-buffer (find-file <mailingFilePath)))
+	 ($mailingParams (msdt:mailing:params|from-buf $mailingBuf))
+	 (<extSrcBase (or (plist-get $mailingParams :extSrcBase) nil))
+	 )
+    (message "$mailingParams %s" $mailingParams)
+    (message "<extSrcBase %s" <extSrcBase)
+    (unless <extSrcBase
+      (message "22222222222 <extSrcBase %s" <extSrcBase)
+      (message "6666  current-buffer %s" (current-buffer))
+      (text-mode) ;; bxms-compose-from-base checks for major-mode      
+      (bxms-compose-from-base (expand-file-name (file-name-directory <mailingFilePath)) args)
+      ;; Setup default-directory of mail buffer to be mailingDirPath
+      )
+    (when <extSrcBase
+      (message "3333 <extSrcBase %s" <extSrcBase)
+      (setq $ephemeraMailingFilePath
+	    (msdt:compose:ephemera|copyToBase <mailingFilePath <extSrcBase))
+      ;;(switch-to-buffer (find-file $ephemeraMailingFilePath))
+      (message "4444 $ephemeraMailingFilePath %s" $ephemeraMailingFilePath)
+      (message "5555  current-buffer %s" (current-buffer))
+      (text-mode) ;; bxms-compose-from-base checks for major-mode
+      (bxms-compose-from-base (expand-file-name (file-name-directory $ephemeraMailingFilePath)) args)
+      )
+    ))
 
+;;
+;; (bx:ephemera:dated|pathName-in "/tmp")
+;;
+(defun bx:ephemera:dated|pathName-in (<baseDir)
+  "Return (format-time-string \"%Y-%m-%d-%H-%M-%S\") plus a counter.
+If that date to a second exists, do a plus counter.
+NOTYET, counter has not been implemented yet."
+  (let* (
+	 ($ephemeraUniqe (format-time-string "%Y-%m-%d-%H-%M-%S"))
+	 ($result (f-join <baseDir $ephemeraUniqe))
+	 )
+    $result))
+
+;;
+;; (msdt:compose:ephemera|copyToBase "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail" ".")
+;; 
+(defun msdt:compose:ephemera|copyToBase (<mailingFilePath <extSrcBase)
+  "Copy recursively <extSrcBase to msdt:compose:ephemera:base.
+"
+  (let* (
+	 ($mailingBaseDir (expand-file-name (file-name-directory <mailingFilePath)))
+	 ($srcBase (f-join $mailingBaseDir <extSrcBase))
+	 ($destBase (bx:ephemera:dated|pathName-in msdt:compose:ephemera:base))
+	 ($mailingRelativeToExtSrcBase (f-relative <mailingFilePath $srcBase))
+	 ($ephemeraMailingFilePath (f-join $destBase $mailingRelativeToExtSrcBase))
+	 ($shellCmndResult)
+	 )
+    (setq $shellCmndResult
+	  (shell-command-to-string 
+	   (format "cp -r %s %s" $srcBase $destBase)))
+    (message $shellCmndResult)
+    $ephemeraMailingFilePath
+    ))
+
+  
 ;;
 ;; (msdt:batch$mailing-defun "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail")
 ;; (macroexpand-all (msdt:batch$mailing-defun "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail"))
 ;;
 (defmacro msdt:batch$mailing-defun (<mailingFilePath)
-  "The macro defines a function to be invoked to batch send a message based on a template"
+  "The macro defines a function to be invoked to batch send a message based on a template
+NOTYET, instead of fset intern, try defun -- would be simpler."
   `(fset (intern (concat "msdt:batch/"  (msdt:mailing:getName|with-file ,<mailingFilePath)))
 	 (lambda (args)
 	   (interactive "p")

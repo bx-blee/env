@@ -125,16 +125,36 @@
       (this-string)
       (hdr-alist)
       )
-    (save-excursion 
+    (save-excursion
+      ;; NOTYET, if the buffer of file exists, we should not open and close it
       (setq this-buffer (find-file mail-file))
+      (setq this-string (bx:mail:header:field:get-from-buffer header-name this-buffer))
+      (kill-buffer this-buffer)
+      )
+    this-string
+    ))
+  
+
+;;; (message (bx:mail:header:field:get-from-buffer 'x-mailingparams (find-file "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail")))
+(defun bx:mail:header:field:get-from-buffer (header-name mail-buffer)
+  "RETURNS Specified Header as a string"
+  (let* (
+      (this-buffer)
+      (this-string)
+      (hdr-alist)
+      )
+    (save-excursion 
+      (setq this-buffer mail-buffer)
       (goto-char (point-min))
       (setq hdr-alist (mail-header-extract-no-properties))
       ;;(setq this-string (or (cdr (assq header-name hdr-alist)) ""))
       (setq this-string (mail-header header-name hdr-alist))
-      (kill-buffer this-buffer))
+      )
     this-string
     )
   )
+
+
 
 ;;; (message (bx:mail:body:get-from-file "/acct/employee/lsipusr/BUE/mailings/bystar/announce/generalColabInvitation/content.mail"))
 (defun bx:mail:body:get-from-file (mail-file)
@@ -220,6 +240,7 @@ body-string
   (bx:mail:header:from-base:add-envelope mailing-base-dir)
   (bx:mail:header:from-base:add-x-envelope mailing-base-dir)
   (bx:mail:header:from-base:add-x-mailingname mailing-base-dir)
+  (bx:mail:header:from-base:add-x-mailingparams mailing-base-dir)  
   )
 
 (defun bx:mail:header:from-base:add-all-goto (mailing-base-dir)
@@ -377,6 +398,27 @@ body-string
     )
   )
 
+(defun bx:mail:header:from-base:add-x-mailingparams (mailing-base-dir)
+  ""
+  (let* (
+	 (header-line)
+	 )
+
+    (setq header-line 
+	  (bx:mail:header:field:get-from-file 
+	   'x-mailingparams
+	   (concat mailing-base-dir "/content.mail")))
+    (if header-line 
+	(progn
+	  (setq message-default-headers
+		(concat message-default-headers
+			(format "X-MailingParams: %s\n" header-line)))
+	  ))
+    )
+  )
+
+
+
 (defun bx:mail:header:add-x-mailingMethod (mailing-method)
   ""
   (setq message-default-headers
@@ -402,6 +444,8 @@ body-string
 
     (msend-compose-setup)
 
+    (message (format "Arg=%d " n))
+    
     ;;(progn (message (format "Arg=%d " n)) (sleep-for 3))
 
     ;; With arg 5, just setup the envelope and from permanently
@@ -430,6 +474,8 @@ body-string
       (bx:mail:header:from-base:add-to mailing-base-dir)
       (bx:mail:header:from-base:add-cc mailing-base-dir)
       (bx:mail:header:from-base:add-bcc mailing-base-dir)
+
+      (setq default-directory mailing-base-dir)
 	    
       )
      ((eq n 4)

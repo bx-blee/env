@@ -82,7 +82,8 @@
   (require 'dblock-emacs-lisp)
   (require 'dblock-org-iims)
   (require 'dblock-iims-panel)
-  (require 'dblock-org-realms)   
+  (require 'dblock-org-realms)
+  (require 'dblock-org-mailings)
   (message "bx:dblock:defaults-set -- Done." )
   )
 
