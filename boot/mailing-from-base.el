@@ -21,6 +21,7 @@
 	  (headerline-to-name)
 	  (headerline-to-addr)
 	  (headerline-mailingName)
+	  (headerline-mailingDoc)	  
 	  (headerline-mailingMethod)
 	  )
      (setq bxms:mailing:log:dirName (expand-file-name "~/BUE/mailings/logs"))
@@ -37,7 +38,8 @@
      (setq headerline-to-name (cdr address-parsed))
      (setq headerline-to-addr (car address-parsed))
 
-     (setq headerline-mailingName (bx:mail:header:field:here-get 'x-mailingname))    
+     (setq headerline-mailingName (bx:mail:header:field:here-get 'x-mailingname)) 
+     (setq headerline-mailingDoc (bx:mail:header:field:here-get 'x-mailingdoc))        
      (setq headerline-mailingMethod (bx:mail:header:field:here-get 'x-mailingmethod))    
 
      (save-excursion 
@@ -45,13 +47,14 @@
        (set-buffer bxms:mailing:log:output-buffer)
        (setq buffer-read-only nil)
        (goto-char (point-max))
-       (setq time-stamp-format "%04y%02m%02d%02H%02M%02S")
+       (setq time-stamp-format "%Y%02m%02d%02H%02M%02S")
        ;;;
        ;;;
        (insert 
 	(format "%s:%s:%s:%s:%s:%s:%s:%s:%s\n" 
 		(time-stamp-string) 
 		headerline-mailingName      ;;; X-MailingName:
+		headerline-mailingDoc       ;;; X-MailingDoc:		
 		headerline-to-name
 		headerline-to-addr
 		headerline-from-name
@@ -240,6 +243,7 @@ body-string
   (bx:mail:header:from-base:add-envelope mailing-base-dir)
   (bx:mail:header:from-base:add-x-envelope mailing-base-dir)
   (bx:mail:header:from-base:add-x-mailingname mailing-base-dir)
+  (bx:mail:header:from-base:add-x-mailingdoc mailing-base-dir)  
   (bx:mail:header:from-base:add-x-mailingparams mailing-base-dir)  
   )
 
@@ -397,6 +401,27 @@ body-string
 	  ))
     )
   )
+
+(defun bx:mail:header:from-base:add-x-mailingdoc (mailing-base-dir)
+  ""
+  (let* (
+	 (header-line)
+	 )
+
+    (setq header-line 
+	  (bx:mail:header:field:get-from-file 
+	   'x-mailingdoc
+	   (concat mailing-base-dir "/content.mail")))
+    (if header-line 
+	(progn
+	  (setq message-default-headers
+		(concat message-default-headers
+			(format "X-MailingDoc: %s\n" header-line)))
+	  ))
+    )
+  )
+
+
 
 (defun bx:mail:header:from-base:add-x-mailingparams (mailing-base-dir)
   ""

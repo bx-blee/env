@@ -917,7 +917,12 @@ _CommentEnd_"
 	    (funcall (intern bx:exec))
 	    )
 	  )
-      (message (format "Missing %s file -- Skipped" bx:load))
+      (progn
+	(message (format "Missing %s file -- Skipped" bx:load))
+	(save-excursion
+	  (switch-to-buffer (get-buffer-create tmp-buffer-name))
+	    (insert-file (format "%s" bx:file))
+	    ))
       )
     (if (get-buffer tmp-buffer-name)
 	(progn

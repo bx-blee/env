@@ -107,7 +107,7 @@
     (when $bxoId
       (let* (
 	     ($missing t)
-	     ($realmBaseDir (concat $homeDir "/BxOs/" <realm))
+	     ($realmBaseDir (concat $homeDir "/bxo/" <realm))
 	     ($selectedRealmBaseDir (concat $realmBaseDir "/selected"))
 	     )
       

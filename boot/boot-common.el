@@ -171,8 +171,8 @@
   (require 'blee-global)
   ;;;;(require 'blee-packages-install)
 
-  ;;;; Mail Sending Distribution And Tracking (msdt)
-  (require 'msdt)
+  ;;;; Mail Composition Distribution And Tracking (mcdt)
+  (require 'mcdt-if)
 
   ;; (require 'bystar-ue-lib)  -- Wants misc-lim
   ;; (bystar:ue:params-auto-set)
