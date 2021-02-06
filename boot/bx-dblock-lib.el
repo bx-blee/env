@@ -84,6 +84,7 @@
   (require 'dblock-iims-panel)
   (require 'dblock-org-realms)
   (require 'dblock-org-mailings)
+  (require 'dblock-org-common)  
   (message "bx:dblock:defaults-set -- Done." )
   )
 

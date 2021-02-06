@@ -97,6 +97,9 @@
   (require 'bcg-org)
   (bcg:org:full/update)
 
+  (require 'bcg-org-roam)
+  (bcg:org:roam:full/update)
+  
   (require 'bcg-cal)
   (bcg:cal:full/update)
 

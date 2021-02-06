@@ -55,80 +55,88 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 *      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:bbdb:defaults-set -- Define 
 ")
 
-(setq bcg:org:roam:usage:enabled-p t)
+(setq bcg:org:ref:usage:enabled-p nil)
 
-(defun bcg:org:roam:full/update ()
+(defun bcg:org:ref:full/update ()
   "This will replace everything that has to do with org-mode, including ./orgModeInit.el
 "
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
-  (when bcg:org:roam:usage:enabled-p
-    (bcg:org:roam:install/update)
-    (bcg:org:roam:server:install/update)    
-    (bcg:org:roam:config/main)
-    (org-roam-server-mode)
+  (when bcg:org:ref:usage:enabled-p
+    ;;
+    (bc:org-ref:install/update)
+    (bc:org-ref:config/main)
+    ;;
+    (bc:org-roam-bibtex:install/update)
+    (bc:org-roam-bibtex:config/main)
     )
   )
 
-(defun bcg:org:roam:install/update ()
+(defun bc:org-ref:install/update ()
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
 
-  (use-package org-roam
+  (use-package org-ref
     :ensure t
     ;;; :pin melpa-stable
     )
   )
 
-(defun bcg:org:roam:server:install/update ()
+(defun bc:org-ref:config/main ()
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
 
-  (require 'org-roam-protocol)
+  ;; (setq reftex-default-bibliography '("~/Dropbox/bibliography/references.bib"))
 
-  (use-package org-roam-server
-    :ensure t
-    :config
-    (setq org-roam-server-host "127.0.0.1"
-          org-roam-server-port 8080
-          org-roam-server-authenticate nil
-          org-roam-server-export-inline-images t
-          org-roam-server-serve-files nil
-          org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-          org-roam-server-network-poll t
-          org-roam-server-network-arrows nil
-          org-roam-server-network-label-truncate t
-          org-roam-server-network-label-truncate-length 60
-          org-roam-server-network-label-wrap-length 20))  
+  ;; see org-ref for use of these variables
+  ;; (setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+  ;;     org-ref-default-bibliography '("~/Dropbox/bibliography/references.bib")
+  ;;     org-ref-pdf-directory "~/Dropbox/bibliography/bibtex-pdfs/")
+
   )
 
-
-
-(defun bcg:org:roam:config/main ()
-  ""
-  (interactive)
-  (blee:ann|this-func (compile-time-function-name))    
-
-  (setq org-roam-directory "/bisos/panels")
-  (add-hook 'after-init-hook 'org-roam-mode)
-
-  (bap:org:roam:key|activate-keys)
-  )
-
-(defun bap:org:roam:key|activate-keys ()
+(defun bc:org-ref:key|activate-keys ()
   "All addional keys come here"
+
+  (blee:ann|this-func (compile-time-function-name))
   
   ;; org-roam-mode-map
   ;;(define-key org-roam-mode-map [(control ?c) (n)] nil)
-  (define-key org-roam-mode-map [(control ?c) (n) (l)] 'org-roam)
-  (define-key org-roam-mode-map [(control ?c) (n) (f)] 'org-roam-find-file)
-  (define-key org-roam-mode-map [(control ?c) (n) (g)] 'org-roam-graph)  
+  ;;(define-key org-roam-mode-map [(control ?c) (n) (l)] 'org-roam)
+  )
 
-  ;; org-roam-map
-  (define-key org-mode-map [(control ?c) (n) (i)] 'org-roam-insert)
-  (define-key org-mode-map [(control ?c) (n) (I)] 'org-roam-insert-immediate)
+
+(defun bc:org-roam-bibtex:install/update ()
+  "NOTYET Place holder"
+  (interactive)
+  (blee:ann|this-func (compile-time-function-name))
+
+  (use-package org-roam-bibtex
+    :after (org-roam)
+    :hook (org-roam-mode . org-roam-bibtex-mode)
+    :ensure t
+    ;;; :pin melpa-stable
+    )
+  )
+
+(defun bc:org-roam-bibtex:config/main ()
+  "Place Holder"
+  (interactive)
+  (blee:ann|this-func (compile-time-function-name))
+
+  (setq orb-preformat-keywords
+   '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+  (setq orb-templates
+        '(("r" "ref" plain (function org-roam-capture--get-point)
+           ""
+           :file-name "${slug}"
+           :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}
+- tags ::
+- keywords :: ${keywords}
+\n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n  :URL: ${url}\n  :AUTHOR: ${author-or-editor}\n  :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n  :NOTER_PAGE: \n  :END:\n\n"
+           :unnarrowed t)))
   )
 
 
