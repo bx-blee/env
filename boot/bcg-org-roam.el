@@ -66,7 +66,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
     (bcg:org:roam:install/update)
     (bcg:org:roam:server:install/update)    
     (bcg:org:roam:config/main)
-    (org-roam-server-mode)
+    ;;(org-roam-server-mode)
     )
   )
 
@@ -113,6 +113,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 
   (setq org-roam-directory "/bisos/panels")
   (add-hook 'after-init-hook 'org-roam-mode)
+
+  (add-hook 'org-mode-hook 'org-roam-buffer-activate)
 
   (bap:org:roam:key|activate-keys)
   )

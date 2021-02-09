@@ -480,9 +480,11 @@ Relevant defvar-local definitions are made in blee-org-panel.el
 
 (defun org-dblock-bx-blank-this ()
   (interactive)
-  (org-beginning-of-dblock)
-  (org-prepare-dblock)
-  (kill-line)
+  (save-excursion
+    (org-beginning-of-dblock)
+    (org-prepare-dblock)
+    (kill-line)
+    )
   )
 
 

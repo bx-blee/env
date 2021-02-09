@@ -92,6 +92,7 @@
 	    )
 	(push base-dir (car blee:bnsm:menu-stack))
 	(find-file menu-filename)
+	(org-mode)
 	(setq org-confirm-elisp-link-function nil)
 	(when (not (string-equal opRunDistFamily "MAEMO"))
 	  (when (boundp '~blee:dblockEnabler)

@@ -99,6 +99,9 @@
 
   (require 'bcg-org-roam)
   (bcg:org:roam:full/update)
+
+  ;;(require 'bcg-org-ref)
+  ;;(bcg:org:ref:full/update)
   
   (require 'bcg-cal)
   (bcg:cal:full/update)
@@ -465,6 +468,9 @@
 
   (require 'blee-menu-my)
   (blee:my:menu)
+
+  (require 'org-roam-menu)
+  (org-roam:menu-bar/install)
 
   (if (file-directory-p (expand-file-name "~/BUE/elisp"))
       (progn
