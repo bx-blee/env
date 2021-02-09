@@ -1,3 +1,4 @@
+;;;-*- mode: Emacs-Lisp; lexical-binding: t ; -*-
 ;;;
 ;;;
 
@@ -50,6 +51,7 @@ As such what happens below is exactly what is necessary and no more."
     $varValue
     ))
 
+
 ;; (org-roam:menu:global|define)
 (defun org-roam:menu:global|define ()
   "Top level menu for all things org-roam related."
@@ -83,9 +85,22 @@ As such what happens below is exactly what is necessary and no more."
 
     (easy-menu-add-item
      nil '("Roam") (org-roam:menuItem:buffer-hide|define) "----")
+
+    (if (package-installed-p 'org-roam-server)
+	(easy-menu-add-item
+	 nil '("Roam") (org-roam-server:menu|define) "-----")
+      (easy-menu-add-item
+       nil '("Roam") (org-roam-server:menu:stub|define :active nil) "-----")
+      )
     
-    (easy-menu-add-item
-     nil '("Roam") (org-roam-server:menu|define) "-----")    
+    ;; NOTYET org-roam-bibtex:menu|define has not been implemented yet
+    ;;(if (package-installed-p 'org-roam-bibtex)  
+    (if nil
+	(easy-menu-add-item
+	 nil '("Roam") (org-roam-bibtex:menu|define) "-----")
+      (easy-menu-add-item
+       nil '("Roam") (org-roam-bibtex:menu:stub|define :active nil) "-----")
+      )
     
     (easy-menu-add-item
      nil '("Roam") (org-roam:subMenu:help|define) "------")    
@@ -187,15 +202,127 @@ As such what happens below is exactly what is necessary and no more."
     'org-roam:subMenu:help
     ))
 
-
 ;;
-;; (blee:menu:browse-url:at-point|define)
+;; (org-roam-server:menu:stub|define)
+;; (org-roam-server:menu:stub|define :active nil)
 ;; 
-(defun org-roam-server:menu|define ()
+(defun org-roam-server:menu:stub|define (&rest <namedArgs)
   "org-roam-server menu."
   (let (
+	(<active (or (plist-get <namedArgs :active) nil))
+	(<visible (or (plist-get <namedArgs :visible) nil))	
 	($thisFuncName (compile-time-function-name))
 	)
+
+    (unless (plist-member <namedArgs :active)
+      (setq <active t))
+    (unless (plist-member <namedArgs :visible)
+      (setq <visible t))
+
+    (setq $:org-roam-server:menu:active <active)
+    (setq $:org-roam-server:menu:visible <visible)    
+    
+    (easy-menu-define
+      org-roam-server:menu
+      nil
+      "org-roam-server menu"
+      `("org-roam Server"
+	:help "Show And Set Relevant Parameters"
+	:active $:org-roam-server:menu:active
+	:visible $:org-roam-server:menu:visible
+	"---"
+	))
+    'org-roam-server:menu
+    ))
+
+;;
+;; (org-roam-server:menu:stub|define)
+;; (org-roam-server:menu:stub|define :active nil)
+;; 
+(defun org-roam-server:menu:stub|define (&rest <namedArgs)
+  "org-roam-server menu."
+  (let (
+	(<active (or (plist-get <namedArgs :active) nil))
+	(<visible (or (plist-get <namedArgs :visible) nil))	
+	($thisFuncName (compile-time-function-name))
+	)
+
+    (unless (plist-member <namedArgs :active)
+      (setq <active t))
+    (unless (plist-member <namedArgs :visible)
+      (setq <visible t))
+
+    (setq $:org-roam-server:menu:active <active)
+    (setq $:org-roam-server:menu:visible <visible)    
+    
+    (easy-menu-define
+      org-roam-server:menu
+      nil
+      "org-roam-server menu"
+      `("org-roam Server"
+	:help "Show And Set Relevant Parameters"
+	:active $:org-roam-server:menu:active
+	:visible $:org-roam-server:menu:visible
+	"---"
+	))
+    'org-roam-server:menu
+    ))
+
+
+
+;;
+;; (org-roam-bibtex:menu:stub|define)
+;; (org-roam-bibtex:menu:stub|define :active nil)
+;; 
+(defun org-roam-bibtex:menu:stub|define (&rest <namedArgs)
+  "org-roam-bibtex menu."
+  (let (
+	(<active (or (plist-get <namedArgs :active) nil))
+	(<visible (or (plist-get <namedArgs :visible) nil))	
+	($thisFuncName (compile-time-function-name))
+	)
+
+    (unless (plist-member <namedArgs :active)
+      (setq <active t))
+    (unless (plist-member <namedArgs :visible)
+      (setq <visible t))
+
+    (setq $:org-roam-bibtex:menu:active <active)
+    (setq $:org-roam-bibtex:menu:visible <visible)    
+    
+    (easy-menu-define
+      org-roam-bibtex:menu
+      nil
+      "org-roam-bibtex menu"
+      `("org-roam Bibtex"
+	:help "Show And Set Relevant Parameters"
+	:active $:org-roam-bibtex:menu:active
+	:visible $:org-roam-bibtex:menu:visible
+	"---"
+	))
+    'org-roam-bibtex:menu
+    ))
+
+
+;;
+;; (org-roam-server:menu|define)
+;; (org-roam-server:menu|define :active nil)
+;; 
+(defun org-roam-server:menu|define (&rest <namedArgs)
+  "org-roam-server menu."
+  (let (
+	(<active (or (plist-get <namedArgs :active) nil))
+	(<visible (or (plist-get <namedArgs :visible) nil))	
+	($thisFuncName (compile-time-function-name))
+	)
+
+    (unless (plist-member <namedArgs :active)
+      (setq <active t))
+    (unless (plist-member <namedArgs :visible)
+      (setq <visible t))
+
+    (setq $:org-roam-server:menu:active <active)
+    (setq $:org-roam-server:menu:visible <visible)    
 
     (easy-menu-define
       org-roam-server:menu
@@ -203,6 +330,8 @@ As such what happens below is exactly what is necessary and no more."
       "org-roam-server menu"
       `("org-roam Server"
 	:help "Show And Set Relevant Parameters"
+	:active $:org-roam-server:menu:active
+	:visible $:org-roam-server:menu:visible
 	"---"	
 	 [
 	  "Server Start"
