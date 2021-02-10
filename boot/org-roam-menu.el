@@ -5,16 +5,13 @@
 (lambda () "
 * Authors: Mohsen Banan
 * Copying And Usage: List is a perpetual Libre-Halaal polyexistential.
-* Description And Design
+* Functional Specification:
 ** 
 ** 
 ")
 
 
 (require 'easymenu)
-
-(define-key global-map [menu-bar org-roam:menu:global] nil)
-(define-key global-map [menu-bar "Roam"] nil)
 
 ;; (org-roam:menu-bar/install)
 (defun org-roam:menu-bar/install ()
@@ -39,19 +36,6 @@ As such what happens below is exactly what is necessary and no more."
   )
 
 
-
-;; (bxt:var/localized 'org-roam-directory)
-(defun bxt:var/localized (<varName)
-  "Return the value of <varName. Buffer or directory local vars are accounted for."
-  (let (($varValue))
-    (save-excursion
-      (set-buffer (current-buffer))
-      (setq $varValue (eval <varName))
-      )
-    $varValue
-    ))
-
-
 ;; (org-roam:menu:global|define)
 (defun org-roam:menu:global|define ()
   "Top level menu for all things org-roam related."
@@ -65,7 +49,8 @@ As such what happens below is exactly what is necessary and no more."
 	"---"
 	"----"
 	"-----"
-	"------"	
+	"------"
+	"-------"		
 	))
     
     (easy-menu-add-item
@@ -74,6 +59,8 @@ As such what happens below is exactly what is necessary and no more."
     (easy-menu-add-item
      nil '("Roam") (org-roam:menuItem:param:org-roam-db-location|define) "---")
 
+    ;; 4 dashed
+    ;;
     (easy-menu-add-item
      nil '("Roam") (org-roam:menuItem:db-update|define) "----")
 
@@ -86,24 +73,40 @@ As such what happens below is exactly what is necessary and no more."
     (easy-menu-add-item
      nil '("Roam") (org-roam:menuItem:buffer-hide|define) "----")
 
+    ;; 5 dashed
+    ;;
+    (easy-menu-add-item
+     nil '("Roam") (org-roam:menuItem:find-file|define) "-----")
+
+    (easy-menu-add-item
+     nil '("Roam") (org-roam:menuItem:graph|define) "-----")
+
+    (easy-menu-add-item
+     nil '("Roam") (org-roam:menuItem:insert|define) "-----")
+
+    (easy-menu-add-item
+     nil '("Roam") (org-roam:menuItem:insert-immediate|define) "-----")
+
+    ;; 6 dashed
+    ;;
     (if (package-installed-p 'org-roam-server)
 	(easy-menu-add-item
-	 nil '("Roam") (org-roam-server:menu|define) "-----")
+	 nil '("Roam") (org-roam-server:menu|define) "------")
       (easy-menu-add-item
-       nil '("Roam") (org-roam-server:menu:stub|define :active nil) "-----")
+       nil '("Roam") (org-roam-server:menu:stub|define :active nil) "------")
       )
     
     ;; NOTYET org-roam-bibtex:menu|define has not been implemented yet
     ;;(if (package-installed-p 'org-roam-bibtex)  
     (if nil
 	(easy-menu-add-item
-	 nil '("Roam") (org-roam-bibtex:menu|define) "-----")
+	 nil '("Roam") (org-roam-bibtex:menu|define) "------")
       (easy-menu-add-item
-       nil '("Roam") (org-roam-bibtex:menu:stub|define :active nil) "-----")
+       nil '("Roam") (org-roam-bibtex:menu:stub|define :active nil) "------")
       )
     
     (easy-menu-add-item
-     nil '("Roam") (org-roam:subMenu:help|define) "------")    
+     nil '("Roam") (org-roam:menu:help|define) "-------")    
     )
   )
 
@@ -112,7 +115,7 @@ As such what happens below is exactly what is necessary and no more."
   "Returns a menuItem vector for a param (perhap dynamically)"
   (setq $:org-roam:menuItem:params:org-roam-directory
 	(format "org-roam-directory=\n  %s"
-		(bxt:var/localized 'org-roam-directory)))
+		(bcf:var/localized 'org-roam-directory)))
   [
    $:org-roam:menuItem:params:org-roam-directory
    (describe-variable 'org-roam-directory)      
@@ -125,7 +128,7 @@ As such what happens below is exactly what is necessary and no more."
   "Returns a menuItem vector for a param (perhap dynamically)"
   (setq $:org-roam:menuItem:params:org-roam-db-location
 	(format "org-roam-db-location=\n  %s"
-		(bxt:var/localized 'org-roam-db-location)))
+		(bcf:var/localized 'org-roam-db-location)))
   [
    $:org-roam:menuItem:params:org-roam-db-location
    (describe-variable 'org-roam-db-location)      
@@ -157,9 +160,9 @@ As such what happens below is exactly what is necessary and no more."
 
 (defun org-roam:menuItem:buffer-display|define ()
   [
-   "Display org-roam buffer"
-   (org-roam)
-   :help "Display"
+   "Activate org-roam buffer"
+   (org-roam-buffer-activate)
+   :help "Activate org-roam buffer -- (org-roam-buffer-activate)"
    :active t	 
    :visible t
    ]
@@ -167,23 +170,63 @@ As such what happens below is exactly what is necessary and no more."
 
 (defun org-roam:menuItem:buffer-hide|define ()
   [
-   "Hide org-roam buffer"
-   (org-roam)
-   :help "Hide"
+   "Deactivate org-roam buffer"
+   (org-roam-buffer-deactivate)
+   :help "Deactivate org-roam buffer (org-roam-buffer-deactivate)"
+   :active t	 
+   :visible t
+   ]
+  )
+
+(defun org-roam:menuItem:find-file|define ()
+  [
+   "Find and open an Org-roam file"
+   (org-roam-find-file)
+   :help "Find and open an Org-roam file (org-roam-find-file)"
+   :active t	 
+   :visible t
+   ]
+  )
+
+(defun org-roam:menuItem:graph|define ()
+  [
+   "Display a graph for current"
+   (org-roam-graph)
+   :help "Display a graph for current (org-roam-graph)"
+   :active t	 
+   :visible t
+   ]
+  )
+
+(defun org-roam:menuItem:insert|define ()
+  [
+   "With Org-roam file, insert a relative org link at point"
+   (org-roam-insert)
+   :help "With Org-roam file, insert a relative org link at point (org-roam-insert)"
+   :active t	 
+   :visible t
+   ]
+  )
+
+(defun org-roam:menuItem:insert-immediate|define ()
+  [
+   "With Org-roam file, insert a relative org link at point with capture-immediate-template"
+   (org-roam-insert-immediate)
+   :help "With Org-roam file, insert a relative org link at point with capture-immediate-template (org-roam-insert-immediate)"
    :active t	 
    :visible t
    ]
   )
 
 
-;; (org-roam:subMenu:help|define)
-(defun org-roam:subMenu:help|define ()  
+;; (org-roam:menu:help|define)
+(defun org-roam:menu:help|define ()  
   "Generic Blee Help Menu"
   (let (
 	($thisFuncName (compile-time-function-name))
 	)
     (easy-menu-define
-      org-roam:subMenu:help
+      org-roam:menu:help
       nil
       "Help Menu For org-roam"
       `("org-roam Help"
@@ -199,7 +242,7 @@ As such what happens below is exactly what is necessary and no more."
 	 ]	
 	)
       )
-    'org-roam:subMenu:help
+    'org-roam:menu:help
     ))
 
 ;;
@@ -209,15 +252,10 @@ As such what happens below is exactly what is necessary and no more."
 (defun org-roam-server:menu:stub|define (&rest <namedArgs)
   "org-roam-server menu."
   (let (
-	(<active (or (plist-get <namedArgs :active) nil))
-	(<visible (or (plist-get <namedArgs :visible) nil))	
+	(<active (get-arg <namedArgs :active t))
+	(<visible (get-arg <namedArgs :visible t))
 	($thisFuncName (compile-time-function-name))
 	)
-
-    (unless (plist-member <namedArgs :active)
-      (setq <active t))
-    (unless (plist-member <namedArgs :visible)
-      (setq <visible t))
 
     (setq $:org-roam-server:menu:active <active)
     (setq $:org-roam-server:menu:visible <visible)    
@@ -234,41 +272,6 @@ As such what happens below is exactly what is necessary and no more."
 	))
     'org-roam-server:menu
     ))
-
-;;
-;; (org-roam-server:menu:stub|define)
-;; (org-roam-server:menu:stub|define :active nil)
-;; 
-(defun org-roam-server:menu:stub|define (&rest <namedArgs)
-  "org-roam-server menu."
-  (let (
-	(<active (or (plist-get <namedArgs :active) nil))
-	(<visible (or (plist-get <namedArgs :visible) nil))	
-	($thisFuncName (compile-time-function-name))
-	)
-
-    (unless (plist-member <namedArgs :active)
-      (setq <active t))
-    (unless (plist-member <namedArgs :visible)
-      (setq <visible t))
-
-    (setq $:org-roam-server:menu:active <active)
-    (setq $:org-roam-server:menu:visible <visible)    
-    
-    (easy-menu-define
-      org-roam-server:menu
-      nil
-      "org-roam-server menu"
-      `("org-roam Server"
-	:help "Show And Set Relevant Parameters"
-	:active $:org-roam-server:menu:active
-	:visible $:org-roam-server:menu:visible
-	"---"
-	))
-    'org-roam-server:menu
-    ))
-
-
 
 ;;
 ;; (org-roam-bibtex:menu:stub|define)
@@ -277,15 +280,10 @@ As such what happens below is exactly what is necessary and no more."
 (defun org-roam-bibtex:menu:stub|define (&rest <namedArgs)
   "org-roam-bibtex menu."
   (let (
-	(<active (or (plist-get <namedArgs :active) nil))
-	(<visible (or (plist-get <namedArgs :visible) nil))	
+	(<active (get-arg <namedArgs :active t))
+	(<visible (get-arg <namedArgs :visible t))
 	($thisFuncName (compile-time-function-name))
 	)
-
-    (unless (plist-member <namedArgs :active)
-      (setq <active t))
-    (unless (plist-member <namedArgs :visible)
-      (setq <visible t))
 
     (setq $:org-roam-bibtex:menu:active <active)
     (setq $:org-roam-bibtex:menu:visible <visible)    
@@ -301,66 +299,6 @@ As such what happens below is exactly what is necessary and no more."
 	"---"
 	))
     'org-roam-bibtex:menu
-    ))
-
-
-;;
-;; (org-roam-server:menu|define)
-;; (org-roam-server:menu|define :active nil)
-;; 
-(defun org-roam-server:menu|define (&rest <namedArgs)
-  "org-roam-server menu."
-  (let (
-	(<active (or (plist-get <namedArgs :active) nil))
-	(<visible (or (plist-get <namedArgs :visible) nil))	
-	($thisFuncName (compile-time-function-name))
-	)
-
-    (unless (plist-member <namedArgs :active)
-      (setq <active t))
-    (unless (plist-member <namedArgs :visible)
-      (setq <visible t))
-
-    (setq $:org-roam-server:menu:active <active)
-    (setq $:org-roam-server:menu:visible <visible)    
-
-    (easy-menu-define
-      org-roam-server:menu
-      nil
-      "org-roam-server menu"
-      `("org-roam Server"
-	:help "Show And Set Relevant Parameters"
-	:active $:org-roam-server:menu:active
-	:visible $:org-roam-server:menu:visible
-	"---"	
-	 [
-	  "Server Start"
-	  (describe-variable 'browse-url-browser-function)
-	  :help "Describe current value of browse-url-browser-function"
-	  :active t
-	  :visible t
-	  ]
-	 ["Server Stop"
-	  (describe-variable 'browse-url-secondary-browser-function)
-	  :help "Describe current value of browse-url-secondary-browser-function"
-	  :active t
-	  :visible t
-	  ]	 
-	"----"
-	 [
-	  "Visit Server"
-	  ($set-selected 'blee:xinf:selected:browse-url/at-point)
-	  :help "blee:xinf:selected:browse-url/at-point is based on NOTYET"
-	  :active t
-	  :visible t
-	  ]
-	"---"
-	[,(format "Visit %s" $thisFuncName)
-	 (describe-function (intern ,$thisFuncName))
-	 t
-	 ]	
-	))
-    'org-roam-server:menu
     ))
 
 

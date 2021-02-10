@@ -157,7 +157,9 @@
 
   (menu-bar-right-scroll-bar)
   
-
+  (require 'bcf-general)   ;; General Blee Common Facilities (bcf) outside of bcf: name space
+  (require 'bcf-misc)      ;; Misc Blee Common Facilities (bcf) qualifed as bcf:
+  
   (require 'eoeLsip)
 
   (require 'blee-lib-common)
@@ -470,6 +472,7 @@
   (blee:my:menu)
 
   (require 'org-roam-menu)
+  (require 'org-roam-server-menu)  
   (org-roam:menu-bar/install)
 
   (if (file-directory-p (expand-file-name "~/BUE/elisp"))
