@@ -12,6 +12,17 @@
 ** 
 ")
 
+(require 'browse-url)
+
+; (org-roam-server:uri/construct)
+(defun org-roam-server:uri/construct ()
+  ""
+  (interactive)
+  (format "http://%s:%s" org-roam-server-host org-roam-server-port)
+  )
+
+;; (browse-url-chrome (org-roam-server:uri/construct))
+;; (org-roam-server-mode)
 
 (require 'easymenu)
 
@@ -46,22 +57,22 @@ Instead of ,<active I got it working with $:org-roam-server:menu:active.
 	"---"	
 	 [
 	  "Server Start"
-	  (describe-variable 'browse-url-browser-function)
-	  :help "Describe current value of browse-url-browser-function"
+	  (org-roam-server-mode)
+	  :help "Server Start -- (org-roam-server-mode)"
 	  :active t
 	  :visible t
 	  ]
 	 ["Server Stop"
-	  (describe-variable 'browse-url-secondary-browser-function)
-	  :help "Describe current value of browse-url-secondary-browser-function"
+	  (org-roam-server-mode -1)
+	  :help "Server Stop -- (org-roam-server-mode -1)"
 	  :active t
 	  :visible t
-	  ]	 
+	  ]
 	"----"
 	 [
-	  "Visit Server At Url"
-	  ($set-selected 'blee:xinf:selected:browse-url/at-point)
-	  :help "blee:xinf:selected:browse-url/at-point is based on NOTYET"
+	  "Visit Server At Url With Chrome"
+	  (browse-url-chrome (org-roam-server:uri/construct))
+	  :help "Visit Server At Url With Chrome -- (browse-url-chrome (org-roam-server:uri/construct))"
 	  :active t
 	  :visible t
 	  ]

@@ -104,6 +104,12 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
           org-roam-server-network-label-wrap-length 20))  
   )
 
+; (org-roam-server:uri/construct)
+(defun org-roam-server:uri/construct ()
+  ""
+  (interactive)
+  (format "http://%s:%s" org-roam-server-host org-roam-server-port)
+  )
 
 
 (defun bcg:org:roam:config/main ()
@@ -112,6 +118,9 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (blee:ann|this-func (compile-time-function-name))    
 
   (setq org-roam-directory "/bisos/panels")
+  ;; (setq org-roam-directory "/bxo/iso/pip_xx/panel")  
+  ;; (setq org-roam-db-location "/bxo/iso/pip_xx/panel/org-roam.db")
+  
   (add-hook 'after-init-hook 'org-roam-mode)
 
   (add-hook 'org-mode-hook 'org-roam-buffer-activate)
