@@ -1,11 +1,11 @@
 # -*- mode: snippet -*-
-# name: Blee Node Panel
-# key: begin/bleePanelNode
+# name: Blee Branch Panel
+# key: begin/bleePanelBranch
 # group: blee
 # type: command
 # --
 (progn
-  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/nodePanels/nodeBegin.org")
+  (insert-file "/bisos/apps/defaults/begin/bleePanel/branchPanels/branchBegin.org")
   (org-dblock-update-buffer-bx)
   (blee:ppmm:org-mode-content-list)  
   )

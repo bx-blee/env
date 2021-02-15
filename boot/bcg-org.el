@@ -78,7 +78,9 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
     ;;; :pin melpa-stable
     )
 
-
+  (use-package org-recoll
+    :load-path "/bisos/blee/extPkgs/org-recoll"
+    )
   
   (require 'remember)
 
