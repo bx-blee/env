@@ -461,6 +461,9 @@
 
   ;;(require 'blee-menu-xia)
   (blee:menu:top:xia|define)
+
+  (require 'nafm-menu)
+  (nafm:menu:global|define)
   
   (require 'blee-menu-activities)
   (blee:activities:menu)

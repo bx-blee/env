@@ -829,12 +829,6 @@ For Named Frames and More
 
 
 
-(defun blee:$raiseNF (<nf)
-  (interactive)  ;; Must be a command -- not just a function
-  (raise-frame
-   (get-a-frame (blee:named-frame:struct:-name <nf))))
-
-
 (lambda () "
 **  [[elisp:(org-cycle)][| ]]  [[elisp:(blee:ppmm:org-mode-toggle)][Nat]] [[elisp:(beginning-of-buffer)][Top]] [[elisp:(delete-other-windows)][(1)]] || defun        :: (blee:virsh:domain:menuSelectDef kvmHost) [[elisp:(org-cycle)][| ]]
   ")
@@ -992,6 +986,11 @@ For Named Frames and More
     (tab-bar-rename-tab (url-host (url-generic-parse-url @url)))
     )
   )
+
+(defun blee:$raiseNF (<nf)
+  (interactive)  ;; Must be a command -- not just a function
+  (raise-frame
+   (get-a-frame (blee:named-frame:struct:-name <nf))))
 
 
 (lambda () "
