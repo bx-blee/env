@@ -100,6 +100,9 @@
   (require 'bcg-org-roam)
   (bcg:org:roam:full/update)
 
+  (require 'bcg-web-search)
+  (bcg:web:search:full/update)
+
   ;;(require 'bcg-org-ref)
   ;;(bcg:org:ref:full/update)
   
@@ -462,6 +465,9 @@
   ;;(require 'blee-menu-xia)
   (blee:menu:top:xia|define)
 
+  (require 'gmmp-menu)
+  (gmmp:menu-bar/install)  
+ 
   (require 'nafm-menu)
   (nafm:menu:global|define)
   

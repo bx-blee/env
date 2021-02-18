@@ -64,9 +64,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (blee:ann|this-func (compile-time-function-name))
   (when bcg:web:search:usage:enabled-p
     (bcg:web:search:install/update)
-    (bcg:web:search:server:install/update)    
     (bcg:web:search:config/main)
-    ;;(org-roam-server-mode)
     )
   )
 
@@ -93,9 +91,11 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (require 'engine-mode)
   (engine-mode t)
 
-  (setq engine/browser-function browse-url-browser-function)
+  ;;(setq engine/browser-function browse-url-browser-function)
 
-  (bcg:web:search:defengine/create)  
+  (bcg:web:search:defengine/create)
+
+  (require 'engine-mode-menu)
   )
 
 
@@ -174,29 +174,38 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   )
 
 
+(defcustom engine/selected nil
+  "The default engine.
+Defaults to `nil' which means to search with `engine/search-google'."
+  :group 'engine-mode
+  :type 'symbol)
+
 
 ;;
-;; (web:search:engine:funcs|list)
+;; (engine/list-commands)
 ;;
-(defun web:search:engine:funcs|list ()
-  (let (
-	($aproposResult (apropos "engine/search-"))
-	($result (list))
-	)
-    (mapcar (lambda (<each)
-	      (add-to-list '$result (car <each)))
-	     $aproposResult
-	     )
-    $result
-    ))
+(defun engine/list-commands ()
+  (apropos-internal "engine/search-" 'commandp)
+  )
 
+  ;; (let (
+  ;; 	($aproposResult 
+  ;; 	($result (list))
+  ;; 	)
+  ;;   (kill-buffer "*Apropos*")
+  ;;   (mapcar (lambda (<each)
+  ;; 	      (add-to-list '$result (car <each)))
+  ;; 	     $aproposResult
+  ;; 	     )
+  ;;   $result
+  ;;   ))
 
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
 ")
 
-(provide 'bcg-org-roam)
+(provide 'bcg-web-search)
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== /[dblock] -- End-Of-File Controls/

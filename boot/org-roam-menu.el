@@ -27,12 +27,15 @@
   "This is to be added to menu-bar-update-hook. 
 It runs everytime any menu is invoked.
 As such what happens below is exactly what is necessary and no more."
+
+  (org-roam:menu:global|define)
   
-  (easy-menu-add-item
-   nil '("Roam") (org-roam:menuItem:param:org-roam-directory|define) "---")
+  ;; (easy-menu-add-item
+  ;;  nil '("Roam") (org-roam:menuItem:param:org-roam-directory|define) "---")
     
-  (easy-menu-add-item
-   nil '("Roam") (org-roam:menuItem:param:org-roam-db-location|define) "---")
+  ;; (easy-menu-add-item
+  ;;  nil '("Roam") (org-roam:menuItem:param:org-roam-db-location|define) "---")
+  
   )
 
 
