@@ -173,6 +173,9 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   
   )
 
+;;;
+;;; The following should be integrated with engine-mode.el
+;;; 
 
 (defcustom engine/selected nil
   "The default engine.

@@ -11,17 +11,6 @@
 ** 
 ")
 
-(defvar orgCmntEnd nil "Org Comment End")
-
-(defun orgCmntBegin (<comment <commentEnd)
-  "Org Comment Begin. Permits us to include * at the beginning of line as a comment.
-Example usage is: 
-(orgCmntBegin \"multi-line comment comes here.\" orgCmntEnd)
-
-I wish elisp had a here-document facility. Like common-lisp.
-Anybody listening?"
-)
-
 (orgCmntBegin "
 ** TODO NOTYET, absorb orgCmntBegin in the right place.
    SCHEDULED: <2021-02-17 Wed>
@@ -201,15 +190,6 @@ For use in delimiters in easy-menu-define"
       :visible t
       ]
      )))
-
-
-(defun blee:browse|withUrls (<urls)
-  (mapcar (lambda (<each)
-	    (funcall browse-url-browser-function
-		     <each)
-	    )
-	  <urls)
-  (format "Last Executed: %S" (current-time-string)))
 
 
 ;;

@@ -2,8 +2,22 @@
 ;;;
 ;;;
 
-(lambda () "
-* Module Name: bcf-misc
+(defvar orgCmntEnd nil "Org Comment End")
+
+(defun orgCmntBegin (<comment <commentEnd))
+
+(orgCmntBegin "
+  orgCmntBegin. Permits us to include * at the beginning of line as a comment.
+Which in turn alows us to switch between emacs-major mode and org-mode for COMEEGA.
+Example usage is: 
+(orgCmntBegin \"multi-line comment comes here.\" orgCmntEnd)
+
+I wish elisp had a here-document facility. Like common-lisp.
+Anybody listening?
+" orgCmntEnd)
+
+(orgCmntBegin "
+* Module Name: bcf-misc 
 * Authors: Mohsen Banan
 ** Mohsen Banan contact: http://mohsen.1.banan.byname.net/contact
 ** Mohsen Banan email: emacs آت mohsen.1.banan.byname.net
@@ -12,9 +26,9 @@
 ** See: [[http://mohsen.1.banan.byname.net/PLPC/120033][Nature Of Polyexistentials]]
 * A Blee Derivative: A part of Blee which can be used outside of Blee
 ** About Blee: ByStar Libre-Halaal Emacs Environment
-")
+" orgCmntEnd)
 
-(lambda () "
+(orgCmntBegin "
 * Module Overview:   -- Misc bcf (Blee Common Facilities) using bcf: name space
 * Initial Release Date: [2021-02-09 Tue 22:32]
 * Current Release: ver-0.2 -- 
@@ -22,7 +36,7 @@
 * Scope: Facilities, used in Blee which are general enough not to justify bcf: prefix.
 * Features:
 ** get-arg (same as plist-get-or-default) facilitates named arguments processing
-")
+" orgCmntEnd)
 
 
 
@@ -36,6 +50,18 @@
       )
     $varValue
     ))
+
+;;
+;; (bcf:browser:default|visit-urls (list "http://www.by-star.net" "http://www.neda.com"))
+;;
+(defun bcf:browser:default|visit-urls (<urls)
+  "Using the default browser (browse-url-browser-function), visit <urls."
+  (mapcar (lambda (<each)
+	    (funcall browse-url-browser-function
+		     <each)
+	    )
+	  <urls)
+  (format "Last Executed: %S" (current-time-string)))
 
 
 (provide 'bcf-misc)

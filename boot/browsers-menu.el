@@ -16,7 +16,6 @@
 
 (require 'easymenu)
 
-(require 'engine-mode)
 
 ;; (web:search:gmmp:menu:plugin/install gmmp:menu:global (s-- 6))
 (defun web:search:gmmp:menu:plugin/install (<menuLabel <menuDelimiter)
@@ -131,7 +130,6 @@ As such what happens below should be exactly what is necessary and no more."
 
 ;;
 ;; (web:search:with-engine/menuSelectDef)
-;; (popup-menu (symbol-value (web:search:with-engine/menuSelectDef)))
 ;; 
 (defun web:search:with-engine/menuSelectDef ()
   ""
@@ -149,13 +147,14 @@ As such what happens below should be exactly what is necessary and no more."
        (mapcar (lambda (<each)
 		 (vector (format "Search With: %s" <each)
 			 `(call-interactively ',<each)
-			   :help (format "Searching with command: %s" <each)
 			 )
 		 )
 	       (engine/list-commands)
 	       )))
     'web:search:with-engine
     ))
+
+
 
 ;; (web:search:menu:help|define)
 (defun web:search:menu:help|define ()  
