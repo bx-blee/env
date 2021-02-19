@@ -13,17 +13,22 @@
 
 (require 'easymenu)
 
-;; (org-roam:menu-bar/install)
-(defun org-roam:menu-bar/install ()
-  "Primary interface."
-  
-  (interactive)
-  (org-roam:menu:global|define)
-  (add-hook 'menu-bar-update-hook 'org-roam:menu-bar-update-hook)
+;; (org-roam:modes:global-minor:menu:plugin|install modes:menu:global-minor (s-- 3))  
+(defun org-roam:modes:global-minor:menu:plugin|install (<menuLabel <menuDelimiter)
+  "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."
+
+  (easy-menu-add-item
+   <menuLabel
+   nil
+   (org-roam:menu|define :active t)
+   <menuDelimiter
+   )
+
+  (add-hook 'menu-bar-update-hook 'web:search:menu|update-hook)
   )
 
 
-(defun org-roam:menu-bar-update-hook ()
+(defun org-roam:menu|update-hook ()
   "This is to be added to menu-bar-update-hook. 
 It runs everytime any menu is invoked.
 As such what happens below is exactly what is necessary and no more."
@@ -38,79 +43,109 @@ As such what happens below is exactly what is necessary and no more."
   
   )
 
-
-;; (org-roam:menu:global|define)
-(defun org-roam:menu:global|define ()
+;; (popup-menu (symbol-value (org-roam:menu|define)))
+(defun org-roam:menu|define (&rest <namedArgs)
   "Top level menu for all things org-roam related."
-  (let (($thisFuncName (compile-time-function-name)))
+  (let (
+	(<active (get-arg <namedArgs :active t))	
+	($thisFuncName (compile-time-function-name))
+	)
     (easy-menu-define
-      org-roam:menu:global
-      global-map
+      org-roam:menu
+      nil
       "Global org-roam menu"
       `("Roam"
 	:help "Org-Roam And Roam-Server Primary Actions"
-	"---"
-	"----"
-	"-----"
-	"------"
-	"-------"		
+	:active ,<active
+	:visible t
+	,(s-- 3)
+	,(s-- 4)
+	,(s-- 5)
+	,(s-- 6)
+	,(s-- 7)
+	,(s-- 8)	
 	))
     
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:param:org-roam-directory|define) "---")
+     org-roam:menu nil
+     (org-roam:menuItem:param:org-roam-directory|define)
+     (s-- 3))
 
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:param:org-roam-db-location|define) "---")
-
-    ;; 4 dashed
-    ;;
+     org-roam:menu nil
+     (org-roam:menuItem:param:org-roam-db-location|define)
+     (s-- 3))
+    
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:db-update|define) "----")
-
+     org-roam:menu nil     
+     (org-roam:menuItem:db-update|define)
+     (s-- 4))
+    
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:buffer-toggle|define) "----")
-
-    (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:buffer-display|define) "----")
-
-    (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:buffer-hide|define) "----")
-
-    ;; 5 dashed
-    ;;
-    (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:find-file|define) "-----")
+     org-roam:menu nil
+     (org-roam:menuItem:buffer-toggle|define)
+     (s-- 4))     
 
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:graph|define) "-----")
+     org-roam:menu nil          
+     (org-roam:menuItem:buffer-display|define)
+     (s-- 4))
+    
+    (easy-menu-add-item
+     org-roam:menu nil     
+     (org-roam:menuItem:buffer-hide|define)
+     (s-- 4))          
 
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:insert|define) "-----")
+     org-roam:menu nil          
+     (org-roam:menuItem:find-file|define)
+     (s-- 5))               
 
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menuItem:insert-immediate|define) "-----")
+     org-roam:menu nil               
+     (org-roam:menuItem:graph|define)
+     (s-- 5))                    
 
-    ;; 6 dashed
-    ;;
+    (easy-menu-add-item
+     org-roam:menu nil                    
+     (org-roam:menuItem:insert|define)
+     (s-- 5))                    
+
+    (easy-menu-add-item
+     org-roam:menu nil                         
+     (org-roam:menuItem:insert-immediate|define)
+     (s-- 5))                         
+
     (if (package-installed-p 'org-roam-server)
 	(easy-menu-add-item
-	 nil '("Roam") (org-roam-server:menu|define) "------")
+	 org-roam:menu nil                         	 
+	 (org-roam-server:menu|define)
+	 (s-- 6))                         
       (easy-menu-add-item
-       nil '("Roam") (org-roam-server:menu:stub|define :active nil) "------")
+       org-roam:menu nil                         	        
+       (org-roam-server:menu:stub|define :active nil)
+       (s-- 6))                         
       )
     
     ;; NOTYET org-roam-bibtex:menu|define has not been implemented yet
     ;;(if (package-installed-p 'org-roam-bibtex)  
     (if nil
 	(easy-menu-add-item
-	 nil '("Roam") (org-roam-bibtex:menu|define) "------")
+	 org-roam:menu nil                         	        	 
+	 (org-roam-bibtex:menu|define)
+	 (s-- 7))                         	 
       (easy-menu-add-item
-       nil '("Roam") (org-roam-bibtex:menu:stub|define :active nil) "------")
+       org-roam:menu nil                         	        	        
+       (org-roam-bibtex:menu:stub|define :active nil)
+       (s-- 7))                         	        
       )
     
     (easy-menu-add-item
-     nil '("Roam") (org-roam:menu:help|define) "-------")    
+     org-roam:menu nil                         	        	        
+     (org-roam:menu:help|define)
+     (s-- 8))                         	             
     )
+  'org-roam:menu
   )
 
 ;; (org-roam:menuItem:param:org-roam-directory|define)

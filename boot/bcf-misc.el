@@ -64,5 +64,12 @@ Anybody listening?
   (format "Last Executed: %S" (current-time-string)))
 
 
+;; (bcf:mode|status whitespace-mode)
+(defun bcf:mode|status (<modeVar)
+  (if <modeVar
+      "enabled"
+    "disabled"
+    ))
+
 (provide 'bcf-misc)
 

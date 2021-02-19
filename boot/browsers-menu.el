@@ -17,158 +17,207 @@
 (require 'easymenu)
 
 
-;; (web:search:gmmp:menu:plugin/install gmmp:menu:global (s-- 6))
-(defun web:search:gmmp:menu:plugin/install (<menuLabel <menuDelimiter)
+;; (browsers:modes:menu:plugin/install modes:menu:global (s-- 3))
+(defun browsers:modes:menu:plugin/install (<menuLabel <menuDelimiter)
   "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."
   (interactive)
 
   (easy-menu-add-item
    <menuLabel
    nil
-   (web:search:menu|define :active t)
+   (browsers:menuItem:at-point-url:with-selected|define)
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'web:search:menu|update-hook)
+  (easy-menu-add-item
+   <menuLabel
+   nil
+   (browsers:menu:at-point-url:select|define :active t)
+   <menuDelimiter
+   )
+
+  (add-hook 'menu-bar-update-hook 'browsers:menu|update-hook)
   )
 
-(defun web:search:menu|update-hook ()
+(defun browsers:menu|update-hook ()
   "This is to be added to menu-bar-update-hook. 
 It runs everytime any menu is invoked.
 As such what happens below should be exactly what is necessary and no more."
-  (web:search:menu|define)
+  ;;(browsers:menu|define)
   )
 
 ;;
-;; (web:search:menu|define)
-;; (web:search:menu|define :active nil)
-;; (popup-menu (symbol-value (web:search:menu|define)))
-;; 
-(defun web:search:menu|define (&rest <namedArgs)
-  "Returns web:search:menu.
-:active can be specified as <namedArgs.
-"
-  (let (
-	(<active (get-arg <namedArgs :active t))
-	($thisFuncName (compile-time-function-name))
-	)
-    
-    ;; (setq $:web:search:menu:visible <visible)    ;; because ,visible does not work
-
-    (easy-menu-define
-      web:search:menu
-      nil
-      "web:search menu"
-      `("Web Search Global Minor Mode (engine-mode) 22"
-	:help "Show And Set Relevant Parameters"
-	:active ,<active
-	:visible t
-	,(s-- 3)
-	,(s-- 4)
-	,(s-- 5)
-	,(s-- 6)
-	,(s-- 7)
-	,(s-- 8)	
-	))
-
-    (easy-menu-add-item web:search:menu nil
-			(web:search:menu:help|define) "-----")
-    (easy-menu-add-item
-     web:search:menu nil
-     (web:search:menuItem:selected-browser-function|define)
-     (s-- 3))
-
-    (easy-menu-add-item
-     web:search:menu nil     
-     (web:search:menuItem:selected-engine|define)
-     (s-- 4))
-
-    (easy-menu-add-item
-     web:search:menu nil
-     (web:search:with-engine/menuSelectDef)     
-     (s-- 5))
-
-    (easy-menu-add-item
-     web:search:menu nil          
-     (web:search:menu:help|define)
-     (s-- 8))
-    
-    'web:search:menu
-    ))
-
-
-
-;;
-;; (web:search:menuItem:selected-browser-function|define)
-(defun web:search:menuItem:selected-browser-function|define ()
+;; (browsers:menuItem:at-point-url:selected-if|define)
+(defun browsers:menuItem:at-point-url:with-selected|define ()
   "Returns a menuItem vector. Requires dynamic update."
   (car
    `(
-     [,(format "Selected Web Search Browser:\n  %s"
-	       engine/browser-function)
-      (describe-variable 'engine/browser-function)
-      :help "Selected Web Search Browser -- (describe-variable 'engine/browser-function)"
+     [,(format "Browse At-Point URL With Selected Browser:\n  %s"
+	       browse-url-browser-function)
+      (find-file-at-point (ffap-url-at-point))
+      :help "With Selected At-Point Browser specified with browse-url-browser-function, browse at-point URL"
       :active t
       :visible t
       ]
      )))
 
-;;
-(defun web:search:menuItem:selected-engine|define ()
-  "Returns a menuItem vector. Requires dynamic update."
-  (car
-   `(
-     [,(format "Selected Engine:\n %s"
-	       engine/selected)
-      (describe-variable 'engine/selected)
-      :help "Selected engine -- (describe-variable 'engine/selected)"
-      :active t	 
-      :visible t
-      ]
-     )))
 
+(when (equal blee:emacs:id '26f)
+  (defvar browse-url-secondary-browser-function nil
+    "Fake temporary 26f variable for same as introduced in 27f"))
 
 ;;
-;; (web:search:with-engine/menuSelectDef)
-;; 
-(defun web:search:with-engine/menuSelectDef ()
-  ""
-  (interactive)
+;; [[elisp:(popup-menu (symbol-value (browsers:menu:help|define)))][This Menu]]
+;; (popup-menu (symbol-value (browsers:menu:at-point-url:select|define)))
+;;
+(defun browsers:menu:at-point-url:select|define (&rest <namedArgs)
+  "Returns org-roam-server:menu.
+:active and :visible can be specified as <namedArgs.
+"
   (let (
-	($menuHeading "Search With Engine")
+	(<visible (get-arg <namedArgs :visible t))
+	(<active (get-arg <namedArgs :active t))
+	($thisFuncName (compile-time-function-name))
+	)
+
+    ;; (setq $:browsers:menu:browse-url:at-point:active <active)
+    (setq $:browsers:menu:browse-url:at-point:visible <visible)    
+
+    (easy-menu-define
+      browsers:menu:browse-url:at-point
+      nil
+      "Menu For Configuration Of browse-url-browser-function"
+      `("Select At-Point Url Browser"
+	:help "Show And Set Relevant Parameters"
+	:visible $:browsers:menu:browse-url:at-point:visible
+	:active ,<active
+	,(s-- 3)
+	[
+	,(format "**browse-url-browser-function =\n %s**" browse-url-browser-function)	 
+	  (describe-variable 'browse-url-browser-function)
+	  :help "Describe current value of browse-url-browser-function"
+	  :active t
+	  :visible t
+	  ]
+	[
+	 ,(format "**browse-url-secondary-browser-function =\n %s**" browse-url-secondary-browser-function)		 
+	  (describe-variable 'browse-url-secondary-browser-function)
+	  :help "Describe current value of browse-url-secondary-browser-function"
+	  :active t
+	  :visible t
+	  ]
+	,(s-- 4)	
+	 [
+	  "XIA Browser Frame"
+	  (setq browse-url-browser-function 'browsers:xinf:selected:browse-url/at-point)
+	  :help "browsers:xinf:selected:browse-url/at-point is based on NOTYET"
+	  :active t
+	  :visible t
+	  :style radio	  
+	  :selected ,(eq browse-url-browser-function 'browsers:xinf:selected:browse-url/at-point)
+	  ]
+	 [
+	  "Firefox"
+	  (setq browse-url-browser-function 'browse-url-firefox)
+	  :help "Send Url to Firefox tab with: browse-url-firefox"
+	  :active t
+	  :visible t
+	  :style radio	  
+	  :selected ,(eq browse-url-browser-function 'browse-url-firefox)
+	  ]
+	 [
+	  "Chrome"
+	  (setq browse-url-browser-function 'browse-url-chrome)
+	  :help "Send Url to Chrom new tab with: browse-url-chrome"
+	  :active t
+	  :visible t
+	  :style radio	  
+	  :selected ,(eq browse-url-browser-function 'browse-url-chrome)
+	  ]
+	 [
+	  "Chromium"
+	  (setq browse-url-browser-function 'browse-url-chromium)
+	  :help "Send Url to Chrom new tab with: browse-url-chromium"
+	  :active t
+	  :visible t
+	  :style radio	  
+	  :selected ,(eq browse-url-browser-function 'browse-url-chromium)
+	  ]
+	 [
+	  "EWW"
+	  (setq browse-url-browser-function 'eww-browse-url)
+	  :help "Send Url to eww with eww-browse-url"
+	  :active t
+	  :visible t
+	  :style radio
+	  :selected ,(eq browse-url-browser-function 'eww-browse-url)
+	  ]
+	 ,(s-- 5)
+	 ,(s-- 6)
+	 ,(s-- 7)	 	 	 
+	 ))
+    
+	 (easy-menu-add-item
+	  browsers:menu:browse-url:at-point
+	  nil          
+	  (browsers:menu:browse-url:at-point:with-function|define)
+	  (s-- 6))
+
+	 (easy-menu-add-item
+	  browsers:menu:browse-url:at-point
+	  nil          
+	  (browsers:menu:help|define)
+	  (s-- 7))
+
+    'browsers:menu:browse-url:at-point
+    ))
+
+
+;;
+;; (popup-menu (symbol-value (browsers:menu:browse-url:at-point:with-function|define)))
+;; 
+(defun browsers:menu:browse-url:at-point:with-function|define ()
+  ""
+  (let (
+	($menuHeading "browse-url:at-point|with-function")
 	)  
     (easy-menu-define
-      web:search:with-engine
+      browsers:menu:browse-url:at-point:with-function
       nil
-      "" 
+      "Menu" 
       (append
        (list $menuHeading)
        (list "---")
        (mapcar (lambda (<each)
-		 (vector (format "Search With: %s" <each)
+		 (vector (format "Visit At-Point URL With: %s" <each)
 			 `(call-interactively ',<each)
 			 )
 		 )
-	       (engine/list-commands)
-	       )))
-    'web:search:with-engine
+	       (list
+		'browsers:xinf:selected:browse-url/at-point
+		'browse-url-firefox
+		'browse-url-chrome
+		'browse-url-chromium
+		'eww-browse-url
+	       ))))
+    'browsers:menu:browse-url:at-point:with-function
     ))
 
 
 
-;; (web:search:menu:help|define)
-(defun web:search:menu:help|define ()  
+;; (popup-menu (symbol-value (browsers:menu:help|define)))
+(defun browsers:menu:help|define ()  
   "Generic Blee Help Menu"
   (let (
 	($thisFuncName (compile-time-function-name))
 	)
     (easy-menu-define
-      web:search:menu:help
+      browsers:menu:help
       nil
-      "Help Menu For web:search"
-      `("web:search Help"
+      "Help Menu For browsers"
+      `("browsers Help"
 	:help "Help For This Menu"
-	["Visit web:search Help Panel"
+	["Visit browsers Help Panel"
 	 blee:blee:menu:overview-help
 	 t
 	 ]	 ;;; Notyet, should point to panel instead
@@ -179,8 +228,8 @@ As such what happens below should be exactly what is necessary and no more."
 	 ]	
 	)
       )
-    'web:search:menu:help
+    'browsers:menu:help
     ))
 
-(provide 'engine-mode-menu)
+(provide 'browsers-menu)
 

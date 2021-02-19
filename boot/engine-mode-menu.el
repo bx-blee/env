@@ -18,11 +18,18 @@
 
 (require 'engine-mode)
 
-;; (web:search:gmmp:menu:plugin/install gmmp:menu:global (s-- 6))
-(defun web:search:gmmp:menu:plugin/install (<menuLabel <menuDelimiter)
+;; (web:search:modes:menu:plugin/install modes:menu:global (s-- 6))
+(defun web:search:modes:menu:plugin/install (<menuLabel <menuDelimiter)
   "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."
   (interactive)
 
+  (easy-menu-add-item
+   <menuLabel
+   nil
+   (web:search:menuItem:selected-if:search-with|define)
+   <menuDelimiter
+   )
+  
   (easy-menu-add-item
    <menuLabel
    nil
@@ -30,7 +37,7 @@
    <menuDelimiter
    )
 
-  (add-hook 'menu-bar-update-hook 'web:search:menu|update-hook)
+  ;;(add-hook 'menu-bar-update-hook 'web:search:menu|update-hook)
   )
 
 (defun web:search:menu|update-hook ()
@@ -39,6 +46,21 @@ It runs everytime any menu is invoked.
 As such what happens below should be exactly what is necessary and no more."
   (web:search:menu|define)
   )
+
+;; 
+(defun web:search:menuItem:selected-if:search-with|define ()
+  "Returns a menuItem vector. Requires dynamic update."
+  (car
+   `(
+     [,(format "Web Search With Selected Engine:\n %s"
+	       modes:search-engine:selected)
+      (find-file-at-point modes:search-engine:selected)
+      :help "Selected Engine -- Search with selected browser setting and selected engine"
+      :active t	 
+      :visible t
+      ]
+     )))
+
 
 ;;
 ;; (web:search:menu|define)
@@ -59,8 +81,8 @@ As such what happens below should be exactly what is necessary and no more."
     (easy-menu-define
       web:search:menu
       nil
-      "web:search menu"
-      `("Web Search Global Minor Mode (engine-mode) 22"
+      "Web Search Global Minor Mode (engine-mode)"
+      `("Web Search Global Minor Mode (engine-mode)"
 	:help "Show And Set Relevant Parameters"
 	:active ,<active
 	:visible t
@@ -98,6 +120,9 @@ As such what happens below should be exactly what is necessary and no more."
     ))
 
 
+;;
+;; (setq engine/browser-function nil)
+;;
 
 ;;
 ;; (web:search:menuItem:selected-browser-function|define)

@@ -94,24 +94,9 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
     ;;; :pin melpa-stable
     )
 
-  (use-package frame-fns
-    :load-path "/bisos/blee/extPkgs/frame-fns"
-    )
-
-  (use-package frame-cmds
-    :load-path "/bisos/blee/extPkgs/frame-cmds"
-    )
- 
+  ;; (require 'frame-cmds-if) ;; OBSOLETED -- [2021-02-19 Fri 14:54]
   
-  (require 'cl-lib)
-
-  (require 'blee-lib-common)
-  (require 'blee-lib-general)
-  (require 'blee-lib-widget)
-
-  (require 'frame-cmds-if)
-  
-  (require 'blee-frames)
+  ;; (require 'blee-frames) ;; OBSOLEDTED -- [2021-02-19 Fri 14:54]
   
   )
 

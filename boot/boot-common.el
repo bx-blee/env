@@ -462,11 +462,14 @@
       (load "handset-menu-top")
     )   
 
-  ;;(require 'blee-menu-xia)
-  (blee:menu:top:xia|define)
+  (require 'modes-menu)
+  (modes:menu-bar|install)
+  
+  ;; (require 'blee-menu-xia)
+  ;; (blee:menu:top:xia|define)
 
-  (require 'gmmp-menu)
-  (gmmp:menu-bar/install)  
+  ;; (require 'gmmp-menu)
+  ;; (gmmp:menu-bar/install)  
  
   (require 'nafm-menu)
   (nafm:menu:global|define)
@@ -482,7 +485,7 @@
 
   (require 'org-roam-menu)
   (require 'org-roam-server-menu)  
-  (org-roam:menu-bar/install)
+  ;; (org-roam:menu-bar/install)
 
   (if (file-directory-p (expand-file-name "~/BUE/elisp"))
       (progn

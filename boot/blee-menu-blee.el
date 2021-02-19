@@ -5,6 +5,8 @@
 
 (require 'blee-doc-howto)
 
+(require 'blee-lib-widget)
+
 ;;;
 ;;; Global Blee Menu
 ;;;

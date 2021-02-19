@@ -116,7 +116,6 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))    
-  (setq engine/browser-function browse-url-browser-function)
 
   (defengine fa-dehkhoda
     "https://dehkhoda.ut.ac.ir/fa/dictionary?DictionarySearch[word]=%s&DictionarySearch[definition]=")
