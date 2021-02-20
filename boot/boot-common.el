@@ -460,8 +460,11 @@
   ;; ./handset-menu-top.el
   (if (string-equal opRunDistFamily "MAEMO")
       (load "handset-menu-top")
-    )   
+    )
 
+  (require 'apps-menu)
+  (apps:menu-bar|install)
+  
   (require 'modes-menu)
   (modes:menu-bar|install)
   

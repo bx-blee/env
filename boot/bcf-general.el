@@ -1,6 +1,11 @@
 ;;;-*- mode: Emacs-Lisp; lexical-binding: t ; -*-
 
-(lambda () "
+(defvar orgCmntEnd nil "Org Comment End")
+
+(defun orgCmntBegin (<comment <commentEnd))
+
+
+(orgCmntBegin "
 * Module Name: bcf-general
 * Authors: Mohsen Banan
 ** Mohsen Banan contact: http://mohsen.1.banan.byname.net/contact
@@ -10,9 +15,9 @@
 ** See: [[http://mohsen.1.banan.byname.net/PLPC/120033][Nature Of Polyexistentials]]
 * A Blee Derivative: A part of Blee which can be used outside of Blee
 ** About Blee: ByStar Libre-Halaal Emacs Environment
-")
+" orgCmntEnd)
 
-(lambda () "
+(orgCmntBegin "
 * Module Overview:   -- General bcf (Blee Common Facilities) not part of bcf: name space
 * Initial Release Date: [2021-02-09 Tue 22:32]
 * Current Release: ver-0.2 -- 
@@ -20,7 +25,13 @@
 * Scope: Facilities, used in Blee which are general enough not to justify bcf: prefix.
 * Features:
 ** get-arg (same as plist-get-or-default) facilitates named arguments processing
-")
+" orgCmntEnd)
+
+(require 's)
+
+;; (s-- 3)
+(defun s-- (<nuOfDashes)
+  (s-repeat <nuOfDashes "-"))
 
 
 (defun get-arg (<namedArgs <argName <default)

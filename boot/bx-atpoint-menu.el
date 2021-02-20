@@ -2,7 +2,8 @@
 ;;;
 
 (require 'easymenu)
-(require 'web-search)
+
+;;(require 'web-search)
 
 ;;;
 ;;; Global Menu

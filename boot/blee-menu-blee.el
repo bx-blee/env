@@ -124,22 +124,9 @@
   ;; (bystar:mail:menu:define)
   ;; (easy-menu-add-item nil '("Blee") 'bystar:mail:menu:definition "Blee Help")
 
-  (require 'bystar-calendar-menu)
-  (bystar:calendar:menu:define)
-  (easy-menu-add-item nil '("Blee") 'bystar:calendar:menu:definition "Blee Help")
-
-  (require 'bystar-contact-menu)
-  ;; (bystar:contact:menu:define)
-  ;; (easy-menu-add-item nil '("Blee") 'bystar:contact:menu:definition "Blee Help")
-
   (require 'bystar-org-menu)
   ;; (bystar:org:menu:define)
   ;; (easy-menu-add-item nil '("Blee") 'bystar:org:menu:definition "Blee Help")
-
-  (require 'bystar-calc-menu)
-  ;; (bystar:calc:menu:define)
-  ;; (easy-menu-add-item nil '("Blee") 'bystar:calc:menu:definition "Blee Help")
-
 
   ;;; MUSIC Begin
   ;;(easy-menu-add-item nil '("tools") 'emms-global-menu)
@@ -173,14 +160,6 @@
   (bxo:listSubMenuDef)
   (bxo:listSubMenuDef-update)
   (add-hook 'menu-bar-update-hook 'bxo:listSubMenuDef-update)
-  
-  (require 'bystar-selfpub-menu)
-  ;; (bystar:selfpub:menu:define)
-  ;; (easy-menu-add-item nil '("Blee") 'bystar:selfpub:menu:definition "Blee Help")
-
-  (require 'bystar-website-menu)
-  ;; (bystar:website:menu:define)
-  ;; (easy-menu-add-item nil '("Blee") 'bystar:website:menu:definition "Blee Help")
 
 (require 'bystar-platform-menu)
 (bystar:platform:menu:define)

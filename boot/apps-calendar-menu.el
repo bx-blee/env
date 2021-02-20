@@ -1,16 +1,47 @@
+;;;-*- mode: Emacs-Lisp; lexical-binding: t ; -*-
 ;;;
 ;;;
 
 (require 'easymenu)
 
+;; (apps:calendar:menu:plugin|install modes:menu:global (s-- 6))
+(defun apps:calendar:menu:plugin|install (<menuLabel <menuDelimiter)
+  "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."
+
+  (easy-menu-add-item
+   <menuLabel
+   nil
+   (apps:calendar:menu|define :active t)
+   <menuDelimiter
+   )
+
+  (add-hook 'menu-bar-update-hook 'apps:calendar:menu|update-hook)
+  )
+
+(defun apps:calendar:menu|update-hook ()
+  "This is to be added to menu-bar-update-hook.
+It runs everytime any menu is invoked.
+As such what happens below should be exactly what is necessary and no more."
+  ;;(modes:menu:global|define)
+  )
+
 ;;;
-;;; (bystar:calendar:menu:define)
+;;; (apps:calendar:menu|define)
+;;; (popup-menu (symbol-value (apps:calendar:menu|define)))
 ;;;
-(defun bystar:calendar:menu:define ()
+(defun apps:calendar:menu|define (&rest <namedArgs)
+  "Returns apps:calc:menu.
+:active can be specified as <namedArgs.
+"
+  (let (
+	(<active (get-arg <namedArgs :active t))
+	($thisFuncName (compile-time-function-name))
+	)
+  
   (easy-menu-define 
-    bystar:calendar:menu:definition 
-  nil 
-  "Global Blee Calendar Menu"
+    apps:calendar:menu
+    nil 
+    "Calendar Menu"
   '("Blee Calendar"
     ["Calendar" calendar t]
     ["CFW Diary" (cfw:open-diary-calendar) t]
@@ -49,66 +80,9 @@
     "---"
     ["ByStar Calendar Help" bystar:org:doc:howto:all-help t]
     ))
-  )
+  'apps:calendar:menu
+  ))
 
 
-;;; (easy-menu-add-item nil '("Blee") 'bystar:calendar:menu:definition "Blee Help")
 
-(defun bx:diary:diary-today ()
-  (interactive)
-  (diary 1)
-  )
-
-
-(defun bx:diary:diary-week ()
-  (interactive)
-  (diary 7)
-  )
-
-
-(defun bx:diary:diary-month ()
-  (interactive)
-  (diary 31)
-  )
-
-
-(defun bx:diary:diary-year ()
-  (interactive)
-  (diary 365)
-  )
-
-
-(defun bx:diary:insert-today ()
-  (interactive)
-  (diary-make-entry (current-time-string))
-  (beginning-of-line)
-  (delete-region (point)
-                 (save-excursion
-                   (forward-word 1)
-                   (point)))
-  ;;;(kill-word) ;; does not work
-  (delete-char 1)
-  (forward-word 2)
-  (insert ",")
-  (delete-char 9)
-  (end-of-line)
-  )
-
-(defun bx:diary:visit-to-make-entry ()
-  (interactive)
-  (diary-make-entry "")
-  (beginning-of-line)
-  (delete-region (point)
-                 (save-excursion
-                   (forward-word 1)
-                   (point)))
-  )
-
-;; 
-(defun bx-calendar-menu-help ()
-  (interactive)
-  (message "bx-calendar-menu-help NOTYET")
-  )
-
-
-(provide 'bystar-calendar-menu)
+(provide 'apps-calendar-menu)
