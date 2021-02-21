@@ -97,6 +97,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   
   )
 
+;; (blee:fill-column-indicator/enable)
 (defun blee:fill-column-indicator/enable ()
   "Enable displaying of fill column indicator."
   (interactive)
@@ -104,6 +105,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   (setq display-fill-column-indicator-character ?\N{U+2506})  
   )
 
+;; (blee:fill-column-indicator/disable)
 (defun blee:fill-column-indicator/disable ()
   "Toggle displaying of fill column indicator."
   (interactive)

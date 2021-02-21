@@ -124,6 +124,10 @@
   (require 'bap-eaf)
   (bap:eaf:full/update)
 
+  (require 'xdg-email)
+
+  (require 'bcg-git-package)
+  
   
 ;;;#+BEGINNOT: blee:pkg:adopt :eanble :org-level 2 markdown  
   (funcall  '(lambda () "

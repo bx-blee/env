@@ -126,6 +126,9 @@ For use in delimiters in easy-menu-define"
      (s-- 6))
 
     (progn
+      (modes:fill-column:menu:plugin|install
+       modes:menu:local-minor (s-- 3))
+      
       (modes:linum:menu:plugin|install
        modes:menu:local-minor (s-- 3))
 
