@@ -43,6 +43,7 @@ C-c s 9 is list subject to words for secondary language.
 (require 'org-roam-menu)
 (require 'org-roam-server-menu)
 
+(require 'modes-menu-fill-column)
 (require 'linum)
 (require 'modes-menu-linum)
 (require 'modes-menu-whitespace)
@@ -130,19 +131,19 @@ For use in delimiters in easy-menu-define"
        modes:menu:local-minor (s-- 3))
       
       (modes:linum:menu:plugin|install
-       modes:menu:local-minor (s-- 3))
-
-      (modes:whitespace:menu:plugin|install
        modes:menu:local-minor (s-- 4))
 
-      (modes:outline-minor:menu:plugin|install
+      (modes:whitespace:menu:plugin|install
        modes:menu:local-minor (s-- 5))
 
-      (modes:flyspell:menu:plugin|install
+      (modes:outline-minor:menu:plugin|install
        modes:menu:local-minor (s-- 6))
 
-      (modes:flyspell-prog:menu:plugin|install
+      (modes:flyspell:menu:plugin|install
        modes:menu:local-minor (s-- 7))
+
+      (modes:flyspell-prog:menu:plugin|install
+       modes:menu:local-minor (s-- 8))
       )
 
     (easy-menu-add-item

@@ -172,24 +172,6 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   
   )
 
-;;;
-;;; The following should be integrated with engine-mode.el
-;;; 
-
-(defcustom engine/selected nil
-  "The default engine.
-Defaults to `nil' which means to search with `engine/search-google'."
-  :group 'engine-mode
-  :type 'symbol)
-
-
-;;
-;; (engine/list-commands)
-;;
-(defun engine/list-commands ()
-  (apropos-internal "engine/search-" 'commandp)
-  )
-
 ;;; The custom search URLs
 (defvar *internet-search-urls*
  (quote ("http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"

@@ -17,6 +17,18 @@
 (require 'easymenu)
 
 
+
+;;
+;; (engine/list-commands)
+;;
+(defun engine/list-commands ()
+  "Produces a list of available search engine commands."
+  (apropos-internal "engine/search-" 'commandp)
+  )
+
+
+
+
 ;; (browsers:modes:menu:plugin/install modes:menu:global (s-- 3))
 (defun browsers:modes:menu:plugin/install (<menuLabel <menuDelimiter)
   "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."

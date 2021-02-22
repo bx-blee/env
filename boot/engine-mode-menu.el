@@ -18,6 +18,72 @@
 
 (require 'engine-mode)
 
+
+;;;
+;;; The following should be integrated with engine-mode.el
+;;; 
+
+(defun engine/prompted-search-term (engine-name)
+  "Over-rights the pkg function. If thing-at-point is valid, don't prompt"
+  (let ((current-word (or (thing-at-point 'symbol 'no-properties) "")))
+    (when (string-equal current-word "")
+      (setq current-word 
+	    (read-string (engine/search-prompt engine-name current-word)
+			 nil nil current-word)))
+    current-word))
+
+
+(defcustom engine/primary nil
+  "The primary (default) search engine.
+Defaults to `nil' which means to search with `engine/search-google'."
+  :group 'engine-mode
+  :type 'symbol)
+
+(defcustom engine/selected-list (engine/list-commands)
+  "The list of selected search engines.
+Defaults to engine/list-commands which means to search with all."
+  :group 'engine-mode
+  :type 'list)
+
+; (web:search:word/english)
+(defun web:search:word/english ()
+  "List of all search engines and translations that apply to words."
+  (setq engine/selected-list
+	(list
+	 'engine/search-google
+	 'engine/search-duckduckgo
+	 'engine/search-wikipedia
+	 )
+	))
+
+; (web:search:primary|select 'engine/search-google)
+(defun web:search:primary|select (<searchEngine)
+  "Set engine/primary to <searchEngine."
+  (setq engine/primary <searchEngine))
+
+;; (engine/visit-list)
+(defun engine/visit-list (&optional <enginesList)
+  "Search with each of the engines"
+  (interactive)
+  (let (
+	($enginesList <enginesList)
+	)
+    (when (not $enginesList)
+      (setq $enginesList engine/selected-list))
+    (mapcar (lambda (<each)
+	      (call-interactively <each))
+	    $enginesList)))
+
+;; (engine/visit-primary)
+(defun engine/visit-primary ()
+  "Search with the selected engine/primary engine."
+  (interactive)
+  (if (not engine/primary)
+      (message "Missing engine/primary")
+    (progn
+      (call-interactively engine/primary))))
+
+
 ;; (web:search:modes:menu:plugin/install modes:menu:global (s-- 6))
 (defun web:search:modes:menu:plugin/install (<menuLabel <menuDelimiter)
   "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."
@@ -52,9 +118,9 @@ As such what happens below should be exactly what is necessary and no more."
   "Returns a menuItem vector. Requires dynamic update."
   (car
    `(
-     [,(format "Web Search With Selected Engine:\n %s"
-	       modes:search-engine:selected)
-      (find-file-at-point modes:search-engine:selected)
+     [,(format "Web Search With Selected Engine (engine/primary):\n %s"
+	       engine/primary)
+      (engine/visit-primary)
       :help "Selected Engine -- Search with selected browser setting and selected engine"
       :active t	 
       :visible t
@@ -63,7 +129,6 @@ As such what happens below should be exactly what is necessary and no more."
 
 
 ;;
-;; (web:search:menu|define)
 ;; (web:search:menu|define :active nil)
 ;; (popup-menu (symbol-value (web:search:menu|define)))
 ;; 
@@ -94,8 +159,6 @@ As such what happens below should be exactly what is necessary and no more."
 	,(s-- 8)	
 	))
 
-    (easy-menu-add-item web:search:menu nil
-			(web:search:menu:help|define) "-----")
     (easy-menu-add-item
      web:search:menu nil
      (web:search:menuItem:selected-browser-function|define)
@@ -108,9 +171,14 @@ As such what happens below should be exactly what is necessary and no more."
 
     (easy-menu-add-item
      web:search:menu nil
-     (web:search:with-engine/menuSelectDef)     
+     (web:search:with-engine|define)     
      (s-- 5))
 
+    (easy-menu-add-item
+     web:search:menu nil
+     (web:search:select-primary-engine|define)
+     (s-- 6))
+    
     (easy-menu-add-item
      web:search:menu nil          
      (web:search:menu:help|define)
@@ -124,14 +192,23 @@ As such what happens below should be exactly what is necessary and no more."
 ;; (setq engine/browser-function nil)
 ;;
 
+;; (web:search:engine:browser|report)
+(defun web:search:engine:browser|report ()
+  "Returns a string as a report."
+  (if  engine/browser-function
+      (format "engine/browser-function is:\n %s"
+	      engine/browser-function)
+    (format "engine/browser-function is nil, in use is:\n %s"
+	    browse-url-browser-function)))
+
+
 ;;
 ;; (web:search:menuItem:selected-browser-function|define)
 (defun web:search:menuItem:selected-browser-function|define ()
   "Returns a menuItem vector. Requires dynamic update."
   (car
    `(
-     [,(format "Selected Web Search Browser:\n  %s"
-	       engine/browser-function)
+     [,(web:search:engine:browser|report)
       (describe-variable 'engine/browser-function)
       :help "Selected Web Search Browser -- (describe-variable 'engine/browser-function)"
       :active t
@@ -139,15 +216,18 @@ As such what happens below should be exactly what is necessary and no more."
       ]
      )))
 
+
+
+
 ;;
 (defun web:search:menuItem:selected-engine|define ()
   "Returns a menuItem vector. Requires dynamic update."
   (car
    `(
-     [,(format "Selected Engine:\n %s"
-	       engine/selected)
-      (describe-variable 'engine/selected)
-      :help "Selected engine -- (describe-variable 'engine/selected)"
+     [,(format "Search With Primary Engine:\n %s"
+	       engine/primary)
+      (engine/visit-primary)
+      :help "Selected engine -- (engine/visit-primary)"
       :active t	 
       :visible t
       ]
@@ -155,12 +235,10 @@ As such what happens below should be exactly what is necessary and no more."
 
 
 ;;
-;; (web:search:with-engine/menuSelectDef)
-;; (popup-menu (symbol-value (web:search:with-engine/menuSelectDef)))
+;; (popup-menu (symbol-value (web:search:with-engine|define)))
 ;; 
-(defun web:search:with-engine/menuSelectDef ()
+(defun web:search:with-engine|define ()
   ""
-  (interactive)
   (let (
 	($menuHeading "Search With Engine")
 	)  
@@ -180,6 +258,46 @@ As such what happens below should be exactly what is necessary and no more."
 	       (engine/list-commands)
 	       )))
     'web:search:with-engine
+    ))
+
+;; ($:web:search|selectAsPrimary 'engine/search-google)
+(defun  $:web:search|selectAsPrimary(<each)
+  "Returns a menuItem vector. Requires dynamic update."
+  (car
+   `(
+     [
+      ,(format "Select As Primary: %s" <each)
+      (setq engine/primary ',<each)
+      :help ,(format "Selected Web Search Browser -- (setq engine/primary %s)" <each)
+      :active t
+      :visible t
+      :style radio	  
+      :selected ,(eq engine/primary <each)
+      ]
+     )))
+
+;;
+;; (popup-menu (symbol-value (web:search:select-primary-engine|define)))
+;;
+(defun web:search:select-primary-engine|define ()
+  ""
+  (let (
+	($menuHeading "Selected Primary Search Engine")
+	)
+    (setq web:search:select-primary-engine:radio 'radio)
+    (easy-menu-define
+      web:search:select-primary
+      nil
+      "" 
+      (append
+       (list $menuHeading)
+       (list "---")
+       (mapcar (lambda (<each)
+		 ($:web:search|selectAsPrimary <each)
+		 )
+	       (engine/list-commands)
+	       )))
+    'web:search:select-primary
     ))
 
 ;; (web:search:menu:help|define)
