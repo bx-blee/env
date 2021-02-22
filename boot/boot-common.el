@@ -257,12 +257,12 @@
   (require 'browse-url)
 
   ;;(setq browse-url-browser-function 'browse-url-mozilla)
-  ;;(setq browse-url-browser-function 'browse-url-firefox)
+  (setq browse-url-browser-function 'browse-url-firefox)
   ;;(setq browse-url-firefox-program "/opt/public/osmt/bin/firefox-bx")
   ;;(setq browse-url-browser-function 'browse-url-generic)
   ;;(setq browse-url-generic-program "/opt/public/osmt/bin/firefox-bx")
 
-  (setq browse-url-browser-function 'blee:xinf:selected:browse-url/at-point)
+  ;;  (setq browse-url-browser-function 'blee:xinf:selected:browse-url/at-point)
   
   ;; -----------------------------------------------------------------
   ;; C and C++ Programming Language -- Software Development 

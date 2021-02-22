@@ -16,6 +16,8 @@
 
 (require 'easymenu)
 
+(require 'browsers-menu)
+
 (require 'engine-mode)
 
 
@@ -33,9 +35,9 @@
     current-word))
 
 
-(defcustom engine/primary nil
+(defcustom engine/primary 'engine/search-google
   "The primary (default) search engine.
-Defaults to `nil' which means to search with `engine/search-google'."
+Defaults to `engine/search-google'."
   :group 'engine-mode
   :type 'symbol)
 
