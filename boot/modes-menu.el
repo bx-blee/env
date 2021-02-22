@@ -40,6 +40,8 @@ C-c s 9 is list subject to words for secondary language.
 
 (require 'browsers-menu)
 
+(require 'nafm-menu)
+
 (require 'org-roam-menu)
 (require 'org-roam-server-menu)
 
@@ -94,7 +96,7 @@ For use in delimiters in easy-menu-define"
       modes:menu:global
       global-map
       "Global Minor Mode Plus Menu"
-      `("Modes"
+      `("Acts"
 	:help "Global Minor Mode Plus Menu (Modes)"
 	,(s-- 3)
 	,(s-- 4)
@@ -102,6 +104,7 @@ For use in delimiters in easy-menu-define"
 	,(s-- 6)
 	,(s-- 7)
 	,(s-- 8)
+	,(s-- 9)	
 	))
 
     (browsers:modes:menu:plugin/install
@@ -110,11 +113,14 @@ For use in delimiters in easy-menu-define"
     (web:search:modes:menu:plugin/install
      modes:menu:global (s-- 4))
 
+    (nafm:modes:menu:plugin/install
+     modes:menu:global (s-- 5))
+
     (easy-menu-add-item
      modes:menu:global
      nil
      (modes:menu:global-minor|define)
-     (s-- 5))
+     (s-- 6))
 
     (progn
       (org-roam:modes:global-minor:menu:plugin|install
@@ -124,7 +130,7 @@ For use in delimiters in easy-menu-define"
     (easy-menu-add-item
      modes:menu:global nil
      (modes:menu:local-minor|define)
-     (s-- 6))
+     (s-- 7))
 
     (progn
       (modes:fill-column:menu:plugin|install
@@ -149,7 +155,7 @@ For use in delimiters in easy-menu-define"
     (easy-menu-add-item
      modes:menu:global nil
      (modes:menu:help|define)
-     (s-- 6))
+     (s-- 8))
   ))
 
 

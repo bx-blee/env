@@ -30,6 +30,37 @@ XINFs contain eXternally Integrated Applications (XIA) such as an EAF-browser.
 
 (require 'easymenu)
 
+
+;; (nafm:modes:menu:plugin/install modes:menu:global (s-- 3))
+(defun nafm:modes:menu:plugin/install (<menuLabel <menuDelimiter)
+  "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."
+  (interactive)
+
+  (easy-menu-add-item
+   <menuLabel
+   nil
+   (nafm:modes:menu|define :active t)
+   <menuDelimiter
+   )
+
+  (add-hook 'menu-bar-update-hook 'nafm:menu|update-hook)
+  )
+
+(defun nafm:menu|update-hook ()
+  "This is to be added to menu-bar-update-hook. 
+It runs everytime any menu is invoked.
+As such what happens below should be exactly what is necessary and no more."
+  ;;(nafm:modes:menu|define)
+  )
+
+(defun browsers:menu|update-hook ()
+  "This is to be added to menu-bar-update-hook. 
+It runs everytime any menu is invoked.
+As such what happens below should be exactly what is necessary and no more."
+  ;;(browsers:menu|define)
+  )
+
+
 ;; (nafm:menu-bar/install)
 (defun nafm:menu-bar/install ()
   "Primary interface."
@@ -556,15 +587,19 @@ For use in delimiters in easy-menu-define"
 ;; http://mohsen.1.banan.byname.net
 ;; 
 
-;; (nafm:menu:global|define)
-(defun nafm:menu:global|define ()
-  "Top level menu for all things xia related."
-  (let (($thisFuncName (compile-time-function-name)))
+;; (nafm:modes:menu|define)
+(defun nafm:modes:menu|define (&rest <namedArgs)
+  "Top level menu for all things xia related." 
+  (let (
+	(<visible (get-arg <namedArgs :visible t))
+	(<active (get-arg <namedArgs :active t))
+	($thisFuncName (compile-time-function-name))
+	)
     (easy-menu-define
-      nafm:menu:global
-      global-map
+      nafm:modes:menu
+      nil
       "Global NAFM Menu"
-      `("NAFM"
+      `("Named Activities Frame Manager (NAFM)"
 	:help "Named Activities Frame Manager (NAFM) and XIA eXternally Integrated Apps"
 	,(s-- 3)
 	,(s-- 4)
@@ -574,61 +609,62 @@ For use in delimiters in easy-menu-define"
 	,(s-- 8)	
 	))
 
-    (easy-menu-add-item
-     nil '("NAFM")
-     (nafm:menuItem:selected-if:browse-at-point|define)
-     (s-- 3))
+    ;; (easy-menu-add-item
+    ;;  nil '("NAFM")
+    ;;  (nafm:menuItem:selected-if:browse-at-point|define)
+    ;;  (s-- 3))
+
+    ;; (easy-menu-add-item
+    ;;  nil '("NAFM")  
+    ;;  ;; (nafm:menu:browse-url:at-point|define :active nil :visible nil)
+    ;;  (nafm:menu:browse-url:at-point|define :active t)
+    ;;  (s-- 3))
+
+    ;; (easy-menu-add-item
+    ;;  nil '("NAFM")
+    ;;  (nafm:menuItem:selected-if:search-with|define)
+    ;;  (s-- 4))
+
+    ;; (easy-menu-add-item
+    ;;  nil '("NAFM")
+    ;;  (nafm:menu:search-engines|define)
+    ;;  (s-- 4))
 
     (easy-menu-add-item
-     nil '("NAFM")  
-     ;; (nafm:menu:browse-url:at-point|define :active nil :visible nil)
-     (nafm:menu:browse-url:at-point|define :active t)
-     (s-- 3))
-
-    (easy-menu-add-item
-     nil '("NAFM")
-     (nafm:menuItem:selected-if:search-with|define)
-     (s-- 4))
-
-    (easy-menu-add-item
-     nil '("NAFM")
-     (nafm:menu:search-engines|define)
-     (s-- 4))
-
-    (easy-menu-add-item
-     nil '("NAFM")
+     nafm:modes:menu nil
      (nafm:menuItem:xia:browser:atPoint:open-with-history|define)
      (s-- 5))
 
     (easy-menu-add-item
-     nil '("NAFM")
+     nafm:modes:menu nil
      (nafm:menu:destinations|define)
      (s-- 5))
 
     (easy-menu-add-item
-     nil '("NAFM")
+     nafm:modes:menu nil
      (nafm:menuItem:xia:browser:atPoint:raise|define)
      (s-- 6))
 
     (easy-menu-add-item
-     nil '("NAFM")
+     nafm:modes:menu nil
      (nafm:menu:xinf:browse-url:at-point|define)
      (s-- 6))     
 
     (easy-menu-add-item
-     nil '("NAFM") 
+     nafm:modes:menu nil
      (nafm:nf:manage/menuSelectDef nafm:named-frame:list)
      (s-- 7))
 
     (easy-menu-add-item
-     nil '("NAFM")
+     nafm:modes:menu nil
      (nafm:nfActivity:manage/menuSelectDef nafm:nfActivity:list)
      (s-- 7))
     
     (easy-menu-add-item
-     nil '("NAFM")
+     nafm:modes:menu nil
      (nafm:menu:help|define))
     )
+  'nafm:modes:menu
   )
 
 ;;

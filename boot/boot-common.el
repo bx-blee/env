@@ -478,8 +478,8 @@
   ;; (require 'gmmp-menu)
   ;; (gmmp:menu-bar/install)  
  
-  (require 'nafm-menu)
-  (nafm:menu:global|define)
+  ;; (require 'nafm-menu)
+  ;; (nafm:menu:global|define)
   
   (require 'blee-menu-activities)
   (blee:activities:menu)
