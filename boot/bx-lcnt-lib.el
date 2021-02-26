@@ -35,6 +35,7 @@
 )
 
 ;;;   (bx:lcnt:info:base-read-dir "/lcnt/lgpc/mohsen/permanent/polyExistential/mb_polyExistentials")
+;;;   (bx:lcnt:info:base-read-dir "/bxo/iso/pip_lcnt_polyexistentals/lcnt/lgpc/permanent/mb_polyExistentials")
 (defun bx:lcnt:info:base-read-dir (dir)
   ""
   (interactive "DEnter Directory:")

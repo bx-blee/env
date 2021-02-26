@@ -2975,20 +2975,20 @@ This is a Libre-Halaal poly-existential.
 \\end{comment}
 
 \\begin{quote}
-  \\textbf{%s}\\\\"
+  \\textbf{%s}\\newline"
 		      in:lcntNu
 		      lcnt-mainTitle
 		      ))
 
       (when (not (string-equal (format "%s" lcnt-subTitle) ""))
 	(insert (format "
-  \\textbf{%s}\\\\"
+  \\textbf{%s}\\newline"
 			lcnt-subTitle
 			)))
 
       (when (not (string-equal (format "%s" lcnt-subSubTitle) ""))
 	(insert (format "
-  \\textbf{%s}\\\\"
+  \\textbf{%s}\\newline"
 			lcnt-subSubTitle
 			)))
 
@@ -2999,7 +2999,7 @@ This is a Libre-Halaal poly-existential.
 		      ))
 
       (when (not (string-equal (format "%s" in:cite) "disabled"))
-	(insert (format "  --- \\cite{%s}\\\\
+	(insert (format "  --- \\cite{%s}\\newline
 "
 			in:lcntNu
 			))
