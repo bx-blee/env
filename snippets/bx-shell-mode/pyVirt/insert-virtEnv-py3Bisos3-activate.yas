@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
-# name: Insert py3-bisos-3 activate
+# name: I: source /bisos/venv/py3/bisos3/bin/activate
 # key: pyVirt/insert-py3-bisos-3 activate
 # group: pyVirt
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-source /bisos/venv/py3-bisos-3/bin/activate$0
+source /bisos/venv/py3/bisos3/bin/activate$0
