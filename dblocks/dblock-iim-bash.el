@@ -339,7 +339,7 @@ fi")
 	local commandName=${FUNCNAME##vis_}		
 	lpDo sshpass -p intra ${sshCmnd} %s@\"${targetName}\" \\
 	     $(which ${G_myName}) ${G_commandPrefs} \\
-	     -p targetName=onTargetRun -i ${commandName}
+	     -p targetName=onTargetRun ${G_paramCmndOption} -i ${commandName}
     fi"
 			<sshAcct 
 			)
