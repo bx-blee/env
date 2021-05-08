@@ -285,6 +285,22 @@ fi")
     ))
 
 
+(defun org-dblock-write:bx:bsip:bash/onTargetRun (params)
+  (insert 
+   "\
+    if [ -z \"${targetName}\" ] ; then
+	lpDo onTargetRun
+    else
+	local commandName=${FUNCNAME##vis_}		
+	lpDo sshpass -p intra ${sshCmnd} bystar@\"${targetName}\" \\
+	     $(which ${G_myName}) ${G_commandPrefs} \\
+	     -i ${commandName}
+    fi\
+"
+   )
+  )
+
+
 (defun org-dblock-write:bx:bsip:bash/processArgsAndStdinEach (params)
   (insert 
    "\
