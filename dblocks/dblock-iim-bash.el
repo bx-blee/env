@@ -315,7 +315,7 @@ fi")
 	(when (string= <managerOrTarget "manager")
 	  (insert "\
     if [ -z \"${targetName}\" ] ; then
-       ANT_raw \"Can Only Be Run On Manager -- Can Not Be Run On Target.\"
+       EH_problem \"Can Not Be Run On Target. Run It On Manager And Specify targetName.\"
        lpReturn
     fi\n"
 		  )
@@ -324,7 +324,7 @@ fi")
 	(when (string= <managerOrTarget "target")
 	  (insert "\
     if [ ! -z \"${targetName}\" ] ; then
-       ANT_raw \"Can Only Run On Target. Can Not Be Run On Manager.\"
+       EH_problem \"Can Only Run On Target. Can Not Be Run On Manager.\"
        lpReturn
     fi\n"
 		  )
