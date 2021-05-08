@@ -284,21 +284,71 @@ fi")
 		)
     ))
 
+(advice-add 'org-dblock-write:bx:bsip:bash/onTargetRun :around #'bx:dblock:control|wrapper)
+(defun org-dblock-write:bx:bsip:bash/onTargetRun (<params)
+  "
+** When :runLocally? is nil don't run. :sshAcct is either intra or bystar.
+"
+  (let* (
+	 (<governor (letGet$governor)) (<extGov (letGet$extGov))
+	 (<outLevel (letGet$outLevel -1)) (<model (letGet$model))
+	 (<style (letGet$style "openBlank" "closeBlank"))
+	 ;;
+	 (<managerOrTarget (or (plist-get <params :managerOrTarget) "both"))
+	 (<sshAcct (or (plist-get <params :sshAcct) "bystar"))	 
+	 )
 
-(defun org-dblock-write:bx:bsip:bash/onTargetRun (params)
-  (insert 
-   "\
+    (bxPanel:params$effective)	 
+
+    (defun helpLine ()
+      "NOTYET"
+      )
+
+    (defun bodyContentPlus ()
+      )
+
+    (defun bodyContent ()
+      "If there is user data, insert it."
+      (let* (
+	     ($commonName)
+	     )
+	(when (string= <managerOrTarget "manager")
+	  (insert "\
     if [ -z \"${targetName}\" ] ; then
+       ANT_raw \"Can Only Be Run On Manager -- Can Not Be Run On Target.\"
+       lpReturn
+    fi\n"
+		  )
+	  )
+
+	(when (string= <managerOrTarget "target")
+	  (insert "\
+    if [ ! -z \"${targetName}\" ] ; then
+       ANT_raw \"Can Only Run On Target. Can Not Be Run On Manager.\"
+       lpReturn
+    fi\n"
+		  )
+	  )
+	
+	(insert (format "\
+    if [ \"${targetName}\" == \"onTargetRun\" ] ; then
+	lpDo onTargetRun
+    elif [ -z \"${targetName}\" ] ; then
 	lpDo onTargetRun
     else
 	local commandName=${FUNCNAME##vis_}		
-	lpDo sshpass -p intra ${sshCmnd} bystar@\"${targetName}\" \\
+	lpDo sshpass -p intra ${sshCmnd} %s@\"${targetName}\" \\
 	     $(which ${G_myName}) ${G_commandPrefs} \\
-	     -i ${commandName}
-    fi\
-"
-   )
-  )
+	     -p targetName=onTargetRun -i ${commandName}
+    fi"
+			<sshAcct 
+			)
+		)
+	)
+      )
+    
+    (bx:invoke:withStdArgs$bx:dblock:governor:process)    
+    ))
 
 
 (defun org-dblock-write:bx:bsip:bash/processArgsAndStdinEach (params)
