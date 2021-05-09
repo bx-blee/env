@@ -295,7 +295,8 @@ fi")
 	 (<style (letGet$style "openBlank" "closeBlank"))
 	 ;;
 	 (<managerOrTarget (or (plist-get <params :managerOrTarget) "both"))
-	 (<sshAcct (or (plist-get <params :sshAcct) "bystar"))	 
+	 (<sshAcct (or (plist-get <params :sshAcct) "bystar"))
+	 (<cmndOption (or (plist-get <params :cmndOption) nil))	 	 
 	 )
 
     (bxPanel:params$effective)	 
@@ -310,7 +311,7 @@ fi")
     (defun bodyContent ()
       "If there is user data, insert it."
       (let* (
-	     ($commonName)
+	     ($cmndOptionStr "")
 	     )
 	(when (string= <managerOrTarget "manager")
 	  (insert "\
@@ -329,6 +330,9 @@ fi")
     fi\n"
 		  )
 	  )
+
+	(when <cmndOption
+	  (setq $cmndOptionStr "${G_paramCmndOption}"))
 	
 	(insert (format "\
     if [ \"${targetName}\" == \"onTargetRun\" ] ; then
@@ -339,9 +343,9 @@ fi")
 	local commandName=${FUNCNAME##vis_}		
 	lpDo sshpass -p intra ${sshCmnd} %s@\"${targetName}\" \\
 	     $(which ${G_myName}) ${G_commandPrefs} \\
-	     -p targetName=onTargetRun ${G_paramCmndOption} -i ${commandName}
+	     -p targetName=onTargetRun %s -i ${commandName}
     fi"
-			<sshAcct 
+			<sshAcct $cmndOptionStr
 			)
 		)
 	)
