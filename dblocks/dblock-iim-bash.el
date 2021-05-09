@@ -332,7 +332,7 @@ fi")
 	  )
 
 	(when <cmndOption
-	  (setq $cmndOptionStr "${G_paramCmndOption}"))
+	  (setq $cmndOptionStr "$(sansTargetName \"${G_paramCmndOption}\")"))
 	
 	(insert (format "\
     if [ \"${targetName}\" == \"onTargetRun\" ] ; then
@@ -343,7 +343,8 @@ fi")
 	local commandName=${FUNCNAME##vis_}		
 	lpDo sshpass -p intra ${sshCmnd} %s@\"${targetName}\" \\
 	     $(which ${G_myName}) ${G_commandPrefs} \\
-	     -p targetName=onTargetRun %s -i ${commandName}
+	     -p targetName=onTargetRun %s \\
+             -i ${commandName}
     fi"
 			<sshAcct $cmndOptionStr
 			)
