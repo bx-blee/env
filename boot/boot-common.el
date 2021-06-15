@@ -494,12 +494,20 @@
   (require 'org-roam-server-menu)  
   ;; (org-roam:menu-bar/install)
 
-  (if (file-directory-p (expand-file-name "~/BUE/elisp"))
-      (progn
-	(require 'bue-acct-main)
-	(if (fboundp 'bue:acct:main)
-	    (bue:acct:main))
-	))
+
+  (when (blee:bue:base-obtain)
+    (require 'bue-acct-main)
+    (if (fboundp 'bue:acct:main)
+	(bue:acct:main))
+    )
+ 
+  
+  ;; (if (file-directory-p (expand-file-name "~/BUE/elisp"))
+  ;;     (progn
+  ;; 	(require 'bue-acct-main)
+  ;; 	(if (fboundp 'bue:acct:main)
+  ;; 	    (bue:acct:main))
+  ;; 	))
 
   ;;
   (setq-default lpr-switches '("-2P -t"))
