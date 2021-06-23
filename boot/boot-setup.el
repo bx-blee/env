@@ -239,7 +239,7 @@ This must be non-emacs version specific code.")
 * ByStar User Environment (BUE) Bases
 ")
 
-(defun blee:bue:base-obtain ()
+(defun blee:bue:base-obtain%% ()
   "Either ~/BUE/elisp or ~/blee"
   (let* (bueElispBase (expand-file-name "~/BUE/elisp"))
     )
@@ -343,6 +343,7 @@ This must be non-emacs version specific code.")
 			;; estranged -eoeb.el file directories
 			;;
 			(list *eoe-ver-esfiles-dir* *eoe-esfiles-dir*)
+			;;
 			;;
 			;; prepend to the existing load-path
 			;;

@@ -140,7 +140,33 @@
 * ByStar User Environment (BUE) Bases
 ")
 
+;;; (file-directory-p "/bxo/r3/iso/piu_mbFullUsage/blee/elisp")
+;;; (blee:bue:base-obtain)
 (defun blee:bue:base-obtain ()
+  "Using usgBpos we get the usage env base"
+  (let*
+      (
+       ($fullUseBxoPath
+	(replace-regexp-in-string "\n$" "" 
+	 (shell-command-to-string
+	  "usgBpos.sh -i usgBpos_usageEnvs_fullUse_bxoPath")))
+       ($bueElispBase
+	(expand-file-name
+	 (format "%s/blee/elisp" $fullUseBxoPath)))
+       ($result)
+       )
+    ;;(message $bueElispBase)
+    (when (file-directory-p $bueElispBase)
+      (setq $result $bueElispBase))
+
+    (unless (file-directory-p $bueElispBase)  
+      (setq $result nil))
+    $result
+    )
+  )
+
+
+(defun blee:bue:base-obtain%% ()
   "Either ~/BUE/elisp or ~/blee"
   (let* (bueElispBase (expand-file-name "~/BUE/elisp"))
     )
@@ -252,6 +278,7 @@
 	    (blee:load-path:add (blee:env:dblocks:base-obtain))
 	    (blee:load-path:add (blee:env:widgets:base-obtain))
 	    (blee:load-path:add (blee:env:eoe:base-obtain))
+	    
 	    (blee:load-path:add 
 	     (file-name-as-directory
 	      (concat (file-name-as-directory (blee:env:base-obtain)) "eoe/lisp/sys/")))
@@ -260,7 +287,9 @@
 	     (file-name-as-directory
 	      (concat (file-name-as-directory (blee:env:base-obtain)) "eoe/lisp/pkgs/27f")))
 	    
-	    (blee:load-path:add "~/BUE/elisp")
+	    ;; (blee:load-path:add "~/BUE/elisp")
+	    (blee:load-path:add (blee:bue:base-obtain))
+	    
 	    (blee:load-path:add "/opt/public/neweoe/lisp/public/bbdb-filters-0.51")	    
 	    ))
 
