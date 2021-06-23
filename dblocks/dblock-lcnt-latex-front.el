@@ -139,7 +139,7 @@
 \\usepackage{caption}
 
 \\usepackage{fontspec}
-\\usepackage{xltxtra}
+% \\usepackage{xltxtra}  % For ubuntu-2004
 \\usepackage{xunicode}
 ")
 
@@ -241,7 +241,7 @@
 \\usepackage{caption}
 
 \\usepackage{fontspec}
-\\usepackage{xltxtra}
+% \\usepackage{xltxtra}
 \\usepackage{xunicode}
 ")
        (if (not (equal bx:class "art+pres"))
@@ -536,7 +536,7 @@
       (when (equal bx:langs "en+fa")
 	(insert "
 \\usepackage{fontspec}
-\\usepackage{xltxtra}
+% \\usepackage{xltxtra}
 \\usepackage{xunicode}
 \\usepackage{bidi}
 
