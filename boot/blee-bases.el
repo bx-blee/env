@@ -258,12 +258,14 @@
 
 (defun blee:load-path:add (@dirPath)
   "@dirPath is added to load-path after verification."
-  ;;(blee:ann|this-func (compile-time-function-name))  
-  (let (
-	($dirPath (expand-file-name @dirPath))
+  ;;(blee:ann|this-func (compile-time-function-name))
+  (when @dirPath
+    (let (
+	  ($dirPath (expand-file-name @dirPath))
+	  )
+      (if (file-directory-p $dirPath)
+	  (add-to-list 'load-path $dirPath)
 	)
-    (if (file-directory-p $dirPath)
-	(add-to-list 'load-path $dirPath)
       )))
 
 

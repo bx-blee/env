@@ -391,7 +391,7 @@ fi")
   (insert 
    "\
     function processStdinWithArgs {
-	local stdinArgs
+	local stdinArgs=()
 	local each
 	if [ ! -t 0 ]; then # FD 0 is not opened on a terminal, there is a pipe
 	    readarray stdinArgs < /dev/stdin
@@ -414,7 +414,7 @@ fi")
    "\
      function processArgsAndStdin {
 	local effectiveArgs=( \"$@\" )
-	local stdinArgs
+	local stdinArgs=()
 	local each
 	if [ ! -t 0 ]; then # FD 0 is not opened on a terminal, there is a pipe
 	    readarray stdinArgs < /dev/stdin
