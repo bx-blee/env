@@ -47,7 +47,7 @@
      ;; (shell-command-to-string 
      ;;  "find .  -maxdepth 1 -type d -print  | sed -e s:^./:: | egrep -v '^\.$' | egrep -v '^CVS$' | grep -v 'index_html'" )
      (shell-command-to-string 
-      "/opt/public/osmt/bin/seedPlone3NewProc.sh -v -n showRun -i nodesListThere . 2> /dev/null")
+      "seedPlone3NewProc.sh -v -n showRun -i nodesListThere . 2> /dev/null")
       )
     (insert "\"\n")
     (insert "# }}} DBLOCK-nodesList")
@@ -65,7 +65,7 @@
      ;; (shell-command-to-string 
      ;;  "find .  -maxdepth 1 -type d -print  | sed -e s:^./:: | egrep -v '^\.$' | egrep -v '^CVS$' | grep 'index_html'" )
      (shell-command-to-string 
-      "/opt/public/osmt/bin/seedPlone3NewProc.sh -v -n showRun -i leavesListThere . 2> /dev/null")
+      "seedPlone3NewProc.sh -v -n showRun -i leavesListThere . 2> /dev/null")
       )
     (insert "\"\n")
     (insert "# }}} DBLOCK-leavesList")
