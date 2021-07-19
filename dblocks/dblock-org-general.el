@@ -1956,6 +1956,13 @@ Sections are specified as :outLevel 1,n
       (insert
        (format
 	"%s \
+ [[elisp:(bap:magit:bpo-repos/visit)][BPO-Repos-Magit]] ||
+"
+	"**"
+	))
+      (insert
+       (format
+	"%s \
  [[elisp:(blee:buf:re-major-mode)][Re-Major-Mode]] ||  [[elisp:(org-dblock-update-buffer-bx)][Update Buf Dblocks]] || [[elisp:(org-dblock-bx-blank-buffer)][Blank Buf Dblocks]] || [[elisp:(bx:panel:variablesShow)][bx:panel:variablesShow]]
 "
 	"**"

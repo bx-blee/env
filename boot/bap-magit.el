@@ -86,7 +86,65 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
   (message "blee:ann -- TMP -- bap:magit:install/update")
   ;;(setq magit-git-standard-options
   ;; (append magit-git-standard-options '("-c") '("http.sslVerify=false")))
+
+  (setq magit-repolist-columns
+	'(("Name"    25 magit-repolist-column-ident ())
+          ("Version" 25 magit-repolist-column-version ())
+          ("D"        1 magit-repolist-column-dirty ())
+          ("B<U"      3 magit-repolist-column-unpulled-from-upstream
+           ((:right-align t)
+            (:help-echo "Upstream changes not in branch")))
+          ("B>U"      3 magit-repolist-column-unpushed-to-upstream
+           ((:right-align t)
+            (:help-echo "Local changes not in upstream")))
+          ("Path"    99 magit-repolist-column-path ()))
+	)
   )
+
+(defun bap:magit:bpo-repos/list () "
+*** Based on current buffer, determine cur-dir and bpo. List bpos repos.
+"
+  (interactive)
+  ;; (blee:ann|this-func (compile-time-function-name))
+  (let (
+	($shellCommand)
+	($reposListAsString)
+	($reposList)
+	)
+    (setq $shellCommand
+	  (format "bxoReposManage.sh -i basedOnPath_reposPathList %s" buffer-file-name))
+    (setq $reposListAsString (shell-command-to-string $shellCommand))
+    (setq $reposList (s-split "\n" $reposListAsString))
+    )
+  )
+
+(defun bap:magit:bpo:magit-repository-directories/set ()  "
+*** Sets the magit-repository-directories based on (bap:magit:bpo-repos/list)
+"
+  (interactive)
+  (blee:ann|this-func (compile-time-function-name))
+  (setq magit-repository-directories nil)
+  (dolist (<each (bap:magit:bpo-repos/list))
+    (let (
+	  ($assocList)
+	  )
+      (unless (string-equal <each "")
+	(setq $assocList (acons <each 0 $assocList))
+	(setq magit-repository-directories
+              (append magit-repository-directories $assocList)))
+      )
+    )
+  )
+
+
+(defun bap:magit:bpo-repos/visit () "
+*** Main panel usage interface.
+"
+  (interactive)
+  (bap:magit:bpo:magit-repository-directories/set)
+  (magit-list-repositories)
+  )
+   
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
