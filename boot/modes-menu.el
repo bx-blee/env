@@ -11,31 +11,6 @@
 **
 ")
 
-(orgCmntBegin "
-** TODO NOTYET, absorb orgCmntBegin in the right place.
-   SCHEDULED: <2021-02-17 Wed>
-" orgCmntEnd)
-
-(lambda () "
-
-Next Steps
-Capture this in a function.
-
-Also, consider
-
-(featurep 'org-roam)
-
-(if org-roam-mode
-    (message \"Enabled\")
-  (message \"Disabled\"))
-
-Add engine/primary engine/secondary
-Add C-c s 1 for primary 2 and 3.
-C-c s 0 is list subject to words for globish.
-C-c s 9 is list subject to words for secondary language.
-
-")
-
 (require 'easymenu)
 
 (require 'browsers-menu)
@@ -63,7 +38,6 @@ C-c s 9 is list subject to words for secondary language.
   )
 
 ;;(setq browse-url-default-browser 'browse-url-chrom)
-
 
 
 (defun modes:menu-bar|update-hook ()

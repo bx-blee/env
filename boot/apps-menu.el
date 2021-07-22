@@ -16,32 +16,13 @@
    SCHEDULED: <2021-02-17 Wed>
 " orgCmntEnd)
 
-(lambda () "
-
-Next Steps
-Capture this in a function.
-
-Also, consider
-
-(featurep 'org-roam)
-
-(if org-roam-mode
-    (message \"Enabled\")
-  (message \"Disabled\"))
-
-Add engine/primary engine/secondary
-Add C-c s 1 for primary 2 and 3.
-C-c s 0 is list subject to words for globish.
-C-c s 9 is list subject to words for secondary language.
-
-")
-
 (require 'easymenu)
 
 
 (require 'apps-calc-menu)
 (require 'apps-calendar-menu)
 (require 'apps-bbdb-menu)
+(require 'apps-org-menu)
 
 ;; (apps:menu-bar|install)
 (defun apps:menu-bar|install ()
@@ -88,7 +69,9 @@ As such what happens below is exactly what is necessary and no more."
 
     (apps:bbdb:menu:plugin|install
      apps:menu:global (s-- 4))
-    
+
+    (apps:org:menu:plugin|install
+     apps:menu:global (s-- 4))
   ))
 
 (provide 'apps-menu)

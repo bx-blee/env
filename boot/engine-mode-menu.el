@@ -12,6 +12,28 @@
 ** 
 ")
 
+
+(lambda () "
+
+Next Steps
+Capture this in a function.
+
+Also, consider
+
+(featurep 'org-roam)
+
+(if org-roam-mode
+    (message \"Enabled\")
+  (message \"Disabled\"))
+
+Add engine/primary engine/secondary
+Add C-c s 1 for primary 2 and 3.
+C-c s 0 is list subject to words for globish.
+C-c s 9 is list subject to words for secondary language.
+
+")
+
+
 (require 'browse-url)
 
 (require 'easymenu)
