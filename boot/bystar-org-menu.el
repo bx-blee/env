@@ -1,6 +1,8 @@
 ;;;
 ;;;
 
+;;; OBSOLETED BY apps-org-menu.el -- Should be deleted.
+
 ;;; NOTYET, From KBD perspective, this matches activities menu
 
 (require 'easymenu)

@@ -72,6 +72,12 @@ As such what happens below is exactly what is necessary and no more."
 
     (apps:org:menu:plugin|install
      apps:menu:global (s-- 4))
+
+    ;;; Other Apps That Need Starter
+    ;;; Gnus Email Reading
+    ;;; Gnus Email Sending
+    ;;; Magit -- Start Status
+    
   ))
 
 (provide 'apps-menu)

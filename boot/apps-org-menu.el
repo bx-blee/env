@@ -26,65 +26,6 @@ As such what happens below should be exactly what is necessary and no more."
   ;;(modes:menu:global|define)
   )
 
-(defun apps:org:menuItem:name-search|define ()
-  "Returns a menuItem vector."
-  (car
-   `(
-     [,(format "Name Search")
-      (orgOneWin)
-      :help "Name Search -- (orgOneMenu)"
-      :active t
-      :visible t
-      ]
-     )))
-
-(defun apps:org:menuItem:phone-number-search|define ()
-  "Returns a menuItem vector."
-  (car
-   `(
-     [,(format "Phone Number Search")
-      (org-phones)
-      :help "Phone Number Search -- (org-phones)"
-      :active t
-      :visible t
-      ]
-     )))
-
-(defun apps:org:menuItem:create-entry|define ()
-  "Returns a menuItem vector."
-  (car
-   `(
-     [,(format "Create Entry")
-      (org-create)
-      :help "Create Entry -- (org-create)"
-      :active t
-      :visible t
-      ]
-     )))
-
-(defun apps:org:menuItem:describe|define ()
-  "Returns a menuItem vector."
-  (car
-   `(
-     [
-      "On-Line Help"
-      (find-file-at-point "https://www.gnu.org/software/emacs/manual/html_node/calc/index.html")
-      :help "On-Line Help -- (visit web info)"
-      :active t
-      :visible t
-      ]
-     )))
-
-
-(defun orgOneWin ()
-  "org one window"
-  (interactive)
-  (call-interactively 'org)
-  (switch-to-buffer (get-buffer "*ORG*"))
-  (delete-other-windows)
-  )
-
-
 ;;;  NOTYET, Taken from bystar:org:menu:define
 
 ;;
@@ -103,10 +44,10 @@ As such what happens below should be exactly what is necessary and no more."
     (easy-menu-define
       apps:org:menu
       nil
-      (format "Contacts (ORG) Menu")
+      (format "org-mode Menu")
       `(
-	,(format "Contacts (ORG) Menu")
-	:help "Contacts (ORG) Menu"
+	,(format "org-mode Menu")
+	:help "For additional features and for global start functions"
 	:active ,<active
 	:visible t
 	,(s-- 3)
@@ -198,7 +139,7 @@ As such what happens below should be exactly what is necessary and no more."
   "Returns a menuItem vector."
   (car
    `(
-     [,(format "Store A Link")
+     [,(format "Global: Store A Link")
       (call-interactively 'org-store-link)
       :help "Store A Link For Future Use -- (org-store-link)"
       :active t
@@ -217,19 +158,6 @@ As such what happens below should be exactly what is necessary and no more."
       :visible t
       ]
      )))
-
-(defun apps:org:menuItem:org-insert-link|define ()
-  "Returns a menuItem vector."
-  (car
-   `(
-     [,(format "Insert A Link")
-      (org-insert-link)
-      :help "Insert A Link, perhaps using the previous org-store-link -- (org-insert-link)"
-      :active t
-      :visible t
-      ]
-     )))
-
 
 
 ;; (easy-menu-add-item nil '("Blee") 'bystar:org:menu:definition "Blee Help")
