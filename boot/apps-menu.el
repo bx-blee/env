@@ -76,8 +76,7 @@ As such what happens below is exactly what is necessary and no more."
     ;;; Other Apps That Need Starter
     ;;; Gnus Email Reading
     ;;; Gnus Email Sending
-    ;;; Magit -- Start Status
-    
+    ;;; Magit -- Start Status, bap:magit:bpo-repos/visit; Functions that make sense in repos buffer
   ))
 
 (provide 'apps-menu)

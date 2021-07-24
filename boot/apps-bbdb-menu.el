@@ -109,7 +109,7 @@ As such what happens below should be exactly what is necessary and no more."
   (car
    `(
      [,(format "Create Entry")
-      (bbdb-create)
+      (call-interactively 'bbdb-create)
       :help "Create Entry -- (bbdb-create)"
       :active t
       :visible t
