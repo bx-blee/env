@@ -23,6 +23,9 @@
 (require 'apps-calendar-menu)
 (require 'apps-bbdb-menu)
 (require 'apps-org-menu)
+(require 'apps-outmail-menu)
+(require 'apps-inmail-menu)
+(require 'apps-magit-menu)
 
 ;; (apps:menu-bar|install)
 (defun apps:menu-bar|install ()
@@ -41,11 +44,12 @@ As such what happens below is exactly what is necessary and no more."
   (apps:menu:global|define)
   )
 
-;;
-;; (popup-menu (symbol-value (apps:menu:global|define)))
-;; (apps:menu:global|define)
-(defun apps:menu:global|define ()
-  "Top level menu for all things global minor mode related."
+(defun apps:menu:global|define () "
+** Top level menu for all things global minor mode related.
+*** Testing
+**** (apps:menu:global|define)
+**** (popup-menu (symbol-value (apps:menu:global|define)))
+"
   (let (($thisFuncName (compile-time-function-name)))
     (easy-menu-define
       apps:menu:global
@@ -68,12 +72,22 @@ As such what happens below is exactly what is necessary and no more."
      apps:menu:global (s-- 4))
 
     (apps:bbdb:menu:plugin|install
-     apps:menu:global (s-- 4))
+     apps:menu:global (s-- 5))
 
     (apps:org:menu:plugin|install
-     apps:menu:global (s-- 4))
+     apps:menu:global (s-- 6))
 
-    ;;; Other Apps That Need Starter
+    (apps:outmail:menu:plugin|install
+     apps:menu:global (s-- 7))
+
+    (apps:inmail:menu:plugin|install
+     apps:menu:global (s-- 7))
+
+    (apps:magit:menu:plugin|install
+     apps:menu:global (s-- 8))
+    
+    ;;; Other Apps That Need Starters
+    ;;;
     ;;; Gnus Email Reading
     ;;; Gnus Email Sending
     ;;; Magit -- Start Status, bap:magit:bpo-repos/visit; Functions that make sense in repos buffer

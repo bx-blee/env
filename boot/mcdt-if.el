@@ -33,7 +33,7 @@
 (defmacro mcdt:setup$with-filePath (<mailingFilePath)
   "Creates/Defines all mcdt:xx commands based on <mailingFilePath.
 Base function for other mcdt:setup:s map to this.
-Needs to be a macro, so that ,<mailingFilePath is cpatured.
+Needs to be a macro, so that ,<mailingFilePath is captured.
 Is expected to be invoked once for each <mailingFilePath.
 For use by elisp applications.
 "
@@ -74,7 +74,7 @@ interactive P is necessary.
 gensym did not work, ended up using mcdt:cur:buffer which works but is obviously not the right way.
 NOTYET, we need a wrapper around mcdt:setup/with-curBuffer.
 Is not expected to be invoked by any external user. $: indicates it is local to this module.
-External user uses mcdt:setup/with-curBuffer
+External user uses mcdt:setup/with-curBuffer which then invoke macros based on current buffer.
 "
   `(fset (intern "mcdt:setup:gened/with-curBuffer")
 	 (lambda (params)
@@ -90,8 +90,9 @@ External user uses mcdt:setup/with-curBuffer
 
  
 ;; Example  "~/BUE/mailings/start/family.fa/blank/basicText.fa/content.mail"
-(defun mcdt:setup/with-curBuffer (args)
-  ""
+(defun mcdt:setup/with-curBuffer (args)  "
+** For use by external users. Primary Buffer Based User Interface.
+"
   (interactive "p")
   (let* (
 	 ($mailingFilePath (buffer-file-name))
