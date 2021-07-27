@@ -65,6 +65,10 @@ As such what happens below should be exactly what is necessary and no more."
      (apps:magit:menuItem:magit:bpo-repos|define)
      (s-- 4))
 
+    (easy-menu-add-item
+     apps:magit:menu nil
+     (apps:magit:menuItem:magit:repolist-status|define)
+     (s-- 4))
     
     ;; (easy-menu-add-item
     ;;  apps:magit:menu nil
@@ -95,6 +99,18 @@ As such what happens below should be exactly what is necessary and no more."
      [,(format "Magit BPO Repos")
       (bap:magit:bpo-repos/visit)
       :help "Magit BPO Repos"
+      :active t
+      :visible t
+      ]
+     )))
+
+(defun apps:magit:menuItem:magit:repolist-status|define ()
+  "Returns a menuItem vector."
+  (car
+   `(
+     [,(format "Magit Repo List Status")
+      (magit-repolist-status)
+      :help "Magit Repo List Status"
       :active t
       :visible t
       ]
