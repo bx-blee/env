@@ -57,18 +57,34 @@ As such what happens below should be exactly what is necessary and no more."
 
     (easy-menu-add-item
      apps:magit:menu nil
-     (apps:magit:menuItem:magit:status|define)
+     (apps:magit:menuItem:status|define)
      (s-- 3))
 
     (easy-menu-add-item
      apps:magit:menu nil
-     (apps:magit:menuItem:magit:bpo-repos|define)
+     (apps:magit:menuItem:repolist-status|define)
+     (s-- 3))
+    
+    (easy-menu-add-item
+     apps:magit:menu nil
+     (apps:magit:menuItem:bisos:current:bpo-repos|define)
      (s-- 4))
 
     (easy-menu-add-item
      apps:magit:menu nil
-     (apps:magit:menuItem:magit:repolist-status|define)
+     (apps:magit:menuItem:bisos:all:bpo-repos|define)
      (s-- 4))
+    
+    (easy-menu-add-item
+     apps:magit:menu nil
+     (apps:magit:menuItem:bisos:current:baseDir-repos|define)
+     (s-- 5))
+
+    (easy-menu-add-item
+     apps:magit:menu nil
+     (apps:magit:menuItem:bisos:all:baseDir-repos|define)
+     (s-- 5))
+    
     
     ;; (easy-menu-add-item
     ;;  apps:magit:menu nil
@@ -78,9 +94,7 @@ As such what happens below should be exactly what is necessary and no more."
     'apps:magit:menu
     ))
 
-
-
-(defun apps:magit:menuItem:magit:status|define ()
+(defun apps:magit:menuItem:status|define ()
   "Returns a menuItem vector."
   (car
    `(
@@ -92,29 +106,69 @@ As such what happens below should be exactly what is necessary and no more."
       ]
      )))
 
-(defun apps:magit:menuItem:magit:bpo-repos|define ()
-  "Returns a menuItem vector."
-  (car
-   `(
-     [,(format "Magit BPO Repos")
-      (bap:magit:bpo-repos/visit)
-      :help "Magit BPO Repos"
-      :active t
-      :visible t
-      ]
-     )))
-
-(defun apps:magit:menuItem:magit:repolist-status|define ()
+(defun apps:magit:menuItem:repolist-status|define ()
   "Returns a menuItem vector."
   (car
    `(
      [,(format "Magit Repo List Status")
       (magit-repolist-status)
-      :help "Magit Repo List Status"
+      :help "Magit Repo List Status -- To be invoked from the repos-list buffer"
       :active t
       :visible t
       ]
      )))
+
+
+(defun apps:magit:menuItem:bisos:current:bpo-repos|define ()
+  "Returns a menuItem vector."
+  (car
+   `(
+     [,(format "BISOS-Magit Current BPO Repos")
+      (bap:magit:current-bpo-repos/visit)
+      :help "BISOS-Magit BPO Repos: create a repos list for the current BPO"
+      :active t
+      :visible t
+      ]
+     )))
+
+(defun apps:magit:menuItem:bisos:all:bpo-repos|define ()
+  "Returns a menuItem vector."
+  (car
+   `(
+     [,(format "BISOS-Magit All BPO Repos")
+      (bap:magit:all-bpo-repos/visit)
+      :help "BISOS-Magit BPO Repos: create a repos list for all BPO"
+      :active t
+      :visible t
+      ]
+     )))
+
+
+(defun apps:magit:menuItem:bisos:current:baseDir-repos|define ()
+  "Returns a menuItem vector."
+  (car
+   `(
+     [,(format "BISOS-Magit Current BaseDir Repos")
+      (bap:magit:bisos:current-baseDir-repos/visit)
+      :help "BISOS-Magit Current BaseDir Repos: create a repos list for the current BaseDir"
+      :active t
+      :visible t
+      ]
+     )))
+
+(defun apps:magit:menuItem:bisos:all:baseDir-repos|define ()
+  "Returns a menuItem vector."
+  (car
+   `(
+     [,(format "BISOS-Magit All BaseDir Repos")
+      (bap:magit:bisos:all-baseDir-repos/visit)
+      :help "BISOS-Magit BPO Repos: create a repos list for all BaseDirs"
+      :active t
+      :visible t
+      ]
+     )))
+
+
 
 (defun apps:magit:menuItem:describe|define ()
   "Returns a menuItem vector."

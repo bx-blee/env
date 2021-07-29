@@ -67,6 +67,7 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
     )
   )
 
+
 (defun bap:magit:install/update ()
   ""
   (interactive)
@@ -78,6 +79,7 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
     ;;; :pin melpa-stable
     )
   )
+
 
 (defun bap:magit:config/main ()
   ""
@@ -101,30 +103,14 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
 	)
   )
 
-(defun bap:magit:bpo-repos/list () "
-*** Based on current buffer, determine cur-dir and bpo. List bpos repos.
-"
-  (interactive)
-  ;; (blee:ann|this-func (compile-time-function-name))
-  (let (
-	($shellCommand)
-	($reposListAsString)
-	($reposList)
-	)
-    (setq $shellCommand
-	  (format "bxoReposManage.sh -i basedOnPath_reposPathList %s" buffer-file-name))
-    (setq $reposListAsString (shell-command-to-string $shellCommand))
-    (setq $reposList (s-split "\n" $reposListAsString))
-    )
-  )
 
-(defun bap:magit:bpo:magit-repository-directories/set ()  "
-*** Sets the magit-repository-directories based on (bap:magit:bpo-repos/list)
+(defun bap:magit:magit-repository-directories/set-with-list (<list)  "
+*** Sets the magit-repository-directories based on input <list
 "
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
   (setq magit-repository-directories nil)
-  (dolist (<each (bap:magit:bpo-repos/list))
+  (dolist (<each <list)
     (let (
 	  ($assocList)
 	  )
@@ -137,14 +123,128 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
   )
 
 
-(defun bap:magit:bpo-repos/visit () "
+(defun bap:magit:bisos:current-bpo-repos/list () "
+*** Based on current buffer, determine cur-dir and bpo. List bpos repos.
+"
+  (interactive)
+  ;; (blee:ann|this-func (compile-time-function-name))
+  (let (
+	($shellCommand)
+	($reposListAsString)
+	($reposList)
+	)
+    (setq $shellCommand
+	  (format
+	   "bxoReposManage.sh -i basedOnPath_reposPathList %s" buffer-file-name))
+    (setq $reposListAsString (shell-command-to-string $shellCommand))
+    (setq $reposList (s-split "\n" $reposListAsString))
+    )
+  )
+
+
+(defun bap:magit:bisos:current-bpo-repos/visit () "
 *** Main panel usage interface.
 "
   (interactive)
-  (bap:magit:bpo:magit-repository-directories/set)
+  (bap:magit:magit-repository-directories/set-with-list
+   (bap:magit:bisos:current-bpo-repos/list))
   (magit-list-repositories)
   )
-   
+
+
+(defun bap:magit:bisos:all-bpo-repos/list () "
+*** Based on current buffer, determine cur-dir and bpo. List bpos repos.
+"
+  (interactive)
+  ;; (blee:ann|this-func (compile-time-function-name))
+  (let (
+	($shellCommand)
+	($reposListAsString)
+	($reposList)
+	)
+    (setq $shellCommand
+	  (format
+	   "bxoAcctManage.sh -i bxoIdsList | bxoReposManage.sh -v -i bxoReposPathList"))
+    (setq $reposListAsString (shell-command-to-string $shellCommand))
+    (setq $reposList (s-split "\n" $reposListAsString))
+    )
+  )
+
+
+(defun bap:magit:bisos:all-bpo-repos/visit () "
+*** Main panel usage interface.
+**** Usage Examples:
+(bap:magit:bisos:all-bpo-repos/visit)
+"
+  (interactive)
+  (bap:magit:magit-repository-directories/set-with-list
+   (bap:magit:bisos:all-bpo-repos/list))
+  (magit-list-repositories)
+  )
+
+
+
+(defun bap:magit:bisos:current-baseDir-repos/list () "
+*** Based on current buffer, determine cur-dir and bpo. List bpos repos.
+"
+  (interactive)
+  ;; (blee:ann|this-func (compile-time-function-name))
+  (let (
+	($shellCommand)
+	($reposListAsString)
+	($reposList)
+	)
+    (setq $shellCommand
+	  (format
+	   "bxoReposManage.sh -i basedOnPath_reposPathList %s" buffer-file-name))
+    (setq $reposListAsString (shell-command-to-string $shellCommand))
+    (setq $reposList (s-split "\n" $reposListAsString))
+    )
+  )
+
+
+(defun bap:magit:bisos:current-baseDir-repos/visit () "
+*** Main panel usage interface.
+"
+  (interactive)
+  (bap:magit:magit-repository-directories/set-with-list
+   (bap:magit:bisos:current-bpo-repos/list))
+  (magit-list-repositories)
+  )
+
+
+(defun bap:magit:bisos:all-baseDir-repos/list () "
+*** Based on current buffer, determine cur-dir and bpo. List bpos repos.
+"
+  (interactive)
+  ;; (blee:ann|this-func (compile-time-function-name))
+  (let (
+	($shellCommand)
+	($reposListAsString)
+	($reposList)
+	)
+    (message "Running An External Shell Command -- Be Patient ...")
+    (setq $shellCommand
+	  (format
+	   "bx-gitRepos -i cachedLs"))
+    (setq $reposListAsString (shell-command-to-string $shellCommand))
+    (setq $reposList (s-split "\n" $reposListAsString))
+    )
+  )
+
+
+(defun bap:magit:bisos:all-baseDir-repos/visit () "
+*** Main panel usage interface.
+**** Usage Examples:
+(bap:magit:bisos:all-baseDir-repos/visit)
+"
+  (interactive)
+  (bap:magit:magit-repository-directories/set-with-list
+   (bap:magit:bisos:all-baseDir-repos/list))
+  (magit-list-repositories)
+  )
+
+
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide

@@ -1956,7 +1956,7 @@ Sections are specified as :outLevel 1,n
       (insert
        (format
 	"%s \
- [[elisp:(bap:magit:bpo-repos/visit)][BPO-Repos-Magit]] ||
+ [[elisp:(bap:magit:bisos:current-bpo-repos/visit)][BPO-Repos-Magit]] ||
 "
 	"**"
 	))
