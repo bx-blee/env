@@ -136,7 +136,7 @@ As such what happens below should be exactly what is necessary and no more."
   (car
    `(
      [,(format "BISOS-Magit All BPO Repos")
-      (bap:magit:all-bpo-repos/visit)
+      (bap:magit:bisos:all-bpo-repos/visit)
       :help "BISOS-Magit BPO Repos: create a repos list for all BPO"
       :active t
       :visible t
