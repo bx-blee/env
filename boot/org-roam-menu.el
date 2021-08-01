@@ -17,14 +17,16 @@
 (defun org-roam:modes:global-minor:menu:plugin|install (<menuLabel <menuDelimiter)
   "Adds this as a submenu to menu labeled <menuLabel at specified delimited <menuDelimiter."
 
-  (easy-menu-add-item
-   <menuLabel
-   nil
-   (org-roam:menu|define :active t)
-   <menuDelimiter
-   )
+  (when bcg:org:roam:usage:enabled-p
+    (easy-menu-add-item
+     <menuLabel
+     nil
+     (org-roam:menu|define :active t)
+     <menuDelimiter
+     )
 
-  (add-hook 'menu-bar-update-hook 'web:search:menu|update-hook)
+    (add-hook 'menu-bar-update-hook 'web:search:menu|update-hook)
+    )
   )
 
 

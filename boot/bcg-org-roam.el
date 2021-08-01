@@ -55,7 +55,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 *      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:bbdb:defaults-set -- Define 
 ")
 
-(setq bcg:org:roam:usage:enabled-p t)
+;;(setq bcg:org:roam:usage:enabled-p t)
+(setq bcg:org:roam:usage:enabled-p nil)
 
 (defun bcg:org:roam:full/update ()
   "This will replace everything that has to do with org-mode, including ./orgModeInit.el
