@@ -245,6 +245,38 @@ typeset RcsId="$Id: setup-global-magit.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp 
   )
 
 
+(defun bap:magit:bisos:all-baseDir-atoms-repos/list () "
+*** Based on current buffer, determine cur-dir and bpo. List bpos repos.
+"
+  (interactive)
+  ;; (blee:ann|this-func (compile-time-function-name))
+  (let (
+	($shellCommand)
+	($reposListAsString)
+	($reposList)
+	)
+    (message "Running An External Shell Command -- Be Patient ...")
+    (setq $shellCommand
+	  (format
+	   "bx-gitRepos -i cachedLsAtoms"))
+    (setq $reposListAsString (shell-command-to-string $shellCommand))
+    (setq $reposList (s-split "\n" $reposListAsString))
+    )
+  )
+
+
+(defun bap:magit:bisos:all-baseDir-atoms-repos/visit () "
+*** Main panel usage interface.
+**** Usage Examples:
+(bap:magit:bisos:all-baseDir-repos/visit)
+"
+  (interactive)
+  (bap:magit:magit-repository-directories/set-with-list
+   (bap:magit:bisos:all-baseDir-atoms-repos/list))
+  (magit-list-repositories)
+  )
+
+
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide

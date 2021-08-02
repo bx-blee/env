@@ -84,6 +84,11 @@ As such what happens below should be exactly what is necessary and no more."
      apps:magit:menu nil
      (apps:magit:menuItem:bisos:all:baseDir-repos|define)
      (s-- 5))
+
+    (easy-menu-add-item
+     apps:magit:menu nil
+     (apps:magit:menuItem:bisos:all:baseDir-atoms-repos|define)
+     (s-- 5))
     
     
     ;; (easy-menu-add-item
@@ -163,6 +168,18 @@ As such what happens below should be exactly what is necessary and no more."
      [,(format "BISOS-Magit All BaseDir Repos")
       (bap:magit:bisos:all-baseDir-repos/visit)
       :help "BISOS-Magit BPO Repos: create a repos list for all BaseDirs"
+      :active t
+      :visible t
+      ]
+     )))
+
+(defun apps:magit:menuItem:bisos:all:baseDir-atoms-repos|define ()
+  "Returns a menuItem vector."
+  (car
+   `(
+     [,(format "BISOS-Magit All BaseDir Atoms Repos")
+      (bap:magit:bisos:all-baseDir-atoms-repos/visit)
+      :help "BISOS-Magit BPO Repos: create a repos list for all Atoms BaseDirs"
       :active t
       :visible t
       ]
