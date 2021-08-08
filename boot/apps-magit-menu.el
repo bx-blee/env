@@ -129,7 +129,7 @@ As such what happens below should be exactly what is necessary and no more."
   (car
    `(
      [,(format "BISOS-Magit Current BPO Repos")
-      (bap:magit:current-bpo-repos/visit)
+      (bap:magit:bisos:current-baseDir-repos/visit)
       :help "BISOS-Magit BPO Repos: create a repos list for the current BPO"
       :active t
       :visible t
