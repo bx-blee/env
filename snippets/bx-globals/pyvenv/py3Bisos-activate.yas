@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: PyVenv py3-bisos
+# key: pyvenv/py3-bisos
+# group: pyvenv
+# type: command
+# --
+(progn
+  (pyvenv-activate "/bisos/venv/py3/bisos3")
+  )
