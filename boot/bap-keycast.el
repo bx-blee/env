@@ -108,7 +108,7 @@ typeset RcsId="$Id: setup-global-keycast.el,v 1.6 2018-06-08 23:49:29 lsipusr Ex
 
 
 ;;;
-;;; Global Multi-lingualization Menu
+;;; Global Menu/biso
 ;;;
 
 ;; (blee:blee:menu)

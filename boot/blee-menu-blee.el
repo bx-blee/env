@@ -142,6 +142,10 @@
   ;;
   (bap:keycast:global:menu)
   (easy-menu-add-item nil '("Blee") 'bap-keycast-menu "Blee Help")
+
+  ;;
+  (bap:gif-screencast:global:menu)
+  (easy-menu-add-item nil '("Blee") 'bap-gif-screencast-menu "Blee Help")
   
   ;;; LANGTOOL Begin
   (easy-menu-add-item nil '("Blee") 'langtool-global-menu "Blee Help")

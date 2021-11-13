@@ -88,6 +88,29 @@ typeset RcsId="$Id: setup-global-gif-screencast.el,v 1.6 2018-06-08 23:49:29 lsi
   )
 
 
+;;;
+;;; Global Menu
+;;;
+
+;; (blee:blee:menu)
+;; (bap:gif-screencast:global:menu)
+(defun bap:gif-screencast:global:menu ()
+  (easy-menu-define 
+    bap-gif-screencast-menu
+    nil 
+    "Gif-Screencast Menu"
+    '("Gif-Screencast Menu"
+      "---"
+      ["Start Or Stop Gif-Screencast" (gif-screencast-start-or-stop) t]      
+      ["Stop Gif-Screencast" (gif-screencast-stop) t]
+      "---"
+      ["Enable Gif-Screencast Mode" (gif-screencast-mode 1) t]
+      ["Disable Gif-Screencast Mode" (gif-screencast-mode -1) t]  
+      ))
+  )
+
+
+
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
 ")
