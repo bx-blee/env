@@ -87,6 +87,14 @@ typeset RcsId="$Id: setup-global-gif-screencast.el,v 1.6 2018-06-08 23:49:29 lsi
   (blee:ann|this-func (compile-time-function-name))
   )
 
+(defun bap:gif-screencast:last/view-animated ()
+  ""
+  (interactive)
+  (blee:ann|this-func (compile-time-function-name))
+  
+  (message "NOTYET, should run: gifview -s lastFile")
+  )
+
 
 ;;;
 ;;; Global Menu
@@ -104,8 +112,12 @@ typeset RcsId="$Id: setup-global-gif-screencast.el,v 1.6 2018-06-08 23:49:29 lsi
       ["Start Or Stop Gif-Screencast" (gif-screencast-start-or-stop) t]      
       ["Stop Gif-Screencast" (gif-screencast-stop) t]
       "---"
+      ["Pause-Toggle Gif-Screencast Mode" (gif-screencast-start-or-stop) t]  
+      "---"
       ["Enable Gif-Screencast Mode" (gif-screencast-mode 1) t]
-      ["Disable Gif-Screencast Mode" (gif-screencast-mode -1) t]  
+      ["Disable Gif-Screencast Mode" (gif-screencast-mode -1) t]
+      "---"
+      ["View Latest animated gif-screencast" (bap:gif-screencast:last/view-animated) t]  
       ))
   )
 
