@@ -1,10 +1,10 @@
 ;;; -*- Mode: Emacs-Lisp; -*-
 
 (lambda () "
-* Short Description: Global Activity: bbdb -- GIT mode
+* Short Description: Global Activity: keycast -- GIT mode
 *      ======[[elisp:(org-cycle)][Fold]]======  Revision, Origin And  Libre-Halaal CopyLeft -- Part Of ByStar -- Best Used With Blee 
 ####+BEGIN: bx:dblock:bash:top-of-file :vc "cvs" partof: "bystar" :copyleft "halaal+brief"
-typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
+typeset RcsId="$Id: setup-global-keycast.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $"
 # *CopyLeft*
 # Copyright (c) 2011 Neda Communications, Inc. -- http://www.neda.com
 # See PLPC-120001 for restrictions.
@@ -32,7 +32,7 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 *      ======[[elisp:(org-cycle)][Fold]]====== *[Current-Info]* Status/Maintenance -- General TODO List
 *      ======[[elisp:(org-cycle)][Fold]]====== *[Related/Xrefs:]*  <<Xref-Here->>  -- External Documents 
 **      ====[[elisp:(org-cycle)][Fold]]==== [[file:/libre/ByStar/InitialTemplates/activeDocs/bxServices/versionControl/git/fullUsagePanel-en.org::Xref-VersionControlGit][VC Panel Roadmap Documentation]]
-**      ====[[elisp:(org-cycle)][Fold]]==== http://www.emacswiki.org/emacs/Bbdb
+**      ====[[elisp:(org-cycle)][Fold]]==== http://www.emacswiki.org/emacs/Keycast
 ")
 
 
@@ -52,48 +52,89 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
 ")
 
 (lambda () "
-*      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:bbdb:defaults-set -- Define 
+*      ======[[elisp:(org-cycle)][Fold]]====== bx:setup:keycast:defaults-set -- Define
 ")
 
-(setq bf:mode-line:usage:enabled-p t)
+(setq bap:keycast:usage:enabled-p t)
 
-;;; (bf:mode-line:full/update)
-(defun bf:mode-line:full/update ()
+(defun bap:keycast:full/update ()
   ""
   (interactive)
   (blee:ann|this-func (compile-time-function-name))
-  (when bf:mode-line:usage:enabled-p
-    (bf:mode-line:install/update)
-    (bf:mode-line:full/update)
+  (when bap:keycast:usage:enabled-p
+    (bap:keycast:install/update)
+    (bap:keycast:config/main)
     )
   )
 
-(defun bf:mode-line:install/update ()
-  "Could make sure that needed fonts are installed. Place holder for now."
-  (interactive)
-  (blee:ann|this-func (compile-time-function-name))
-  ;; Nothing to install
-  )
 
-;;;(bf:mode-line:full/update)
-(defun bf:mode-line:full/update ()
+(defun bap:keycast:install/update ()
   ""
   (interactive)
-  (blee:ann|this-func (compile-time-function-name))    
-
-  ;; Example: Mon Jan-27 02:39PM
-  ;; (setq display-time-format "%a %b-%d %I:%M%p")  ;; NOTYET, All of this should be based on
-
-  ;;
-  (setq column-number-mode t)
-  (setq line-number-mode t)
+  (blee:ann|this-func (compile-time-function-name))
+  
+  (message "blee:ann -- TMP -- bap:keycast:install/update")
+  (use-package keycast
+    :ensure t
+    ;;; :pin melpa-stable
+    )
   )
+
+
+(defun bap:keycast:config/main ()
+  ""
+  (interactive)
+  ;; (blee:ann|this-func (compile-time-function-name))
+  (define-minor-mode keycast-mode
+    "Show current command and its key binding in the mode line (fix for use with doom-mode-line)."
+    :global t
+    (if keycast-mode
+        (add-hook 'pre-command-hook 'keycast--update t)
+      (remove-hook 'pre-command-hook 'keycast--update)))
+  (add-to-list 'global-mode-string '("" mode-line-keycast))
+  )
+
+(defun turn-on-keycast%% ()
+  (interactive)
+  (add-to-list 'global-mode-string '("" mode-line-keycast " "))
+)
+
+(defun turn-off-keycast%% ()
+  (interactive)
+  (setq global-mode-string (delete '("" mode-line-keycast " ") global-mode-string))
+  (force-mode-line-update)
+)
+
+
+
+;;;
+;;; Global Multi-lingualization Menu
+;;;
+
+;; (blee:blee:menu)
+;; (bap:keycast:global:menu)
+(defun bap:keycast:global:menu ()
+  (easy-menu-define 
+    bap-keycast-menu
+    nil 
+    "Keycast Menu"
+    '("Keycast Menu"
+      "---"
+      ["Enable Keycast Mode" (keycast-mode 1) t]  
+      ["Disable Keycast Mode" (keycast-mode -1) t]
+      "---"
+      ["Enable Keycast Log Mode" (keycast-log-mode 1) t]  
+      ["Disable Keycast Log Mode" (keycast-log-mode -1) t]
+      ["Keycast Log Erase Buffer" (keycast-log-erase-buffer) t]
+      ))
+  )
+
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== Provide
 ")
 
-(provide 'bf-mode-line)
+(provide 'bap-keycast)
 
 (lambda () "
 *      ======[[elisp:(org-cycle)][Fold]]====== /[dblock] -- End-Of-File Controls/

@@ -27,7 +27,7 @@
   ""
   (split-string
    (shell-command-to-string 
-    (format "bxoReports.sh list")
+    (format "bpoReports.sh list")
     )))
 
 ;; Usage:  Dynamic installation of this menu happens in blee-menu-blee.el
