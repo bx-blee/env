@@ -136,7 +136,7 @@ If no FONT-SIZE provided, reset the size to its default variable."
 (defun set-very-large-frame-font ()
   "Reset frame font to its default value."
   (interactive)
-  (set-frame-font-size 28))
+  (set-frame-font-size 24))
 
 
 ;;;
@@ -156,7 +156,7 @@ If no FONT-SIZE provided, reset the size to its default variable."
       ["Decrease Frame Font" (decrease-frame-font) t]
       ["Reset Frame Font" (reset-frame-font) t]
       ["Set To Large Demo Font -- 20" (set-large-frame-font) t]
-      ["Set To Very Large Demo Font -- 28" (set-very-large-frame-font) t]            
+      ["Set To Very Large Demo Font -- 24" (set-very-large-frame-font) t]            
        ))
   )
 
