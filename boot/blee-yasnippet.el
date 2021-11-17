@@ -72,10 +72,6 @@
   ;; Stoped Working after 201401 update
   (yas-global-mode 1)
 
-  (add-hook 'yas-minor-mode-hook
-            (lambda ()
-              (yas-activate-extra-mode 'fundamental-mode)))
-
   (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "TAB") nil)
 
