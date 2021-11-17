@@ -85,8 +85,8 @@ typeset RcsId="$Id: setup-global-bbdb.el,v 1.6 2018-06-08 23:49:29 lsipusr Exp $
   ;; (setq display-time-format "%a %b-%d %I:%M%p")  ;; NOTYET, All of this should be based on
 
   ;;
-  (setq column-number-mode t)
-  (setq line-number-mode t)
+  ;; (setq column-number-mode t)
+  ;; (setq line-number-mode t)
   )
 
 (lambda () "
