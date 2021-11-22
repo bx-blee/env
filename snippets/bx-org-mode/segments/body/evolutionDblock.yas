@@ -5,7 +5,7 @@
 # type: command
 # --
 (progn
-  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/buePanels/segmentsOfPanels/evolution.org")
+  (insert-file "/bisos/apps/defaults/activeDocs/common/buePanels/segmentsOfPanels/evolution.org")
   (org-dblock-update-buffer-bx)
   ;;;(blee:ppmm:org-mode-content-list)  
   )

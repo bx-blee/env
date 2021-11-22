@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Footer Lib Common Short
+# key: begin/footer/libCommonShort
+# group: begin
+# type: command
+# --
+(progn
+  (insert-file "/bisos/apps/defaults/update/sw/icm/py/begin/footer_libCommonShort.py")
+  (org-dblock-update-buffer-bx)
+  ;; (blee:ppmm:org-mode-content-list)
+  )

@@ -5,5 +5,5 @@
 # type: command
 # --
 (progn
-  (blee:bnsm:panel-goto  "/libre/ByStar/InitialTemplates/activeDocs/bxPlatformFacilities/main")
+  (blee:bnsm:panel-goto  "/bisos/apps/defaults/activeDocs/bxPlatformFacilities/main")
   )

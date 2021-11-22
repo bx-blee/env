@@ -5,7 +5,7 @@
 # type: command
 # --
 (progn
-  (insert-file "/libre/ByStar/InitialTemplates/begin/templates/moded/emacs-lisp/pkgAdopt.el")
+  (insert-file "/bisos/apps/defaults/begin/templates/moded/emacs-lisp/pkgAdopt.el")
   (org-dblock-update-buffer-bx)
   (blee:ppmm:org-mode-content-list)  
   )
