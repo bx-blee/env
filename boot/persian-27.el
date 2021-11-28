@@ -336,6 +336,16 @@
 ;; for example ``sh'' ش. So if you need the sequence of ``s'' and ``h'' you
 ;; need to repeat the ``s''. For example: سهم = 's' 's' 'h' 'm'.
 ;;
+;; Two consecutive 'ه' can be produced with Hhh as 'هه'
+;;
+;;
+;; Input of all directional related characters specified in:
+;;  Unicode® Standard Annex #9 -- Unicode 14.0.0 (2021-08-27)
+;;  "Unicode Bidirectional Algorithm"
+;;  https://unicode.org/reports/tr9/
+;; are supported in farsi-transliterate-banan.
+;; 
+
 
 
 (quail-define-package
@@ -395,6 +405,7 @@
  ("u"  ?و)
  ("V" ?ؤ)
  ("h"  ?ه)
+ ("Hh"  ?ه)        ;; to take care of هه -- hHh
  ("y"  ?ی)
  ("i"  ?ی)
  ("I" ?ئ)
@@ -466,22 +477,32 @@
 ;;;;;;;;;;;  isiri-6219 Table 1 -- جدول ۱ -  نویسه‌های کنترلی
  ;; LF
  ;; CR
- ("&zwnj;" ?\u200C) ;; (ucs-insert #x200C)‌   named: فاصله‌ی مجازی
- ("/" ?\u200C)      ;;
- ("&zwj;" ?\u200D)  ;; (ucs-insert #x200D)‍   named: اتصالِ مجازی
- ("J" ?\u200D)      ;;
- ("&lrm;" ?\u200E)  ;; (ucs-insert #x200E)‎   named: نشانه‌ی چپ‌به‌راست
- ("&rlm;" ?\u200F)  ;; (ucs-insert #x200F)‏   named: نشانه‌ی راست‌به‌چپ
- ("&ls;" ?\u2028)   ;; (ucs-insert #x2028)    named: جداکننده‌ی سطرها
- ("&ps;" ?\u2028)   ;; (ucs-insert #x2029)    named: جداکننده‌ی بندها
- ("&lre;" ?\u202A)   ;; (ucs-insert #x202A)‪   named: زیرمتنِ چپ‌به‌راست
- ("&rle;" ?\u202B)   ;; (ucs-insert #x202B)   named: زیرمتنِ راست‌به‌چپ
- ("&pdf;" ?\u202C)   ;; (ucs-insert #x202C)   named: پایانِ زیرمتن
- ("&lro;" ?\u202D)   ;; (ucs-insert #x202D)   named: زیرمتنِ اکیداً چپ‌به‌راست
- ("&rlo;" ?\u202D)   ;; (ucs-insert #x202E)   named: زیرمتنِ اکیداً راست‌به‌چپ
- ("&bom;" ?\uFEFF)   ;; (ucs-insert #xFEFF)   named: نشانه‌ی ترتیبِ بایت‌ها
+ ("&zwnj;" ?\u200C)  ;; (ucs-insert #x200C)‌   named: فاصله‌ی مجازی
+ ("/" ?\u200C)       ;;
+ ("&zwj;" ?\u200D)   ;; (ucs-insert #x200D)‍   named: اتصالِ مجازی
+ ("J" ?\u200D)       ;;
+ ("&lrm;" ?\u200E)   ;; LEFT-TO-RIGHT MARK    named: نشانه‌ی چپ‌به‌راست
+ ("&rlm;" ?\u200F)   ;; RIGHT-TO-LEFT MARK)‏   named: نشانه‌ی راست‌به‌چپ
+ ("&ls;" ?\u2028)    ;; (ucs-insert #x2028)    named: جداکننده‌ی سطرها
+ ("&ps;" ?\u2028)    ;; (ucs-insert #x2029)    named: جداکننده‌ی بندها
+ ("&lre;" ?\u202A)   ;; Left-to-Right Embedding   named: زیرمتنِ چپ‌به‌راست
+ ("&rle;" ?\u202B)   ;; Right-to-Left Embedding   named: زیرمتنِ راست‌به‌چپ
+ ("&pdf;" ?\u202C)   ;; Pop Directional Format   named: پایانِ زیرمتن
+ ("&lro;" ?\u202D)   ;; Left-to-Right Override  named: زیرمتنِ اکیداً چپ‌به‌راست
+ ("&rlo;" ?\u202D)   ;; Right-to-Left Override  named: زیرمتنِ اکیداً راست‌به‌چپ
+ ("&bom;" ?\uFEFF)   ;; (ucs-insert #xFEFF)﻿  named: نشانه‌ی ترتیبِ بایت‌ها
 
- ;;;;;;;  Arabic  Extensions
+ ;;;
+ ;;; Not in isiri-6219 Table 1
+ ;;; But included in https://unicode.org/reports/tr9 Table 4
+ 
+ ("&pdi;" ?\u2069)   ;; named: POP DIRECTIONAL ISOLATE
+ ("&lri;" ?\u2066)   ;; named: LEFT-TO-RIGHT ISOLATE
+ ("&rli;" ?\u2067)   ;; named: RIGHT-TO-LEFT ISOLATE
+ ("&fsi;" ?\u2068)   ;; named: First Strong Isolate
+ ("&alm;" ?\u061C)   ;; named: ARABIC LETTER MARK
+ 
+ ;;;;;;;  Arabic  Number Extensions
  ("&a0;" ?\u0660)    ;; ٠
  ("&a1;" ?\u0661)    ;; ١
  ("&a2;" ?\u0662)    ;; ٢
