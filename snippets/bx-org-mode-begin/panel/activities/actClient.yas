@@ -5,7 +5,7 @@
 # type: command
 # --
 (progn
-  (insert-file "/libre/ByStar/InitialTemplates/activeDocs/common/activitiesPanels/beginActClient.org")
+  (insert-file "/bisos/apps/defaults/activeDocs/common/activitiesPanels/beginActClient.org")
   (org-dblock-update-buffer-bx)
   (blee:ppmm:org-mode-content-list)  
   )

@@ -6,5 +6,5 @@
 $0####+BEGIN: bx:icm:python:section :title "Common Module Support Facilities (BxoIdSr)"
 ####+END:
 
-####+BEGIN: bx:dblock:global:file-insert :file "/libre/ByStar/InitialTemplates/update/sw/icm/py/curGetBxOSr.py"
+####+BEGIN: bx:dblock:global:file-insert :file "/bisos/apps/defaults/update/sw/icm/py/curGetBxOSr.py"
 ####+END:

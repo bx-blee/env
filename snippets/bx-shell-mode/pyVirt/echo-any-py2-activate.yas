@@ -1,8 +1,8 @@
 # -*- mode: snippet -*-
-# name: echo: source /tmp/py2v1/bin/activate
-# key: pyVirt/echo-py2-any activate
+# name: echo: source py3-tmp/bin/activate
+# key: pyVirt/echo-py3-tmp activate
 # group: pyVirt
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-echo source /tmp/py2v1/bin/activate$0
+echo source /bisos/tmp/venv/py3-tmp/bin/activate $0

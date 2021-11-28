@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Header Lib Common Short
+# key: begin/header/libCommonShort
+# group: begin
+# type: command
+# --
+(progn
+  (insert-file "/bisos/apps/defaults/update/sw/icm/py/begin/header_libCommonShort.py")
+  (org-dblock-update-buffer-bx)
+  ;;(blee:ppmm:org-mode-content-list)
+  )

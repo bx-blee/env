@@ -5,5 +5,5 @@
 # type: snippet
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
 # --
-$0####+BEGIN: blee:bxPanel:linkWithLinedTreeNavigator :model "auto" :outLevel 2 :foldDesc "auto" :destDesc "auto" :dest "/libre/ByStar/InitialTemplates/activeDocs/bxPlatform/baseDirs/_nodeBase_"
+$0####+BEGIN: blee:bxPanel:linkWithLinedTreeNavigator :model "auto" :outLevel 2 :foldDesc "auto" :destDesc "auto" :dest "/bisos/apps/defaults/activeDocs/bxPlatform/baseDirs/_nodeBase_"
 ####+END
