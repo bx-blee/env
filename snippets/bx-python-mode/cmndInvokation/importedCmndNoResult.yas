@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Cmnd Invokation -- importedCmndNoResult
+# key: cmndInvokation/importedCmndNoResult
+# group: cmndInvokation
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+$0if moduleName.cmndName(cmndOutcome=cmndOutcome).cmnd(
+     paramName=paramValue,
+     argsList=cmndArgsList,
+).isProblematic(): return(icm.EH_badOutcome(cmndOutcome))
