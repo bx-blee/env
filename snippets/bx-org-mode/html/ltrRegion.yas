@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: Html LTR Region
+# key: html/ltrRegion
+# group: html
+# type: snippet
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+#+BEGIN_EXPORT html
+<DIV dir="ltr">
+#+END_EXPORT
+
+#+BEGIN_EXPORT html
+</DIV>
+#+END_EXPORT
