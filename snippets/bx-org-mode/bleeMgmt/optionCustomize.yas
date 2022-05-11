@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Blee Management Option Customize
+# key: bleeMgmt/optCust
+# group: Blee Management
+# type: snippet
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+####+BEGIN: b:elisp:option/customize :outLevel 1 :sep t :foldDesc "Blee Context" :optionName "emacs-version"
+####+END
+** +
+** B|

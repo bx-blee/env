@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Blee Management Function Describe
+# key: bleeMgmt/funcDesc
+# group: Blee Management
+# type: snippet
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+####+BEGIN: b:elisp:function/describe :outLevel 1 :sep t :foldDesc "Blee Context" :funcName "find-file"
+####+END
+** +
+** B|
