@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Blee Management Variable Describe
+# key: bleeMgmt/varDesc
+# group: Blee Management
+# type: snippet
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+####+BEGIN: b:elisp:variable/describe :outLevel 1 :sep t :foldDesc "Blee Context" :varName "emacs-version"
+####+END
+** +
+** B|

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: Blee Management Key Describe
+# key: bleeMgmt/keyDesc
+# group: Blee Management
+# type: snippet
+# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
+# --
+####+BEGIN: b:elisp:key/describe :outLevel 1 :sep t :foldDesc "Blee Context" :keyName ""
+####+END
+** +
+** B|
