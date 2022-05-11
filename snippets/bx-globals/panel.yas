@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Snippets Panel
+# key: @bx/panel
+# type: command
+# --
+(progn
+  (find-file "/bisos/panels/blee-core/snippets/_nodeBase_/fullUsagePanel-en.org")
+  )
