@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: Left-To-Right
-# key: leftToRight
-# group: ltrInفارسی
-# --
-\lr{${0:latinComesHere}}

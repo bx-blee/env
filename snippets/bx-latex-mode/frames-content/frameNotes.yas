@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Frame Notes -- pnote{}
-# key: frame/notes
-# group: Frames Content
-# --
-  \pnote{
-    Frame Notes\\
-    \par
-  }

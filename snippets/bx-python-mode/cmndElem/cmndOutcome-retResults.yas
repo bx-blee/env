@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: outcome -- return Results
-# key: cmndElems/outcome-retResults
-# group: cmndElems
-# --
-$0return cmndOutcome.set(
-     opError=icm.OpError.Success,
-     opResults=results,
-)

@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: ICM Element ModuleOverview
-# key: icmElem/moduleOverview
-# group: icmElem
-# --
-$0####+BEGIN: bx:dblock:global:file-insert-cond :cond "./blee.el" :file "/bisos/apps/defaults/update/sw/icm/py/moduleOverview.py"
-####+END:

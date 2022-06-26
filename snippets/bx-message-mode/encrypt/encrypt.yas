@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Encrypt Message
-# key: mml-secure-message-encrypt-*
-# group: encrypt
-# type: command
-# --
-(mml-secure-message-encrypt-*)
-

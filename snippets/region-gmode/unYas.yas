@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: redo-selected-text
-# key: region/redo-selected-text
-# type: command
-# --
-(progn
-  (yas-redo-selected-text-bx)
-  )

@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Manual Entry
-# key: word/man
-# type: command
-# --
-(progn
-  (word-man)
-  )

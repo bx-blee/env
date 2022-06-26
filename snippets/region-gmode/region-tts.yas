@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Text-To-Speach Region
-# key: region/tts
-# type: command
-# --
-(progn
-  (yas-redo-selected-text-bx)
-  (tts-region)
-  )

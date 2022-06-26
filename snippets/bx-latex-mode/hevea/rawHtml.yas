@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Hevea rawHtml
-# key: hevea/rawHtml
-# group: hevea
-# --
-\begin{rawhtml}
-$0
-\end{rawhtml}

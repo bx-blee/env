@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: erc Start
-# key: erc/start
-# group: erc
-# type: command
-# --
-(progn
-  (erc)
-  )

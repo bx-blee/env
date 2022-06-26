@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Hevea htmlOnly
-# key: hevea/htmlOnly
-# group: hevea
-# --
-\begin{htmlonly}
-$0
-\end{htmlonly}

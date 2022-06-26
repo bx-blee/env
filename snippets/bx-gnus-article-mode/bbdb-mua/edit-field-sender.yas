@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Edit Field Sender
-# key: bbdb-mua/editFieldSender
-# group: bbdb-mua
-# type: command
-# --
-(progn
-  (call-interactively 'bbdb-mua-edit-field-sender)
-  )

@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: dotIgnore Verify -- Run
-# key: bxShell/gitRepo/dotIgnoreVerify
-# group: gitRepoSetup
-# type: command
-# --
-(progn
-  (lsip-local-run-command "bx-gitRepos.sh -h -v -n showRun -i baseVerifyDotIgnore .")
-  )

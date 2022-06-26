@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: erc Switch To Buffer
-# key: erc/switch
-# group: erc
-# type: command
-# --
-(progn
-  (erc-switch-to-buffer)
-  )

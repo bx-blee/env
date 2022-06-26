@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Run: Git Repo Show .git
-# key: bxShell/gitRepo/showDotGit
-# group: gitRepoInfo
-# type: command
-# --
-(progn
-  (lsip-local-run-command "git rev-parse --git-dir")
-  )

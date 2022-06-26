@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Create All ORs
-# key: bbdb-mua/addAllORs
-# group: bbdb-mua
-# type: command
-# --
-(progn
-  (bbdb-mua-display-all-records 'create)
-  )

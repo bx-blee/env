@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Google Region
-# key: region/google
-# type: command
-# --
-(progn
-  (yas-redo-selected-text-bx)	 
-  (lookup-region-google)
-  )

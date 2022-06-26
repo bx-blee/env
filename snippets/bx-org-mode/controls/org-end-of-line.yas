@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Control Org EndOfLine
-# key: control/orgEndOfLine
-# group: Control Fragment
-# type: snippet
-# expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region 'nil))
-# --
- [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  |

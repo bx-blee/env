@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Query Add All Recipients
-# key: bbdb-mua/queryAddAllRecipients
-# group: bbdb-mua
-# type: command
-# --
-(progn
-  (bbdb-mua-display-all-recipients 'query)
-  )

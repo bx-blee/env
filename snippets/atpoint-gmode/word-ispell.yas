@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: Ispell Word
-# key: word/ispell
-# type: command
-# --
-(progn
-  (ispell-word)
-  )

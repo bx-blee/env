@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: PyVenv pyvenv-mode on py-mode
-# key: pyvenv/mode
-# group: pyvenv
-# type: command
-# --
-(progn
-  (call-interactively 'pyvenv-mode)
-  )

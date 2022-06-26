@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Dblock provide
-# key: provide
-# --
-;;;#+BEGIN: bx:dblock:lisp:provide :disabledP "false" :lib-name "${1:moduleName}"
-;;;#+END:
-$0

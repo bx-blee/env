@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Annotate All Recipients
-# key: bbdb-mua/annotateAllRecipients
-# group: bbdb-mua
-# type: command
-# --
-(progn
-  (bbdb-mua-annotate-recipients)
-  )

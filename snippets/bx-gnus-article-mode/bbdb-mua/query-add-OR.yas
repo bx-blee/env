@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: Query Add All ORs
-# key: bbdb-mua/queryAddAllORs
-# group: bbdb-mua
-# type: command
-# --
-(progn
-  (bbdb-mua-display-all-records 'query)
-  )
