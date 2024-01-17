@@ -10,8 +10,9 @@
 	   "diredPlus")
    )
 
-  (require 'dired+)  
-  (require 'dired-sort-menu+)
+  ;;; MB-2024-01-16 Problems woth emacs-28.2 -- amd not sure why
+  ;; (require 'dired+)
+  ;; (require 'dired-sort-menu+)
   )
 
  (defun bac:pkg:enable:dired ()
