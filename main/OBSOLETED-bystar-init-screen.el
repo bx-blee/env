@@ -10,7 +10,7 @@
 ;;(bystar:init:startup-message)
 (defun bystar:init:startup-message ()
   ;(setq initial-scratch-message "Hello world") 
-  (bystar-scratch-welcome-buffer)
+  ;;;;;; (bystar-scratch-welcome-buffer)
   ;(setq initial-buffer-choice "/opt/public/osmt/bin/ByStarUserEnv.welcome")
   (setq initial-buffer-choice t)
   (setq inhibit-startup-message t)
